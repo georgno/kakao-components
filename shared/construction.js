@@ -24,7 +24,9 @@
  * Types: color · length · radius · number · percent · duration · easing ·
  *        shadow · font · font-family · text
  *
- * Needs kakao-button (components/button) on the page for the toolbar.
+ * Built from our own components: needs kakao-button (components/button) on
+ * the page; kakao-number-input and the Font Awesome icons are loaded here if
+ * the page doesn't have them.
  * ============================================================================
  */
 (function () {
@@ -32,6 +34,27 @@
 
   const ENGINE_URL = document.currentScript ? document.currentScript.src : location.href;
   const TOKENS_PAGE = new URL('../tokens.html', ENGINE_URL).href;
+
+  /** Load what the construction UI is built from, unless the page has it. */
+  function ensureDependencies() {
+    const head = document.head;
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+      head.append(Object.assign(document.createElement('link'), {
+        rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+      }));
+    }
+    if (!document.querySelector('link[href*="number-input.css"]')) {
+      head.append(Object.assign(document.createElement('link'), {
+        rel: 'stylesheet', href: new URL('../components/number-input/number-input.css', ENGINE_URL).href,
+      }));
+    }
+    if (!customElements.get('kakao-number-input') && !document.querySelector('script[src*="number-input.js"]')) {
+      head.append(Object.assign(document.createElement('script'), {
+        src: new URL('../components/number-input/number-input.js', ENGINE_URL).href,
+      }));
+    }
+  }
+  ensureDependencies();
   const START_RE = /\/\* @kakao-settings:start prefix=(--kakao-[a-z0-9-]*)[^*]*\*\//;
   const END_MARK = '/* @kakao-settings:end */';
   const LINE_RE = /^--_([a-z0-9-]+): var\((--kakao-[a-z0-9-]+), (.+)\);$/;
@@ -128,22 +151,39 @@
       else if (k in node && typeof v !== 'string') node[k] = v;
       else node.setAttribute(k, v === true ? '' : v);
     });
-    children.flat().forEach((c) => c != null && node.append(c));
+    children.flat().forEach((c) => c != null && c !== false && node.append(c));
     return node;
   }
 
   function button(label, opts = {}) {
     const b = el('kakao-button', {
-      label,
+      class: opts.class,
+      label: label || null,
       size: 'sm',
       variant: opts.variant || 'secondary',
       icon: opts.icon,
       'icon-position': opts.iconPosition,
       'aria-label': opts.ariaLabel,
       title: opts.title,
+      toggle: opts.toggle,
+      'list-data': opts.listData ? JSON.stringify(opts.listData) : null,
+      selected: opts.selected,
+      'show-selected': opts.showSelected,
+      'no-chevron': opts.noChevron,
     });
     if (opts.onClick) b.addEventListener('kakao-button-action', opts.onClick);
+    if (opts.onSelect) b.addEventListener('kakao-button-select', (e) => opts.onSelect(e.detail.value));
     return b;
+  }
+
+  /** A ghost icon button (Font Awesome icon class). */
+  function iconButton(icon, ariaLabel, opts = {}) {
+    return button('', { ...opts, variant: 'ghost', icon, iconPosition: 'only', ariaLabel, title: opts.title || ariaLabel });
+  }
+
+  /** Wraps a number input in our kakao-number-input. */
+  function numberField(input) {
+    return el('kakao-number-input', { size: 'sm', class: 'construction-number-wrap' }, input);
   }
 
   function setDisabled(btn, disabled) {
@@ -257,13 +297,16 @@
       this.statusEl = el('p', { class: 'construction-status', role: 'status', 'aria-live': 'polite' });
       this.warningsEl = el('div', { class: 'construction-warnings', hidden: true });
 
-      const canvasPicker = el('div', { class: 'construction-canvas-picker', role: 'radiogroup', 'aria-label': 'Preview background' });
-      ['light', 'dark', 'checker'].forEach((name) => {
-        const id = `canvas-${name}`;
-        canvasPicker.append(
-          el('input', { type: 'radio', name: 'construction-canvas', id, value: name, onchange: () => this.setCanvas(name) }),
-          el('label', { for: id, text: name === 'checker' ? 'Checkered' : name[0].toUpperCase() + name.slice(1) }),
-        );
+      const canvasPicker = button('Preview', {
+        class: 'construction-canvas-picker',
+        variant: 'ghost',
+        showSelected: true,
+        listData: [
+          { value: 'light', label: 'Light' },
+          { value: 'dark', label: 'Dark' },
+          { value: 'checker', label: 'Checkered' },
+        ],
+        onSelect: (name) => this.setCanvas(name),
       });
 
       const header = el('header', { class: 'construction-header' },
@@ -295,9 +338,9 @@
 
       let canvasName = 'light';
       try { canvasName = localStorage.getItem(STORAGE_CANVAS) || 'light'; } catch { /* storage blocked */ }
+      if (!['light', 'dark', 'checker'].includes(canvasName)) canvasName = 'light';
       this.setCanvas(canvasName);
-      const radio = canvasPicker.querySelector(`[value="${canvasName}"]`);
-      if (radio) radio.checked = true;
+      canvasPicker.setAttribute('selected', canvasName);
     }
 
     setCanvas(name) {
@@ -363,19 +406,18 @@
 
       const editor = el('div', { class: 'construction-editor' });
       const bound = el('div', { class: 'construction-bound', hidden: true });
-      const tokenBtn = el('button', {
-        type: 'button', class: 'construction-icon', title: 'Use a main variable',
-        'aria-label': `Use a main variable for ${entry.label || prop}`, text: '◆',
+      // Main variable: a kakao-button dropdown of the compatible variables
+      const tokenBtn = iconButton('fas fa-diamond', `Use a main variable for ${entry.label || prop}`, {
+        noChevron: true,
+        title: 'Use a main variable',
       });
-      const resetBtn = el('button', {
-        type: 'button', class: 'construction-icon', title: 'Reset to saved',
-        'aria-label': `Reset ${entry.label || prop}`, text: '↺',
-        onclick: () => this.update(prop, { ...this.saved.get(prop) }),
+      const resetBtn = iconButton('fas fa-rotate-left', `Reset ${entry.label || prop}`, {
+        title: 'Reset to saved',
+        onClick: () => this.update(prop, { ...this.saved.get(prop) }),
       });
-      const tokenMenu = el('select', { class: 'construction-token-menu', hidden: true, 'aria-label': 'Main variable' });
 
       row.el = el('div', { class: 'construction-row', 'data-property': prop },
-        label, el('div', { class: 'construction-control' }, editor, bound, tokenMenu), tokenBtn, resetBtn);
+        label, el('div', { class: 'construction-control' }, editor, bound), tokenBtn, resetBtn);
 
       // ---- literal editors per type
       const text = el('input', {
@@ -399,29 +441,38 @@
       } else if (type === 'length' || type === 'radius') {
         const units = entry.units || ['px', 'rem', 'em', '%'];
         const num = el('input', { type: 'number', class: 'construction-number', step: entry.step || 'any', 'aria-label': `${entry.label || prop} amount` });
-        const unit = el('select', { class: 'construction-unit', 'aria-label': `${entry.label || prop} unit` },
-          units.map((u) => el('option', { value: u, text: u || '–' })));
-        const simple = el('span', { class: 'construction-simple' }, num, unit);
-        const fx = el('button', { type: 'button', class: 'construction-icon construction-fx', title: 'Edit as expression', text: 'fx', 'aria-pressed': 'false' });
-        const commit = () => { const v = `${num.value}${unit.value}`; text.value = v; this.edit(prop, v); };
+        const unitItems = (list) => list.map((u) => ({ value: u, label: u || '–' }));
+        const unit = button('Unit', {
+          class: 'construction-unit',
+          showSelected: true,
+          listData: unitItems(units),
+          selected: units[0],
+          onSelect: () => commit(),
+        });
+        const unitValue = () => unit.getAttribute('selected') || units[0];
+        const simple = el('span', { class: 'construction-simple' }, numberField(num), unit);
+        const fx = button('fx', { class: 'construction-fx', variant: 'ghost', toggle: true, title: 'Edit as expression' });
+        const commit = () => { const v = `${num.value}${unitValue()}`; text.value = v; this.edit(prop, v); };
         num.addEventListener('input', commit);
-        unit.addEventListener('change', commit);
         let raw = false;
         const setRaw = (on) => {
           raw = on;
-          fx.setAttribute('aria-pressed', String(on));
+          fx.toggleAttribute('pressed', on);
           simple.hidden = on;
           text.hidden = !on;
         };
-        fx.addEventListener('click', () => setRaw(!raw));
+        fx.addEventListener('kakao-button-action', () => setRaw(fx.hasAttribute('pressed')));
         editor.append(simple, text, fx);
         row.show = (v) => {
           row.setText(v);
           const m = v.match(SIMPLE_LENGTH_RE);
           if (m && units.includes(m[2] || '') || (m && m[1] === '0')) {
             if (document.activeElement !== num) num.value = m[1];
-            if (m[2] && !units.includes(m[2])) unit.append(el('option', { value: m[2], text: m[2] }));
-            unit.value = m[2] || units[0];
+            if (m[2] && !units.includes(m[2])) {
+              units.push(m[2]);
+              unit.setAttribute('list-data', JSON.stringify(unitItems(units)));
+            }
+            unit.setAttribute('selected', m[2] || units[0]);
             if (!raw || document.activeElement !== text) setRaw(false);
           } else {
             setRaw(true);
@@ -434,6 +485,7 @@
         const step = entry.step ?? (isPct ? 1 : 0.01);
         const range = el('input', { type: 'range', class: 'construction-range', min, max, step, 'aria-label': `${entry.label || prop} slider` });
         const num = el('input', { type: 'number', class: 'construction-number', min, max, step, 'aria-label': `${entry.label || prop} value` });
+        const numWrap = numberField(num);
         const commit = (src) => {
           const v = isPct ? `${src.value}%` : String(src.value);
           (src === range ? num : range).value = src.value;
@@ -442,7 +494,7 @@
         };
         range.addEventListener('input', () => commit(range));
         num.addEventListener('input', () => commit(num));
-        editor.append(range, num);
+        editor.append(range, numWrap);
         if (isPct) editor.append(el('span', { class: 'construction-suffix', text: '%' }));
         text.hidden = true;
         editor.append(text);
@@ -457,7 +509,7 @@
       } else if (type === 'duration') {
         const num = el('input', { type: 'number', class: 'construction-number', min: 0, step: entry.step || 10, 'aria-label': `${entry.label || prop} in milliseconds` });
         num.addEventListener('input', () => { const v = `${num.value}ms`; text.value = v; this.edit(prop, v); });
-        editor.append(num, el('span', { class: 'construction-suffix', text: 'ms' }));
+        editor.append(numberField(num), el('span', { class: 'construction-suffix', text: 'ms' }));
         text.hidden = true;
         editor.append(text);
         row.show = (v) => {
@@ -474,22 +526,11 @@
       const compatible = this.isTokens ? [] : this.tokens.filter((t) => (TOKEN_COMPAT[type] || []).includes(t.type));
       if (!compatible.length) {
         tokenBtn.classList.add('is-unavailable');
-        tokenBtn.disabled = true;
-        tokenBtn.tabIndex = -1;
+        setDisabled(tokenBtn, true);
+        tokenBtn.setAttribute('aria-hidden', 'true');
       } else {
-        tokenMenu.append(el('option', { value: '', text: 'Choose a main variable…' }),
-          ...compatible.map((t) => el('option', { value: t.property, text: t.label || t.property })));
-        tokenBtn.addEventListener('click', () => {
-          tokenMenu.hidden = !tokenMenu.hidden;
-          if (!tokenMenu.hidden) { tokenMenu.value = ''; tokenMenu.focus(); }
-        });
-        tokenMenu.addEventListener('change', () => {
-          if (tokenMenu.value) this.bind(prop, tokenMenu.value);
-          tokenMenu.hidden = true;
-        });
-        tokenMenu.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') { tokenMenu.hidden = true; tokenBtn.focus(); }
-        });
+        tokenBtn.setAttribute('list-data', JSON.stringify(compatible.map((t) => ({ value: t.property, label: t.label || t.property }))));
+        tokenBtn.addEventListener('kakao-button-select', (e) => this.bind(prop, e.detail.value));
       }
       row.showBound = (token, literal) => {
         const follows = !token && this.followedSetting(literal);
@@ -497,6 +538,8 @@
         bound.hidden = !isBound;
         editor.hidden = isBound;
         tokenBtn.classList.toggle('is-active', !!token);
+        if (token) tokenBtn.setAttribute('selected', token);
+        else tokenBtn.removeAttribute('selected');
         if (!isBound) return;
         if (follows) {
           const value = this.resolvedAlias(literal);
@@ -505,10 +548,9 @@
               type === 'color' ? el('span', { class: 'construction-chip-swatch', style: `background:${value}` }) : null,
               el('span', { text: `Follows ${follows.label || follows.property}` }),
               el('small', { text: value })),
-            el('button', {
-              type: 'button', class: 'construction-icon', text: '×', title: 'Use its own value',
-              'aria-label': `Give ${entry.label || prop} its own value`,
-              onclick: () => this.update(prop, { value: value || literal, token: null }),
+            iconButton('fas fa-xmark', `Give ${entry.label || prop} its own value`, {
+              title: 'Use its own value',
+              onClick: () => this.update(prop, { value: value || literal, token: null }),
             }),
           );
           return;
@@ -520,17 +562,16 @@
           el('span', { class: 'construction-chip', title: token }, swatch,
             el('span', { text: meta ? meta.label : token }),
             el('small', { text: value })),
-          el('button', {
-            type: 'button', class: 'construction-icon', text: '×', title: 'Detach from main variable',
-            'aria-label': `Detach ${entry.label || prop} from ${meta ? meta.label : token}`,
-            onclick: () => this.unbind(prop),
+          iconButton('fas fa-xmark', `Detach ${entry.label || prop} from ${meta ? meta.label : token}`, {
+            title: 'Detach from main variable',
+            onClick: () => this.unbind(prop),
           }),
         );
       };
       row.markInvalid = (invalid) => row.el.classList.toggle('is-invalid', invalid);
       row.markChanged = (changed) => {
         row.el.classList.toggle('is-changed', changed);
-        resetBtn.disabled = !changed;
+        setDisabled(resetBtn, !changed);
       };
       return row;
     }

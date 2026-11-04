@@ -9,3 +9,4 @@
 - [x] 7 Card glow in pure CSS (`:has()` + variant colours, registered colour property); no glow for ghost buttons.
 - [x] 8 Theme switch: settle colour transitions on switch, queue ripples, clip the new view from the first frame. Verify with instrumentation: no colour transitions after a switch, one ripple at a time when spamming.
 - [x] 9 Card: smooth height changes (FLIP on content resize, skipped when stretched, on width changes, with `no-animate` or reduced motion); add/remove lines in the demo. Verify with height samples.
+- [x] 10 Construction pages built from our components (kakao-button actions, dropdowns and toggles; kakao-number-input), sized via component settings; fix stray "false" text in the header.

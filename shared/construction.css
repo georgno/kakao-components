@@ -106,23 +106,19 @@ code {
   background-position: 0 0, 8px 8px;
 }
 
-.construction-canvas-picker {
+/* Preview background: a kakao-button dropdown in the canvas corner
+   (more specific than kakao-button[data-menu] { position: relative }) */
+.construction-canvas > kakao-button.construction-canvas-picker {
   position: absolute;
-  top: 0.6rem;
-  right: 0.75rem;
-  display: flex;
-  gap: 0.15rem;
-  font-size: 0.75rem;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
 }
-.construction-canvas-picker input { position: absolute; opacity: 0; pointer-events: none; }
-.construction-canvas-picker label {
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  color: var(--kakao-color-muted, #6b7280);
-  cursor: pointer;
+.construction-canvas-picker .kakao-button-menu {
+  left: auto;
+  right: 0;
+  transform-origin: top right;
 }
-.construction-canvas-picker input:checked + label { background: var(--kakao-color-subtle-strong, #eef0f4); color: var(--kakao-color-text, #111827); }
-.construction-canvas-picker input:focus-visible + label { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 1px; }
 
 /* Preview states: a figure per state, caption above */
 .construction-preview { display: grid; gap: 2rem; }
@@ -135,6 +131,20 @@ code {
 }
 
 /* ---- settings panel ---------------------------------------------------- */
+
+.construction-panel,
+.construction-canvas-picker {
+  /* Our own components, tuned through their settings to fit the dense table */
+  --kakao-button-sm-height: 30px;
+  --kakao-button-sm-padding-x: 10px;
+  --kakao-button-sm-radius: 8px;
+  --kakao-button-sm-font-size: 12.5px;
+  --kakao-button-sm-gap: 5px;
+  --kakao-button-md-font-size: 13px; /* menu items */
+  --kakao-button-menu-item-height: 32px;
+  --kakao-button-menu-min-width: 7rem;
+  --kakao-number-input-sm-font-size: 0.82rem;
+}
 
 .construction-panel {
   min-width: 0;
@@ -169,7 +179,7 @@ code {
 
 .construction-row {
   display: grid;
-  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) 1.75rem 1.75rem;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) 30px 30px;
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.25rem 0.3rem 0.6rem;
@@ -202,7 +212,7 @@ code {
 .construction-control input,
 .construction-control select {
   min-width: 0;
-  height: 1.85rem;
+  height: 30px;
   padding: 0 0.45rem;
   border: 1px solid var(--kakao-color-border, #d1d5db);
   border-radius: 6px;
@@ -212,34 +222,27 @@ code {
   font-size: 0.82rem;
 }
 .construction-text { flex: 1; font-family: ui-monospace, "SF Mono", Menlo, monospace !important; }
-.construction-number { width: 5rem; flex: 1; }
-.construction-unit { width: 4.2rem; flex: none; }
+.construction-number-wrap { flex: 1; min-width: 4.5rem; }
+.construction-number-wrap input { width: 100%; }
+.construction-unit { flex: none; }
 .construction-range { flex: 1; padding: 0 !important; border: 0 !important; }
 .construction-swatch { width: 2.2rem; flex: none; padding: 2px !important; cursor: pointer; }
 .construction-suffix { font-size: 0.8rem; color: var(--kakao-color-muted, #6b7280); }
-.construction-token-menu { width: 100%; margin-top: 0.3rem; }
 
 .construction-row.is-invalid .construction-control input { border-color: #dc2626; background: #fef2f2; }
 
-.construction-icon {
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--kakao-color-muted, #6b7280);
-  font: inherit;
-  font-size: 0.85rem;
-  cursor: pointer;
+.construction-row > kakao-button.is-unavailable { visibility: hidden; }
+.construction-row > kakao-button.is-active .kakao-button-inner { color: var(--kakao-color-primary, #4f46e5); }
+/* Token menus can be long: open them right-aligned and let them scroll */
+.construction-row > kakao-button .kakao-button-menu {
+  left: auto;
+  right: 0;
+  max-height: 18rem;
+  overflow-y: auto;
+  transform-origin: top right;
 }
-.construction-icon:hover:not(:disabled) { background: var(--kakao-color-subtle, #eef0f4); color: var(--kakao-color-text, #111827); }
-.construction-icon:disabled { opacity: 0.3; cursor: default; }
-.construction-icon.is-active { color: var(--kakao-color-primary, #4f46e5); }
-.construction-icon.is-unavailable { visibility: hidden; }
-.construction-icon:focus-visible,
 .construction-control :focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 1px; }
 .construction-fx { flex: none; font-style: italic; }
-.construction-fx[aria-pressed="true"] { background: var(--kakao-color-subtle, #eef0f4); color: var(--kakao-color-text, #111827); }
 
 .construction-bound { display: flex; align-items: center; gap: 0.25rem; min-width: 0; }
 .construction-bound[hidden] { display: none; }
@@ -249,9 +252,9 @@ code {
   gap: 0.4rem;
   min-width: 0;
   flex: 1;
-  height: 1.85rem;
+  height: 30px;
   padding: 0 0.55rem;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #eef2ff;
   color: #3730a3;
   font-size: 0.82rem;
