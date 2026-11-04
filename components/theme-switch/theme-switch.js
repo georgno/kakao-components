@@ -33,6 +33,7 @@
  *                 { value, label?, scheme?: "light" | "dark", icon?: "sun" | "moon" }
  *               Default: light, dark. scheme defaults to "dark" for a value
  *               containing "dark", else "light"; icon follows the scheme.
+ *               (data-bs-theme always gets the colour-scheme the theme's CSS sets.)
  *  storage-key  localStorage key for the choice. Default "kakao-theme".
  *               Empty ("") = don't remember.
  *  show-label   Also show the current theme's name next to the icon.
@@ -47,13 +48,20 @@
  *                              (viewport px) is where the ripple starts.
  *  next(options?)              Switch to the following theme.
  *
+ *  Page-level, for other controls (e.g. a <kakao-button> menu of themes):
+ *    customElements.get('kakao-theme-switch').setTheme(value, { x, y, animate? })
+ *    customElements.get('kakao-theme-switch').current()   → the theme on <html>
+ *  Any theme in shared/themes.css can be set this way, also one that is not
+ *  in a switch's list (the switch then shows the icon of its colour scheme).
+ *
  *  Calls made before the element is connected are queued.
  *
  * ----------------------------------------------------------------------------
  * EVENTS (bubble, composed)
  * ----------------------------------------------------------------------------
  *  theme-change   { theme, previous, scheme, source: "user" | "api" | "storage" }
- *                 after the theme on <html> changed through this switch.
+ *                 after the theme on <html> changed: on the switch, or on
+ *                 document for the page-level setTheme().
  *
  * ----------------------------------------------------------------------------
  * CSS CUSTOM PROPERTIES
@@ -110,6 +118,8 @@
     if (saved && !ROOT.hasAttribute(THEME_ATTR)) {
       ROOT.setAttribute(THEME_ATTR, saved);
       if (saved === 'light' || saved === 'dark') ROOT.setAttribute(BS_ATTR, saved);
+      // Other themes: their colour scheme is known once the stylesheets are in.
+      else window.addEventListener('DOMContentLoaded', () => ROOT.setAttribute(BS_ATTR, computedScheme()), { once: true });
     }
   })();
 
@@ -128,6 +138,69 @@
       html.${RIPPLE_CLASS}::view-transition-new(root) { z-index: 1; }
     `;
     document.head.append(style);
+  }
+
+  /** "dark" or "light": the colour-scheme the current theme's CSS sets on <html>. */
+  function computedScheme() {
+    return /dark/.test(getComputedStyle(ROOT).colorScheme || '') ? 'dark' : 'light';
+  }
+
+  function applyTheme(value) {
+    ROOT.setAttribute(THEME_ATTR, value);
+    ROOT.setAttribute(BS_ATTR, computedScheme());
+  }
+
+  function parseDuration(value, fallback) {
+    const m = String(value).trim().match(/^(-?\d*\.?\d+)(ms|s)$/);
+    if (!m) return fallback;
+    return m[2] === 's' ? parseFloat(m[1]) * 1000 : parseFloat(m[1]);
+  }
+
+  /**
+   * Sets a theme on <html>, with the ripple when wanted and possible, and
+   * remembers it. Resolves once the new theme is applied.
+   */
+  function switchTheme(value, { animate = true, x, y, storageKey = DEFAULT_KEY, timing } = {}) {
+    const remember = () => storage.set(storageKey, value);
+    if (!animate || reducedMotion() || typeof document.startViewTransition !== 'function') {
+      applyTheme(value);
+      remember();
+      return Promise.resolve();
+    }
+    const cx = Number.isFinite(x) ? x : window.innerWidth / 2;
+    const cy = Number.isFinite(y) ? y : window.innerHeight / 2;
+    const radius = Math.hypot(Math.max(cx, window.innerWidth - cx), Math.max(cy, window.innerHeight - cy));
+    const { duration, easing } = timing || rippleTiming(document.querySelector(TAG_NAME));
+
+    ensureRippleStyles();
+    ROOT.classList.add(RIPPLE_CLASS);
+    let transition;
+    try {
+      transition = document.startViewTransition(() => applyTheme(value));
+    } catch {
+      ROOT.classList.remove(RIPPLE_CLASS);
+      applyTheme(value);
+      remember();
+      return Promise.resolve();
+    }
+    transition.ready.then(() => {
+      ROOT.animate(
+        { clipPath: [`circle(0px at ${cx}px ${cy}px)`, `circle(${radius}px at ${cx}px ${cy}px)`] },
+        { duration, easing, pseudoElement: '::view-transition-new(root)' },
+      );
+    }).catch(() => { /* skipped: the theme is applied anyway */ });
+    transition.finished.finally(() => ROOT.classList.remove(RIPPLE_CLASS));
+    return transition.updateCallbackDone.then(remember, remember);
+  }
+
+  /** Ripple duration / easing from a switch's settings (defaults without one). */
+  function rippleTiming(el) {
+    if (!el) return { duration: 700, easing: 'cubic-bezier(.4, 0, .2, 1)' };
+    const style = getComputedStyle(el);
+    return {
+      duration: parseDuration(style.getPropertyValue('--_ripple-duration'), 700),
+      easing: style.getPropertyValue('--_ripple-easing').trim() || 'ease-in-out',
+    };
   }
 
   const ICON = `
@@ -246,6 +319,22 @@
   `;
 
   class KakaoThemeSwitch extends HTMLElement {
+    /** Page-level: set any theme (with the ripple from x / y). */
+    static setTheme(value, options = {}) {
+      const previous = ROOT.getAttribute(THEME_ATTR) || computedScheme();
+      if (value === ROOT.getAttribute(THEME_ATTR)) return Promise.resolve();
+      return switchTheme(String(value), options).then(() => {
+        document.dispatchEvent(new CustomEvent('theme-change', {
+          detail: { theme: String(value), previous, scheme: computedScheme(), source: options.source || 'api' },
+        }));
+      });
+    }
+
+    /** Page-level: the theme on <html>, or the system's light / dark when none is chosen. */
+    static current() {
+      return ROOT.getAttribute(THEME_ATTR) || computedScheme();
+    }
+
     static get observedAttributes() {
       return ['list-data', 'storage-key', 'show-label', 'disabled'];
     }
@@ -381,7 +470,9 @@
     _current() {
       const chosen = this._find(ROOT.getAttribute(THEME_ATTR));
       if (chosen) return chosen;
-      const scheme = darkQuery && darkQuery.matches ? 'dark' : 'light';
+      // No theme chosen (follows the OS), or one this switch doesn't list:
+      // show the theme with the same colour scheme.
+      const scheme = computedScheme();
       return this._themes.find((t) => t.scheme === scheme) || this._themes[0];
     }
 
@@ -391,59 +482,28 @@
     }
 
     _apply(theme) {
-      ROOT.setAttribute(THEME_ATTR, theme.value);
-      ROOT.setAttribute(BS_ATTR, theme.scheme);
+      applyTheme(theme.value);
     }
 
     _switchTo(theme, { animate, x, y, source }) {
       const previous = this._current();
       if (theme === previous && ROOT.getAttribute(THEME_ATTR) === theme.value) return;
-
-      const done = () => {
-        storage.set(this._storageKey(), theme.value);
+      const r = this._button.getBoundingClientRect();
+      switchTheme(theme.value, {
+        animate,
+        x: Number.isFinite(x) ? x : r.left + r.width / 2,
+        y: Number.isFinite(y) ? y : r.top + r.height / 2,
+        storageKey: this._storageKey(),
+        timing: rippleTiming(this),
+      }).then(() => {
         this._sync();
         if (source === 'user') this._statusEl.textContent = `${theme.label} theme`;
         this.dispatchEvent(new CustomEvent('theme-change', {
           bubbles: true,
           composed: true,
-          detail: { theme: theme.value, previous: previous.value, scheme: theme.scheme, source },
+          detail: { theme: theme.value, previous: previous.value, scheme: computedScheme(), source },
         }));
-      };
-
-      if (!animate || reducedMotion() || typeof document.startViewTransition !== 'function') {
-        this._apply(theme);
-        done();
-        return;
-      }
-
-      // Ripple: the new theme is revealed as a growing circle from (x, y).
-      const r = this._button.getBoundingClientRect();
-      const cx = Number.isFinite(x) ? x : r.left + r.width / 2;
-      const cy = Number.isFinite(y) ? y : r.top + r.height / 2;
-      const radius = Math.hypot(Math.max(cx, window.innerWidth - cx), Math.max(cy, window.innerHeight - cy));
-      const style = getComputedStyle(this);
-      const duration = parseDuration(style.getPropertyValue('--_ripple-duration'), 700);
-      const easing = style.getPropertyValue('--_ripple-easing').trim() || 'ease-in-out';
-
-      ensureRippleStyles();
-      ROOT.classList.add(RIPPLE_CLASS);
-      let transition;
-      try {
-        transition = document.startViewTransition(() => this._apply(theme));
-      } catch {
-        ROOT.classList.remove(RIPPLE_CLASS);
-        this._apply(theme);
-        done();
-        return;
-      }
-      transition.ready.then(() => {
-        ROOT.animate(
-          { clipPath: [`circle(0px at ${cx}px ${cy}px)`, `circle(${radius}px at ${cx}px ${cy}px)`] },
-          { duration, easing, pseudoElement: '::view-transition-new(root)' },
-        );
-      }).catch(() => { /* skipped: the theme is applied anyway */ });
-      transition.finished.finally(() => ROOT.classList.remove(RIPPLE_CLASS));
-      transition.updateCallbackDone.then(done, done);
+      });
     }
 
     /* -------------------------- Rendering -------------------------- */
@@ -486,12 +546,6 @@
       const theme = this._find(e.newValue);
       if (theme) this._switchTo(theme, { animate: false, source: 'storage' });
     }
-  }
-
-  function parseDuration(value, fallback) {
-    const m = String(value).trim().match(/^(-?\d*\.?\d+)(ms|s)$/);
-    if (!m) return fallback;
-    return m[2] === 's' ? parseFloat(m[1]) * 1000 : parseFloat(m[1]);
   }
 
   customElements.define(TAG_NAME, KakaoThemeSwitch);

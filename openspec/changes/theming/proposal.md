@@ -11,6 +11,8 @@ The components only had a light look, and most of them hard-coded their greys, s
 - New tool `tools/check-themes.js` checks WCAG 2.2 AA contrast for every theme (text 4.5:1; borders, filled controls, focus 3:1). It also regenerates the copied blocks in `themes.css`.
 - Every component's colour settings now default to a theme variable, with the old value as the literal fallback. Components used without `tokens.css` look as before.
 - New component `<kakao-theme-switch>`: cycles through themes (light and dark by default), remembers the choice, stays in sync across switches and tabs, announces the new theme, and reveals it with a ripple from the button (View Transitions). There is no ripple under reduced motion or without View Transitions support.
+- A third theme, Catppuccin (Mocha), and a page-level theme API on the switch class.
+- `<kakao-button>` gets a menu (dropdown) form via `list-data`, used for a theme dropdown on the theme switch card and demo.
 - Demo, construction, overview, kitchen sink and style guide pages load the themes and show a theme switch. The construction canvas's Light and Dark options preview the component in that theme.
 
 ## Capabilities
@@ -19,6 +21,7 @@ The components only had a light look, and most of them hard-coded their greys, s
 - `theme-switch`: the `<kakao-theme-switch>` component.
 
 ### Modified Capabilities
+- `button`: menu (dropdown) form.
 - `design-tokens`: colour roles and themes, the accessibility check.
 - `component-conventions`: component colours follow the theme variables.
 

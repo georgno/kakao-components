@@ -33,3 +33,10 @@ The switch SHALL be a native button named after its action ("Switch to dark them
 #### Scenario: Screen reader
 - **WHEN** a screen reader user activates the switch
 - **THEN** "Dark theme" is announced
+
+### Requirement: Page-level theme API
+`customElements.get('kakao-theme-switch').setTheme(value, { x, y, animate })` SHALL set any theme defined in `themes.css` with the same ripple, storage and `data-bs-theme` handling, and SHALL fire `theme-change` on `document`. `current()` SHALL return the theme on `<html>`, or the system's light or dark when none is chosen. A switch whose list does not contain the current theme SHALL show the theme of the same colour scheme.
+
+#### Scenario: Theme dropdown
+- **WHEN** a `<kakao-button>` theme menu calls `setTheme("catppuccin", { x, y })` from its `kakao-button-select` event
+- **THEN** the page turns Catppuccin with a ripple from the picked item, and the icon switches show the moon

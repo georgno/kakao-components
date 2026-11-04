@@ -22,3 +22,10 @@ Every theme SHALL pass `node tools/check-themes.js`: text pairs at least 4.5:1, 
 #### Scenario: Too light a border
 - **WHEN** a theme's border colour is 2.8:1 against its surface
 - **THEN** `check-themes.js` names the pair and exits with code 1
+
+### Requirement: Catppuccin theme
+`themes.css` SHALL provide a `catppuccin` theme based on Catppuccin Mocha (dark colour scheme) that passes the accessibility check.
+
+#### Scenario: Selecting Catppuccin
+- **WHEN** `<html>` has `data-kakao-theme="catppuccin"`
+- **THEN** components use the Mocha colours and `color-scheme` is dark

@@ -74,6 +74,26 @@
     </div>
   </div>
 
+  <h2>Menu</h2>
+  <p><code>list-data</code> turns any variant into a dropdown button: a chevron and a menu of choices. <code>selected</code> marks the current one; <code>show-selected</code> puts it on the button. Keyboard: ↓ / ↑ open, arrows move, a letter jumps, Enter picks, Escape closes.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Shows the choice · <code>show-selected</code></h3>
+      <kakao-button id="sort" label="Sort by" variant="secondary" show-selected selected="newest"
+        list-data='[{"value":"newest","label":"Newest first"},{"value":"oldest","label":"Oldest first"},{"value":"name","label":"Name"},{"value":"size","label":"Size","disabled":true}]'></kakao-button>
+    </div>
+    <div class="card">
+      <h3>Action menu · primary</h3>
+      <kakao-button label="Export" icon="fas fa-download"
+        list-data='[{"value":"csv","label":"CSV"},{"value":"xlsx","label":"Excel"},{"value":"pdf","label":"PDF"}]'></kakao-button>
+    </div>
+    <div class="card">
+      <h3>Ghost · small</h3>
+      <kakao-button label="View" variant="ghost" size="sm" show-selected selected="list"
+        list-data='[{"value":"list","label":"List"},{"value":"grid","label":"Grid"},{"value":"map","label":"Map"}]'></kakao-button>
+    </div>
+  </div>
+
   <h2>Playground</h2>
   <p><code>run()</code> wires a promise to the loading animation; it resolves to a check, rejects back to the label.</p>
   <div class="card">
@@ -88,11 +108,12 @@
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 
-  <footer>Attributes: <code>label</code>, <code>icon</code>, <code>icon-position</code>, <code>variant</code>, <code>size</code>, <code>disabled</code>, <code>toggle</code>, <code>pressed</code>, <code>type</code>, <code>name</code>, <code>value</code>, <code>form</code>, <code>href</code>, <code>aria-label</code>. <code>data-*</code> is mirrored onto the inner button. Event <code>kakao-button-action</code>.</footer>
+  <footer>Attributes: <code>label</code>, <code>icon</code>, <code>icon-position</code>, <code>variant</code>, <code>size</code>, <code>disabled</code>, <code>toggle</code>, <code>pressed</code>, <code>type</code>, <code>name</code>, <code>value</code>, <code>form</code>, <code>href</code>, <code>aria-label</code>. <code>data-*</code> is mirrored onto the inner button. Menu form: <code>list-data</code>, <code>selected</code>, <code>show-selected</code>. Events <code>kakao-button-action</code>, <code>kakao-button-select</code>, <code>kakao-button-menu</code>.</footer>
 </main>
 
 <script>
   const log = document.getElementById('log');
+  logEvents(log, ['kakao-button-select', 'kakao-button-menu']);
   document.addEventListener('kakao-button-action', (e) => {
     const el = e.target;
     logLine(log, 'kakao-button-action', {

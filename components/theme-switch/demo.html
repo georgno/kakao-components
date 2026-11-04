@@ -22,7 +22,7 @@
     <a class="back" href="../../index.html">← All components</a>
     <a class="back" href="construction.html">Construction page →</a>
     <h1>Theme switch</h1>
-    <p><code>&lt;kakao-theme-switch&gt;</code> — switches the page between colour themes (light and dark for now). The new theme spreads from the button as a ripple. The choice is remembered; until then the page follows the operating system.</p>
+    <p><code>&lt;kakao-theme-switch&gt;</code> — switches the page between colour themes: light, dark and Catppuccin. The new theme spreads from the button as a ripple. The choice is remembered; until then the page follows the operating system.</p>
   </header>
 
   <h2>Variants</h2>
@@ -39,6 +39,12 @@
     <div class="card">
       <h3>Disabled</h3>
       <kakao-theme-switch disabled></kakao-theme-switch>
+    </div>
+    <div class="card">
+      <h3>Dropdown · <code>kakao-button</code> menu</h3>
+      <kakao-button class="theme-menu" label="Theme" variant="secondary" show-selected
+        list-data='[{"value":"light","label":"Light"},{"value":"dark","label":"Dark"},{"value":"catppuccin","label":"Catppuccin"}]'></kakao-button>
+      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Picks any theme, also ones the switch doesn't cycle through. The ripple starts at the picked item.</p>
     </div>
     <div class="card">
       <h3>Themed components</h3>
@@ -87,6 +93,19 @@
     document.documentElement.removeAttribute('data-kakao-theme');
     document.documentElement.removeAttribute('data-bs-theme');
     logLine(log, 'forgot the choice', { following: 'system' });
+  });
+</script>
+<script>
+  // Theme dropdown: a <kakao-button> menu driving the page-level theme API.
+  customElements.whenDefined('kakao-theme-switch').then(() => {
+    const Themes = customElements.get('kakao-theme-switch');
+    document.querySelectorAll('.theme-menu').forEach((menu) => {
+      const sync = () => menu.setAttribute('selected', Themes.current());
+      sync();
+      new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-kakao-theme'] });
+      if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sync);
+      menu.addEventListener('kakao-button-select', (e) => Themes.setTheme(e.detail.value, { x: e.detail.x, y: e.detail.y }));
+    });
   });
 </script>
 </body>

@@ -68,6 +68,31 @@
   --kakao-color-focus: #60a5fa;
 }
 
+/* @theme catppuccin */
+/* Catppuccin Mocha (https://catppuccin.com, MIT). Colours kept from the palette
+   except where a pair needs more contrast; see tools/check-themes.js. */
+[data-kakao-theme="catppuccin"] {
+  color-scheme: dark;
+  --kakao-color-primary: #cba6f7;
+  --kakao-color-text: #cdd6f4;
+  --kakao-color-text-soft: #bac2de;
+  --kakao-color-muted: #a6adc8;
+  --kakao-color-page: #11111b;
+  --kakao-color-bg: #1e1e2e;
+  --kakao-color-raised: #585b70;
+  --kakao-color-subtle: #313244;
+  --kakao-color-subtle-strong: #45475a;
+  --kakao-color-line: #313244;
+  --kakao-color-border: #7f849c;
+  --kakao-color-ink: #b4befe;
+  --kakao-color-ink-hover: #cdd3ff;
+  --kakao-color-on-ink: #11111b;
+  --kakao-color-danger: #f38ba8;
+  --kakao-color-danger-hover: #f5a6bd;
+  --kakao-color-on-danger: #11111b;
+  --kakao-color-focus: #89b4fa;
+}
+
 /* @generated:start os-dark (copy of the dark theme, used when no theme is chosen) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-kakao-theme]):not([data-bs-theme]) {
@@ -107,6 +132,13 @@
     --kakao-color-muted: #d4d4d8;
     --kakao-color-border: #a1a1aa;
     --kakao-color-line: #52525b;
+  }
+}
+@media (prefers-contrast: more) {
+  [data-kakao-theme="catppuccin"] {
+    --kakao-color-muted: #bac2de;
+    --kakao-color-border: #9399b2;
+    --kakao-color-line: #585b70;
   }
 }
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {

@@ -426,7 +426,7 @@
         <a href="components/theme-switch/construction.html">Construction</a>
         <a href="components/theme-switch/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Switches the page between colour themes (light and dark for now) with a ripple from the button. Remembers the choice; follows the system until then. Themes live in <code>shared/themes.css</code> and must pass <code>tools/check-themes.js</code>.</p>
+      <p class="component-desc">Switches the page between colour themes with a ripple from the button. The switch toggles light and dark; the dropdown also offers Catppuccin. Remembers the choice; follows the system until then. Themes live in <code>shared/themes.css</code> and must pass <code>tools/check-themes.js</code>.</p>
       <div class="examples">
         <div class="example">
           <h3>Icon only</h3>
@@ -439,6 +439,11 @@
         <div class="example">
           <h3>Disabled</h3>
           <kakao-theme-switch disabled></kakao-theme-switch>
+        </div>
+        <div class="example">
+          <h3>Dropdown · <code>kakao-button</code> menu</h3>
+          <kakao-button class="theme-menu" label="Theme" variant="secondary" size="sm" show-selected
+            list-data='[{"value":"light","label":"Light"},{"value":"dark","label":"Dark"},{"value":"catppuccin","label":"Catppuccin"}]'></kakao-button>
         </div>
       </div>
     </article>
@@ -617,6 +622,19 @@
   const segment = document.getElementById('ov-segment');
   segment.addEventListener('kakao-button-action', (e) => {
     segment.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b === e.target));
+  });
+</script>
+<script>
+  // Theme dropdown: a <kakao-button> menu driving the page-level theme API.
+  customElements.whenDefined('kakao-theme-switch').then(() => {
+    const Themes = customElements.get('kakao-theme-switch');
+    document.querySelectorAll('.theme-menu').forEach((menu) => {
+      const sync = () => menu.setAttribute('selected', Themes.current());
+      sync();
+      new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-kakao-theme'] });
+      if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sync);
+      menu.addEventListener('kakao-button-select', (e) => Themes.setTheme(e.detail.value, { x: e.detail.x, y: e.detail.y }));
+    });
   });
 </script>
 </body>

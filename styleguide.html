@@ -360,7 +360,7 @@
   <!-- ================================================================ -->
   <section id="themes">
     <h2>Themes</h2>
-    <p>Light and dark, switched with <code>&lt;kakao-theme-switch&gt;</code>. A theme only changes the colour variables. Components never hard-code a colour, so every theme reaches every component.</p>
+    <p>Light, dark and Catppuccin (Mocha). The switch toggles light and dark; a <code>&lt;kakao-button&gt;</code> menu can pick any theme. A theme only changes the colour variables. Components never hard-code a colour, so every theme reaches every component.</p>
 
     <div class="theme-panels">
       <div class="theme-panel" data-kakao-theme="light">
@@ -371,6 +371,12 @@
       </div>
       <div class="theme-panel" data-kakao-theme="dark">
         <h4>Dark</h4>
+        <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
+        <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
+        <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+      </div>
+      <div class="theme-panel" data-kakao-theme="catppuccin">
+        <h4>Catppuccin</h4>
         <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
         <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
         <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
@@ -398,7 +404,7 @@
     <h3 class="sub">Theme variables <span class="tag now">Now</span></h3>
     <div class="table-wrap">
       <table id="theme-table">
-        <thead><tr><th>Variable</th><th>Light</th><th>Dark</th><th>Use</th></tr></thead>
+        <thead><tr><th>Variable</th><th>Light</th><th>Dark</th><th>Catppuccin</th><th>Use</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -643,7 +649,7 @@
     });
   })();
 
-  // Light / dark values of every colour variable, read from the scoped theme panels.
+  // Values of every colour variable per theme, read from the scoped theme panels.
   (function () {
     const uses = {
       primary: 'Accent: on, selected, filled', text: 'Text', 'text-soft': 'Secondary text, ghost button',
@@ -652,9 +658,10 @@
       line: 'Decorative hairlines', border: 'Field edges, off switch track (3:1)', ink: 'Primary button', 'ink-hover': 'Primary button hover',
       'on-ink': 'Text on ink', danger: 'Danger button, errors', 'danger-hover': 'Danger hover', 'on-danger': 'Text on danger', focus: 'Focus outline',
     };
-    const [light, dark] = document.querySelectorAll('.theme-panel');
+    const [light, dark, cat] = document.querySelectorAll('.theme-panel');
     const L = getComputedStyle(light);
     const D = getComputedStyle(dark);
+    const C = getComputedStyle(cat);
     const body = document.querySelector('#theme-table tbody');
     const cell = (v) => {
       const td = document.createElement('td');
@@ -675,7 +682,7 @@
       nameTd.append(code);
       const useTd = document.createElement('td');
       useTd.textContent = uses[name];
-      tr.append(nameTd, cell(L.getPropertyValue(prop).trim()), cell(D.getPropertyValue(prop).trim()), useTd);
+      tr.append(nameTd, cell(L.getPropertyValue(prop).trim()), cell(D.getPropertyValue(prop).trim()), cell(C.getPropertyValue(prop).trim()), useTd);
       body.append(tr);
     });
   })();

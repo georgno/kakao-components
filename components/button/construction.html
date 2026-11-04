@@ -51,6 +51,15 @@
       </div>
     </figure>
     <figure>
+      <figcaption>Menu · list-data, show-selected (open one to tune the list)</figcaption>
+      <div class="row">
+        <kakao-button label="Sort by" variant="secondary" show-selected selected="newest"
+          list-data='[{"value":"newest","label":"Newest first"},{"value":"oldest","label":"Oldest first"},{"value":"name","label":"Name"},{"value":"size","label":"Size","disabled":true}]'></kakao-button>
+        <kakao-button label="Export" size="sm"
+          list-data='[{"value":"csv","label":"CSV"},{"value":"xlsx","label":"Excel"},{"value":"pdf","label":"PDF"}]'></kakao-button>
+      </div>
+    </figure>
+    <figure>
       <figcaption>Segmented toggle</figcaption>
       <div class="kakao-button-segment" id="segment">
         <kakao-button icon="fas fa-list" aria-label="List" icon-position="only" toggle pressed></kakao-button>
@@ -121,7 +130,22 @@
     { "property": "--kakao-button-segment-gap", "label": "Gap", "group": "Segmented toggle", "type": "length" },
     { "property": "--kakao-button-segment-radius", "label": "Radius", "group": "Segmented toggle", "type": "radius" },
     { "property": "--kakao-button-segment-item-radius", "label": "Item radius", "group": "Segmented toggle", "type": "radius" },
-    { "property": "--kakao-button-segment-item-size", "label": "Item size", "group": "Segmented toggle", "type": "length" }
+    { "property": "--kakao-button-segment-item-size", "label": "Item size", "group": "Segmented toggle", "type": "length" },
+
+    { "property": "--kakao-button-chevron-size", "label": "Chevron size", "group": "Menu", "type": "length", "units": ["em", "px", "rem"] },
+    { "property": "--kakao-button-menu-bg", "label": "Background", "group": "Menu", "type": "color" },
+    { "property": "--kakao-button-menu-text", "label": "Text", "group": "Menu", "type": "color" },
+    { "property": "--kakao-button-menu-border", "label": "Border", "group": "Menu", "type": "color" },
+    { "property": "--kakao-button-menu-hover-bg", "label": "Hover / focus background", "group": "Menu", "type": "color" },
+    { "property": "--kakao-button-menu-check", "label": "Check mark", "group": "Menu", "type": "color" },
+    { "property": "--kakao-button-menu-focus", "label": "Focus outline", "group": "Menu", "type": "color" },
+    { "property": "--kakao-button-menu-radius", "label": "Radius", "group": "Menu", "type": "radius" },
+    { "property": "--kakao-button-menu-item-radius", "label": "Item radius", "group": "Menu", "type": "radius", "hint": "radius − padding" },
+    { "property": "--kakao-button-menu-padding", "label": "Padding", "group": "Menu", "type": "length" },
+    { "property": "--kakao-button-menu-offset", "label": "Gap to button", "group": "Menu", "type": "length" },
+    { "property": "--kakao-button-menu-min-width", "label": "Min width", "group": "Menu", "type": "length" },
+    { "property": "--kakao-button-menu-item-height", "label": "Item height", "group": "Menu", "type": "length" },
+    { "property": "--kakao-button-menu-shadow", "label": "Shadow", "group": "Menu", "type": "shadow" }
   ]
   </script>
 </main>

@@ -60,6 +60,20 @@ kakao-button,
   --_segment-item-size: var(--kakao-button-segment-item-size, 38px);
   --_segment-pressed-bg: var(--kakao-button-segment-pressed-bg, var(--kakao-color-raised, #fff));
   --_segment-pressed-shadow: var(--kakao-button-segment-pressed-shadow, 0 1px 8px rgba(0, 0, 0, 0.08));
+  --_chevron-size: var(--kakao-button-chevron-size, 0.9em);
+  --_menu-bg: var(--kakao-button-menu-bg, var(--kakao-color-bg, #ffffff));
+  --_menu-text: var(--kakao-button-menu-text, var(--kakao-color-text, #18181b));
+  --_menu-border: var(--kakao-button-menu-border, var(--kakao-color-line, #e5e7eb));
+  --_menu-hover-bg: var(--kakao-button-menu-hover-bg, var(--kakao-color-subtle, #f0f0f1));
+  --_menu-check: var(--kakao-button-menu-check, var(--kakao-color-primary, #4f46e5));
+  --_menu-focus: var(--kakao-button-menu-focus, var(--kakao-color-focus, #2563eb));
+  --_menu-radius: var(--kakao-button-menu-radius, 14px);
+  --_menu-item-radius: var(--kakao-button-menu-item-radius, 10px);
+  --_menu-padding: var(--kakao-button-menu-padding, 4px);
+  --_menu-offset: var(--kakao-button-menu-offset, 6px);
+  --_menu-min-width: var(--kakao-button-menu-min-width, 11rem);
+  --_menu-item-height: var(--kakao-button-menu-item-height, 36px);
+  --_menu-shadow: var(--kakao-button-menu-shadow, 0 8px 24px rgba(0, 0, 0, 0.12));
   /* @kakao-settings:end */
 }
 
@@ -316,4 +330,127 @@ kakao-button[toggle][pressed] .kakao-button-inner {
 /* keep the keyboard focus ring (box-shadow is reset above) */
 .kakao-button-segment kakao-button .kakao-button-inner:focus-visible {
   box-shadow: 0 0 0 var(--_focus-ring-width) var(--_ring, var(--_primary-ring));
+}
+
+/* ---- menu (dropdown) form: list-data ---------------------------------- */
+kakao-button[data-menu] {
+  position: relative;
+}
+
+.kakao-button-chevron {
+  display: none;
+}
+
+kakao-button[data-menu] .kakao-button-chevron {
+  display: inline-flex;
+  margin-right: -0.2em;
+}
+
+.kakao-button-chevron svg {
+  width: var(--_chevron-size);
+  height: var(--_chevron-size);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--_transition) cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+kakao-button[data-menu] .kakao-button-inner[aria-expanded="true"] .kakao-button-chevron svg {
+  transform: rotate(180deg);
+}
+
+/* icon-only menu buttons keep their circle; the chevron would not fit */
+kakao-button[data-menu][icon-position="only"] .kakao-button-chevron {
+  display: none;
+}
+
+.kakao-button-menu {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + var(--_menu-offset));
+  left: 0;
+  box-sizing: border-box;
+  min-width: max(100%, var(--_menu-min-width));
+  padding: var(--_menu-padding);
+  background: var(--_menu-bg);
+  color: var(--_menu-text);
+  border: 1px solid var(--_menu-border);
+  border-radius: var(--_menu-radius);
+  box-shadow: var(--_menu-shadow);
+  font-family: var(--_font);
+  font-size: var(--_md-font-size);
+  transform-origin: top left;
+}
+
+.kakao-button-menu[hidden] {
+  display: none;
+}
+
+kakao-button[data-menu-up] .kakao-button-menu {
+  top: auto;
+  bottom: calc(100% + var(--_menu-offset));
+  transform-origin: bottom left;
+  --_menu-from: 4px;
+}
+
+.kakao-button-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: var(--_menu-item-height);
+  padding: 0 0.85rem 0 0.6rem;
+  border-radius: var(--_menu-item-radius);
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.kakao-button-menu-item:hover,
+.kakao-button-menu-item:focus {
+  background: var(--_menu-hover-bg);
+}
+
+.kakao-button-menu-item:focus-visible {
+  outline: 2px solid var(--_menu-focus);
+  outline-offset: -2px;
+}
+
+.kakao-button-menu-item[aria-checked="true"] {
+  font-weight: 600;
+}
+
+.kakao-button-menu-item[aria-disabled="true"] {
+  opacity: var(--_disabled-opacity);
+  cursor: not-allowed;
+  background: none;
+}
+
+.kakao-button-menu-check {
+  display: inline-flex;
+  width: 1.1em;
+  color: var(--_menu-check);
+  visibility: hidden;
+}
+
+.kakao-button-menu-item[aria-checked="true"] .kakao-button-menu-check {
+  visibility: visible;
+}
+
+.kakao-button-menu-check svg {
+  width: 1.1em;
+  height: 1.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kakao-button-chevron svg {
+    transition: none;
+  }
 }

@@ -21,3 +21,9 @@
 
 - [x] 4.1 Style guide: Themes section, contrast findings, audit table.
 - [x] 4.2 Project context in `openspec/config.yaml`: themes rule.
+
+## 5. Theme dropdown
+
+- [x] 5.1 Add the Catppuccin (Mocha) theme; it passes `check-themes.js`.
+- [x] 5.2 `<kakao-button>` menu form: `list-data`, `selected`, `show-selected`, keyboard, events, settings on its construction page, examples on its demo.
+- [x] 5.3 Page-level `setTheme()` / `current()` on the theme switch; theme dropdown on the theme switch card and demo. Verify the keyboard flow and theme change in Firefox.
