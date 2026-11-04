@@ -6,6 +6,8 @@
 <title>Main variables — Construction</title>
 <link rel="stylesheet" href="shared/tokens.css" />
 <link rel="stylesheet" href="shared/font.css" />
+<link rel="stylesheet" href="shared/themes.css" />
+<script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/construction.css" />
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/tabs/tabs.css" />
@@ -21,6 +23,7 @@
 <script src="shared/construction.js" defer></script>
 </head>
 <body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main data-construction data-target="tokens" data-source="shared/tokens.css" data-title="Main variables">
   <div class="construction-preview">
     <figure>
@@ -63,13 +66,23 @@
 
   <script type="application/json" class="construction-manifest">
   [
-    { "property": "--kakao-color-primary", "label": "Primary colour", "group": "Colour", "type": "color" },
-    { "property": "--kakao-color-text", "label": "Text colour", "group": "Colour", "type": "color" },
-    { "property": "--kakao-color-muted", "label": "Muted text", "group": "Colour", "type": "color" },
-    { "property": "--kakao-color-bg", "label": "Background", "group": "Colour", "type": "color" },
-    { "property": "--kakao-color-subtle", "label": "Subtle fill", "group": "Colour", "type": "color" },
-    { "property": "--kakao-color-border", "label": "Border colour", "group": "Colour", "type": "color" },
-    { "property": "--kakao-color-danger", "label": "Danger colour", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-primary", "label": "Accent (state)", "group": "Colour", "type": "color", "hint": "on, selected, filled" },
+    { "property": "--kakao-color-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-text-soft", "label": "Soft text", "group": "Colour", "type": "color", "hint": "secondary text, ghost button" },
+    { "property": "--kakao-color-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "placeholders, captions; 4.5:1" },
+    { "property": "--kakao-color-page", "label": "Page", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-bg", "label": "Surface", "group": "Colour", "type": "color", "hint": "fields, lists, popovers" },
+    { "property": "--kakao-color-raised", "label": "Raised", "group": "Colour", "type": "color", "hint": "tab thumb, pressed segment" },
+    { "property": "--kakao-color-subtle", "label": "Subtle fill", "group": "Colour", "type": "color", "hint": "secondary button, hover" },
+    { "property": "--kakao-color-subtle-strong", "label": "Subtle fill, strong", "group": "Colour", "type": "color", "hint": "pressed, selected row, track" },
+    { "property": "--kakao-color-line", "label": "Hairline", "group": "Colour", "type": "color", "hint": "decorative dividers" },
+    { "property": "--kakao-color-border", "label": "Control border", "group": "Colour", "type": "color", "hint": "field edges, off track; 3:1" },
+    { "property": "--kakao-color-ink", "label": "Ink (actions)", "group": "Colour", "type": "color", "hint": "primary button" },
+    { "property": "--kakao-color-ink-hover", "label": "Ink hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-on-ink", "label": "Text on ink", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-danger-hover", "label": "Danger hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-on-danger", "label": "Text on danger", "group": "Colour", "type": "color" },
     { "property": "--kakao-color-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
     { "property": "--kakao-space-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
     { "property": "--kakao-space-y", "label": "Padding y", "group": "Size & spacing", "type": "length" },

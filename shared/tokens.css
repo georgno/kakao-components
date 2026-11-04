@@ -5,18 +5,32 @@
  * work on pages that don't load this file. Edit the values on tokens.html
  * (with `node tools/construct-server.js` running) rather than by hand.
  *
+ * The colours here are the light theme. Other themes (dark, …) override the
+ * colour variables in shared/themes.css. Every theme must pass
+ * `node tools/check-themes.js` (WCAG AA contrast).
+ *
  * The font stack starts with Inter Tight but only uses it when the page loads
  * it (shared/font.css); otherwise the system UI font is used.
  */
 :root {
   /* @kakao-settings:start prefix=--kakao- (written by tokens.html, edit there) */
   --kakao-color-primary: #4f46e5;
-  --kakao-color-text: #111827;
-  --kakao-color-muted: #6b7280;
+  --kakao-color-text: #18181b;
+  --kakao-color-text-soft: #3f3f46;
+  --kakao-color-muted: #62626c;
+  --kakao-color-page: #f6f7f9;
   --kakao-color-bg: #ffffff;
-  --kakao-color-subtle: #e5e7eb;
-  --kakao-color-border: #d1d5db;
+  --kakao-color-raised: #ffffff;
+  --kakao-color-subtle: #f0f0f1;
+  --kakao-color-subtle-strong: #e6e6e8;
+  --kakao-color-line: #e5e7eb;
+  --kakao-color-border: #82828b;
+  --kakao-color-ink: #18181b;
+  --kakao-color-ink-hover: #2c2c31;
+  --kakao-color-on-ink: #fafafa;
   --kakao-color-danger: #dc2626;
+  --kakao-color-danger-hover: #b91c1c;
+  --kakao-color-on-danger: #ffffff;
   --kakao-color-focus: #2563eb;
   --kakao-space-x: 0.75rem;
   --kakao-space-y: 0.5rem;
@@ -26,4 +40,5 @@
   --kakao-font-size: 0.95rem;
   --kakao-motion-duration: 320ms;
   /* @kakao-settings:end */
+  color-scheme: light;
 }

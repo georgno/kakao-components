@@ -194,7 +194,7 @@
         --_track-height: var(--kakao-step-switch-track-height, 1.75rem);
         --_track-radius: var(--kakao-step-switch-track-radius, 999px);
         --_track-bg: var(--kakao-step-switch-track-bg, #6b7280);
-        --_track-bg-off: var(--kakao-step-switch-track-bg-off, #d1d5db);
+        --_track-bg-off: var(--kakao-step-switch-track-bg-off, var(--kakao-color-border, #d1d5db));
         --_track-bg-on: var(--kakao-step-switch-track-bg-on, var(--kakao-color-primary, #4f46e5));
         --_track-bg-disabled: var(--kakao-step-switch-track-bg-disabled, var(--kakao-color-subtle, #e5e7eb));
         --_thumb-bg: var(--kakao-step-switch-thumb-bg, #ffffff);
@@ -204,7 +204,7 @@
         --_tick-size: var(--kakao-step-switch-tick-size, 0.28rem);
         --_tick-color: var(--kakao-step-switch-tick-color, rgba(255, 255, 255, 0.8));
         --_tick-disabled-color: var(--kakao-step-switch-tick-disabled-color, rgba(255, 255, 255, 0.3));
-        --_label-color: var(--kakao-step-switch-label-color, #4b5563);
+        --_label-color: var(--kakao-step-switch-label-color, var(--kakao-color-text-soft, #4b5563));
         --_label-active-color: var(--kakao-step-switch-label-active-color, var(--kakao-color-text, #111827));
         --_label-font: var(--kakao-step-switch-label-font, 0.85rem/1.3 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_label-weight: var(--kakao-step-switch-label-weight, 400);

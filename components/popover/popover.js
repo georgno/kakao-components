@@ -198,13 +198,13 @@
 
       :host {
         /* @kakao-settings:start prefix=--kakao-popover- (written by construction.html, edit there) */
-        --_bg: var(--kakao-popover-bg, #fff);
-        --_text-color: var(--kakao-popover-text-color, #111);
-        --_label-color: var(--kakao-popover-label-color, #666);
-        --_border-color: var(--kakao-popover-border-color, #eee);
-        --_header-bg: var(--kakao-popover-header-bg, #f7f7f7);
-        --_hover-bg: var(--kakao-popover-hover-bg, #f5f5f5);
-        --_active-bg: var(--kakao-popover-active-bg, #ebebeb);
+        --_bg: var(--kakao-popover-bg, var(--kakao-color-bg, #fff));
+        --_text-color: var(--kakao-popover-text-color, var(--kakao-color-text, #111));
+        --_label-color: var(--kakao-popover-label-color, var(--kakao-color-muted, #666));
+        --_border-color: var(--kakao-popover-border-color, var(--kakao-color-line, #eee));
+        --_header-bg: var(--kakao-popover-header-bg, var(--kakao-color-subtle, #f7f7f7));
+        --_hover-bg: var(--kakao-popover-hover-bg, var(--kakao-color-subtle, #f5f5f5));
+        --_active-bg: var(--kakao-popover-active-bg, var(--kakao-color-subtle-strong, #ebebeb));
         --_font-family: var(--kakao-popover-font-family, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));
         --_font-size: var(--kakao-popover-font-size, 14px);
         --_label-font-size: var(--kakao-popover-label-font-size, 12px);
@@ -213,7 +213,7 @@
         --_max-width: var(--kakao-popover-max-width, 280px);
         --_z-index: var(--kakao-popover-z-index, 1000);
         --_transition-speed: var(--kakao-popover-transition-speed, 150ms);
-        --_focus-ring-color: var(--kakao-popover-focus-ring-color, #111);
+        --_focus-ring-color: var(--kakao-popover-focus-ring-color, var(--kakao-color-focus, #111));
         --_min-width: var(--kakao-popover-min-width, 120px);
         --_shadow: var(--kakao-popover-shadow, none);
         /* @kakao-settings:end */

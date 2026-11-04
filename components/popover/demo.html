@@ -6,6 +6,8 @@
 <title>kakao-popover — Demo</title>
 <link rel="stylesheet" href="../../shared/tokens.css" />
 <link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
 <link rel="stylesheet" href="../button/button.css" />
 <script src="../../shared/demo.js"></script>
@@ -13,7 +15,7 @@
 <script src="popover.js" defer></script>
 <style>
   dl { margin: 0; font-size: 14px; }
-  dt { font-size: 12px; font-weight: 600; color: #666; margin-top: 8px; }
+  dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
   dd { margin: 0 0 4px; }
 
   .dark kakao-popover {
@@ -29,6 +31,7 @@
 </style>
 </head>
 <body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
     <a class="back" href="../../index.html">← All components</a>

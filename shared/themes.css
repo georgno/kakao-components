@@ -1,0 +1,118 @@
+/*
+ * themes.css — colour themes for kakao components. Load after tokens.css.
+ *
+ * The light theme is the colour variables in tokens.css. Every other theme
+ * is a block below, marked with an @theme comment, that overrides them.
+ * Choose one with data-kakao-theme="<name>" on <html> (<kakao-theme-switch>
+ * does this), or on any element to theme just that part of the page.
+ *
+ *   - No attribute: the theme follows the operating system (light or dark).
+ *   - data-bs-theme="dark" (Bootstrap 5.3) also selects the dark theme, so
+ *     components match a Bootstrap page in dark mode.
+ *   - prefers-contrast: more strengthens muted text and borders.
+ *
+ * Adding a theme: copy the dark block with a new @theme name and selector,
+ * set its color-scheme, add it to the switch's list-data, then run
+ *   node tools/check-themes.js --fix
+ * which regenerates the generated blocks and fails unless every theme passes
+ * WCAG 2.2 AA (text 4.5:1, borders, focus and filled controls 3:1).
+ *
+ * Blocks between @generated markers are written by that tool; don't edit them.
+ */
+
+/* @generated:start light (copy of tokens.css, for light parts inside a dark page) */
+[data-kakao-theme="light"] {
+  color-scheme: light;
+  --kakao-color-primary: #4f46e5;
+  --kakao-color-text: #18181b;
+  --kakao-color-text-soft: #3f3f46;
+  --kakao-color-muted: #62626c;
+  --kakao-color-page: #f6f7f9;
+  --kakao-color-bg: #ffffff;
+  --kakao-color-raised: #ffffff;
+  --kakao-color-subtle: #f0f0f1;
+  --kakao-color-subtle-strong: #e6e6e8;
+  --kakao-color-line: #e5e7eb;
+  --kakao-color-border: #82828b;
+  --kakao-color-ink: #18181b;
+  --kakao-color-ink-hover: #2c2c31;
+  --kakao-color-on-ink: #fafafa;
+  --kakao-color-danger: #dc2626;
+  --kakao-color-danger-hover: #b91c1c;
+  --kakao-color-on-danger: #ffffff;
+  --kakao-color-focus: #2563eb;
+}
+/* @generated:end */
+
+/* @theme dark */
+[data-kakao-theme="dark"],
+[data-bs-theme="dark"]:not([data-kakao-theme]) {
+  color-scheme: dark;
+  --kakao-color-primary: #818cf8;
+  --kakao-color-text: #f4f4f5;
+  --kakao-color-text-soft: #d4d4d8;
+  --kakao-color-muted: #a1a1aa;
+  --kakao-color-page: #0f0f11;
+  --kakao-color-bg: #18181b;
+  --kakao-color-raised: #45454c;
+  --kakao-color-subtle: #27272a;
+  --kakao-color-subtle-strong: #323238;
+  --kakao-color-line: #2e2e33;
+  --kakao-color-border: #71717a;
+  --kakao-color-ink: #f4f4f5;
+  --kakao-color-ink-hover: #d4d4d8;
+  --kakao-color-on-ink: #18181b;
+  --kakao-color-danger: #f87171;
+  --kakao-color-danger-hover: #fca5a5;
+  --kakao-color-on-danger: #18181b;
+  --kakao-color-focus: #60a5fa;
+}
+
+/* @generated:start os-dark (copy of the dark theme, used when no theme is chosen) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-kakao-theme]):not([data-bs-theme]) {
+    color-scheme: dark;
+    --kakao-color-primary: #818cf8;
+    --kakao-color-text: #f4f4f5;
+    --kakao-color-text-soft: #d4d4d8;
+    --kakao-color-muted: #a1a1aa;
+    --kakao-color-page: #0f0f11;
+    --kakao-color-bg: #18181b;
+    --kakao-color-raised: #45454c;
+    --kakao-color-subtle: #27272a;
+    --kakao-color-subtle-strong: #323238;
+    --kakao-color-line: #2e2e33;
+    --kakao-color-border: #71717a;
+    --kakao-color-ink: #f4f4f5;
+    --kakao-color-ink-hover: #d4d4d8;
+    --kakao-color-on-ink: #18181b;
+    --kakao-color-danger: #f87171;
+    --kakao-color-danger-hover: #fca5a5;
+    --kakao-color-on-danger: #18181b;
+    --kakao-color-focus: #60a5fa;
+  }
+}
+/* @generated:end */
+
+/* ---- more contrast (OS setting) ---------------------------------------- */
+@media (prefers-contrast: more) {
+  :root,
+  [data-kakao-theme="light"] {
+    --kakao-color-muted: #3f3f46;
+    --kakao-color-border: #52525b;
+    --kakao-color-line: #a1a1aa;
+  }
+  [data-kakao-theme="dark"],
+  [data-bs-theme="dark"]:not([data-kakao-theme]) {
+    --kakao-color-muted: #d4d4d8;
+    --kakao-color-border: #a1a1aa;
+    --kakao-color-line: #52525b;
+  }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root:not([data-kakao-theme]):not([data-bs-theme]) {
+    --kakao-color-muted: #d4d4d8;
+    --kakao-color-border: #a1a1aa;
+    --kakao-color-line: #52525b;
+  }
+}

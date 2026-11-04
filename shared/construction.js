@@ -302,6 +302,10 @@
 
     setCanvas(name) {
       this.canvas.dataset.canvas = name;
+      // Light and Dark preview the components in that theme (shared/themes.css);
+      // Checkered follows the page.
+      if (name === 'light' || name === 'dark') this.canvas.setAttribute('data-kakao-theme', name);
+      else this.canvas.removeAttribute('data-kakao-theme');
       try { localStorage.setItem(STORAGE_CANVAS, name); } catch { /* storage blocked */ }
     }
 

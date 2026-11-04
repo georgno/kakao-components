@@ -4,12 +4,13 @@
  */
 
 :root {
-  --bg: #f6f7f9;
-  --card: #ffffff;
-  --line: #e5e7eb;
-  --ink: #111827;
-  --muted: #6b7280;
-  --accent: #4f46e5;
+  --bg: var(--kakao-color-page, #f6f7f9);
+  --card: var(--kakao-color-bg, #ffffff);
+  --line: var(--kakao-color-line, #e5e7eb);
+  --ink: var(--kakao-color-text, #111827);
+  --muted: var(--kakao-color-muted, #6b7280);
+  --accent: var(--kakao-color-primary, #4f46e5);
+  --code-bg: var(--kakao-color-subtle, #eef0f4);
   --radius: 14px;
 }
 
@@ -38,7 +39,7 @@ a { color: var(--accent); }
 
 code {
   font: 0.85em ui-monospace, "SF Mono", Menlo, monospace;
-  background: #eef0f4;
+  background: var(--code-bg);
   padding: 0.1em 0.4em;
   border-radius: 5px;
 }
@@ -91,6 +92,7 @@ h2 + p { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; }
 .log {
   margin-top: 1rem;
   background: #0f172a;
+  border: 1px solid var(--line);
   color: #cbd5e1;
   border-radius: var(--radius);
   padding: 0.9rem 1rem;
@@ -154,3 +156,6 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
   font-size: 0.75rem;
   font-weight: 600;
 }
+
+/* ---- Theme switch, top right on every page ---- */
+.page-theme-switch { position: fixed; top: 1rem; right: 1rem; z-index: 50; }

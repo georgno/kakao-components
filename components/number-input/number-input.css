@@ -11,18 +11,18 @@ kakao-number-input {
   /* @kakao-settings:start prefix=--kakao-number-input- (written by construction.html, edit there) */
   --_arrow-width: var(--kakao-number-input-arrow-width, 22px);
   --_input-padding-right: var(--kakao-number-input-input-padding-right, 26px);
-  --_arrow-border: var(--kakao-number-input-arrow-border, #dee2e6);
-  --_arrow-color: var(--kakao-number-input-arrow-color, #6c757d);
-  --_arrow-hover-bg: var(--kakao-number-input-arrow-hover-bg, #e9ecef);
-  --_arrow-hover-color: var(--kakao-number-input-arrow-hover-color, #212529);
-  --_arrow-active-bg: var(--kakao-number-input-arrow-active-bg, #ced4da);
+  --_arrow-border: var(--kakao-number-input-arrow-border, var(--kakao-color-line, #dee2e6));
+  --_arrow-color: var(--kakao-number-input-arrow-color, var(--kakao-color-muted, #6c757d));
+  --_arrow-hover-bg: var(--kakao-number-input-arrow-hover-bg, var(--kakao-color-subtle, #e9ecef));
+  --_arrow-hover-color: var(--kakao-number-input-arrow-hover-color, var(--kakao-color-text, #212529));
+  --_arrow-active-bg: var(--kakao-number-input-arrow-active-bg, var(--kakao-color-subtle-strong, #ced4da));
   --_input-radius: var(--kakao-number-input-input-radius, 6px);
   --_font-size: var(--kakao-number-input-font-size, inherit);
-  --_input-border: var(--kakao-number-input-input-border, #dee2e6);
-  --_input-bg: var(--kakao-number-input-input-bg, #fff);
-  --_input-color: var(--kakao-number-input-input-color, inherit);
+  --_input-border: var(--kakao-number-input-input-border, var(--kakao-color-border, #dee2e6));
+  --_input-bg: var(--kakao-number-input-input-bg, var(--kakao-color-bg, #fff));
+  --_input-color: var(--kakao-number-input-input-color, var(--kakao-color-text, inherit));
   --_input-padding: var(--kakao-number-input-input-padding, 0.375rem 0.75rem);
-  --_focus-color: var(--kakao-number-input-focus-color, rgba(24, 24, 27, 0.14));
+  --_focus-color: var(--kakao-number-input-focus-color, color-mix(in srgb, var(--kakao-color-ink, #18181b) 14%, transparent));
   --_focus-ring-width: var(--kakao-number-input-focus-ring-width, 4px);
   --_arrow-size: var(--kakao-number-input-arrow-size, 8px);
   --_disabled-opacity: var(--kakao-number-input-disabled-opacity, 0.55);

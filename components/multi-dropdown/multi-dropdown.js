@@ -147,8 +147,8 @@
         --_border: var(--kakao-multi-dropdown-border, var(--kakao-color-border, #d1d5db));
         --_radius: var(--kakao-multi-dropdown-radius, 10px);
         --_text: var(--kakao-multi-dropdown-text, var(--kakao-color-text, #111827));
-        --_muted: var(--kakao-multi-dropdown-muted, #9ca3af);
-        --_hover-bg: var(--kakao-multi-dropdown-hover-bg, #f3f4f6);
+        --_muted: var(--kakao-multi-dropdown-muted, var(--kakao-color-muted, #9ca3af));
+        --_hover-bg: var(--kakao-multi-dropdown-hover-bg, var(--kakao-color-subtle, #f3f4f6));
         --_popup-height: var(--kakao-multi-dropdown-popup-height, 16rem);
         --_font: var(--kakao-multi-dropdown-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_disabled-opacity: var(--kakao-multi-dropdown-disabled-opacity, 0.55);

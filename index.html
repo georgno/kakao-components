@@ -6,6 +6,8 @@
 <title>Kakao Components</title>
 <link rel="stylesheet" href="shared/tokens.css" />
 <link rel="stylesheet" href="shared/font.css" />
+<link rel="stylesheet" href="shared/themes.css" />
+<script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
 <link rel="stylesheet" href="components/tabs/tabs.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -24,11 +26,12 @@
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <style>
   dl { margin: 0; font-size: 14px; }
-  dt { font-size: 12px; font-weight: 600; color: #666; margin-top: 8px; }
+  dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
   dd { margin: 0 0 4px; }
 </style>
 </head>
 <body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
     <h1>Components</h1>
@@ -411,6 +414,31 @@
           <h3>Disabled</h3>
           <kakao-list width="220" height="260" disabled
             list-data='[{"group":"Locked","names":["One","Two","Three","Four","Five"]}]'></kakao-list>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Theme switch ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Theme switch</h2>
+        <code>&lt;kakao-theme-switch&gt;</code>
+        <a href="components/theme-switch/construction.html">Construction</a>
+        <a href="components/theme-switch/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Switches the page between colour themes (light and dark for now) with a ripple from the button. Remembers the choice; follows the system until then. Themes live in <code>shared/themes.css</code> and must pass <code>tools/check-themes.js</code>.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Icon only</h3>
+          <kakao-theme-switch></kakao-theme-switch>
+        </div>
+        <div class="example">
+          <h3>With label</h3>
+          <kakao-theme-switch show-label></kakao-theme-switch>
+        </div>
+        <div class="example">
+          <h3>Disabled</h3>
+          <kakao-theme-switch disabled></kakao-theme-switch>
         </div>
       </div>
     </article>

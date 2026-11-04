@@ -252,7 +252,7 @@
         --_track-width: var(--kakao-switch-track-width, 3.25rem);
         --_track-height: var(--kakao-switch-track-height, 1.75rem);
         --_track-radius: var(--kakao-switch-track-radius, 999px);
-        --_track-bg-off: var(--kakao-switch-track-bg-off, #d1d5db);
+        --_track-bg-off: var(--kakao-switch-track-bg-off, var(--kakao-color-border, #d1d5db));
         --_track-bg-on: var(--kakao-switch-track-bg-on, var(--kakao-color-primary, #4f46e5));
         --_track-bg-disabled: var(--kakao-switch-track-bg-disabled, var(--kakao-color-subtle, #e5e7eb));
         --_thumb-bg: var(--kakao-switch-thumb-bg, #ffffff);

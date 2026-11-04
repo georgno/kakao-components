@@ -183,29 +183,29 @@ class KakaoSlider extends HTMLElement {
         :host {
           /* @kakao-settings:start prefix=--kakao-slider- (written by construction.html, edit there) */
           --_font-family: var(--kakao-slider-font-family, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));
-          --_accent: var(--kakao-slider-accent, #111);
-          --_track-bg: var(--kakao-slider-track-bg, #e0e0e0);
+          --_accent: var(--kakao-slider-accent, var(--kakao-color-ink, #111));
+          --_track-bg: var(--kakao-slider-track-bg, var(--kakao-color-subtle-strong, #e0e0e0));
           --_track-height: var(--kakao-slider-track-height, 4px);
           --_thumb-size: var(--kakao-slider-thumb-size, 16px);
-          --_tick-color: var(--kakao-slider-tick-color, #ccc);
-          --_tick-active-color: var(--kakao-slider-tick-active-color, #999);
+          --_tick-color: var(--kakao-slider-tick-color, var(--kakao-color-border, #ccc));
+          --_tick-active-color: var(--kakao-slider-tick-active-color, var(--kakao-color-muted, #999));
           --_transition-speed: var(--kakao-slider-transition-speed, 150ms);
           --_disabled-opacity: var(--kakao-slider-disabled-opacity, 0.4);
-          --_label-color: var(--kakao-slider-label-color, #111);
-          --_input-bg: var(--kakao-slider-input-bg, #fff);
-          --_input-border: var(--kakao-slider-input-border, #ccc);
-          --_unit-bg: var(--kakao-slider-unit-bg, #f7f7f7);
-          --_unit-color: var(--kakao-slider-unit-color, #555);
-          --_range-color: var(--kakao-slider-range-color, #999);
+          --_label-color: var(--kakao-slider-label-color, var(--kakao-color-text, #111));
+          --_input-bg: var(--kakao-slider-input-bg, var(--kakao-color-bg, #fff));
+          --_input-border: var(--kakao-slider-input-border, var(--kakao-color-border, #ccc));
+          --_unit-bg: var(--kakao-slider-unit-bg, var(--kakao-color-subtle, #f7f7f7));
+          --_unit-color: var(--kakao-slider-unit-color, var(--kakao-color-text-soft, #555));
+          --_range-color: var(--kakao-slider-range-color, var(--kakao-color-muted, #999));
           --_range-font-size: var(--kakao-slider-range-font-size, 11px);
-          --_input-color: var(--kakao-slider-input-color, #111);
+          --_input-color: var(--kakao-slider-input-color, var(--kakao-color-text, #111));
           --_input-font-size: var(--kakao-slider-input-font-size, 14px);
           --_thumb-bg: var(--kakao-slider-thumb-bg, #fff);
-          --_thumb-border: var(--kakao-slider-thumb-border, #aaa);
-          --_stepper-color: var(--kakao-slider-stepper-color, #888);
-          --_stepper-hover-bg: var(--kakao-slider-stepper-hover-bg, #f0f0f0);
-          --_stepper-hover-color: var(--kakao-slider-stepper-hover-color, #111);
-          --_stepper-active-bg: var(--kakao-slider-stepper-active-bg, #e0e0e0);
+          --_thumb-border: var(--kakao-slider-thumb-border, var(--kakao-color-border, #aaa));
+          --_stepper-color: var(--kakao-slider-stepper-color, var(--kakao-color-muted, #888));
+          --_stepper-hover-bg: var(--kakao-slider-stepper-hover-bg, var(--kakao-color-subtle, #f0f0f0));
+          --_stepper-hover-color: var(--kakao-slider-stepper-hover-color, var(--kakao-color-text, #111));
+          --_stepper-active-bg: var(--kakao-slider-stepper-active-bg, var(--kakao-color-subtle-strong, #e0e0e0));
           /* @kakao-settings:end */
           display: block;
           font-family: var(--_font-family);

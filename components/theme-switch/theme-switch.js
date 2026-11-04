@@ -1,0 +1,498 @@
+/**
+ * <kakao-theme-switch>
+ * ============================================================================
+ * A button that switches the page between colour themes: light and dark by
+ * default, any number of themes via list-data. The new theme spreads over the
+ * page as a ripple from the button. Vanilla JS, Shadow DOM, no deps.
+ *
+ * The themes themselves are CSS (shared/tokens.css + shared/themes.css). The
+ * switch sets data-kakao-theme="<name>" on <html>, mirrors the theme's colour
+ * scheme to data-bs-theme (so Bootstrap 5.3 follows), and remembers the choice
+ * in localStorage. Until someone picks a theme, the page follows the operating
+ * system and the switch shows that theme.
+ *
+ * ----------------------------------------------------------------------------
+ * USAGE
+ * ----------------------------------------------------------------------------
+ *   <link rel="stylesheet" href="shared/tokens.css">
+ *   <link rel="stylesheet" href="shared/themes.css">
+ *   <!-- in <head>, without defer: applies a saved theme before first paint -->
+ *   <script src="theme-switch.js"><\/script>
+ *
+ *   <kakao-theme-switch></kakao-theme-switch>
+ *   <kakao-theme-switch show-label list-data='[
+ *     {"value":"light","label":"Light","scheme":"light"},
+ *     {"value":"dark","label":"Dark","scheme":"dark"},
+ *     {"value":"sepia","label":"Sepia","scheme":"light","icon":"sun"}
+ *   ]'></kakao-theme-switch>
+ *
+ * ----------------------------------------------------------------------------
+ * ATTRIBUTES (all observed)
+ * ----------------------------------------------------------------------------
+ *  list-data    JSON array of themes, in switching order (never "data"):
+ *                 { value, label?, scheme?: "light" | "dark", icon?: "sun" | "moon" }
+ *               Default: light, dark. scheme defaults to "dark" for a value
+ *               containing "dark", else "light"; icon follows the scheme.
+ *  storage-key  localStorage key for the choice. Default "kakao-theme".
+ *               Empty ("") = don't remember.
+ *  show-label   Also show the current theme's name next to the icon.
+ *  disabled     Blocks switching.
+ *
+ * ----------------------------------------------------------------------------
+ * PUBLIC API
+ * ----------------------------------------------------------------------------
+ *  theme                       Get / set the current theme by value (no ripple).
+ *  themes                      The normalized theme list (read only).
+ *  setTheme(value, options?)   options: { animate?: boolean, x?, y? } — x / y
+ *                              (viewport px) is where the ripple starts.
+ *  next(options?)              Switch to the following theme.
+ *
+ *  Calls made before the element is connected are queued.
+ *
+ * ----------------------------------------------------------------------------
+ * EVENTS (bubble, composed)
+ * ----------------------------------------------------------------------------
+ *  theme-change   { theme, previous, scheme, source: "user" | "api" | "storage" }
+ *                 after the theme on <html> changed through this switch.
+ *
+ * ----------------------------------------------------------------------------
+ * CSS CUSTOM PROPERTIES
+ * ----------------------------------------------------------------------------
+ *  Defaults live in the settings block below (edit on construction.html).
+ *  Colours follow the main variables, so the switch is themed like the rest.
+ *
+ *  --kakao-theme-switch-size              40px     button height (and width without label)
+ *  --kakao-theme-switch-bg / -hover-bg    subtle fills
+ *  --kakao-theme-switch-color             icon and label colour
+ *  --kakao-theme-switch-ripple-duration   700ms    page ripple
+ *  --kakao-theme-switch-icon-duration     500ms    sun ↔ moon morph
+ *
+ * ----------------------------------------------------------------------------
+ * ACCESSIBILITY
+ * ----------------------------------------------------------------------------
+ *  - A native button named "Switch to <next> theme" (with show-label the visible
+ *    theme name starts the name: "Light, switch to dark theme").
+ *  - The new theme is announced in a polite live region.
+ *  - Visible 2px focus outline (3:1 in every theme).
+ *  - With prefers-reduced-motion the theme changes at once: no ripple, no morph.
+ *  - Without View Transitions support the theme also changes at once.
+ * ============================================================================
+ */
+(function () {
+  'use strict';
+
+  const TAG_NAME = 'kakao-theme-switch';
+  if (customElements.get(TAG_NAME)) return;
+
+  const ROOT = document.documentElement;
+  const THEME_ATTR = 'data-kakao-theme';
+  const BS_ATTR = 'data-bs-theme';
+  const DEFAULT_KEY = 'kakao-theme';
+  const RIPPLE_CLASS = 'kakao-theme-ripple';
+  const DEFAULT_THEMES = [
+    { value: 'light', label: 'Light', scheme: 'light' },
+    { value: 'dark', label: 'Dark', scheme: 'dark' },
+  ];
+
+  const storage = {
+    get(key) {
+      try { return key ? localStorage.getItem(key) : null; } catch { return null; }
+    },
+    set(key, value) {
+      try { if (key) localStorage.setItem(key, value); } catch { /* storage blocked */ }
+    },
+  };
+
+  // Apply a saved theme right away, so a page loading this script in <head>
+  // paints in the right theme from the start (no flash).
+  (function applySaved() {
+    const saved = storage.get(DEFAULT_KEY);
+    if (saved && !ROOT.hasAttribute(THEME_ATTR)) {
+      ROOT.setAttribute(THEME_ATTR, saved);
+      if (saved === 'light' || saved === 'dark') ROOT.setAttribute(BS_ATTR, saved);
+    }
+  })();
+
+  const darkQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  const reducedMotion = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  /** Page-level styles for the ripple (view transitions live outside any shadow root). */
+  function ensureRippleStyles() {
+    if (document.getElementById('kakao-theme-switch-ripple')) return;
+    const style = document.createElement('style');
+    style.id = 'kakao-theme-switch-ripple';
+    style.textContent = `
+      html.${RIPPLE_CLASS}::view-transition-old(root),
+      html.${RIPPLE_CLASS}::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+      html.${RIPPLE_CLASS}::view-transition-old(root) { z-index: 0; }
+      html.${RIPPLE_CLASS}::view-transition-new(root) { z-index: 1; }
+    `;
+    document.head.append(style);
+  }
+
+  const ICON = `
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <defs>
+        <mask id="moon-cut">
+          <rect width="24" height="24" fill="white"></rect>
+          <circle class="cut" cx="17" cy="7" r="6.5" fill="black"></circle>
+        </mask>
+      </defs>
+      <circle class="core" cx="12" cy="12" r="8.5" mask="url(#moon-cut)"></circle>
+      <g class="rays">
+        <line x1="12" y1="1.5" x2="12" y2="3.5"></line>
+        <line x1="12" y1="20.5" x2="12" y2="22.5"></line>
+        <line x1="1.5" y1="12" x2="3.5" y2="12"></line>
+        <line x1="20.5" y1="12" x2="22.5" y2="12"></line>
+        <line x1="4.6" y1="4.6" x2="6" y2="6"></line>
+        <line x1="18" y1="18" x2="19.4" y2="19.4"></line>
+        <line x1="4.6" y1="19.4" x2="6" y2="18"></line>
+        <line x1="18" y1="6" x2="19.4" y2="4.6"></line>
+      </g>
+    </svg>`;
+
+  const TEMPLATE = document.createElement('template');
+  TEMPLATE.innerHTML = `
+    <style>
+      :host {
+        /* @kakao-settings:start prefix=--kakao-theme-switch- (written by construction.html, edit there) */
+        --_size: var(--kakao-theme-switch-size, 40px);
+        --_radius: var(--kakao-theme-switch-radius, 999px);
+        --_padding-x: var(--kakao-theme-switch-padding-x, 14px);
+        --_gap: var(--kakao-theme-switch-gap, 8px);
+        --_icon-size: var(--kakao-theme-switch-icon-size, 20px);
+        --_bg: var(--kakao-theme-switch-bg, var(--kakao-color-subtle, #f0f0f1));
+        --_hover-bg: var(--kakao-theme-switch-hover-bg, var(--kakao-color-subtle-strong, #e6e6e8));
+        --_color: var(--kakao-theme-switch-color, var(--kakao-color-text, #18181b));
+        --_font: var(--kakao-theme-switch-font, 550 0.875rem/1 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
+        --_focus-color: var(--kakao-theme-switch-focus-color, var(--kakao-color-focus, #2563eb));
+        --_focus-width: var(--kakao-theme-switch-focus-width, 2px);
+        --_focus-offset: var(--kakao-theme-switch-focus-offset, 2px);
+        --_disabled-opacity: var(--kakao-theme-switch-disabled-opacity, 0.45);
+        --_icon-duration: var(--kakao-theme-switch-icon-duration, 500ms);
+        --_icon-easing: var(--kakao-theme-switch-icon-easing, cubic-bezier(.5, 1.8, .4, 1));
+        --_ripple-duration: var(--kakao-theme-switch-ripple-duration, 700ms);
+        --_ripple-easing: var(--kakao-theme-switch-ripple-easing, cubic-bezier(.4, 0, .2, 1));
+        /* @kakao-settings:end */
+        display: inline-flex;
+        vertical-align: middle;
+      }
+      :host([hidden]) { display: none; }
+      :host([disabled]) { opacity: var(--_disabled-opacity); }
+
+      button {
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--_gap);
+        min-width: var(--_size);
+        height: var(--_size);
+        padding: 0;
+        border: 0;
+        border-radius: var(--_radius);
+        background: var(--_bg);
+        color: var(--_color);
+        font: var(--_font);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 150ms ease, transform 150ms ease;
+      }
+      :host([show-label]) button { padding: 0 var(--_padding-x) 0 calc(var(--_padding-x) - 4px); }
+      button:hover { background: var(--_hover-bg); }
+      button:active { transform: scale(0.94); }
+      button:focus-visible { outline: var(--_focus-width) solid var(--_focus-color); outline-offset: var(--_focus-offset); }
+      :host([disabled]) button { cursor: not-allowed; transform: none; background: var(--_bg); }
+
+      .label { display: none; white-space: nowrap; }
+      :host([show-label]) .label { display: inline; }
+
+      /* ---- sun ↔ moon ---- */
+      .icon {
+        width: var(--_icon-size);
+        height: var(--_icon-size);
+        overflow: visible;
+        transition: transform var(--_icon-duration) var(--_icon-easing);
+      }
+      .core { fill: currentColor; transform-box: fill-box; transform-origin: center; transition: transform var(--_icon-duration) var(--_icon-easing); }
+      .cut { transition: transform var(--_icon-duration) var(--_icon-easing); }
+      .rays { stroke: currentColor; stroke-width: 2; stroke-linecap: round; transform-origin: 12px 12px; transition: transform var(--_icon-duration) var(--_icon-easing), opacity calc(var(--_icon-duration) * 0.6) ease; }
+
+      /* sun: small core, cut moved away, rays out */
+      button[data-icon="sun"] .core { transform: scale(0.55); }
+      button[data-icon="sun"] .cut { transform: translate(9px, -9px); }
+      /* moon: full core with a bite, rays tucked in */
+      button[data-icon="moon"] .icon { transform: rotate(-30deg); }
+      button[data-icon="moon"] .rays { transform: scale(0.4) rotate(-45deg); opacity: 0; }
+
+      .sr {
+        position: absolute;
+        width: 1px; height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .icon, .core, .cut, .rays, button { transition: none; }
+      }
+    </style>
+    <button type="button" part="button">
+      ${ICON}
+      <span class="label" part="label"></span>
+      <span class="sr hint"></span>
+    </button>
+    <span class="sr status" role="status" aria-live="polite"></span>
+  `;
+
+  class KakaoThemeSwitch extends HTMLElement {
+    static get observedAttributes() {
+      return ['list-data', 'storage-key', 'show-label', 'disabled'];
+    }
+
+    constructor() {
+      super();
+      const shadow = this.attachShadow({ mode: 'open', delegatesFocus: true });
+      shadow.appendChild(TEMPLATE.content.cloneNode(true));
+      this._button = shadow.querySelector('button');
+      this._labelEl = shadow.querySelector('.label');
+      this._hintEl = shadow.querySelector('.hint');
+      this._statusEl = shadow.querySelector('.status');
+
+      this._themes = DEFAULT_THEMES.slice();
+      this._connected = false;
+      this._pending = [];
+
+      this._onClick = this._onClick.bind(this);
+      this._sync = this._sync.bind(this);
+      this._onStorage = this._onStorage.bind(this);
+      this._observer = new MutationObserver(this._sync);
+    }
+
+    /* -------------------------- Lifecycle -------------------------- */
+
+    connectedCallback() {
+      this._connected = true;
+      this._button.addEventListener('click', this._onClick);
+      this._observer.observe(ROOT, { attributes: true, attributeFilter: [THEME_ATTR] });
+      if (darkQuery) darkQuery.addEventListener('change', this._sync);
+      window.addEventListener('storage', this._onStorage);
+
+      this._readThemes();
+      // A remembered choice under a custom key (the default key is applied at load).
+      const saved = storage.get(this._storageKey());
+      if (saved && this._find(saved) && ROOT.getAttribute(THEME_ATTR) !== saved) this._apply(this._find(saved));
+      this._sync();
+
+      while (this._pending.length) {
+        const { method, args } = this._pending.shift();
+        this[method](...args);
+      }
+    }
+
+    disconnectedCallback() {
+      this._connected = false;
+      this._button.removeEventListener('click', this._onClick);
+      this._observer.disconnect();
+      if (darkQuery) darkQuery.removeEventListener('change', this._sync);
+      window.removeEventListener('storage', this._onStorage);
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (oldValue === newValue || !this._connected) return;
+      if (name === 'list-data') this._readThemes();
+      if (name === 'disabled') this._button.disabled = this.hasAttribute('disabled');
+      this._sync();
+    }
+
+    /* -------------------------- Public API -------------------------- */
+
+    get themes() {
+      return this._themes.map((t) => ({ ...t }));
+    }
+
+    get theme() {
+      return this._current().value;
+    }
+
+    set theme(value) {
+      this.setTheme(value, { animate: false });
+    }
+
+    setTheme(value, options = {}) {
+      if (!this._connected) {
+        this._pending.push({ method: 'setTheme', args: [value, options] });
+        return;
+      }
+      const theme = this._find(value);
+      if (!theme) {
+        console.warn(`<${TAG_NAME}> unknown theme "${value}"`);
+        return;
+      }
+      this._switchTo(theme, { animate: options.animate !== false, x: options.x, y: options.y, source: options.source || 'api' });
+    }
+
+    next(options = {}) {
+      if (!this._connected) {
+        this._pending.push({ method: 'next', args: [options] });
+        return;
+      }
+      this.setTheme(this._next().value, options);
+    }
+
+    /* -------------------------- Themes -------------------------- */
+
+    _storageKey() {
+      const key = this.getAttribute('storage-key');
+      return key === null ? DEFAULT_KEY : key.trim();
+    }
+
+    _readThemes() {
+      const raw = this.getAttribute('list-data');
+      let list = null;
+      if (raw) {
+        try {
+          list = JSON.parse(raw);
+        } catch (err) {
+          console.error(`<${TAG_NAME}> failed to parse list-data as JSON:`, err);
+        }
+      }
+      const themes = (Array.isArray(list) ? list : [])
+        .map((t) => (typeof t === 'string' ? { value: t } : t))
+        .filter((t) => t && t.value != null)
+        .map((t) => {
+          const value = String(t.value);
+          const scheme = t.scheme === 'dark' || t.scheme === 'light' ? t.scheme : /dark/i.test(value) ? 'dark' : 'light';
+          return {
+            value,
+            label: t.label != null ? String(t.label) : value[0].toUpperCase() + value.slice(1),
+            scheme,
+            icon: t.icon === 'sun' || t.icon === 'moon' ? t.icon : scheme === 'dark' ? 'moon' : 'sun',
+          };
+        });
+      this._themes = themes.length ? themes : DEFAULT_THEMES.map((t) => ({ ...t, icon: t.scheme === 'dark' ? 'moon' : 'sun' }));
+    }
+
+    _find(value) {
+      return this._themes.find((t) => t.value === value) || null;
+    }
+
+    /** The theme in effect: the attribute on <html>, else the one matching the OS. */
+    _current() {
+      const chosen = this._find(ROOT.getAttribute(THEME_ATTR));
+      if (chosen) return chosen;
+      const scheme = darkQuery && darkQuery.matches ? 'dark' : 'light';
+      return this._themes.find((t) => t.scheme === scheme) || this._themes[0];
+    }
+
+    _next() {
+      const i = this._themes.indexOf(this._current());
+      return this._themes[(i + 1) % this._themes.length];
+    }
+
+    _apply(theme) {
+      ROOT.setAttribute(THEME_ATTR, theme.value);
+      ROOT.setAttribute(BS_ATTR, theme.scheme);
+    }
+
+    _switchTo(theme, { animate, x, y, source }) {
+      const previous = this._current();
+      if (theme === previous && ROOT.getAttribute(THEME_ATTR) === theme.value) return;
+
+      const done = () => {
+        storage.set(this._storageKey(), theme.value);
+        this._sync();
+        if (source === 'user') this._statusEl.textContent = `${theme.label} theme`;
+        this.dispatchEvent(new CustomEvent('theme-change', {
+          bubbles: true,
+          composed: true,
+          detail: { theme: theme.value, previous: previous.value, scheme: theme.scheme, source },
+        }));
+      };
+
+      if (!animate || reducedMotion() || typeof document.startViewTransition !== 'function') {
+        this._apply(theme);
+        done();
+        return;
+      }
+
+      // Ripple: the new theme is revealed as a growing circle from (x, y).
+      const r = this._button.getBoundingClientRect();
+      const cx = Number.isFinite(x) ? x : r.left + r.width / 2;
+      const cy = Number.isFinite(y) ? y : r.top + r.height / 2;
+      const radius = Math.hypot(Math.max(cx, window.innerWidth - cx), Math.max(cy, window.innerHeight - cy));
+      const style = getComputedStyle(this);
+      const duration = parseDuration(style.getPropertyValue('--_ripple-duration'), 700);
+      const easing = style.getPropertyValue('--_ripple-easing').trim() || 'ease-in-out';
+
+      ensureRippleStyles();
+      ROOT.classList.add(RIPPLE_CLASS);
+      let transition;
+      try {
+        transition = document.startViewTransition(() => this._apply(theme));
+      } catch {
+        ROOT.classList.remove(RIPPLE_CLASS);
+        this._apply(theme);
+        done();
+        return;
+      }
+      transition.ready.then(() => {
+        ROOT.animate(
+          { clipPath: [`circle(0px at ${cx}px ${cy}px)`, `circle(${radius}px at ${cx}px ${cy}px)`] },
+          { duration, easing, pseudoElement: '::view-transition-new(root)' },
+        );
+      }).catch(() => { /* skipped: the theme is applied anyway */ });
+      transition.finished.finally(() => ROOT.classList.remove(RIPPLE_CLASS));
+      transition.updateCallbackDone.then(done, done);
+    }
+
+    /* -------------------------- Rendering -------------------------- */
+
+    _sync() {
+      if (!this._connected) return;
+      const current = this._current();
+      const next = this._next();
+      this._button.dataset.icon = current.icon;
+      this._button.disabled = this.hasAttribute('disabled');
+      this._labelEl.textContent = current.label;
+      const action = `switch to ${next.label.toLowerCase()} theme`;
+      if (this.hasAttribute('show-label')) {
+        // Visible text first, so the accessible name contains what is shown.
+        this._button.removeAttribute('aria-label');
+        this._hintEl.textContent = `, ${action}`;
+      } else {
+        this._button.setAttribute('aria-label', action[0].toUpperCase() + action.slice(1));
+        this._hintEl.textContent = '';
+      }
+      this._button.title = action[0].toUpperCase() + action.slice(1);
+    }
+
+    /* -------------------------- Events -------------------------- */
+
+    _onClick(e) {
+      if (this.hasAttribute('disabled')) return;
+      // Keyboard clicks have no pointer position (detail 0): start at the button.
+      const fromPointer = e.detail > 0 && (e.clientX || e.clientY);
+      this._switchTo(this._next(), {
+        animate: true,
+        x: fromPointer ? e.clientX : undefined,
+        y: fromPointer ? e.clientY : undefined,
+        source: 'user',
+      });
+    }
+
+    _onStorage(e) {
+      if (e.key !== this._storageKey() || !e.newValue) return;
+      const theme = this._find(e.newValue);
+      if (theme) this._switchTo(theme, { animate: false, source: 'storage' });
+    }
+  }
+
+  function parseDuration(value, fallback) {
+    const m = String(value).trim().match(/^(-?\d*\.?\d+)(ms|s)$/);
+    if (!m) return fallback;
+    return m[2] === 's' ? parseFloat(m[1]) * 1000 : parseFloat(m[1]);
+  }
+
+  customElements.define(TAG_NAME, KakaoThemeSwitch);
+})();

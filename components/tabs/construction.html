@@ -6,6 +6,8 @@
 <title>kakao-tabs — Construction</title>
 <link rel="stylesheet" href="../../shared/tokens.css" />
 <link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/construction.css" />
 <link rel="stylesheet" href="../button/button.css" />
 <link rel="stylesheet" href="tabs.css" />
@@ -13,10 +15,11 @@
 <script src="tabs.js" defer></script>
 <script src="../../shared/construction.js" defer></script>
 <style>
-  .dark-sample { padding: 1rem; border-radius: 12px; background: #18181b; color: #f4f4f5; }
+  .dark-sample { padding: 1rem; border-radius: 12px; background: var(--kakao-color-page); color: var(--kakao-color-text); }
 </style>
 </head>
 <body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main data-construction data-target="tabs" data-source="tabs.css" data-title="Tabs">
   <div class="construction-preview">
     <figure>
@@ -36,8 +39,8 @@
       </kakao-tabs>
     </figure>
     <figure>
-      <figcaption>Dark mode · data-bs-theme="dark"</figcaption>
-      <div class="dark-sample" data-bs-theme="dark">
+      <figcaption>Dark theme · data-kakao-theme="dark"</figcaption>
+      <div class="dark-sample" data-kakao-theme="dark">
         <kakao-tabs>
           <kakao-tab selected>Overview</kakao-tab>
           <kakao-tab>Activity</kakao-tab>
@@ -70,12 +73,8 @@
     { "property": "--kakao-tabs-tab-opacity", "label": "Unselected opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
     { "property": "--kakao-tabs-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
 
-    { "property": "--kakao-tabs-transition", "label": "Transition", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-tabs-transition", "label": "Transition", "group": "Motion", "type": "duration" }
 
-    { "property": "--kakao-tabs-dark-bg", "label": "Background", "group": "Dark mode", "type": "color" },
-    { "property": "--kakao-tabs-dark-thumb-bg", "label": "Thumb", "group": "Dark mode", "type": "color" },
-    { "property": "--kakao-tabs-dark-thumb-shadow", "label": "Thumb shadow", "group": "Dark mode", "type": "shadow" },
-    { "property": "--kakao-tabs-dark-hold-glow", "label": "Hold glow", "group": "Dark mode", "type": "color" }
   ]
   </script>
 </main>

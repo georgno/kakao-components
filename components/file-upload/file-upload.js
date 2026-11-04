@@ -195,7 +195,7 @@
         --_border: var(--kakao-file-upload-border, var(--kakao-color-border, #d1d5db));
         --_radius: var(--kakao-file-upload-radius, 14px);
         --_min-height: var(--kakao-file-upload-min-height, 9rem);
-        --_dot-color: var(--kakao-file-upload-dot-color, #e5e7eb88);
+        --_dot-color: var(--kakao-file-upload-dot-color, color-mix(in srgb, var(--kakao-color-line, #e5e7eb) 53%, transparent));
         --_dot-size: var(--kakao-file-upload-dot-size, 1px);
         --_dot-gap: var(--kakao-file-upload-dot-gap, 14px);
         --_spotlight: var(--kakao-file-upload-spotlight, 130px);
@@ -217,7 +217,7 @@
         --_item-radius: var(--kakao-file-upload-item-radius, 10px);
         --_thumb-size: var(--kakao-file-upload-thumb-size, 2.5rem);
         --_thumb-radius: var(--kakao-file-upload-thumb-radius, 7px);
-        --_type-color: var(--kakao-file-upload-type-color, #6b7280);
+        --_type-color: var(--kakao-file-upload-type-color, var(--kakao-color-muted, #6b7280));
         --_type-image: var(--kakao-file-upload-type-image, #0d9488);
         --_type-pdf: var(--kakao-file-upload-type-pdf, #dc2626);
         --_type-video: var(--kakao-file-upload-type-video, #7c3aed);

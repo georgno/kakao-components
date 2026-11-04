@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-theme-switch — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="theme-switch" data-source="theme-switch.js" data-title="Theme switch">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Icon only</figcaption>
+      <kakao-theme-switch></kakao-theme-switch>
+    </figure>
+    <figure>
+      <figcaption>With label</figcaption>
+      <kakao-theme-switch show-label></kakao-theme-switch>
+    </figure>
+    <figure>
+      <figcaption>Disabled</figcaption>
+      <kakao-theme-switch disabled></kakao-theme-switch>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-theme-switch-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-theme-switch-hover-bg", "label": "Hover background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-theme-switch-color", "label": "Icon & label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-theme-switch-focus-color", "label": "Focus outline", "group": "Colour", "type": "color" },
+    { "property": "--kakao-theme-switch-size", "label": "Height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-theme-switch-icon-size", "label": "Icon size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-theme-switch-padding-x", "label": "Padding x (with label)", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-theme-switch-gap", "label": "Icon–label gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-theme-switch-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-theme-switch-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-theme-switch-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-theme-switch-font", "label": "Label font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-theme-switch-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+    { "property": "--kakao-theme-switch-icon-duration", "label": "Icon morph", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-theme-switch-icon-easing", "label": "Icon easing", "group": "Motion", "type": "easing" },
+    { "property": "--kakao-theme-switch-ripple-duration", "label": "Page ripple", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-theme-switch-ripple-easing", "label": "Ripple easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+</body>
+</html>

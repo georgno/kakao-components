@@ -6,6 +6,8 @@
 <title>Kakao style guide</title>
 <link rel="stylesheet" href="shared/tokens.css" />
 <link rel="stylesheet" href="shared/font.css" />
+<link rel="stylesheet" href="shared/themes.css" />
+<script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/tabs/tabs.css" />
@@ -27,7 +29,11 @@
   .tag.proposed { background: #e0e7ff; color: #3730a3; }
   .tag.issue { background: #fde8e6; color: #9f2d25; }
   .tag.ok { background: #dcfce7; color: #166534; }
-  .tag.rule { background: #18181b; color: #fafafa; }
+  .tag.rule { background: var(--kakao-color-ink, #18181b); color: var(--kakao-color-on-ink, #fafafa); }
+  .theme-panels { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .theme-panel { border-radius: 14px; padding: 1.1rem 1.25rem; background: var(--kakao-color-page); color: var(--kakao-color-text); border: 1px solid var(--kakao-color-line); display: grid; gap: 0.9rem; }
+  .theme-panel h4 { margin: 0; font-size: 0.9rem; }
+  .tok-chip { display: inline-block; width: 0.9rem; height: 0.9rem; border-radius: 4px; vertical-align: -0.15em; margin-right: 0.35rem; border: 1px solid rgb(128 128 128 / .35); }
 
   nav.toc { margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; font-size: 0.9rem; }
   nav.toc a { text-decoration: none; }
@@ -71,7 +77,7 @@
   .specimen-row .sample { min-width: 0; overflow-wrap: anywhere; }
   .caption { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
   .dodont { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); margin-top: 0.9rem; }
-  .dodont > div { border-radius: 12px; padding: 0.9rem 1rem; background: #f4f4f5; }
+  .dodont > div { border-radius: 12px; padding: 0.9rem 1rem; background: var(--kakao-color-subtle, #f4f4f5); }
   .dodont .verdict { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
   .dodont .do .verdict { color: #166534; }
   .dodont .dont .verdict { color: #9f2d25; }
@@ -94,12 +100,12 @@
 
   /* shape */
   .radii { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end; }
-  .radius-box { width: 5.5rem; height: 4rem; background: #f4f4f5; border: 1.5px solid #a1a1aa; }
+  .radius-box { width: 5.5rem; height: 4rem; background: var(--kakao-color-subtle, #f4f4f5); border: 1.5px solid var(--kakao-color-border, #a1a1aa); }
   .radius-item { font-size: 0.78rem; }
   .radius-item b { display: block; margin-top: 0.4rem; font-size: 0.82rem; }
-  .nest { display: inline-flex; padding: 4px; background: #ebebeb; border-radius: 10px; gap: 4px; }
+  .nest { display: inline-flex; padding: 4px; background: var(--kakao-color-subtle-strong, #ebebeb); border-radius: 10px; gap: 4px; }
   .nest span { padding: 0.55rem 1rem; border-radius: 6px; font-size: 0.85rem; }
-  .nest span:first-child { background: #fff; box-shadow: 0 2px 24px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.03); font-weight: 600; }
+  .nest span:first-child { background: var(--kakao-color-raised, #fff); box-shadow: 0 2px 24px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.03); font-weight: 600; }
   .nest span:not(:first-child) { opacity: 0.6; }
 
   /* spacing */
@@ -107,18 +113,18 @@
   .space-scale div { display: grid; grid-template-columns: 3.5rem 4.5rem 1fr; gap: 0.75rem; align-items: center; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
   .space-scale i { display: block; height: 0.6rem; background: #c7d2fe; border-radius: 2px; }
   .heights { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end; }
-  .height-guide { position: relative; padding-left: 0.75rem; border-left: 2px solid #e4e4e7; font-size: 0.75rem; color: var(--muted); }
+  .height-guide { position: relative; padding-left: 0.75rem; border-left: 2px solid var(--line); font-size: 0.75rem; color: var(--muted); }
 
   /* elevation */
-  .elev { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); padding: 1.5rem; background: #f4f4f5; border-radius: 14px; }
-  .elev div { background: #fff; border-radius: 12px; padding: 1rem; min-height: 6rem; font-size: 0.8rem; }
+  .elev { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); padding: 1.5rem; background: var(--kakao-color-subtle, #f4f4f5); border-radius: 14px; }
+  .elev div { background: var(--kakao-color-bg, #fff); border-radius: 12px; padding: 1rem; min-height: 6rem; font-size: 0.8rem; }
   .elev b { display: block; font-size: 0.9rem; margin-bottom: 0.25rem; }
 
   /* focus + states */
   .focus-row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; }
   .focus-sample {
     display: inline-flex; align-items: center; height: 44px; padding: 0 22px;
-    border-radius: 13px; background: #18181b; color: #fafafa; font-size: 14.5px; font-weight: 550;
+    border-radius: 13px; background: var(--kakao-color-ink, #18181b); color: var(--kakao-color-on-ink, #fafafa); font-size: 14.5px; font-weight: 550;
     outline: none; cursor: default; user-select: none;
   }
   .focus-sample.soft:focus { box-shadow: 0 0 0 4px rgba(24,24,27,.16); }
@@ -129,18 +135,18 @@
   .focus-label { display: block; margin-top: 0.5rem; font-size: 0.78rem; color: var(--muted); }
   .opacity-row { display: flex; flex-wrap: wrap; gap: 1rem; }
   .opacity-row figure { margin: 0; text-align: center; font-size: 0.75rem; color: var(--muted); }
-  .opacity-row figure > span { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 11px; background: #18181b; color: #fafafa; font-size: 13px; font-weight: 550; margin-bottom: 0.35rem; }
+  .opacity-row figure > span { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 11px; background: var(--kakao-color-ink, #18181b); color: var(--kakao-color-on-ink, #fafafa); font-size: 13px; font-weight: 550; margin-bottom: 0.35rem; }
 
   /* motion */
   .motion-lanes { display: grid; gap: 0.6rem; margin-top: 0.9rem; }
-  .lane { position: relative; height: 2.25rem; background: #f4f4f5; border-radius: 999px; }
+  .lane { position: relative; height: 2.25rem; background: var(--kakao-color-subtle, #f4f4f5); border-radius: 999px; }
   .lane .dot { position: absolute; top: 0.25rem; left: 0.25rem; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
   .lane span { position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: var(--muted); }
   .motion-lanes.go .dot { left: calc(100% - 2rem); }
-  .lane.spring { background: #e0e7ff; }
+  .lane.spring { background: color-mix(in srgb, var(--accent) 22%, transparent); }
 
   .principles { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
-  .principles .num { font-size: 0.72rem; font-weight: 600; color: #4f46e5; letter-spacing: 0.06em; }
+  .principles .num { font-size: 0.72rem; font-weight: 600; color: var(--accent); letter-spacing: 0.06em; }
 
   @media (max-width: 560px) {
     .specimen-row { grid-template-columns: 1fr; gap: 0.15rem; }
@@ -152,6 +158,7 @@
 </style>
 </head>
 <body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
     <a class="back" href="index.html">← All components</a>
@@ -168,6 +175,7 @@
     <a href="#principles">Principles</a>
     <a href="#type">Typography</a>
     <a href="#colour">Colour</a>
+    <a href="#themes">Themes</a>
     <a href="#space">Spacing &amp; sizing</a>
     <a href="#shape">Shape</a>
     <a href="#elevation">Elevation</a>
@@ -260,16 +268,16 @@
   <!-- ================================================================ -->
   <section id="colour">
     <h2>Colour</h2>
-    <p>Main variables from <code>shared/tokens.css</code>, read live from this page. Only four components refer to them today; the others hard-code their greys.</p>
+    <p>Main variables from <code>shared/tokens.css</code>, read live from this page in the current theme. Every component's colours now point at them, so they follow the theme.</p>
 
     <h3 class="sub">Main variables <span class="tag now">Now</span></h3>
     <div class="swatches" id="token-swatches"></div>
 
-    <h3 class="sub">Roles <span class="tag proposed">Proposed</span></h3>
+    <h3 class="sub">Roles <span class="tag now">Now</span></h3>
     <div class="roles">
       <div class="card">
         <h4>Ink — actions</h4>
-        <p class="small muted">Primary buttons, selected segments, text. <code>#18181b</code> on <code>#fafafa</code> is 17:1. Today the button family uses zinc ink (<code>#18181b</code>) while the form family uses Tailwind gray (<code>#111827</code>); settle on zinc.</p>
+        <p class="small muted">Primary buttons, selected segments, text: <code>--kakao-color-ink</code>. <code>#18181b</code> on <code>#fafafa</code> is 17:1. In dark, ink turns light and its label dark.</p>
         <div class="role-demo">
           <kakao-button label="Save"></kakao-button>
           <kakao-button label="Cancel" variant="secondary"></kakao-button>
@@ -277,22 +285,22 @@
       </div>
       <div class="card">
         <h4>Accent — state</h4>
-        <p class="small muted">On, selected, filled, in progress. <code>#4f46e5</code>, 6.3:1 on white. The slider's accent is <code>#111</code> today; it should follow the accent like the switches do.</p>
+        <p class="small muted">On, selected, filled, in progress: <code>--kakao-color-primary</code>. <code>#4f46e5</code> is 6.3:1 on white; dark uses <code>#818cf8</code>. The slider fill still follows ink, a later decision.</p>
         <div class="role-demo">
           <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
         </div>
       </div>
       <div class="card">
         <h4>Danger — destruction &amp; errors</h4>
-        <p class="small muted">Destructive buttons, invalid fields, failed uploads. The button uses a softened red <code>#bd4b43</code> (4.6:1 with its light label); the form family uses <code>#dc2626</code>. Settle on one danger colour and derive the tints.</p>
+        <p class="small muted">Destructive buttons, invalid fields, failed uploads: <code>--kakao-color-danger</code>, one red for all components. <code>#dc2626</code> is 4.8:1 both ways with white; dark uses <code>#f87171</code> with a dark label.</p>
         <div class="role-demo">
           <kakao-button label="Delete" variant="danger"></kakao-button>
         </div>
       </div>
     </div>
 
-    <h3 class="sub">Neutral ramp <span class="tag proposed">Proposed</span></h3>
-    <p class="lede small">One grey ramp (zinc) replacing the four in use today: zinc (button, tabs), Tailwind gray (switches, file upload, multi dropdown), Bootstrap grey (number input) and plain hex greys like <code>#eee</code>, <code>#999</code>, <code>#555</code> (list, popover, slider).</p>
+    <h3 class="sub">Neutral ramp <span class="tag now">Now</span></h3>
+    <p class="lede small">One grey ramp (zinc) for the light theme. It replaced the four greys the components used to mix: zinc, Tailwind gray, Bootstrap grey and plain hex greys. Inside a theme, prefer the role variables to the raw steps.</p>
     <div class="ramp" style="margin-top:.75rem">
       <div style="background:#fafafa">50</div><div style="background:#f4f4f5">100</div><div style="background:#e4e4e7">200</div><div style="background:#d4d4d8">300</div><div style="background:#a1a1aa">400</div>
       <div style="background:#71717a;color:#fff">500</div><div style="background:#52525b;color:#fff">600</div><div style="background:#3f3f46;color:#fff">700</div><div style="background:#27272a;color:#fff">800</div><div style="background:#18181b;color:#fff">900</div>
@@ -305,8 +313,8 @@
           <tr><td>100</td><td><code>#f4f4f5</code></td><td>Secondary fill, segment &amp; tab track, hover</td><td></td></tr>
           <tr><td>200</td><td><code>#e4e4e7</code></td><td>Hairlines, dividers, card borders</td><td>Decorative only</td></tr>
           <tr><td>300</td><td><code>#d4d4d8</code></td><td>Disabled track, subtle fills</td><td>Decorative only</td></tr>
-          <tr><td>400</td><td><code>#a1a1aa</code></td><td>Input borders, off-switch track, icons</td><td>3:1 on white — UI boundaries</td></tr>
-          <tr><td>500</td><td><code>#71717a</code></td><td>Muted text, placeholders, captions</td><td>Lightest allowed text, 4.8:1</td></tr>
+          <tr><td>400</td><td><code>#a1a1aa</code></td><td>Disabled text and icons</td><td>Only 2.6:1 on white: not for borders</td></tr>
+          <tr><td>500</td><td><code>#71717a</code></td><td>Icons. Control borders sit between 400 and 500 (<code>#82828b</code>, 3.8:1)</td><td>4.8:1 on white but 4.2:1 on subtle fills, so muted text uses <code>#62626c</code></td></tr>
           <tr><td>700</td><td><code>#3f3f46</code></td><td>Secondary text, ghost button</td><td></td></tr>
           <tr><td>900</td><td><code>#18181b</code></td><td>Ink: text, primary actions</td><td></td></tr>
         </tbody>
@@ -314,20 +322,20 @@
     </div>
 
     <h3 class="sub">Contrast findings <span class="tag now">Now</span></h3>
-    <p class="lede small">Default colours checked against WCAG 2.2: text needs 4.5:1 (1.4.3), UI parts and focus indicators 3:1 (1.4.11).</p>
+    <p class="lede small">Default colours checked against WCAG 2.2: text needs 4.5:1 (1.4.3), UI parts and focus indicators 3:1 (1.4.11). Theming fixed the rows marked; the focus halos and the unselected tab are still open.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Where</th><th>Pair</th><th>Ratio</th><th>Needs</th><th></th></tr></thead>
         <tbody>
-          <tr><td>Multi dropdown placeholder</td><td><code>#9ca3af</code> on white</td><td class="num">2.54</td><td>4.5</td><td><span class="tag issue">Fails</span></td></tr>
-          <tr><td>List group label</td><td><code>#999</code> on <code>#f7f7f7</code></td><td class="num">2.66</td><td>4.5</td><td><span class="tag issue">Fails</span></td></tr>
-          <tr><td>Slider min/max labels</td><td><code>#999</code> on white</td><td class="num">2.85</td><td>4.5</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>Multi dropdown placeholder</td><td><code>#9ca3af</code> on white</td><td class="num">2.54</td><td>4.5</td><td><span class="tag ok">Fixed</span> <span class="muted small">now muted token, 6.0</span></td></tr>
+          <tr><td>List group label</td><td><code>#999</code> on <code>#f7f7f7</code></td><td class="num">2.66</td><td>4.5</td><td><span class="tag ok">Fixed</span> <span class="muted small">now muted on subtle, 5.3</span></td></tr>
+          <tr><td>Slider min/max labels</td><td><code>#999</code> on white</td><td class="num">2.85</td><td>4.5</td><td><span class="tag ok">Fixed</span> <span class="muted small">now muted token, 6.0</span></td></tr>
           <tr><td>Tabs, unselected tab</td><td>ink at 45% on <code>#ebebeb</code></td><td class="num">2.82</td><td>4.5</td><td><span class="tag issue">Fails</span></td></tr>
-          <tr><td>List row action icon</td><td><code>#aaa</code> on white</td><td class="num">2.32</td><td>3</td><td><span class="tag issue">Fails</span></td></tr>
-          <tr><td>Switch, off track</td><td><code>#d1d5db</code> on white</td><td class="num">1.47</td><td>3</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>List row action icon</td><td><code>#aaa</code> on white</td><td class="num">2.32</td><td>3</td><td><span class="tag ok">Fixed</span> <span class="muted small">now muted token, 6.0</span></td></tr>
+          <tr><td>Switch, off track</td><td><code>#d1d5db</code> on white</td><td class="num">1.47</td><td>3</td><td><span class="tag ok">Fixed</span> <span class="muted small">now border token, 3.8</span></td></tr>
           <tr><td>Button focus ring</td><td>ink 16% halo on white</td><td class="num">1.40</td><td>3</td><td><span class="tag issue">Fails</span></td></tr>
           <tr><td>Number input focus ring</td><td>ink 14% halo on white</td><td class="num">1.33</td><td>3</td><td><span class="tag issue">Fails</span></td></tr>
-          <tr><td>Tabs focus outline</td><td><code>#888</code> on <code>#ebebeb</code></td><td class="num">2.97</td><td>3</td><td><span class="tag issue">Just fails</span></td></tr>
+          <tr><td>Tabs focus outline</td><td><code>#888</code> on <code>#ebebeb</code></td><td class="num">2.97</td><td>3</td><td><span class="tag ok">Fixed</span> <span class="muted small">now focus token</span></td></tr>
           <tr><td>Muted text token</td><td><code>#6b7280</code> on white</td><td class="num">4.83</td><td>4.5</td><td><span class="tag ok">Passes</span></td></tr>
           <tr><td>Switch focus outline</td><td><code>#2563eb</code> on white</td><td class="num">5.17</td><td>3</td><td><span class="tag ok">Passes</span></td></tr>
           <tr><td>Accent</td><td><code>#4f46e5</code> ↔ white</td><td class="num">6.29</td><td>4.5</td><td><span class="tag ok">Passes</span></td></tr>
@@ -335,7 +343,7 @@
         </tbody>
       </table>
     </div>
-    <p class="small muted" style="margin-top:.6rem">Fix: lift muted text to zinc 500 or darker, the off track and icon greys to zinc 400, and use the focus rule below.</p>
+    <p class="small muted" style="margin-top:.6rem">Still to fix: the focus rule below for the halos, and a stronger unselected tab.</p>
 
     <h3 class="sub">File types <span class="tag now">Now</span></h3>
     <p class="lede small">The file upload tags files with a small categorical palette. It's the only place we use more than one hue, so it stays local to that component.</p>
@@ -346,6 +354,62 @@
       <div class="swatch"><div class="chip" style="background:#db2777"></div><div class="info"><b>Audio</b><code>#db2777</code></div></div>
       <div class="swatch"><div class="chip" style="background:#d97706"></div><div class="info"><b>Archive</b><code>#d97706</code></div></div>
       <div class="swatch"><div class="chip" style="background:#0891b2"></div><div class="info"><b>Text</b><code>#0891b2</code></div></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="themes">
+    <h2>Themes</h2>
+    <p>Light and dark, switched with <code>&lt;kakao-theme-switch&gt;</code>. A theme only changes the colour variables. Components never hard-code a colour, so every theme reaches every component.</p>
+
+    <div class="theme-panels">
+      <div class="theme-panel" data-kakao-theme="light">
+        <h4>Light</h4>
+        <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
+        <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
+        <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+      </div>
+      <div class="theme-panel" data-kakao-theme="dark">
+        <h4>Dark</h4>
+        <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
+        <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
+        <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:1rem">
+      <div class="card">
+        <h3>How it works <span class="tag now">Now</span></h3>
+        <p class="small">The light values live in <code>shared/tokens.css</code>; every other theme is a block in <code>shared/themes.css</code>. A page picks a theme with <code>data-kakao-theme</code> on <code>&lt;html&gt;</code>, which is what the switch sets. Any element can carry the attribute to theme just that part, as the two panels above do.</p>
+        <p class="small muted">With no choice made, the page follows the system's light/dark setting. <code>data-bs-theme="dark"</code> also selects dark, and the switch keeps it in step, so a Bootstrap 5.3 page and the components always agree.</p>
+      </div>
+      <div class="card">
+        <h3>Accessibility rules <span class="tag rule">Rule</span></h3>
+        <ul class="small" style="margin:0;padding-left:1.1rem;display:grid;gap:.3rem">
+          <li>Every theme passes <code>node tools/check-themes.js</code>: text 4.5:1; control borders, filled controls and focus 3:1.</li>
+          <li>The system's <em>increase contrast</em> setting strengthens muted text, borders and hairlines in every theme.</li>
+          <li>With <em>reduce motion</em> the theme changes at once: no ripple.</li>
+          <li>The default follows the system, and a choice is remembered.</li>
+          <li>Each theme sets <code>color-scheme</code>, so native controls and scrollbars match.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub">Theme variables <span class="tag now">Now</span></h3>
+    <div class="table-wrap">
+      <table id="theme-table">
+        <thead><tr><th>Variable</th><th>Light</th><th>Dark</th><th>Use</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Adding a theme</h3>
+    <div class="card">
+      <ol class="small" style="margin:0;padding-left:1.2rem;display:grid;gap:.35rem">
+        <li>In <code>shared/themes.css</code>, copy the dark block, rename it (<code>/* @theme dim */</code>, <code>[data-kakao-theme="dim"]</code>) and set its <code>color-scheme</code>.</li>
+        <li>Run <code>node tools/check-themes.js --fix</code> and adjust colours until it passes.</li>
+        <li>Add it to the switch: <code>list-data='[{"value":"light"},{"value":"dark"},{"value":"dim","scheme":"dark"}]'</code>. The switch then cycles through all three.</li>
+      </ol>
     </div>
   </section>
 
@@ -493,40 +557,31 @@
     <p>Where each component stands against this guide. “Family” is the visual dialect it was built in: <b>A</b> zinc / ink (button, tabs, number input), <b>B</b> Tailwind gray / indigo (switches, file upload, multi dropdown), <b>C</b> plain hex greys (list, popover, slider).</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Component</th><th>Family</th><th>Font token</th><th>Main colours</th><th>Radius</th><th>Focus</th><th>Disabled</th><th>To do</th></tr></thead>
+        <thead><tr><th>Component</th><th>Family</th><th>Font token</th><th>Colours</th><th>Radius</th><th>Focus</th><th>Disabled</th><th>To do</th></tr></thead>
         <tbody>
-          <tr><td>Button</td><td>A</td><td><span class="tag ok">Yes</span></td><td>No</td><td class="num">11/13/15</td><td>Halo ✗</td><td class="num">0.2</td><td>Add outline; bind ink, danger to main colours</td></tr>
-          <tr><td>Tabs</td><td>A</td><td>Inherits</td><td>No</td><td class="num">10/6</td><td>#888 ✗</td><td class="num">0.2</td><td>Idle tab contrast; focus colour</td></tr>
-          <tr><td>Number input</td><td>A*</td><td>Inherits</td><td>No</td><td class="num">6</td><td>Halo ✗</td><td class="num">0.55</td><td>Bootstrap greys → zinc; 44px height; outline</td></tr>
-          <tr><td>Switch group</td><td>B</td><td><span class="tag ok">Yes</span></td><td>Yes</td><td class="num">pill</td><td>✓</td><td class="num">0.55</td><td>Off-track contrast; thumb shadow</td></tr>
-          <tr><td>Step switch</td><td>B</td><td><span class="tag ok">Yes</span></td><td>Yes</td><td class="num">pill</td><td>✓</td><td class="num">0.55</td><td>Off-track contrast</td></tr>
-          <tr><td>File upload</td><td>B</td><td><span class="tag ok">Yes</span></td><td>Yes</td><td class="num">14/10/7</td><td>✓</td><td class="num">0.55</td><td>Thumb radius 7 → 6 (nesting rule)</td></tr>
-          <tr><td>Multi dropdown</td><td>B</td><td><span class="tag ok">Yes</span></td><td>Yes</td><td class="num">10/6</td><td>Halo ✗</td><td class="num">0.55</td><td>Placeholder contrast; outline; 44px</td></tr>
-          <tr><td>List</td><td>C</td><td><span class="tag ok">Yes</span></td><td>No</td><td class="num">4/6</td><td>✓</td><td class="num">0.5</td><td>Greys → zinc; group/action contrast; reduced motion</td></tr>
-          <tr><td>Popover</td><td>C</td><td><span class="tag ok">Yes</span></td><td>No</td><td class="num">4</td><td>✓</td><td class="num">—</td><td>Radius 10; overlay shadow instead of none</td></tr>
-          <tr><td>Slider</td><td>C</td><td><span class="tag ok">Yes</span></td><td>No</td><td class="num">3</td><td>✓</td><td class="num">0.4</td><td>Accent #111 → primary; range label contrast; reduced motion</td></tr>
+          <tr><td>Button</td><td>A</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">11/13/15</td><td>Halo ✗</td><td class="num">0.2</td><td>Add outline</td></tr>
+          <tr><td>Tabs</td><td>A</td><td>Inherits</td><td><span class="tag ok">Theme</span></td><td class="num">10/6</td><td>#888 ✗</td><td class="num">0.2</td><td>Idle tab contrast; focus colour</td></tr>
+          <tr><td>Number input</td><td>A*</td><td>Inherits</td><td><span class="tag ok">Theme</span></td><td class="num">6</td><td>Halo ✗</td><td class="num">0.55</td><td>44px height; outline</td></tr>
+          <tr><td>Switch group</td><td>B</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">pill</td><td>✓</td><td class="num">0.55</td><td>Thumb shadow</td></tr>
+          <tr><td>Step switch</td><td>B</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">pill</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
+          <tr><td>File upload</td><td>B</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">14/10/7</td><td>✓</td><td class="num">0.55</td><td>Thumb radius 7 → 6 (nesting rule)</td></tr>
+          <tr><td>Multi dropdown</td><td>B</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">10/6</td><td>Halo ✗</td><td class="num">0.55</td><td>Outline; 44px</td></tr>
+          <tr><td>List</td><td>C</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">4/6</td><td>✓</td><td class="num">0.5</td><td>Reduced motion</td></tr>
+          <tr><td>Popover</td><td>C</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">4</td><td>✓</td><td class="num">—</td><td>Radius 10; overlay shadow instead of none</td></tr>
+          <tr><td>Slider</td><td>C</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">3</td><td>✓</td><td class="num">0.4</td><td>Reduced motion; accent follows ink, not primary</td></tr>
+          <tr><td>Theme switch</td><td>—</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">pill</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
           <tr><td>Animated number</td><td>—</td><td>Mono by design</td><td>currentColor</td><td class="num">—</td><td>n/a</td><td class="num">—</td><td>None</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="small muted" style="margin-top:.6rem">* Number input borrows the family A focus halo but Bootstrap's greys (<code>#dee2e6</code>, <code>#6c757d</code>).</p>
+    <p class="small muted" style="margin-top:.6rem">“Theme” = every colour setting defaults to a theme variable, so the component follows light, dark and any later theme. The families still differ in shape and size. * Number input borrows the family A focus halo.</p>
   </section>
 
   <!-- ================================================================ -->
   <section id="tokens">
     <h2>Proposed tokens</h2>
-    <p>New main variables for <code>shared/tokens.css</code>. Component settings would point at them with a literal fallback, as the conventions already require. None of these exist yet.</p>
-    <pre><span class="c">/* colour roles */</span>
---kakao-color-ink:        #18181b;   <span class="c">/* replaces color-text #111827 */</span>
---kakao-color-muted:      #71717a;
---kakao-color-subtle:     #f4f4f5;
---kakao-color-line:       #e4e4e7;   <span class="c">/* decorative hairlines */</span>
---kakao-color-border:     #a1a1aa;   <span class="c">/* field and control edges, 3:1 */</span>
---kakao-color-primary:    #4f46e5;   <span class="c">/* accent: state, not actions */</span>
---kakao-color-danger:     #bd4b43;   <span class="c">/* or #dc2626: pick one */</span>
---kakao-color-focus:      #2563eb;
-
-<span class="c">/* type */</span>
+    <p>New main variables for <code>shared/tokens.css</code>. Component settings would point at them with a literal fallback, as the conventions already require. None of these exist yet. (The colour roles proposed here earlier are built: see <a href="#themes">Themes</a>.)</p>
+    <pre><span class="c">/* type */</span>
 --kakao-font-family:      "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
 --kakao-text-2xs: 0.75rem;    --kakao-text-xs: 0.8125rem;  --kakao-text-sm: 0.875rem;
 --kakao-text-base: 0.9375rem; --kakao-text-lg: 1rem;       --kakao-text-xl: 1.125rem;
@@ -551,7 +606,7 @@
     <div class="card">
       <ol class="small" style="margin:0;padding-left:1.2rem;display:grid;gap:.35rem">
         <li><b>Accessibility first:</b> focus outline everywhere, plus the contrast fixes in the table above. Small changes with a big effect.</li>
-        <li><b>Neutrals:</b> add the ramp tokens and move families B and C onto zinc. That removes most of the “three libraries” feel.</li>
+        <li><b>Neutrals:</b> <span class="tag ok">Done</span> colour roles and themes; every component's colours follow them.</li>
         <li><b>Shape &amp; elevation:</b> radius and shadow tokens; restyle list, popover and slider.</li>
         <li><b>Sizes:</b> align fields to the 36/44/52 control heights.</li>
         <li><b>Type scale:</b> swap hard-coded px font sizes for the scale tokens.</li>
@@ -567,8 +622,10 @@
   // Live swatches for the main colour variables.
   (function () {
     const tokens = [
-      ['primary', 'Accent / state'], ['text', 'Text'], ['muted', 'Muted text'], ['bg', 'Background'],
-      ['subtle', 'Subtle fill'], ['border', 'Border'], ['danger', 'Danger'], ['focus', 'Focus'],
+      ['primary', 'Accent / state'], ['text', 'Text'], ['text-soft', 'Soft text'], ['muted', 'Muted text'],
+      ['page', 'Page'], ['bg', 'Surface'], ['raised', 'Raised'], ['subtle', 'Subtle fill'],
+      ['subtle-strong', 'Subtle fill, strong'], ['line', 'Hairline'], ['border', 'Control border'], ['ink', 'Ink'],
+      ['on-ink', 'Text on ink'], ['danger', 'Danger'], ['on-danger', 'Text on danger'], ['focus', 'Focus'],
     ];
     const root = getComputedStyle(document.documentElement);
     const box = document.getElementById('token-swatches');
@@ -583,6 +640,43 @@
       card.querySelector('span').textContent = value;
       card.querySelector('code').textContent = prop;
       box.append(card);
+    });
+  })();
+
+  // Light / dark values of every colour variable, read from the scoped theme panels.
+  (function () {
+    const uses = {
+      primary: 'Accent: on, selected, filled', text: 'Text', 'text-soft': 'Secondary text, ghost button',
+      muted: 'Placeholders, captions, icons', page: 'Page background', bg: 'Surface: fields, lists, popovers, cards',
+      raised: 'Tab thumb, pressed segment', subtle: 'Secondary button, hover, tracks', 'subtle-strong': 'Pressed, selected row, tab track',
+      line: 'Decorative hairlines', border: 'Field edges, off switch track (3:1)', ink: 'Primary button', 'ink-hover': 'Primary button hover',
+      'on-ink': 'Text on ink', danger: 'Danger button, errors', 'danger-hover': 'Danger hover', 'on-danger': 'Text on danger', focus: 'Focus outline',
+    };
+    const [light, dark] = document.querySelectorAll('.theme-panel');
+    const L = getComputedStyle(light);
+    const D = getComputedStyle(dark);
+    const body = document.querySelector('#theme-table tbody');
+    const cell = (v) => {
+      const td = document.createElement('td');
+      const chip = document.createElement('span');
+      chip.className = 'tok-chip';
+      chip.style.background = v;
+      const code = document.createElement('code');
+      code.textContent = v;
+      td.append(chip, code);
+      return td;
+    };
+    Object.keys(uses).forEach((name) => {
+      const prop = `--kakao-color-${name}`;
+      const tr = document.createElement('tr');
+      const nameTd = document.createElement('td');
+      const code = document.createElement('code');
+      code.textContent = prop;
+      nameTd.append(code);
+      const useTd = document.createElement('td');
+      useTd.textContent = uses[name];
+      tr.append(nameTd, cell(L.getPropertyValue(prop).trim()), cell(D.getPropertyValue(prop).trim()), useTd);
+      body.append(tr);
     });
   })();
 

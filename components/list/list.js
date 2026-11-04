@@ -39,7 +39,7 @@
  *   --kakao-list-group-color     Group header text (default: #999)
  *   --kakao-list-scrollbar-track Scrollbar track color (default: #f0f0f0)
  *   --kakao-list-scrollbar-thumb Scrollbar thumb color (default: #bbb)
- *   --kakao-list-fade-color      Fade mask base color (default: 255,255,255)
+ *   --kakao-list-fade-color      Edge fade colour (default: --kakao-color-bg, else #ffffff)
  *   …and more (item/group sizes, chevron, focus, scrollbar hover): see the
  *   settings block or construction.html for the full list.
  *
@@ -119,27 +119,27 @@ class KakaoList extends HTMLElement {
       `<style>
         :host {
           /* @kakao-settings:start prefix=--kakao-list- (written by construction.html, edit there) */
-          --_bg: var(--kakao-list-bg, #fff);
-          --_border-color: var(--kakao-list-border-color, #eee);
-          --_item-color: var(--kakao-list-item-color, #111);
+          --_bg: var(--kakao-list-bg, var(--kakao-color-bg, #fff));
+          --_border-color: var(--kakao-list-border-color, var(--kakao-color-line, #eee));
+          --_item-color: var(--kakao-list-item-color, var(--kakao-color-text, #111));
           --_item-font: var(--kakao-list-item-font, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));
           --_item-font-size: var(--kakao-list-item-font-size, 14px);
           --_item-padding-x: var(--kakao-list-item-padding-x, 12px);
-          --_item-hover-bg: var(--kakao-list-item-hover-bg, #f5f5f5);
-          --_item-active-bg: var(--kakao-list-item-active-bg, #ebebeb);
-          --_item-selected-bg: var(--kakao-list-item-selected-bg, #e8e8e8);
-          --_group-bg: var(--kakao-list-group-bg, #f7f7f7);
-          --_group-color: var(--kakao-list-group-color, #999);
+          --_item-hover-bg: var(--kakao-list-item-hover-bg, var(--kakao-color-subtle, #f5f5f5));
+          --_item-active-bg: var(--kakao-list-item-active-bg, var(--kakao-color-subtle-strong, #ebebeb));
+          --_item-selected-bg: var(--kakao-list-item-selected-bg, var(--kakao-color-subtle-strong, #e8e8e8));
+          --_group-bg: var(--kakao-list-group-bg, var(--kakao-color-subtle, #f7f7f7));
+          --_group-color: var(--kakao-list-group-color, var(--kakao-color-muted, #999));
           --_group-height: var(--kakao-list-group-height, 28px);
           --_group-font-size: var(--kakao-list-group-font-size, 12px);
-          --_action-color: var(--kakao-list-action-color, #aaa);
-          --_action-hover-color: var(--kakao-list-action-hover-color, #555);
-          --_focus-color: var(--kakao-list-focus-color, #555);
-          --_scrollbar-track: var(--kakao-list-scrollbar-track, #f0f0f0);
-          --_scrollbar-thumb: var(--kakao-list-scrollbar-thumb, #bbb);
-          --_scrollbar-thumb-hover: var(--kakao-list-scrollbar-thumb-hover, #999);
-          --_scrollbar-thumb-active: var(--kakao-list-scrollbar-thumb-active, #888);
-          --_fade-color: var(--kakao-list-fade-color, 255,255,255);
+          --_action-color: var(--kakao-list-action-color, var(--kakao-color-muted, #aaa));
+          --_action-hover-color: var(--kakao-list-action-hover-color, var(--kakao-color-text, #555));
+          --_focus-color: var(--kakao-list-focus-color, var(--kakao-color-focus, #555));
+          --_scrollbar-track: var(--kakao-list-scrollbar-track, var(--kakao-color-subtle, #f0f0f0));
+          --_scrollbar-thumb: var(--kakao-list-scrollbar-thumb, var(--kakao-color-border, #bbb));
+          --_scrollbar-thumb-hover: var(--kakao-list-scrollbar-thumb-hover, var(--kakao-color-muted, #999));
+          --_scrollbar-thumb-active: var(--kakao-list-scrollbar-thumb-active, var(--kakao-color-text-soft, #888));
+          --_fade-color: var(--kakao-list-fade-color, var(--kakao-color-bg, #ffffff));
           --_fade-height: var(--kakao-list-fade-height, 90px);
           --_disabled-opacity: var(--kakao-list-disabled-opacity, 0.5);
           /* @kakao-settings:end */
@@ -164,14 +164,14 @@ class KakaoList extends HTMLElement {
         }
         .clip::before { top: 0;
           background: linear-gradient(to bottom,
-            rgba(var(--_fade-color), 0.95) 0%,
-            rgba(var(--_fade-color), 0.5) 40%,
-            rgba(var(--_fade-color), 0) 100%); }
+            color-mix(in srgb, var(--_fade-color) 95%, transparent) 0%,
+            color-mix(in srgb, var(--_fade-color) 50%, transparent) 40%,
+            transparent 100%); }
         .clip::after { bottom: 0;
           background: linear-gradient(to top,
-            rgba(var(--_fade-color), 0.95) 0%,
-            rgba(var(--_fade-color), 0.5) 40%,
-            rgba(var(--_fade-color), 0) 100%); }
+            color-mix(in srgb, var(--_fade-color) 95%, transparent) 0%,
+            color-mix(in srgb, var(--_fade-color) 50%, transparent) 40%,
+            transparent 100%); }
         .clip.can-scroll-up::before  { opacity: 1; }
         .clip.can-scroll-down::after { opacity: 1; }
 

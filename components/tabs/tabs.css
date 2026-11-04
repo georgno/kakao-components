@@ -8,12 +8,12 @@
 
 kakao-tabs {
   /* @kakao-settings:start prefix=--kakao-tabs- (written by construction.html, edit there) */
-  --_bg: var(--kakao-tabs-bg, #ebebeb);
+  --_bg: var(--kakao-tabs-bg, var(--kakao-color-subtle-strong, #ebebeb));
   --_color: var(--kakao-tabs-color, currentColor);
   --_padding: var(--kakao-tabs-padding, 4px);
   --_gap: var(--kakao-tabs-gap, 4px);
   --_radius: var(--kakao-tabs-radius, 10px);
-  --_thumb-bg: var(--kakao-tabs-thumb-bg, #fff);
+  --_thumb-bg: var(--kakao-tabs-thumb-bg, var(--kakao-color-raised, #fff));
   --_thumb-radius: var(--kakao-tabs-thumb-radius, 6px);
   --_thumb-shadow: var(--kakao-tabs-thumb-shadow, 0 2px 24px rgba(0, 0, 0, 0.04));
   --_tab-padding: var(--kakao-tabs-tab-padding, 10px 12px);
@@ -22,13 +22,9 @@ kakao-tabs {
   --_tab-weight: var(--kakao-tabs-tab-weight, 400);
   --_selected-weight: var(--kakao-tabs-selected-weight, 600);
   --_disabled-opacity: var(--kakao-tabs-disabled-opacity, 0.2);
-  --_focus-color: var(--kakao-tabs-focus-color, #888);
-  --_hold-glow: var(--kakao-tabs-hold-glow, rgba(0, 0, 0, 0.12));
+  --_focus-color: var(--kakao-tabs-focus-color, var(--kakao-color-focus, #888));
+  --_hold-glow: var(--kakao-tabs-hold-glow, color-mix(in srgb, var(--kakao-color-text, #000000) 12%, transparent));
   --_transition: var(--kakao-tabs-transition, 0.2s);
-  --_dark-bg: var(--kakao-tabs-dark-bg, #2a2a2a);
-  --_dark-thumb-bg: var(--kakao-tabs-dark-thumb-bg, #3d3d3d);
-  --_dark-thumb-shadow: var(--kakao-tabs-dark-thumb-shadow, 0 2px 24px rgba(0, 0, 0, 0.25));
-  --_dark-hold-glow: var(--kakao-tabs-dark-hold-glow, rgba(255, 255, 255, 0.12));
   /* @kakao-settings:end */
   display: flex;
   position: relative;
@@ -131,14 +127,7 @@ kakao-tab.shaking .label {
   }
 }
 
-/* Dark mode support (matches project theme) */
-[data-bs-theme="dark"] kakao-tabs,
-body.dark-mode kakao-tabs {
-  --_bg: var(--_dark-bg);
-  --_thumb-bg: var(--_dark-thumb-bg);
-  --_thumb-shadow: var(--_dark-thumb-shadow);
-  --_hold-glow: var(--_dark-hold-glow);
-}
+/* Dark mode: the colours follow the theme variables (shared/themes.css). */
 
 /* Panel host used by the widget */
 .kakao-tabs-panels > [role="tabpanel"][hidden] {

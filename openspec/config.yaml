@@ -21,6 +21,10 @@ context: |
   data-* passthrough matter.
   Verification is done in the browser (Firefox is the reference); there is no
   test suite.
+  Colours: components never hard-code a colour the theme should change; every
+  colour setting defaults to a theme role (var(--kakao-color-<role>, literal)).
+  Themes live in shared/themes.css and must pass `node tools/check-themes.js`
+  (WCAG AA). Every page loads tokens.css, themes.css and the theme switch.
   Design rules live in styleguide.html. Never style text in capitals: no
   text-transform: uppercase or small-caps anywhere; labels use sentence case,
   emphasis comes from weight and colour. Acronyms (PDF, URL) are written in

@@ -6,6 +6,8 @@
 <title>Kitchen Sink</title>
 <link rel="stylesheet" href="shared/tokens.css" />
 <link rel="stylesheet" href="shared/font.css" />
+<link rel="stylesheet" href="shared/themes.css" />
+<script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
 <link rel="stylesheet" href="components/tabs/tabs.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -50,13 +52,13 @@
     font: inherit;
     line-height: 1.5;
     color: inherit;
-    background: #fff;
-    border: 1px solid #dee2e6;
+    background: var(--kakao-color-bg, #fff);
+    border: 1px solid var(--kakao-color-border, #dee2e6);
     border-radius: 6px;
     outline: none;
   }
   input[type="text"]:focus-visible, input[type="email"]:focus-visible {
-    box-shadow: 0 0 0 4px rgba(24, 24, 27, 0.14);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--kakao-color-ink, #18181b) 14%, transparent);
   }
 
   .summary {
@@ -76,6 +78,7 @@
 </style>
 </head>
 <body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
     <a class="back" href="index.html">← All components</a>

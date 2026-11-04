@@ -11,25 +11,25 @@ kakao-button,
 .kakao-button-segment {
   /* @kakao-settings:start prefix=--kakao-button- (written by construction.html, edit there) */
   --_font: var(--kakao-button-font, var(--kakao-font-family, inherit));
-  --_ink: var(--kakao-button-ink, #18181b);
-  --_ink-soft: var(--kakao-button-ink-soft, #3f3f46);
-  --_paper: var(--kakao-button-paper, #fafafa);
+  --_ink: var(--kakao-button-ink, var(--kakao-color-ink, #18181b));
+  --_ink-soft: var(--kakao-button-ink-soft, var(--kakao-color-text-soft, #3f3f46));
+  --_paper: var(--kakao-button-paper, var(--kakao-color-on-ink, #fafafa));
   --_primary-bg: var(--kakao-button-primary-bg, var(--_ink));
   --_primary-text: var(--kakao-button-primary-text, var(--_paper));
-  --_primary-hover-bg: var(--kakao-button-primary-hover-bg, #2c2c31);
-  --_primary-ring: var(--kakao-button-primary-ring, rgba(24, 24, 27, 0.16));
+  --_primary-hover-bg: var(--kakao-button-primary-hover-bg, var(--kakao-color-ink-hover, #2c2c31));
+  --_primary-ring: var(--kakao-button-primary-ring, color-mix(in srgb, var(--_ink) 16%, transparent));
   --_primary-shadow: var(--kakao-button-primary-shadow, 0 2px 24px rgba(0, 0, 0, 0.04));
-  --_secondary-bg: var(--kakao-button-secondary-bg, #f0f0f1);
+  --_secondary-bg: var(--kakao-button-secondary-bg, var(--kakao-color-subtle, #f0f0f1));
   --_secondary-text: var(--kakao-button-secondary-text, var(--_ink));
-  --_secondary-hover-bg: var(--kakao-button-secondary-hover-bg, #e6e6e8);
-  --_secondary-ring: var(--kakao-button-secondary-ring, rgba(24, 24, 27, 0.12));
+  --_secondary-hover-bg: var(--kakao-button-secondary-hover-bg, var(--kakao-color-subtle-strong, #e6e6e8));
+  --_secondary-ring: var(--kakao-button-secondary-ring, color-mix(in srgb, var(--_ink) 12%, transparent));
   --_ghost-text: var(--kakao-button-ghost-text, var(--_ink-soft));
-  --_ghost-hover-bg: var(--kakao-button-ghost-hover-bg, rgba(24, 24, 27, 0.045));
-  --_ghost-ring: var(--kakao-button-ghost-ring, rgba(24, 24, 27, 0.10));
-  --_danger-bg: var(--kakao-button-danger-bg, #bd4b43);
-  --_danger-text: var(--kakao-button-danger-text, #fdf4f3);
-  --_danger-hover-bg: var(--kakao-button-danger-hover-bg, #a83f38);
-  --_danger-ring: var(--kakao-button-danger-ring, rgba(189, 75, 67, 0.18));
+  --_ghost-hover-bg: var(--kakao-button-ghost-hover-bg, color-mix(in srgb, var(--_ink) 4.5%, transparent));
+  --_ghost-ring: var(--kakao-button-ghost-ring, color-mix(in srgb, var(--_ink) 10%, transparent));
+  --_danger-bg: var(--kakao-button-danger-bg, var(--kakao-color-danger, #bd4b43));
+  --_danger-text: var(--kakao-button-danger-text, var(--kakao-color-on-danger, #fdf4f3));
+  --_danger-hover-bg: var(--kakao-button-danger-hover-bg, var(--kakao-color-danger-hover, #a83f38));
+  --_danger-ring: var(--kakao-button-danger-ring, color-mix(in srgb, var(--_danger-bg) 18%, transparent));
   --_danger-shadow: var(--kakao-button-danger-shadow, 0 2px 24px rgba(189, 75, 67, 0.06));
   --_sm-height: var(--kakao-button-sm-height, 36px);
   --_sm-padding-x: var(--kakao-button-sm-padding-x, 16px);
@@ -52,13 +52,13 @@ kakao-button,
   --_toggle-off-opacity: var(--kakao-button-toggle-off-opacity, 0.45);
   --_spinner-size: var(--kakao-button-spinner-size, 18px);
   --_transition: var(--kakao-button-transition, 0.2s);
-  --_segment-bg: var(--kakao-button-segment-bg, #f0f0f1);
+  --_segment-bg: var(--kakao-button-segment-bg, var(--kakao-color-subtle, #f0f0f1));
   --_segment-padding: var(--kakao-button-segment-padding, 4px);
   --_segment-gap: var(--kakao-button-segment-gap, 2px);
   --_segment-radius: var(--kakao-button-segment-radius, 14px);
   --_segment-item-radius: var(--kakao-button-segment-item-radius, 10px);
   --_segment-item-size: var(--kakao-button-segment-item-size, 38px);
-  --_segment-pressed-bg: var(--kakao-button-segment-pressed-bg, #fff);
+  --_segment-pressed-bg: var(--kakao-button-segment-pressed-bg, var(--kakao-color-raised, #fff));
   --_segment-pressed-shadow: var(--kakao-button-segment-pressed-shadow, 0 1px 8px rgba(0, 0, 0, 0.08));
   /* @kakao-settings:end */
 }
