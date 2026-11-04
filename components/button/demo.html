@@ -75,7 +75,7 @@
   </div>
 
   <h2>Menu</h2>
-  <p><code>list-data</code> turns any variant into a dropdown button: a chevron and a menu of choices. <code>selected</code> marks the current one; <code>show-selected</code> puts it on the button. Keyboard: ↓ / ↑ open, arrows move, a letter jumps, Enter picks, Escape closes.</p>
+  <p><code>list-data</code> turns any variant into a dropdown button: a chevron and a menu of choices. <code>selected</code> marks the current one; <code>show-selected</code> puts it on the button; <code>no-chevron</code> hides the chevron (icon-only dropdowns then stay round). Keyboard: ↓ / ↑ open, arrows move, a letter jumps, Enter picks, Escape closes.</p>
   <div class="grid">
     <div class="card">
       <h3>Shows the choice · <code>show-selected</code></h3>
@@ -86,6 +86,15 @@
       <h3>Action menu · primary</h3>
       <kakao-button label="Export" icon="fas fa-download"
         list-data='[{"value":"csv","label":"CSV"},{"value":"xlsx","label":"Excel"},{"value":"pdf","label":"PDF"}]'></kakao-button>
+    </div>
+    <div class="card">
+      <h3>Actions · <code>no-chevron</code></h3>
+      <div class="row">
+        <kakao-button icon="fas fa-ellipsis" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
+          list-data='[{"value":"edit","label":"Edit"},{"value":"duplicate","label":"Duplicate"},{"value":"delete","label":"Delete"}]'></kakao-button>
+        <kakao-button icon="fas fa-ellipsis-vertical" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
+          list-data='[{"value":"rename","label":"Rename"},{"value":"move","label":"Move"},{"value":"archive","label":"Archive"}]'></kakao-button>
+      </div>
     </div>
     <div class="card">
       <h3>Ghost · small</h3>
@@ -108,7 +117,7 @@
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 
-  <footer>Attributes: <code>label</code>, <code>icon</code>, <code>icon-position</code>, <code>variant</code>, <code>size</code>, <code>disabled</code>, <code>toggle</code>, <code>pressed</code>, <code>type</code>, <code>name</code>, <code>value</code>, <code>form</code>, <code>href</code>, <code>aria-label</code>. <code>data-*</code> is mirrored onto the inner button. Menu form: <code>list-data</code>, <code>selected</code>, <code>show-selected</code>. Events <code>kakao-button-action</code>, <code>kakao-button-select</code>, <code>kakao-button-menu</code>.</footer>
+  <footer>Attributes: <code>label</code>, <code>icon</code>, <code>icon-position</code>, <code>variant</code>, <code>size</code>, <code>disabled</code>, <code>toggle</code>, <code>pressed</code>, <code>type</code>, <code>name</code>, <code>value</code>, <code>form</code>, <code>href</code>, <code>aria-label</code>. <code>data-*</code> is mirrored onto the inner button. Menu form: <code>list-data</code>, <code>selected</code>, <code>show-selected</code>, <code>no-chevron</code>. Events <code>kakao-button-action</code>, <code>kakao-button-select</code>, <code>kakao-button-menu</code>.</footer>
 </main>
 
 <script>

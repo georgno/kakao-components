@@ -17,6 +17,8 @@
  *   selected        Value of the checked item (role="menuitemradio"). Updated on pick.
  *   show-selected   Show the selected item's label instead of `label`
  *                   (`label` is then the menu's accessible name: "Theme: Dark").
+ *   no-chevron      Hide the chevron (e.g. a "⋯" actions button). An icon-only
+ *                   dropdown then stays a circle; with the chevron it is a pill.
  *   Keyboard in the open menu: ↑ / ↓ / Home / End move, a letter jumps,
  *   Enter / Space pick, Escape closes and returns focus, Tab closes.
  *
@@ -127,9 +129,16 @@
       if (this._menu) this._menu.hidden = true;
     }
 
-    attributeChangedCallback(name) {
+    attributeChangedCallback(name, oldValue, newValue) {
       if (!this._initialized) {
         return;
+      }
+      // Newly pressed: play the brief settle shadow (segmented toggles).
+      if (name === 'pressed' && oldValue === null && newValue !== null && this.isConnected) {
+        this.classList.add('kakao-button-settling'); // a class, so it isn't mirrored like data-*
+        clearTimeout(this._settleTimer);
+        const ms = parseFloat(getComputedStyle(this).getPropertyValue('--_segment-settle-duration')) || 700;
+        this._settleTimer = setTimeout(() => this.classList.remove('kakao-button-settling'), ms + 50);
       }
       if (name === 'disabled' || name === 'pressed') {
         this._btn.setAttribute('aria-pressed', this.hasAttribute('pressed') ? 'true' : 'false');

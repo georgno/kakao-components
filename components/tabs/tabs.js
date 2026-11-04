@@ -24,6 +24,7 @@
       const label = document.createElement('span');
       label.className = 'label';
       label.append(...this.childNodes);
+      label.dataset.text = label.textContent.trim(); // reserves the bold width (CSS)
       this.appendChild(glow);
       this.appendChild(label);
 
@@ -142,15 +143,17 @@
     _getPos(item) {
       const tr = this.getBoundingClientRect();
       const ir = item.getBoundingClientRect();
-      // The thumb's own offset is the container padding (a theming setting)
-      return { x: ir.left - tr.left - this._thumb.offsetLeft, w: ir.width };
+      // In the scrolled content's coordinates (the thumb scrolls with the tabs);
+      // the thumb's own offset is the container padding (a theming setting).
+      return { x: ir.left - tr.left + this.scrollLeft - this.clientLeft - this._thumb.offsetLeft, w: ir.width };
     }
 
     _repositionThumb() {
       if (!this._currentItem) return;
       const { x, w } = this._getPos(this._currentItem);
       if (!w) return;
-      if (!this._thumb._x) {
+      // Follow every resize (not only the first layout) unless a move is running
+      if (!this._currentAnim) {
         this._thumb.style.transform = `translateX(${x}px)`;
         this._thumb.style.width = w + 'px';
       }
@@ -178,7 +181,7 @@
       if (this._currentAnim) {
         const tr = this._thumb.getBoundingClientRect();
         const pr = this.getBoundingClientRect();
-        fromX = tr.left - pr.left - 4;
+        fromX = tr.left - pr.left + this.scrollLeft - this.clientLeft - this._thumb.offsetLeft;
         fromW = tr.width;
         this._currentAnim.cancel();
       }
@@ -198,8 +201,23 @@
       this._thumb._w = targetW;
     }
 
+    /** When the row scrolls, bring a tab fully into view (without scrolling the page). */
+    _scrollIntoView(item, smooth) {
+      if (this.scrollWidth <= this.clientWidth + 1) return;
+      const pad = this._thumb.offsetLeft;
+      const left = item.offsetLeft - pad;
+      const right = item.offsetLeft + item.offsetWidth + pad - this.clientWidth;
+      let target = null;
+      if (left < this.scrollLeft) target = left;
+      else if (right > this.scrollLeft) target = right;
+      if (target === null) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.scrollTo({ left: target, behavior: smooth && !reduce ? 'smooth' : 'auto' });
+    }
+
     _selectItem(item) {
       if (!item || item.disabled || item === this._currentItem) return;
+      this._scrollIntoView(item, true);
       this._moveThumb(item);
       this._items().forEach(i => {
         i.setSelected(i === item);
@@ -349,6 +367,7 @@
             }
           });
           this._currentItem = first;
+          this._scrollIntoView(first, false);
         });
       }
     }

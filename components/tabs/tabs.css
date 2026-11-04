@@ -16,7 +16,9 @@ kakao-tabs {
   --_thumb-bg: var(--kakao-tabs-thumb-bg, var(--kakao-color-raised, #fff));
   --_thumb-radius: var(--kakao-tabs-thumb-radius, 6px);
   --_thumb-shadow: var(--kakao-tabs-thumb-shadow, 0 2px 24px rgba(0, 0, 0, 0.04));
-  --_tab-padding: var(--kakao-tabs-tab-padding, 10px 12px);
+  --_tab-padding: var(--kakao-tabs-tab-padding, 8px 14px);
+  --_tab-padding-compact: var(--kakao-tabs-tab-padding-compact, 8px 10px);
+  --_tab-line-height: var(--kakao-tabs-tab-line-height, 20px);
   --_tab-min-width: var(--kakao-tabs-tab-min-width, 4.5rem);
   --_tab-opacity: var(--kakao-tabs-tab-opacity, 0.45);
   --_tab-weight: var(--kakao-tabs-tab-weight, 400);
@@ -28,8 +30,15 @@ kakao-tabs {
   /* @kakao-settings:end */
   display: flex;
   position: relative;
+  /* Equal columns that fill the row, each at least as wide as its label.
+     When they don't fit, the row scrolls (the selected tab is kept in view). */
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(max-content, 1fr);
+  align-items: stretch;
   gap: var(--_gap);
   padding: var(--_padding);
+  scroll-padding-inline: var(--_padding);
   box-sizing: border-box;
   color: var(--_color);
   background: var(--_bg);
@@ -58,11 +67,14 @@ kakao-tabs .thumb {
 kakao-tab {
   position: relative;
   z-index: 1;
-  flex: 1 0 auto;
   min-width: var(--_tab-min-width);
-  display: block;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   padding: var(--_tab-padding);
+  line-height: var(--_tab-line-height);
   text-align: center;
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
@@ -75,8 +87,8 @@ kakao-tab {
 
 kakao-tab:focus-visible {
   outline: 2px solid var(--_focus-color);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline-offset: 0;
+  border-radius: var(--_thumb-radius);
 }
 
 kakao-tab[selected] {
@@ -102,7 +114,26 @@ kakao-tab .hold-glow {
 kakao-tab .label {
   position: relative;
   z-index: 1;
-  display: inline-block;
+  display: inline-grid;
+}
+
+/* Reserve the bold width, so selecting a tab never changes any tab's width */
+kakao-tab .label::after {
+  content: attr(data-text);
+  font-weight: var(--_selected-weight);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Phones: tighter tabs so a typical row of 3–4 fits without scrolling */
+@media (max-width: 480px) {
+  kakao-tab {
+    min-width: 0;
+    padding: var(--_tab-padding-compact);
+  }
 }
 
 kakao-tab.shaking .label {

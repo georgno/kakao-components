@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-card — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="card.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  kakao-card { max-width: 22rem; }
+  kakao-card h3[slot="header"] { font-size: 1.05rem; }
+  kakao-card p { margin: 0; opacity: .75; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="card" data-source="card.js" data-title="Card">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Primary button first · glow</figcaption>
+      <kakao-card>
+        <h3 slot="header">Upgrade to Pro</h3>
+        <p>Unlimited projects, version history and priority support.</p>
+        <div slot="footer"><kakao-button label="Upgrade"></kakao-button><kakao-button label="Later" variant="ghost"></kakao-button></div>
+      </kakao-card>
+    </figure>
+    <figure>
+      <figcaption>Danger button first</figcaption>
+      <kakao-card>
+        <h3 slot="header">Delete project</h3>
+        <p>This cannot be undone.</p>
+        <div slot="footer"><kakao-button label="Delete" variant="danger"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button></div>
+      </kakao-card>
+    </figure>
+    <figure>
+      <figcaption>No footer button · no glow</figcaption>
+      <kakao-card>
+        <h3 slot="header">Body only</h3>
+        <p>Header and body.</p>
+      </kakao-card>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-card-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-card-border", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-card-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-card-padding", "label": "Padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-card-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-card-footer-gap", "label": "Footer gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-card-footer-spacing", "label": "Space above footer", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-card-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-card-glow-strength", "label": "Glow strength", "group": "Glow", "type": "percent", "hint": "colour mix at the centre" },
+    { "property": "--kakao-card-glow-size", "label": "Glow size", "group": "Glow", "type": "length" },
+    { "property": "--kakao-card-glow-blur", "label": "Glow blur", "group": "Glow", "type": "length" },
+    { "property": "--kakao-card-glow-duration", "label": "Glow fade", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+</body>
+</html>

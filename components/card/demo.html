@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-card — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="card.js" defer></script>
+<style>
+  kakao-card h3[slot="header"] { font-size: 1.05rem; letter-spacing: -0.01em; }
+  kakao-card p { color: var(--muted); }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Card</h1>
+    <p><code>&lt;kakao-card&gt;</code> — a content card with header, body and footer. When the footer starts with a <code>&lt;kakao-button&gt;</code>, a faint glow in the button's colour rises from behind it.</p>
+  </header>
+
+  <h2>Glow</h2>
+  <p>The colour comes from the first footer button: its variant and the theme. Try the theme switch.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Upgrade to Pro</h3>
+      <p>Unlimited projects, version history and priority support.</p>
+      <div slot="footer">
+        <kakao-button label="Upgrade"></kakao-button>
+        <kakao-button label="Later" variant="ghost"></kakao-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Delete project</h3>
+      <p>This removes all files and cannot be undone.</p>
+      <div slot="footer">
+        <kakao-button label="Delete" variant="danger" icon="fas fa-trash"></kakao-button>
+        <kakao-button label="Cancel" variant="secondary"></kakao-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Invite your team</h3>
+      <p>A single button can go straight into the footer.</p>
+      <kakao-button slot="footer" label="Send invites" variant="secondary"></kakao-button>
+    </kakao-card>
+  </div>
+
+  <h2>Without glow</h2>
+  <p>No button first in the footer, no footer, or <code>no-glow</code>.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Text first</h3>
+      <p>The footer starts with text, so there is no glow.</p>
+      <div slot="footer"><span style="color:var(--muted);font-size:.85rem">Updated today</span> <kakao-button label="Open" size="sm"></kakao-button></div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Body only</h3>
+      <p>Header and body, no footer.</p>
+    </kakao-card>
+    <kakao-card no-glow>
+      <h3 slot="header"><code>no-glow</code></h3>
+      <p>Button first, glow turned off.</p>
+      <div slot="footer"><kakao-button label="Continue"></kakao-button></div>
+    </kakao-card>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Change the first footer button and watch the glow follow.</p>
+  <div class="grid">
+    <kakao-card id="play">
+      <h3 slot="header">Live</h3>
+      <p>The glow tracks the button's colour and position.</p>
+      <div slot="footer" id="playFooter">
+        <kakao-button id="playBtn" label="Action"></kakao-button>
+      </div>
+    </kakao-card>
+    <div class="card">
+      <div class="toolbar" style="margin-top:0">
+        <kakao-button id="v-primary" label="primary" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="v-secondary" label="secondary" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="v-ghost" label="ghost" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="v-danger" label="danger" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="v-big" label="size lg" variant="secondary" size="sm" toggle></kakao-button>
+      </div>
+    </div>
+  </div>
+
+  <footer>Attribute: <code>no-glow</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Parts: <code>card</code>, <code>glow</code>, <code>header</code>, <code>body</code>, <code>footer</code>. Full reference in the header of <code>card.js</code>.</footer>
+</main>
+<script>
+  const btn = document.getElementById('playBtn');
+  ['primary', 'secondary', 'ghost', 'danger'].forEach((v) => {
+    document.getElementById(`v-${v}`).addEventListener('kakao-button-action', () => {
+      if (v === 'primary') btn.removeAttribute('variant');
+      else btn.setAttribute('variant', v);
+    });
+  });
+  document.getElementById('v-big').addEventListener('kakao-button-action', (e) => {
+    if (e.target.closest('kakao-button').hasAttribute('pressed')) btn.setAttribute('size', 'lg');
+    else btn.removeAttribute('size');
+  });
+</script>
+</body>
+</html>

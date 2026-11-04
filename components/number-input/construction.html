@@ -34,6 +34,10 @@
       <figcaption>Disabled</figcaption>
       <kakao-number-input><input type="number" value="42" disabled aria-label="Locked" /></kakao-number-input>
     </figure>
+    <figure>
+      <figcaption>Touch layout (touch screens)</figcaption>
+      <kakao-number-input touch-steppers><input type="number" min="0" max="100" value="10" aria-label="Quantity (touch)" /></kakao-number-input>
+    </figure>
   </div>
 
   <script type="application/json" class="construction-manifest">
@@ -63,7 +67,10 @@
     { "property": "--kakao-number-input-sm-arrow-width", "label": "Stepper width", "group": "Size sm", "type": "length" },
     { "property": "--kakao-number-input-sm-input-padding-right", "label": "Padding right", "group": "Size sm", "type": "length" },
     { "property": "--kakao-number-input-sm-font-size", "label": "Font size", "group": "Size sm", "type": "length" },
-    { "property": "--kakao-number-input-sm-arrow-size", "label": "Arrow size", "group": "Size sm", "type": "length" }
+    { "property": "--kakao-number-input-sm-arrow-size", "label": "Arrow size", "group": "Size sm", "type": "length" },
+    { "property": "--kakao-number-input-touch-size", "label": "Touch button size", "group": "Size & spacing", "type": "length", "hint": "touch screens: | value | − | + |" },
+    { "property": "--kakao-number-input-touch-glyph-size", "label": "Touch − / + size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-number-input-touch-radius", "label": "Touch radius", "group": "Shape", "type": "radius" }
   ]
   </script>
 </main>

@@ -24,6 +24,7 @@
 <script src="components/animated-number/animated-number.js" defer></script>
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
+<script src="components/card/card.js" defer></script>
 <style>
   dl { margin: 0; font-size: 14px; }
   dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
@@ -74,8 +75,10 @@
               list-data='[{"value":"csv","label":"CSV"},{"value":"xlsx","label":"Excel"},{"value":"pdf","label":"PDF"}]'></kakao-button>
             <kakao-button label="Sort by" variant="secondary" show-selected selected="newest"
               list-data='[{"value":"newest","label":"Newest first"},{"value":"oldest","label":"Oldest first"},{"value":"name","label":"Name"}]'></kakao-button>
-            <kakao-button icon="fas fa-ellipsis" aria-label="More actions" icon-position="only" variant="ghost"
+            <kakao-button icon="fas fa-ellipsis" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
               list-data='[{"value":"edit","label":"Edit"},{"value":"duplicate","label":"Duplicate"},{"value":"delete","label":"Delete"}]'></kakao-button>
+            <kakao-button icon="fas fa-ellipsis-vertical" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
+              list-data='[{"value":"rename","label":"Rename"},{"value":"move","label":"Move"},{"value":"archive","label":"Archive"}]'></kakao-button>
           </div>
         </div>
         <div class="example">
@@ -425,6 +428,35 @@
           <h3>Disabled</h3>
           <kakao-list width="220" height="260" disabled
             list-data='[{"group":"Locked","names":["One","Two","Three","Four","Five"]}]'></kakao-list>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Card ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Card</h2>
+        <code>&lt;kakao-card&gt;</code>
+        <a href="components/card/construction.html">Construction</a>
+        <a href="components/card/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Content card with header, body and footer. When the footer starts with a button, a faint glow in the button's colour rises from behind it.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Primary button first</h3>
+          <kakao-card>
+            <strong slot="header">Upgrade to Pro</strong>
+            <span style="color:var(--muted)">Unlimited projects and priority support.</span>
+            <div slot="footer"><kakao-button label="Upgrade" size="sm"></kakao-button><kakao-button label="Later" variant="ghost" size="sm"></kakao-button></div>
+          </kakao-card>
+        </div>
+        <div class="example">
+          <h3>Danger button first</h3>
+          <kakao-card>
+            <strong slot="header">Delete project</strong>
+            <span style="color:var(--muted)">This cannot be undone.</span>
+            <div slot="footer"><kakao-button label="Delete" variant="danger" size="sm"></kakao-button><kakao-button label="Cancel" variant="secondary" size="sm"></kakao-button></div>
+          </kakao-card>
         </div>
       </div>
     </article>

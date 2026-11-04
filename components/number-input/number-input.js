@@ -11,7 +11,11 @@
  *   </kakao-number-input>
  *
  * Attributes (on <kakao-number-input>):
- *   size — "sm" for a compact control (styling hook via number-input.css)
+ *   size           — "sm" for a compact control (styling hook via number-input.css)
+ *   touch-steppers — always use the touch layout (it is used on touch screens
+ *                    anyway): | value | − | + | with 44px buttons on the right
+ *
+ * Hold an arrow to repeat the step.
  *
  * The inner input keeps min, max, step, value, disabled, and class names
  * (e.g. your form framework). Changes bubble as input/change on the input.
@@ -41,21 +45,29 @@ class KakaoNumberInput extends HTMLElement {
       this.appendChild(arrows);
       this._arrows = arrows;
 
-      this._onUp = (e) => {
-        e.preventDefault();
-        this._adjust(+1);
+      // Press: one step at once, then repeat while held (mouse, touch, pen).
+      const press = (dir) => (e) => {
+        e.preventDefault(); // keep focus in the input, no text selection
+        this._stopRepeat();
+        this._adjust(dir);
+        this._repeatDelay = setTimeout(() => {
+          this._repeatTimer = setInterval(() => this._adjust(dir), 70);
+        }, 400);
       };
-      this._onDown = (e) => {
-        e.preventDefault();
-        this._adjust(-1);
+      this._onUp = press(+1);
+      this._onDown = press(-1);
+      this._stopRepeat = () => {
+        clearTimeout(this._repeatDelay);
+        clearInterval(this._repeatTimer);
       };
       this._onWheel = (e) => {
         e.preventDefault();
         this._adjust(e.deltaY < 0 ? +1 : -1);
       };
 
-      arrows.querySelector('.kakao-number-input-up').addEventListener('mousedown', this._onUp);
-      arrows.querySelector('.kakao-number-input-dn').addEventListener('mousedown', this._onDown);
+      arrows.querySelector('.kakao-number-input-up').addEventListener('pointerdown', this._onUp);
+      arrows.querySelector('.kakao-number-input-dn').addEventListener('pointerdown', this._onDown);
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => arrows.addEventListener(t, this._stopRepeat));
       arrows.addEventListener('wheel', this._onWheel, { passive: false });
     }
     this._initialized = true;
@@ -64,9 +76,11 @@ class KakaoNumberInput extends HTMLElement {
   disconnectedCallback() {
     const arrows = this._arrows;
     if (!arrows) return;
-    arrows.querySelector('.kakao-number-input-up')?.removeEventListener('mousedown', this._onUp);
-    arrows.querySelector('.kakao-number-input-dn')?.removeEventListener('mousedown', this._onDown);
+    arrows.querySelector('.kakao-number-input-up')?.removeEventListener('pointerdown', this._onUp);
+    arrows.querySelector('.kakao-number-input-dn')?.removeEventListener('pointerdown', this._onDown);
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => arrows.removeEventListener(t, this._stopRepeat));
     arrows.removeEventListener('wheel', this._onWheel);
+    this._stopRepeat();
     this._initialized = false;
   }
 

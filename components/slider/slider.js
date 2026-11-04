@@ -19,6 +19,8 @@
  * | unit      | string  | ""      | Unit label appended to the number input (e.g. "px")   |
  * | label     | string  | "Value" | Accessible label for the slider                       |
  * | disabled  | boolean | false   | Disables all interaction                              |
+ * | touch-steppers | boolean | false | Always show the big | < | value | > | step buttons  |
+ * |              |         |      | (they show on touch screens anyway).                   |
  * | scroll-input | boolean | auto | When `kakao-number-input` is registered on the page, wrap
  * |              |         |      | the numeric field with it (stepper arrows). Set
  * |              |         |      | `scroll-input="false"` to force the native input.
@@ -86,7 +88,7 @@
 
 class KakaoSlider extends HTMLElement {
   static get observedAttributes() {
-    return ['min', 'max', 'value', 'step', 'unit', 'label', 'disabled'];
+    return ['min', 'max', 'value', 'step', 'unit', 'label', 'disabled', 'touch-steppers'];
   }
 
   constructor() {
@@ -146,6 +148,8 @@ class KakaoSlider extends HTMLElement {
     thumb?.removeEventListener('blur',    this._onThumbBlur);
 
     this._unbindNumberInput();
+    clearTimeout(this._repeatDelay);
+    clearInterval(this._repeatTimer);
 
     window.removeEventListener('pointermove', this._onPointerMove);
     window.removeEventListener('pointerup',   this._onPointerUp);
@@ -206,6 +210,8 @@ class KakaoSlider extends HTMLElement {
           --_stepper-hover-bg: var(--kakao-slider-stepper-hover-bg, var(--kakao-color-subtle, #f0f0f0));
           --_stepper-hover-color: var(--kakao-slider-stepper-hover-color, var(--kakao-color-text, #111));
           --_stepper-active-bg: var(--kakao-slider-stepper-active-bg, var(--kakao-color-subtle-strong, #e0e0e0));
+          --_touch-step-size: var(--kakao-slider-touch-step-size, 44px);
+          --_touch-radius: var(--kakao-slider-touch-radius, 10px);
           /* @kakao-settings:end */
           display: block;
           font-family: var(--_font-family);
@@ -297,6 +303,58 @@ class KakaoSlider extends HTMLElement {
           flex: 0 1 auto;
           min-width: 0;
         }
+
+        /* ── Touch steppers: | < | value unit | > | ──
+           Hidden with a mouse; shown on touch screens (or with the
+           touch-steppers attribute), replacing the number field's small arrows. */
+        .step {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          flex: 0 0 var(--_touch-step-size);
+          width: var(--_touch-step-size);
+          padding: 0;
+          border: 0;
+          background: transparent;
+          color: var(--_stepper-color);
+          cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
+        }
+        .step svg {
+          width: 18px;
+          height: 18px;
+          fill: none;
+          stroke: currentColor;
+          stroke-width: 2.4;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+        .step:hover { background: var(--_stepper-hover-bg); color: var(--_stepper-hover-color); }
+        .step:active { background: var(--_stepper-active-bg); }
+        .step:disabled { opacity: 0.35; cursor: default; background: transparent; }
+        .step-dec { border-right: 1px solid var(--_input-border); }
+        .step-inc { border-left: 1px solid var(--_input-border); }
+
+        @media (pointer: coarse) {
+          :host .step { display: flex; }
+          :host .input-wrap { min-height: var(--_touch-step-size); border-radius: var(--_touch-radius); }
+          :host .number-input,
+          :host kakao-number-input input[type="number"] { font-size: 16px; padding-right: 8px; height: 100%; }
+          :host kakao-number-input { width: 64px; height: 100%; }
+          :host kakao-number-input .kakao-number-input-arrows { display: none; }
+          :host .input-field { display: flex; align-items: stretch; }
+          :host .unit-badge { font-size: 13px; padding: 0 8px; }
+        }
+
+        :host([touch-steppers]) .step { display: flex; }
+        :host([touch-steppers]) .input-wrap { min-height: var(--_touch-step-size); border-radius: var(--_touch-radius); }
+        :host([touch-steppers]) .number-input,
+        :host([touch-steppers]) kakao-number-input input[type="number"] { font-size: 16px; padding-right: 8px; height: 100%; }
+        :host([touch-steppers]) kakao-number-input { width: 64px; height: 100%; }
+        :host([touch-steppers]) kakao-number-input .kakao-number-input-arrows { display: none; }
+        :host([touch-steppers]) .input-field { display: flex; align-items: stretch; }
+        :host([touch-steppers]) .unit-badge { font-size: 13px; padding: 0 8px; }
 
         /* kakao-number-input inside shadow (when number-input.js is on the page) */
         kakao-number-input {
@@ -511,6 +569,9 @@ class KakaoSlider extends HTMLElement {
         <div class="header">
           <span class="slider-label" part="label"></span>
           <div class="input-wrap" part="input-wrap">
+            <button type="button" class="step step-dec" part="step-dec" tabindex="-1">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
             <div class="input-field" part="input-field">
               <input
                 class="number-input"
@@ -520,6 +581,9 @@ class KakaoSlider extends HTMLElement {
               />
             </div>
             <span class="unit-badge" part="unit"></span>
+            <button type="button" class="step step-inc" part="step-inc" tabindex="-1">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
           </div>
         </div>
 
@@ -563,6 +627,35 @@ class KakaoSlider extends HTMLElement {
     thumb.addEventListener('blur',    this._onThumbBlur);
 
     this._bindNumberInput();
+    this._bindSteps();
+  }
+
+  // ─── Touch steppers (hold to repeat) ─────────────────────────────────────────
+
+  _bindSteps() {
+    this._shadow.querySelectorAll('.step').forEach((btn) => {
+      const dir = btn.classList.contains('step-inc') ? 1 : -1;
+      const step = () => this._setValue(this._value + dir * this._step);
+      const stop = () => {
+        clearTimeout(this._repeatDelay);
+        clearInterval(this._repeatTimer);
+      };
+      btn.addEventListener('pointerdown', (e) => {
+        if (btn.disabled) return;
+        e.preventDefault(); // keep focus where it is, no text selection
+        step();
+        stop();
+        this._repeatDelay = setTimeout(() => {
+          this._repeatTimer = setInterval(() => {
+            if (btn.disabled) stop();
+            else step();
+          }, 70);
+        }, 400);
+      });
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => btn.addEventListener(t, stop));
+      // Keyboard / assistive tech activation (no pointer)
+      btn.addEventListener('click', (e) => { if (e.detail === 0 && !btn.disabled) step(); });
+    });
   }
 
   // ─── Number field (native vs kakao-number-input) ─────────────────────────────────
@@ -673,6 +766,13 @@ class KakaoSlider extends HTMLElement {
     input.setAttribute('aria-label', `${this._label} input`);
 
     s.querySelector('.unit-badge').textContent = this._unit;
+
+    const dec = s.querySelector('.step-dec');
+    const inc = s.querySelector('.step-inc');
+    dec.setAttribute('aria-label', `Decrease ${this._label}`);
+    inc.setAttribute('aria-label', `Increase ${this._label}`);
+    dec.disabled = this.hasAttribute('disabled') || this._value <= this._min;
+    inc.disabled = this.hasAttribute('disabled') || this._value >= this._max;
 
     const thumb = s.querySelector('.thumb');
     thumb.style.left = `${pct}%`;

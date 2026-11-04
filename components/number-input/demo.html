@@ -41,6 +41,13 @@
       </kakao-number-input>
     </div>
     <div class="card">
+      <h3>Touch layout · <code>touch-steppers</code></h3>
+      <kakao-number-input touch-steppers>
+        <input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity (touch)" />
+      </kakao-number-input>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Used automatically on touch screens: − and + as 44px buttons on the right; hold to repeat.</p>
+    </div>
+    <div class="card">
       <h3>Disabled</h3>
       <kakao-number-input>
         <input type="number" value="42" disabled aria-label="Locked" />
@@ -58,7 +65,7 @@
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 
-  <footer>Attribute on the host: <code>size</code> (<code>sm</code>). Everything else lives on the wrapped input. Full reference in the header of <code>number-input.js</code>.</footer>
+  <footer>Attributes on the host: <code>size</code> (<code>sm</code>), <code>touch-steppers</code>. Everything else lives on the wrapped input. Full reference in the header of <code>number-input.js</code>.</footer>
 </main>
 
 <script>

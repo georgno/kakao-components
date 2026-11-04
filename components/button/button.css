@@ -60,6 +60,7 @@ kakao-button,
   --_segment-item-size: var(--kakao-button-segment-item-size, 38px);
   --_segment-pressed-bg: var(--kakao-button-segment-pressed-bg, var(--kakao-color-raised, #fff));
   --_segment-pressed-shadow: var(--kakao-button-segment-pressed-shadow, 0 1px 8px rgba(0, 0, 0, 0.08));
+  --_segment-settle-duration: var(--kakao-button-segment-settle-duration, 700ms);
   --_chevron-size: var(--kakao-button-chevron-size, 0.9em);
   --_menu-bg: var(--kakao-button-menu-bg, var(--kakao-color-bg, #ffffff));
   --_menu-text: var(--kakao-button-menu-text, var(--kakao-color-text, #18181b));
@@ -324,7 +325,24 @@ kakao-button[toggle][pressed] .kakao-button-inner {
 
 .kakao-button-segment kakao-button[pressed] .kakao-button-inner {
   background: var(--_segment-pressed-bg);
-  box-shadow: var(--_segment-pressed-shadow);
+}
+
+/* The press shadow only shows while an item becomes pressed: it fades in,
+   then out again once the item has settled. At rest there is no shadow. */
+.kakao-button-segment kakao-button[pressed].kakao-button-settling .kakao-button-inner {
+  animation: kakao-button-segment-settle var(--_segment-settle-duration) ease-out;
+}
+
+@keyframes kakao-button-segment-settle {
+  0% { box-shadow: 0 0 0 transparent; }
+  25% { box-shadow: var(--_segment-pressed-shadow); }
+  100% { box-shadow: 0 0 0 transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kakao-button-segment kakao-button[pressed].kakao-button-settling .kakao-button-inner {
+    animation: none;
+  }
 }
 
 /* keep the keyboard focus ring (box-shadow is reset above) */
@@ -361,8 +379,12 @@ kakao-button[data-menu] .kakao-button-inner[aria-expanded="true"] .kakao-button-
   transform: rotate(180deg);
 }
 
-/* icon-only menu buttons become a pill so the chevron always shows */
-kakao-button[data-menu][icon-position="only"] .kakao-button-inner {
+kakao-button[no-chevron] .kakao-button-chevron {
+  display: none;
+}
+
+/* icon-only menu buttons become a pill so the chevron shows (unless no-chevron) */
+kakao-button[data-menu][icon-position="only"]:not([no-chevron]) .kakao-button-inner {
   width: auto;
   padding: 0 0.85em 0 0.95em;
   border-radius: 999px;

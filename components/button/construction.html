@@ -57,6 +57,8 @@
           list-data='[{"value":"newest","label":"Newest first"},{"value":"oldest","label":"Oldest first"},{"value":"name","label":"Name"},{"value":"size","label":"Size","disabled":true}]'></kakao-button>
         <kakao-button label="Export" size="sm"
           list-data='[{"value":"csv","label":"CSV"},{"value":"xlsx","label":"Excel"},{"value":"pdf","label":"PDF"}]'></kakao-button>
+        <kakao-button icon="fas fa-ellipsis-vertical" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
+          list-data='[{"value":"rename","label":"Rename"},{"value":"archive","label":"Archive"}]'></kakao-button>
       </div>
     </figure>
     <figure>
@@ -125,7 +127,8 @@
 
     { "property": "--kakao-button-segment-bg", "label": "Background", "group": "Segmented toggle", "type": "color" },
     { "property": "--kakao-button-segment-pressed-bg", "label": "Pressed background", "group": "Segmented toggle", "type": "color" },
-    { "property": "--kakao-button-segment-pressed-shadow", "label": "Pressed shadow", "group": "Segmented toggle", "type": "shadow" },
+    { "property": "--kakao-button-segment-pressed-shadow", "label": "Press shadow", "group": "Segmented toggle", "type": "shadow", "hint": "only while an item settles" },
+    { "property": "--kakao-button-segment-settle-duration", "label": "Press shadow duration", "group": "Segmented toggle", "type": "duration" },
     { "property": "--kakao-button-segment-padding", "label": "Padding", "group": "Segmented toggle", "type": "length" },
     { "property": "--kakao-button-segment-gap", "label": "Gap", "group": "Segmented toggle", "type": "length" },
     { "property": "--kakao-button-segment-radius", "label": "Radius", "group": "Segmented toggle", "type": "radius" },
