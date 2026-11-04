@@ -75,11 +75,11 @@
   </div>
 
   <h2>Playground</h2>
-  <p>Change the first footer button and watch the glow follow.</p>
+  <p>Change the first footer button, remove it, or switch the theme: the glow follows through CSS alone.</p>
   <div class="grid">
     <kakao-card id="play">
       <h3 slot="header">Live</h3>
-      <p>The glow tracks the button's colour and position.</p>
+      <p>The glow takes the colour of the first footer button.</p>
       <div slot="footer" id="playFooter">
         <kakao-button id="playBtn" label="Action"></kakao-button>
       </div>
@@ -90,7 +90,7 @@
         <kakao-button id="v-secondary" label="secondary" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="v-ghost" label="ghost" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="v-danger" label="danger" variant="secondary" size="sm"></kakao-button>
-        <kakao-button id="v-big" label="size lg" variant="secondary" size="sm" toggle></kakao-button>
+        <kakao-button id="toggleBtn" label="Remove the button" variant="secondary" size="sm"></kakao-button>
       </div>
     </div>
   </div>
@@ -105,9 +105,16 @@
       else btn.setAttribute('variant', v);
     });
   });
-  document.getElementById('v-big').addEventListener('kakao-button-action', (e) => {
-    if (e.target.closest('kakao-button').hasAttribute('pressed')) btn.setAttribute('size', 'lg');
-    else btn.removeAttribute('size');
+  const footer = document.getElementById('playFooter');
+  const toggle = document.getElementById('toggleBtn');
+  toggle.addEventListener('kakao-button-action', () => {
+    if (btn.isConnected) {
+      btn.remove();
+      toggle.setAttribute('label', 'Add the button back');
+    } else {
+      footer.prepend(btn);
+      toggle.setAttribute('label', 'Remove the button');
+    }
   });
 </script>
 </body>
