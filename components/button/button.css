@@ -361,9 +361,11 @@ kakao-button[data-menu] .kakao-button-inner[aria-expanded="true"] .kakao-button-
   transform: rotate(180deg);
 }
 
-/* icon-only menu buttons keep their circle; the chevron would not fit */
-kakao-button[data-menu][icon-position="only"] .kakao-button-chevron {
-  display: none;
+/* icon-only menu buttons become a pill so the chevron always shows */
+kakao-button[data-menu][icon-position="only"] .kakao-button-inner {
+  width: auto;
+  padding: 0 0.85em 0 0.95em;
+  border-radius: 999px;
 }
 
 .kakao-button-menu {

@@ -195,7 +195,6 @@
       menu.hidden = true;
       this.appendChild(menu);
       this._menu = menu;
-      this._readItems();
 
       this._btn = btn;
       this._content = content;
@@ -206,6 +205,10 @@
       this._iconRightGlyph = iconRightGlyph;
       this._spinner = spinner;
       this._check = check;
+
+      // After the refs above: _readItems → _syncMenu marks the host as a menu
+      // button (chevron, aria-haspopup) right away.
+      this._readItems();
     }
 
     _on(el, type, fn, opts) {

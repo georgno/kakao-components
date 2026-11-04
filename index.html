@@ -48,7 +48,7 @@
         <a href="components/button/construction.html">Construction</a>
         <a href="components/button/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Button with variants, sizes, icons, toggle state and an async loading → success animation.</p>
+      <p class="component-desc">Button with variants, sizes, icons, toggle state, a dropdown (menu) form and an async loading → success animation.</p>
       <div class="examples wide">
         <div class="example">
           <h3>Variants</h3>
@@ -65,6 +65,17 @@
             <kakao-button label="Small" size="sm"></kakao-button>
             <kakao-button label="Medium" size="md"></kakao-button>
             <kakao-button label="Large" size="lg"></kakao-button>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Dropdown · <code>list-data</code></h3>
+          <div class="row">
+            <kakao-button label="Export" icon="fas fa-download"
+              list-data='[{"value":"csv","label":"CSV"},{"value":"xlsx","label":"Excel"},{"value":"pdf","label":"PDF"}]'></kakao-button>
+            <kakao-button label="Sort by" variant="secondary" show-selected selected="newest"
+              list-data='[{"value":"newest","label":"Newest first"},{"value":"oldest","label":"Oldest first"},{"value":"name","label":"Name"}]'></kakao-button>
+            <kakao-button icon="fas fa-ellipsis" aria-label="More actions" icon-position="only" variant="ghost"
+              list-data='[{"value":"edit","label":"Edit"},{"value":"duplicate","label":"Duplicate"},{"value":"delete","label":"Delete"}]'></kakao-button>
           </div>
         </div>
         <div class="example">
