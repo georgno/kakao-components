@@ -25,7 +25,16 @@
  * ----------------------------------------------------------------------------
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
- *  no-glow   Never show the glow.
+ *  no-glow      Never show the glow.
+ *  no-animate   Don't animate height changes.
+ *
+ * ----------------------------------------------------------------------------
+ * HEIGHT CHANGES
+ * ----------------------------------------------------------------------------
+ *  When content is removed or added, the card glides to its new height
+ *  instead of jumping. A card whose height comes from outside (stretched in a
+ *  grid row) or that changes width (window resize) doesn't animate. Off with
+ *  prefers-reduced-motion or no-animate.
  *
  * ----------------------------------------------------------------------------
  * GLOW (pure CSS)
@@ -122,6 +131,8 @@
         --_glow-blur: var(--kakao-card-glow-blur, 28px);
         --_glow-x: var(--kakao-card-glow-x, calc(var(--_padding) + 3rem));
         --_glow-y: var(--kakao-card-glow-y, calc(var(--_padding) + 22px));
+        --_resize-duration: var(--kakao-card-resize-duration, 280ms);
+        --_resize-easing: var(--kakao-card-resize-easing, cubic-bezier(.25, 1, .5, 1));
         /* @kakao-settings:end */
         display: block;
         min-width: 0;
@@ -161,6 +172,8 @@
       }
 
       .header-box[hidden], .footer-box[hidden] { display: none; }
+      /* Content keeps its natural height while the card's height animates */
+      .header-box, .body, .footer-box { flex-shrink: 0; }
       .footer-box {
         margin-top: auto;
         padding-top: calc(var(--_footer-spacing) - var(--_gap));
@@ -195,7 +208,13 @@
       this._footerBox = shadow.querySelector('.footer-box');
       this._headerSlot = shadow.querySelector('slot[name="header"]');
       this._footerSlot = shadow.querySelector('slot[name="footer"]');
+      this._card = shadow.querySelector('.card');
+      this._body = shadow.querySelector('.body');
       this._onSlotChange = this._onSlotChange.bind(this);
+      this._onContentResize = this._onContentResize.bind(this);
+      this._resizeObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(this._onContentResize) : null;
+      this._last = null; // { height, width } of the previous layout
+      this._anim = null;
     }
 
     connectedCallback() {
@@ -203,11 +222,54 @@
       this._headerSlot.addEventListener('slotchange', this._onSlotChange);
       this._footerSlot.addEventListener('slotchange', this._onSlotChange);
       this._onSlotChange();
+      if (this._resizeObserver) {
+        [this._headerBox, this._body, this._footerBox, this._card].forEach((el) => this._resizeObserver.observe(el));
+      }
     }
 
     disconnectedCallback() {
       this._headerSlot.removeEventListener('slotchange', this._onSlotChange);
       this._footerSlot.removeEventListener('slotchange', this._onSlotChange);
+      if (this._resizeObserver) this._resizeObserver.disconnect();
+      if (this._anim) this._anim.cancel();
+      this._last = null;
+    }
+
+    /* -------------------------- Height animation -------------------------- */
+
+    /*
+     * ResizeObserver runs after layout, before paint: the card already has its
+     * new height, so it can glide there from the old one without a jump frame
+     * (FLIP, for height). Only content changes animate; a change of the card
+     * alone (window resize, grid row) just becomes the new baseline.
+     */
+    _onContentResize(entries) {
+      const contentChanged = entries.some((e) => e.target !== this._card);
+      if (this._anim && !contentChanged) return; // our own animation resizing the card
+
+      // Where the card is on screen right now (mid-animation, or the last layout).
+      const shown = this._anim ? this._card.getBoundingClientRect().height : (this._last && this._last.height);
+      if (this._anim) this._anim.cancel(); // measure the real layout without it
+      const rect = this._card.getBoundingClientRect();
+      const last = this._last;
+      this._last = { height: rect.height, width: rect.width };
+
+      if (!last || !contentChanged) return;
+      if (Math.abs(rect.width - last.width) > 0.5) return; // reflow from a width change
+      if (Math.abs(rect.height - shown) < 0.5) return;
+      if (this.hasAttribute('no-animate') || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const style = getComputedStyle(this);
+      const duration = parseFloat(style.getPropertyValue('--_resize-duration')) || 280;
+      const easing = style.getPropertyValue('--_resize-easing').trim() || 'ease-out';
+      const anim = this._card.animate(
+        [{ height: `${shown}px` }, { height: `${rect.height}px` }],
+        { duration, easing },
+      );
+      this._anim = anim;
+      const done = () => { if (this._anim === anim) this._anim = null; };
+      anim.onfinish = done;
+      anim.oncancel = done;
     }
 
     /** Empty header / footer areas take no space. */

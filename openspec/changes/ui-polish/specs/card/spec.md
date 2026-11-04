@@ -23,3 +23,14 @@ When the first footer element is a `<kakao-button>` (or a wrapper whose first el
 #### Scenario: Removing the button
 - **WHEN** the first footer button is removed by script
 - **THEN** the glow fades out, or takes the colour of the footer's new first button
+
+### Requirement: Smooth height changes
+When content inside the card is added or removed, the card SHALL animate from its old to its new height without a jump frame, continuing from its current height if a change arrives mid-animation. It SHALL NOT animate when its height comes from outside (stretched in a grid row), on width changes, with `no-animate`, or with reduced motion.
+
+#### Scenario: Removing a line
+- **WHEN** a list item inside a card is removed
+- **THEN** the card glides to its smaller height in about 0.3s
+
+#### Scenario: Stretched card
+- **WHEN** the card is stretched by a taller neighbour in a grid row and a line is removed
+- **THEN** the card keeps its height

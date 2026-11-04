@@ -75,11 +75,16 @@
   </div>
 
   <h2>Playground</h2>
-  <p>Change the first footer button, remove it, or switch the theme: the glow follows through CSS alone.</p>
+  <p>Change the first footer button, remove it, or switch the theme: the glow follows through CSS alone. Remove or add lines: the card glides to its new height.</p>
   <div class="grid">
     <kakao-card id="play">
       <h3 slot="header">Live</h3>
       <p>The glow takes the colour of the first footer button.</p>
+      <ul id="playList" style="margin:0;padding-left:1.1rem;color:var(--muted)">
+        <li>Unlimited projects</li>
+        <li>Version history</li>
+        <li>Priority support</li>
+      </ul>
       <div slot="footer" id="playFooter">
         <kakao-button id="playBtn" label="Action"></kakao-button>
       </div>
@@ -91,11 +96,13 @@
         <kakao-button id="v-ghost" label="ghost" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="v-danger" label="danger" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="toggleBtn" label="Remove the button" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="lessContent" label="Remove a line" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="moreContent" label="Add a line" variant="secondary" size="sm"></kakao-button>
       </div>
     </div>
   </div>
 
-  <footer>Attribute: <code>no-glow</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Parts: <code>card</code>, <code>glow</code>, <code>header</code>, <code>body</code>, <code>footer</code>. Full reference in the header of <code>card.js</code>.</footer>
+  <footer>Attributes: <code>no-glow</code>, <code>no-animate</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Parts: <code>card</code>, <code>glow</code>, <code>header</code>, <code>body</code>, <code>footer</code>. Full reference in the header of <code>card.js</code>.</footer>
 </main>
 <script>
   const btn = document.getElementById('playBtn');
@@ -115,6 +122,16 @@
       footer.prepend(btn);
       toggle.setAttribute('label', 'Remove the button');
     }
+  });
+  const list = document.getElementById('playList');
+  const extras = ['Custom domains', 'Team roles', 'Audit log', 'Single sign-on'];
+  document.getElementById('lessContent').addEventListener('kakao-button-action', () => {
+    if (list.lastElementChild) list.lastElementChild.remove();
+  });
+  document.getElementById('moreContent').addEventListener('kakao-button-action', () => {
+    const li = document.createElement('li');
+    li.textContent = extras[list.children.length % extras.length];
+    list.append(li);
   });
 </script>
 </body>
