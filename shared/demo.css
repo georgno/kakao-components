@@ -65,10 +65,8 @@ h2 + p { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; }
 }
 .card h3 {
   margin: 0 0 0.9rem;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
   color: var(--muted);
 }
 .card:not(.row) > * + * { margin-top: 0.75rem; }
@@ -131,14 +129,11 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 .example { min-width: 0; }
 .example > h3 {
   margin: 0 0 0.75rem;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
   color: var(--muted);
 }
 .example p { margin: 0.5rem 0 0; }
-.example > h3 code, .card h3 code { text-transform: none; letter-spacing: 0; }
 .grid > .full, .examples > .full { grid-column: 1 / -1; }
 
 /* ---- Placeholders: components not built yet, shown as their native element ---- */
@@ -156,8 +151,6 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }

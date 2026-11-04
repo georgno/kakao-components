@@ -22,11 +22,12 @@
   main { max-width: 960px; }
   .sg-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
   .sg-meta .badge { margin: 0; }
-  .tag { display: inline-block; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: 0.15em; }
+  .tag { display: inline-block; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; vertical-align: 0.1em; }
   .tag.now { background: #e4e4e7; color: #3f3f46; }
   .tag.proposed { background: #e0e7ff; color: #3730a3; }
   .tag.issue { background: #fde8e6; color: #9f2d25; }
   .tag.ok { background: #dcfce7; color: #166534; }
+  .tag.rule { background: #18181b; color: #fafafa; }
 
   nav.toc { margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; font-size: 0.9rem; }
   nav.toc a { text-decoration: none; }
@@ -58,7 +59,7 @@
   table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
   th, td { text-align: left; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
   tr:last-child td { border-bottom: 0; }
-  th { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  th { font-size: 0.8125rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
   td code { white-space: nowrap; }
   td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
@@ -68,7 +69,13 @@
   .specimen-row .meta { font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
   .specimen-row .meta b { display: block; color: var(--ink); font-weight: 600; }
   .specimen-row .sample { min-width: 0; overflow-wrap: anywhere; }
-  .eyebrow { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+  .caption { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+  .dodont { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); margin-top: 0.9rem; }
+  .dodont > div { border-radius: 12px; padding: 0.9rem 1rem; background: #f4f4f5; }
+  .dodont .verdict { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .dodont .do .verdict { color: #166534; }
+  .dodont .dont .verdict { color: #9f2d25; }
+  .dodont .dont .sample-caps { text-transform: uppercase; letter-spacing: 0.07em; font-size: 0.6875rem; font-weight: 600; color: var(--muted); }
   .weights { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-size: 1.5rem; letter-spacing: -0.01em; }
   .weights span small { display: block; font-size: 0.7rem; color: var(--muted); letter-spacing: 0; }
   .font-check { font-size: 0.85rem; }
@@ -217,9 +224,20 @@
       <div class="specimen-row"><div class="meta"><b>base · 0.9375rem</b>15px · 400</div><div class="sample" style="font-size:0.9375rem">Form field values and labels: switches, file upload, multi dropdown.</div></div>
       <div class="specimen-row"><div class="meta"><b>sm · 0.875rem</b>14px · 400 / 550</div><div class="sample" style="font-size:0.875rem">Dense UI: list items, popover rows, slider input, medium button labels.</div></div>
       <div class="specimen-row"><div class="meta"><b>xs · 0.8125rem</b>13px · 400 / 550</div><div class="sample" style="font-size:0.8125rem">Small buttons, helper text, step-switch labels, file sizes.</div></div>
-      <div class="specimen-row"><div class="meta"><b>2xs · 0.6875rem</b>11px · 600 · +0.07em</div><div class="sample"><span class="eyebrow">Group label · Range · Eyebrow</span></div></div>
+      <div class="specimen-row"><div class="meta"><b>2xs · 0.75rem</b>12px · 600</div><div class="sample"><span class="caption">Group label, range, caption</span></div></div>
     </div>
 
+
+    <div class="card" style="margin-top:1rem">
+      <h3>No uppercase <span class="tag rule">Rule</span></h3>
+      <p class="small">Never style text in capitals: no <code>text-transform: uppercase</code>, no <code>font-variant: small-caps</code>, no wide letter-spacing to fake it. Labels, headings, buttons, tabs, badges and table headers are all written in sentence case. Make a label stand out with weight (600) and colour (muted), not capitals.</p>
+      <p class="small muted">Why: capitals are harder to read at the small sizes where they usually show up, they hide word shapes, screen readers sometimes spell them out letter by letter, and they need extra tracking that Inter Tight's tight spacing is designed to avoid. Exception: words that are spelled in capitals anyway (PDF, ZIP, URL, CSV) are written that way in the text itself, not produced by CSS.</p>
+      <div class="dodont">
+        <div class="do"><span class="verdict">✓ Do</span><span class="caption">Notifications</span><div style="margin-top:.35rem;font-size:.9rem">Email, push and SMS settings</div></div>
+        <div class="dont"><span class="verdict">✗ Don't</span><span class="sample-caps">Notifications</span><div style="margin-top:.35rem;font-size:.9rem">Email, push and SMS settings</div></div>
+      </div>
+      <p class="small muted" style="margin-top:.75rem">Applied in this release: list group headers, popover row labels (now 12px, since lowercase reads smaller than capitals at the same size), file-upload type tags (extension written in capitals in the text), and the demo, construction and guide page labels.</p>
+    </div>
     <div class="grid" style="margin-top:1rem">
       <div class="card">
         <h3>Weights</h3>
@@ -510,7 +528,7 @@
 
 <span class="c">/* type */</span>
 --kakao-font-family:      "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
---kakao-text-2xs: 0.6875rem;  --kakao-text-xs: 0.8125rem;  --kakao-text-sm: 0.875rem;
+--kakao-text-2xs: 0.75rem;    --kakao-text-xs: 0.8125rem;  --kakao-text-sm: 0.875rem;
 --kakao-text-base: 0.9375rem; --kakao-text-lg: 1rem;       --kakao-text-xl: 1.125rem;
 --kakao-weight-control: 550;  --kakao-weight-strong: 600;
 

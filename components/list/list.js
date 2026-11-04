@@ -131,7 +131,7 @@ class KakaoList extends HTMLElement {
           --_group-bg: var(--kakao-list-group-bg, #f7f7f7);
           --_group-color: var(--kakao-list-group-color, #999);
           --_group-height: var(--kakao-list-group-height, 28px);
-          --_group-font-size: var(--kakao-list-group-font-size, 11px);
+          --_group-font-size: var(--kakao-list-group-font-size, 12px);
           --_action-color: var(--kakao-list-action-color, #aaa);
           --_action-hover-color: var(--kakao-list-action-hover-color, #555);
           --_focus-color: var(--kakao-list-focus-color, #555);
@@ -259,8 +259,7 @@ class KakaoList extends HTMLElement {
         /* Group headers */
         .scroll-group {
           height: var(--_group-height); padding: 0 var(--_item-padding-x);
-          font-size: var(--_group-font-size); font-weight: 700;
-          text-transform: uppercase; letter-spacing: 0.08em;
+          font-size: var(--_group-font-size); font-weight: 600;
           color: var(--_group-color);
           display: flex; align-items: center;
           background: var(--_group-bg);

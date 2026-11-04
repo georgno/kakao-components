@@ -104,7 +104,7 @@
  *                          Default: system-ui, -apple-system,
  *                          BlinkMacSystemFont, sans-serif
  *   --kakao-popover-font-size         Content font size.   Default 14px
- *   --kakao-popover-label-font-size   Label font size.      Default 11px
+ *   --kakao-popover-label-font-size   Label font size.      Default 12px
  *   --kakao-popover-radius            Corner radius.        Default 4px
  *   --kakao-popover-spacing           Base spacing unit.    Default 8px
  *   --kakao-popover-max-width         Max width.            Default 280px
@@ -207,7 +207,7 @@
         --_active-bg: var(--kakao-popover-active-bg, #ebebeb);
         --_font-family: var(--kakao-popover-font-family, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));
         --_font-size: var(--kakao-popover-font-size, 14px);
-        --_label-font-size: var(--kakao-popover-label-font-size, 11px);
+        --_label-font-size: var(--kakao-popover-label-font-size, 12px);
         --_radius: var(--kakao-popover-radius, 4px);
         --_spacing: var(--kakao-popover-spacing, 8px);
         --_max-width: var(--kakao-popover-max-width, 280px);
@@ -385,8 +385,6 @@
         font-size: var(--_label-font-size);
         font-weight: 600;
         color: var(--_label-color);
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
         white-space: nowrap;
       }
       .row .value {

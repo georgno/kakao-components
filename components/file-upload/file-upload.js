@@ -485,7 +485,6 @@
         font: 700 0.45rem/1 var(--kakao-font-family, system-ui, sans-serif);
         letter-spacing: 0.03em;
         text-align: center;
-        text-transform: uppercase;
         white-space: nowrap;
       }
 
@@ -936,7 +935,7 @@
           thumb.innerHTML = ICON_DOC;
           const label = document.createElement('span');
           label.className = 'ext';
-          label.textContent = ext.slice(0, 4) || cat;
+          label.textContent = ext.slice(0, 4).toUpperCase() || cat; // extensions are acronyms: written in capitals, not styled
           thumb.appendChild(label);
         }
 

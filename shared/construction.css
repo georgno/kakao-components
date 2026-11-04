@@ -41,10 +41,8 @@ code {
 .construction-heading h1 { margin: 0; font-size: 1.5rem; letter-spacing: -0.02em; }
 .construction-kicker {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: #6b7280;
 }
 .construction-links { display: flex; gap: 1rem; font-size: 0.9rem; }
@@ -132,11 +130,9 @@ code {
 .construction-preview figure { margin: 0; min-width: 0; }
 .construction-preview figcaption {
   margin-bottom: 0.6rem;
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: #9ca3af;
+  color: #6b7280;
 }
 
 /* ---- settings panel ---------------------------------------------------- */
@@ -163,10 +159,8 @@ code {
 .construction-group:first-child { border-top: 0; }
 .construction-group > summary {
   padding: 0.6rem 0.25rem;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
   color: #6b7280;
   cursor: pointer;
 }
