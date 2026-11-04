@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-slider — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../number-input/number-input.css" />
+<script src="../button/button.js" defer></script>
+<script src="../number-input/number-input.js" defer></script>
+<script src="slider.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<main data-construction data-target="slider" data-source="slider.js" data-title="Slider">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>With unit and stepper</figcaption>
+      <kakao-slider min="0" max="200" step="10" value="60" unit="px" label="Width"></kakao-slider>
+    </figure>
+    <figure>
+      <figcaption>Fine steps · native input</figcaption>
+      <kakao-slider min="0" max="1" step="0.05" value="0.35" label="Opacity" scroll-input="false"></kakao-slider>
+    </figure>
+    <figure>
+      <figcaption>Disabled</figcaption>
+      <kakao-slider min="0" max="100" value="40" unit="%" label="Volume" disabled></kakao-slider>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-slider-accent", "label": "Accent", "group": "Colour", "type": "color", "hint": "fill, active thumb" },
+    { "property": "--kakao-slider-track-bg", "label": "Track", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-tick-color", "label": "Ticks", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-tick-active-color", "label": "Ticks behind fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-label-color", "label": "Label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-range-color", "label": "Min / max labels", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-input-bg", "label": "Input background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-input-border", "label": "Input border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-unit-bg", "label": "Unit background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-unit-color", "label": "Unit text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-input-color", "label": "Input text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-thumb-bg", "label": "Thumb", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-thumb-border", "label": "Thumb border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-stepper-color", "label": "Stepper arrows", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-stepper-hover-bg", "label": "Stepper hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-stepper-hover-color", "label": "Stepper hover arrows", "group": "Colour", "type": "color" },
+    { "property": "--kakao-slider-stepper-active-bg", "label": "Stepper pressed", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-slider-track-height", "label": "Track height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-slider-thumb-size", "label": "Thumb size", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-slider-font-family", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-slider-range-font-size", "label": "Min / max label size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-slider-input-font-size", "label": "Input size", "group": "Typography", "type": "length" },
+
+    { "property": "--kakao-slider-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+
+    { "property": "--kakao-slider-transition-speed", "label": "Transition", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+</body>
+</html>

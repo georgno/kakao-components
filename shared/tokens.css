@@ -1,0 +1,26 @@
+/*
+ * tokens.css — main variables shared by all kakao components.
+ *
+ * Components refer to these as var(--kakao-<token>, <fallback>), so they also
+ * work on pages that don't load this file. Edit the values on tokens.html
+ * (with `node tools/construct-server.js` running) rather than by hand.
+ */
+:root {
+  /* @kakao-settings:start prefix=--kakao- (written by tokens.html, edit there) */
+  --kakao-color-primary: #4f46e5;
+  --kakao-color-text: #111827;
+  --kakao-color-muted: #6b7280;
+  --kakao-color-bg: #ffffff;
+  --kakao-color-subtle: #e5e7eb;
+  --kakao-color-border: #d1d5db;
+  --kakao-color-danger: #dc2626;
+  --kakao-color-focus: #2563eb;
+  --kakao-space-x: 0.75rem;
+  --kakao-space-y: 0.5rem;
+  --kakao-space-gap: 1rem;
+  --kakao-radius: 8px;
+  --kakao-font-family: system-ui, -apple-system, sans-serif;
+  --kakao-font-size: 0.95rem;
+  --kakao-motion-duration: 320ms;
+  /* @kakao-settings:end */
+}

@@ -1,0 +1,319 @@
+/**
+ * kakao-button web component styles
+ * Light-DOM custom element: variants, sizes, icons, toggle and async loading states.
+ *
+ * Theming: every --kakao-button-* property in the settings block below can be
+ * set on the element or any ancestor (also on .kakao-button-segment). The
+ * defaults live in that block: change them on construction.html.
+ */
+
+kakao-button,
+.kakao-button-segment {
+  /* @kakao-settings:start prefix=--kakao-button- (written by construction.html, edit there) */
+  --_font: var(--kakao-button-font, inherit);
+  --_ink: var(--kakao-button-ink, #18181b);
+  --_ink-soft: var(--kakao-button-ink-soft, #3f3f46);
+  --_paper: var(--kakao-button-paper, #fafafa);
+  --_primary-bg: var(--kakao-button-primary-bg, var(--_ink));
+  --_primary-text: var(--kakao-button-primary-text, var(--_paper));
+  --_primary-hover-bg: var(--kakao-button-primary-hover-bg, #2c2c31);
+  --_primary-ring: var(--kakao-button-primary-ring, rgba(24, 24, 27, 0.16));
+  --_primary-shadow: var(--kakao-button-primary-shadow, 0 2px 24px rgba(0, 0, 0, 0.04));
+  --_secondary-bg: var(--kakao-button-secondary-bg, #f0f0f1);
+  --_secondary-text: var(--kakao-button-secondary-text, var(--_ink));
+  --_secondary-hover-bg: var(--kakao-button-secondary-hover-bg, #e6e6e8);
+  --_secondary-ring: var(--kakao-button-secondary-ring, rgba(24, 24, 27, 0.12));
+  --_ghost-text: var(--kakao-button-ghost-text, var(--_ink-soft));
+  --_ghost-hover-bg: var(--kakao-button-ghost-hover-bg, rgba(24, 24, 27, 0.045));
+  --_ghost-ring: var(--kakao-button-ghost-ring, rgba(24, 24, 27, 0.10));
+  --_danger-bg: var(--kakao-button-danger-bg, #bd4b43);
+  --_danger-text: var(--kakao-button-danger-text, #fdf4f3);
+  --_danger-hover-bg: var(--kakao-button-danger-hover-bg, #a83f38);
+  --_danger-ring: var(--kakao-button-danger-ring, rgba(189, 75, 67, 0.18));
+  --_danger-shadow: var(--kakao-button-danger-shadow, 0 2px 24px rgba(189, 75, 67, 0.06));
+  --_sm-height: var(--kakao-button-sm-height, 36px);
+  --_sm-padding-x: var(--kakao-button-sm-padding-x, 16px);
+  --_sm-font-size: var(--kakao-button-sm-font-size, 13px);
+  --_sm-radius: var(--kakao-button-sm-radius, 11px);
+  --_sm-gap: var(--kakao-button-sm-gap, 6px);
+  --_md-height: var(--kakao-button-md-height, 44px);
+  --_md-padding-x: var(--kakao-button-md-padding-x, 22px);
+  --_md-font-size: var(--kakao-button-md-font-size, 14.5px);
+  --_md-radius: var(--kakao-button-md-radius, 13px);
+  --_md-gap: var(--kakao-button-md-gap, 8px);
+  --_lg-height: var(--kakao-button-lg-height, 52px);
+  --_lg-padding-x: var(--kakao-button-lg-padding-x, 28px);
+  --_lg-font-size: var(--kakao-button-lg-font-size, 16px);
+  --_lg-radius: var(--kakao-button-lg-radius, 15px);
+  --_lg-gap: var(--kakao-button-lg-gap, 10px);
+  --_label-weight: var(--kakao-button-label-weight, 550);
+  --_focus-ring-width: var(--kakao-button-focus-ring-width, 4px);
+  --_disabled-opacity: var(--kakao-button-disabled-opacity, 0.2);
+  --_toggle-off-opacity: var(--kakao-button-toggle-off-opacity, 0.45);
+  --_spinner-size: var(--kakao-button-spinner-size, 18px);
+  --_transition: var(--kakao-button-transition, 0.2s);
+  --_segment-bg: var(--kakao-button-segment-bg, #f0f0f1);
+  --_segment-padding: var(--kakao-button-segment-padding, 4px);
+  --_segment-gap: var(--kakao-button-segment-gap, 2px);
+  --_segment-radius: var(--kakao-button-segment-radius, 14px);
+  --_segment-item-radius: var(--kakao-button-segment-item-radius, 10px);
+  --_segment-item-size: var(--kakao-button-segment-item-size, 38px);
+  --_segment-pressed-bg: var(--kakao-button-segment-pressed-bg, #fff);
+  --_segment-pressed-shadow: var(--kakao-button-segment-pressed-shadow, 0 1px 8px rgba(0, 0, 0, 0.08));
+  /* @kakao-settings:end */
+}
+
+kakao-button {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.kakao-button-inner {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background: none;
+  font-family: var(--_font);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  isolation: isolate;
+  transition: background-color var(--_transition) ease, box-shadow var(--_transition) ease, color var(--_transition) ease;
+}
+
+.kakao-button-inner:focus-visible {
+  box-shadow: 0 0 0 var(--_focus-ring-width) var(--_ring, var(--_primary-ring));
+}
+
+/* sizes */
+kakao-button[size="sm"] .kakao-button-inner {
+  height: var(--_sm-height);
+  padding: 0 var(--_sm-padding-x);
+  font-size: var(--_sm-font-size);
+  border-radius: var(--_sm-radius);
+  gap: var(--_sm-gap);
+}
+
+kakao-button:not([size]) .kakao-button-inner,
+kakao-button[size="md"] .kakao-button-inner {
+  height: var(--_md-height);
+  padding: 0 var(--_md-padding-x);
+  font-size: var(--_md-font-size);
+  border-radius: var(--_md-radius);
+  gap: var(--_md-gap);
+}
+
+kakao-button[size="lg"] .kakao-button-inner {
+  height: var(--_lg-height);
+  padding: 0 var(--_lg-padding-x);
+  font-size: var(--_lg-font-size);
+  border-radius: var(--_lg-radius);
+  gap: var(--_lg-gap);
+}
+
+/* icon-only -> perfect circle */
+kakao-button[icon-position="only"] .kakao-button-inner {
+  padding: 0;
+  border-radius: 50%;
+}
+
+kakao-button[icon-position="only"][size="sm"] .kakao-button-inner {
+  width: var(--_sm-height);
+}
+
+kakao-button:not([size])[icon-position="only"] .kakao-button-inner,
+kakao-button[size="md"][icon-position="only"] .kakao-button-inner {
+  width: var(--_md-height);
+}
+
+kakao-button[icon-position="only"][size="lg"] .kakao-button-inner {
+  width: var(--_lg-height);
+}
+
+/* variants */
+kakao-button[variant="primary"] .kakao-button-inner,
+kakao-button:not([variant]) .kakao-button-inner {
+  background: var(--_primary-bg);
+  color: var(--_primary-text);
+  --_ring: var(--_primary-ring);
+  box-shadow: var(--_primary-shadow);
+}
+
+kakao-button[variant="primary"] .kakao-button-inner:hover,
+kakao-button:not([variant]) .kakao-button-inner:hover {
+  background: var(--_primary-hover-bg);
+}
+
+kakao-button[variant="secondary"] .kakao-button-inner {
+  background: var(--_secondary-bg);
+  color: var(--_secondary-text);
+  --_ring: var(--_secondary-ring);
+}
+
+kakao-button[variant="secondary"] .kakao-button-inner:hover {
+  background: var(--_secondary-hover-bg);
+}
+
+kakao-button[variant="ghost"] .kakao-button-inner {
+  background: transparent;
+  color: var(--_ghost-text);
+  --_ring: var(--_ghost-ring);
+}
+
+kakao-button[variant="ghost"] .kakao-button-inner:hover {
+  background: var(--_ghost-hover-bg);
+}
+
+kakao-button[variant="danger"] .kakao-button-inner {
+  background: var(--_danger-bg);
+  color: var(--_danger-text);
+  --_ring: var(--_danger-ring);
+  box-shadow: var(--_danger-shadow);
+}
+
+kakao-button[variant="danger"] .kakao-button-inner:hover {
+  background: var(--_danger-hover-bg);
+}
+
+/* disabled */
+kakao-button[disabled] .kakao-button-inner {
+  opacity: var(--_disabled-opacity);
+  pointer-events: none;
+  cursor: not-allowed;
+  transition: opacity var(--_transition) ease;
+}
+
+/* toggle: selected / unselected */
+kakao-button[toggle] .kakao-button-inner {
+  opacity: var(--_toggle-off-opacity);
+  font-weight: 400;
+  transition: opacity var(--_transition) ease, font-weight var(--_transition) ease, background-color var(--_transition) ease;
+}
+
+kakao-button[toggle][pressed] .kakao-button-inner {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* content pieces */
+.kakao-button-label {
+  font-weight: var(--_label-weight);
+  transition: font-weight var(--_transition) ease, opacity var(--_transition) ease;
+}
+
+.kakao-button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95em;
+}
+
+.kakao-button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+}
+
+/* spinner + check, absolutely centered and cross-faded over content */
+.kakao-button-spinner,
+.kakao-button-check {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kakao-button-spinner svg {
+  width: var(--_spinner-size);
+  height: var(--_spinner-size);
+}
+
+.kakao-button-spinner circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 56;
+  opacity: .9;
+}
+
+.kakao-button-inner[data-loading] .kakao-button-spinner svg {
+  animation: kakao-button-spin 0.85s linear infinite;
+}
+
+@keyframes kakao-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kakao-button-inner[data-loading] .kakao-button-spinner svg {
+    animation: none;
+  }
+
+  .kakao-button-inner[data-loading] .kakao-button-spinner {
+    animation: kakao-button-pulse 1.1s ease-in-out infinite;
+  }
+}
+
+@keyframes kakao-button-pulse {
+  0%, 100% {
+    opacity: .4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* segmented toggle group: nested radius = outer radius − padding */
+.kakao-button-segment {
+  display: inline-flex;
+  gap: var(--_segment-gap);
+  background: var(--_segment-bg);
+  padding: var(--_segment-padding);
+  border-radius: var(--_segment-radius);
+}
+
+.kakao-button-segment kakao-button .kakao-button-inner {
+  border-radius: var(--_segment-item-radius);
+  background: transparent;
+  color: var(--_ink);
+  box-shadow: none;
+  height: var(--_segment-item-size);
+  width: var(--_segment-item-size);
+  padding: 0;
+  --_ring: var(--_secondary-ring);
+}
+
+.kakao-button-segment kakao-button[toggle] .kakao-button-inner {
+  transition: opacity var(--_transition) ease, font-weight var(--_transition) ease, background-color var(--_transition) ease, color var(--_transition) ease;
+}
+
+/* Dark hover backgrounds (primary / danger) need light icons to stay readable */
+.kakao-button-segment kakao-button:is(:not([variant]), [variant="primary"]):not([pressed]) .kakao-button-inner:hover {
+  color: var(--_primary-text);
+}
+
+.kakao-button-segment kakao-button[variant="danger"]:not([pressed]) .kakao-button-inner:hover {
+  color: var(--_danger-text);
+}
+
+.kakao-button-segment kakao-button[pressed] .kakao-button-inner {
+  background: var(--_segment-pressed-bg);
+  box-shadow: var(--_segment-pressed-shadow);
+}
+
+/* keep the keyboard focus ring (box-shadow is reset above) */
+.kakao-button-segment kakao-button .kakao-button-inner:focus-visible {
+  box-shadow: 0 0 0 var(--_focus-ring-width) var(--_ring, var(--_primary-ring));
+}

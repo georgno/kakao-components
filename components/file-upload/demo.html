@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-file-upload — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="file-upload.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>File upload</h1>
+    <p><code>&lt;kakao-file-upload&gt;</code> — drop area with a dotted background that follows the pointer, and a growing list of files. Every pick or drop adds to the list, so you can collect files from several folders.</p>
+  </header>
+
+  <h2>Variants</h2>
+  <p>Drop files on an area, or click it (or focus it and press Enter) to browse.</p>
+  <div class="grid">
+    <div class="card full">
+      <h3>Default · any files, several at once</h3>
+      <kakao-file-upload id="upload1" label="Attachments"></kakao-file-upload>
+    </div>
+    <div class="card full">
+      <h3>List beside the drop area · <code>horizontal</code></h3>
+      <kakao-file-upload label="Project files" horizontal></kakao-file-upload>
+    </div>
+    <div class="card">
+      <h3>Images only · max 2 MB · max 4 files</h3>
+      <kakao-file-upload label="Photos" accept="image/*" max-size="2MB" max-files="4"></kakao-file-upload>
+    </div>
+    <div class="card">
+      <h3>Single file · <code>multiple="false"</code></h3>
+      <kakao-file-upload label="CV" accept=".pdf,.doc,.docx" multiple="false" hint="One PDF or Word file; a new pick replaces it"></kakao-file-upload>
+    </div>
+    <div class="card">
+      <h3>Themed</h3>
+      <kakao-file-upload label="Assets"
+        style="--kakao-file-upload-accent:#0d9488;--kakao-file-upload-dot-gap:10px;--kakao-file-upload-dot-color:#99f6e4;--kakao-file-upload-radius:6px"></kakao-file-upload>
+    </div>
+    <div class="card">
+      <h3>Disabled</h3>
+      <kakao-file-upload label="Locked" disabled></kakao-file-upload>
+    </div>
+  </div>
+
+  <h2>In a form</h2>
+  <p>With a <code>name</code> the files are submitted like a native file input; Reset clears the list.</p>
+  <form class="card" id="form">
+    <kakao-file-upload name="documents" label="Documents" accept=".pdf,image/*" max-size="10MB"></kakao-file-upload>
+    <div class="toolbar">
+      <kakao-button label="Submit" type="submit" form="form" size="sm"></kakao-button>
+      <kakao-button label="Reset" type="button" variant="secondary" size="sm" id="formReset"></kakao-button>
+    </div>
+  </form>
+
+  <h2>Playground</h2>
+  <p>Drive the first upload by hand.</p>
+  <div class="card">
+    <div class="toolbar">
+      <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiAdd" label="addFiles() — 3 generated files" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiRemove" label="removeFile(0)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiClear" label="clear()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>label</code>, <code>hint</code>, <code>accept</code>, <code>multiple</code>, <code>horizontal</code>, <code>max-files</code>, <code>max-size</code>, <code>disabled</code>, <code>name</code>. Events: <code>files-change</code>, <code>file-reject</code>. Full reference in the header of <code>file-upload.js</code>.</footer>
+</main>
+
+<script>
+  const upload = document.getElementById('upload1');
+  const log = document.getElementById('log');
+
+  // File objects don't stringify, so log names only
+  const names = (files) => files.map((f) => f.name);
+  document.addEventListener('files-change', (e) => logLine(log, 'files-change', {
+    files: names(e.detail.files), added: names(e.detail.added), removed: names(e.detail.removed),
+  }));
+  document.addEventListener('file-reject', (e) => logLine(log, 'file-reject', { name: e.detail.name, reason: e.detail.reason }));
+
+  document.getElementById('apiOpen').addEventListener('click', () => upload.open());
+  document.getElementById('apiAdd').addEventListener('click', () => {
+    const stamp = Date.now();
+    upload.addFiles([
+      new File(['hello'], `notes-${stamp}.txt`, { type: 'text/plain' }),
+      new File([new Uint8Array(240000)], `report-${stamp}.pdf`, { type: 'application/pdf' }),
+      new File([new Uint8Array(1800000)], `archive-${stamp}.zip`, { type: 'application/zip' }),
+    ]);
+  });
+  document.getElementById('apiRemove').addEventListener('click', () => upload.removeFile(0));
+  document.getElementById('apiClear').addEventListener('click', () => upload.clear());
+  toggleButton(document.getElementById('optDisabled'), 'disabled', (on) => { upload.disabled = on; });
+
+  // Form: show what would be submitted
+  const form = document.getElementById('form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    logLine(log, 'submit', { documents: data.getAll('documents').map((f) => `${f.name} (${f.size} B)`) });
+  });
+  document.getElementById('formReset').addEventListener('click', () => form.reset());
+</script>
+</body>
+</html>

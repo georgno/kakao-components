@@ -1,0 +1,152 @@
+/*
+ * Tab Switcher web component styles
+ *
+ * Theming: every --kakao-tabs-* property in the settings block below can be set
+ * on <kakao-tabs> or any ancestor. The defaults live in that block: change them
+ * on construction.html.
+ */
+
+kakao-tabs {
+  /* @kakao-settings:start prefix=--kakao-tabs- (written by construction.html, edit there) */
+  --_bg: var(--kakao-tabs-bg, #ebebeb);
+  --_color: var(--kakao-tabs-color, currentColor);
+  --_padding: var(--kakao-tabs-padding, 4px);
+  --_gap: var(--kakao-tabs-gap, 4px);
+  --_radius: var(--kakao-tabs-radius, 10px);
+  --_thumb-bg: var(--kakao-tabs-thumb-bg, #fff);
+  --_thumb-radius: var(--kakao-tabs-thumb-radius, 6px);
+  --_thumb-shadow: var(--kakao-tabs-thumb-shadow, 0 2px 24px rgba(0, 0, 0, 0.04));
+  --_tab-padding: var(--kakao-tabs-tab-padding, 10px 12px);
+  --_tab-min-width: var(--kakao-tabs-tab-min-width, 4.5rem);
+  --_tab-opacity: var(--kakao-tabs-tab-opacity, 0.45);
+  --_tab-weight: var(--kakao-tabs-tab-weight, 400);
+  --_selected-weight: var(--kakao-tabs-selected-weight, 600);
+  --_disabled-opacity: var(--kakao-tabs-disabled-opacity, 0.2);
+  --_focus-color: var(--kakao-tabs-focus-color, #888);
+  --_hold-glow: var(--kakao-tabs-hold-glow, rgba(0, 0, 0, 0.12));
+  --_transition: var(--kakao-tabs-transition, 0.2s);
+  --_dark-bg: var(--kakao-tabs-dark-bg, #2a2a2a);
+  --_dark-thumb-bg: var(--kakao-tabs-dark-thumb-bg, #3d3d3d);
+  --_dark-thumb-shadow: var(--kakao-tabs-dark-thumb-shadow, 0 2px 24px rgba(0, 0, 0, 0.25));
+  --_dark-hold-glow: var(--kakao-tabs-dark-hold-glow, rgba(255, 255, 255, 0.12));
+  /* @kakao-settings:end */
+  display: flex;
+  position: relative;
+  gap: var(--_gap);
+  padding: var(--_padding);
+  box-sizing: border-box;
+  color: var(--_color);
+  background: var(--_bg);
+  border-radius: var(--_radius);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+kakao-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+kakao-tabs .thumb {
+  position: absolute;
+  top: var(--_padding);
+  left: var(--_padding);
+  height: calc(100% - 2 * var(--_padding));
+  background: var(--_thumb-bg);
+  border-radius: var(--_thumb-radius);
+  z-index: 0;
+  will-change: transform, width;
+  box-shadow: var(--_thumb-shadow);
+}
+
+kakao-tab {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto;
+  min-width: var(--_tab-min-width);
+  display: block;
+  cursor: pointer;
+  padding: var(--_tab-padding);
+  text-align: center;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  opacity: var(--_tab-opacity);
+  font-weight: var(--_tab-weight);
+  transition: opacity var(--_transition) ease, font-weight var(--_transition) ease;
+  outline: none;
+}
+
+kakao-tab:focus-visible {
+  outline: 2px solid var(--_focus-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+kakao-tab[selected] {
+  opacity: 1;
+  font-weight: var(--_selected-weight);
+}
+
+kakao-tab[disabled] {
+  opacity: var(--_disabled-opacity);
+  cursor: not-allowed;
+}
+
+kakao-tab .hold-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--_thumb-radius);
+  background: var(--_hold-glow);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 0;
+}
+
+kakao-tab .label {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+kakao-tab.shaking .label {
+  animation: kakao-tabs-shake 0.35s ease;
+}
+
+@keyframes kakao-tabs-shake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-5px); }
+  40%  { transform: translateX(5px); }
+  60%  { transform: translateX(-4px); }
+  80%  { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  kakao-tabs .thumb {
+    transition: none !important;
+  }
+  kakao-tab.shaking .label {
+    animation: none;
+  }
+}
+
+/* Dark mode support (matches project theme) */
+[data-bs-theme="dark"] kakao-tabs,
+body.dark-mode kakao-tabs {
+  --_bg: var(--_dark-bg);
+  --_thumb-bg: var(--_dark-thumb-bg);
+  --_thumb-shadow: var(--_dark-thumb-shadow);
+  --_hold-glow: var(--_dark-hold-glow);
+}
+
+/* Panel host used by the widget */
+.kakao-tabs-panels > [role="tabpanel"][hidden] {
+  display: none !important;
+}
+
+.kakao-tabs-loading {
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}

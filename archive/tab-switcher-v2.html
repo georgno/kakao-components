@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <title>Tab Switcher</title>
+  <style>
+    html, body { margin: 0; height: 100%; font-family: 'Inter', sans-serif; }
+    body { display: flex; flex-direction: column; }
+    #content { flex: 1; padding: 16px; }
+
+    tab-switcher {
+      display: flex;
+      position: relative;
+      gap: 4px;
+      padding: 4px;
+      box-sizing: border-box;
+      background: #ebebeb;
+      border-radius: 10px;
+      margin: 16px;
+    }
+
+    tab-switcher .thumb {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      height: calc(100% - 8px);
+      background: #fff;
+      border-radius: 6px;
+      z-index: 0;
+      will-change: transform, width;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.04);
+    }
+
+    tab-item {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: block;
+      cursor: pointer;
+      padding: 10px 0;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      opacity: 0.45;
+      font-weight: 400;
+      transition: opacity 0.2s ease, font-weight 0.2s ease;
+      outline: none;
+    }
+
+    tab-item:focus-visible { outline: 2px solid #888; outline-offset: 2px; border-radius: 4px; }
+    tab-item[selected]     { opacity: 1; font-weight: 600; }
+    tab-item[disabled]     { opacity: 0.2; cursor: not-allowed; }
+
+    tab-item .hold-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.12);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 0;
+    }
+
+    tab-item .label { position: relative; z-index: 1; display: inline-block; }
+    tab-item.shaking .label { animation: shake 0.35s ease; }
+
+    @keyframes shake {
+      0%   { transform: translateX(0); }
+      20%  { transform: translateX(-5px); }
+      40%  { transform: translateX(5px); }
+      60%  { transform: translateX(-4px); }
+      80%  { transform: translateX(4px); }
+      100% { transform: translateX(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      tab-switcher .thumb  { transition: none !important; }
+      tab-item.shaking .label { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="content">
+    <div id="panel-one"   role="tabpanel">Latest in Tech</div>
+    <div id="panel-two"   role="tabpanel" hidden>Your Photos</div>
+    <div id="panel-three" role="tabpanel" hidden>Crafts &amp; DIY</div>
+    <div id="panel-four"  role="tabpanel" hidden>Travel (coming soon)</div>
+  </div>
+
+  <tab-switcher role="tablist">
+    <tab-item controls="panel-one"   selected>Tech</tab-item>
+    <tab-item controls="panel-two"          >Photos</tab-item>
+    <tab-item controls="panel-four"  disabled>Travel</tab-item>
+    <tab-item controls="panel-three"        >Crafts</tab-item>
+  </tab-switcher>
+
+  <script>
+  // ─── TabItem ────────────────────────────────────────────────────────────────
+  class TabItem extends HTMLElement {
+    static get observedAttributes() { return ['selected', 'disabled']; }
+
+    connectedCallback() {
+      if (this._initialized) return;
+      this._initialized = true;
+
+      // Build internals
+      const glow = document.createElement('div');
+      glow.className = 'hold-glow';
+      const label = document.createElement('span');
+      label.className = 'label';
+      label.append(...this.childNodes);
+      this.appendChild(glow);
+      this.appendChild(label);
+
+      // ARIA
+      this.setAttribute('role', 'tab');
+      this._syncAria();
+
+      // Focusable
+      if (!this.hasAttribute('tabindex')) {
+        this.setAttribute('tabindex', this.hasAttribute('disabled') ? '-1' : '0');
+      }
+    }
+
+    disconnectedCallback() {
+      // TabSwitcher handles listener cleanup; nothing extra needed here
+    }
+
+    attributeChangedCallback() {
+      this._syncAria();
+    }
+
+    _syncAria() {
+      const disabled = this.hasAttribute('disabled');
+      const selected = this.hasAttribute('selected');
+      this.setAttribute('aria-selected',  selected);
+      this.setAttribute('aria-disabled',  disabled);
+      this.setAttribute('tabindex', disabled ? '-1' : (selected ? '0' : '-1'));
+    }
+
+    get selected()  { return this.hasAttribute('selected'); }
+    get disabled()  { return this.hasAttribute('disabled'); }
+    get controls()  { return this.getAttribute('controls'); }
+    get glow()      { return this.querySelector('.hold-glow'); }
+
+    setSelected(val) {
+      if (val) this.setAttribute('selected', '');
+      else     this.removeAttribute('selected');
+    }
+
+    shake() {
+      this.classList.remove('shaking');
+      void this.offsetWidth;
+      this.classList.add('shaking');
+      this.querySelector('.label')
+        .addEventListener('animationend', () => this.classList.remove('shaking'), { once: true });
+    }
+
+    focus(options) {
+      super.focus(options);
+    }
+  }
+
+  // ─── TabSwitcher ─────────────────────────────────────────────────────────────
+  class TabSwitcher extends HTMLElement {
+    connectedCallback() {
+      if (this._initialized) return;
+      this._initialized = true;
+
+      // Inject thumb once
+      this._thumb = document.createElement('div');
+      this._thumb.className = 'thumb';
+      this.prepend(this._thumb);
+
+      this._currentItem  = null;
+      this._currentAnim  = null;
+      this._listeners    = new Map(); // item -> { events }
+      this._holdState    = new Map();
+      this._ro           = null;
+      this._mo           = null;
+
+      customElements.whenDefined('tab-item').then(() => {
+        this._ro = new ResizeObserver(() => this._repositionThumb());
+        this._ro.observe(this);
+        this._setupItems();
+        this._observeMutations();
+      });
+    }
+
+    disconnectedCallback() {
+      this._ro?.disconnect();
+      this._mo?.disconnect();
+      this._listeners.forEach((_, item) => this._removeListeners(item));
+      this._listeners.clear();
+    }
+
+    // ── Public API ────────────────────────────────────────────────────────────
+
+    /** Programmatically select a tab by its controls value or tab-item element */
+    select(target) {
+      const item = typeof target === 'string'
+        ? this._items().find(i => i.controls === target)
+        : target;
+      if (item) this._selectItem(item);
+    }
+
+    // ── Private ───────────────────────────────────────────────────────────────
+
+    _items()        { return [...this.querySelectorAll('tab-item')]; }
+    _enabledItems() { return this._items().filter(i => !i.disabled); }
+
+    _getPos(item) {
+      const tr = this.getBoundingClientRect();
+      const ir = item.getBoundingClientRect();
+      return { x: ir.left - tr.left - 4, w: ir.width };
+    }
+
+    _repositionThumb() {
+      if (!this._currentItem) return;
+      const { x, w } = this._getPos(this._currentItem);
+      if (!w) return;
+      if (!this._thumb._x) {
+        // First paint — set without animation
+        this._thumb.style.transform = `translateX(${x}px)`;
+        this._thumb.style.width     = w + 'px';
+      }
+      this._thumb._x = x;
+      this._thumb._w = w;
+    }
+
+    _moveThumb(item) {
+      const all     = this._items();
+      const enabled = this._enabledItems();
+      const toIdx   = enabled.indexOf(item);
+      const fromIdx = enabled.indexOf(this._currentItem);
+      const dir     = Math.sign(toIdx - fromIdx);
+      const allIdx  = all.indexOf(item);
+      const hitsWall = (allIdx === all.length - 1 && dir > 0) || (allIdx === 0 && dir < 0);
+
+      const BOUNCE = { easing: 'cubic-bezier(0.34, 1.3, 0.64, 1)', duration: 400, fill: 'forwards' };
+      const SOFT   = { easing: 'cubic-bezier(0.25, 1.0, 0.5, 1)',  duration: 400, fill: 'forwards' };
+      const opts   = hitsWall ? SOFT : BOUNCE;
+
+      const { x: targetX, w: targetW } = this._getPos(item);
+      let fromX = this._thumb._x ?? targetX;
+      let fromW = this._thumb._w ?? targetW;
+
+      if (this._currentAnim) {
+        const tr = this._thumb.getBoundingClientRect();
+        const pr = this.getBoundingClientRect();
+        fromX = tr.left - pr.left - 4;
+        fromW = tr.width;
+        this._currentAnim.cancel();
+      }
+
+      this._currentAnim = this._thumb.animate([
+        { transform: `translateX(${fromX}px) scaleX(1.15) scaleY(0.8)`, width: fromW + 'px' },
+        { transform: `translateX(${targetX}px) scaleX(1) scaleY(1)`,    width: targetW + 'px' }
+      ], opts);
+
+      this._currentAnim.onfinish = () => {
+        this._thumb.style.transform = `translateX(${targetX}px)`;
+        this._thumb.style.width     = targetW + 'px';
+        this._currentAnim = null;
+      };
+
+      this._thumb._x = targetX;
+      this._thumb._w = targetW;
+    }
+
+    _selectItem(item) {
+      if (!item || item.disabled || item === this._currentItem) return;
+      this._moveThumb(item);
+      this._items().forEach(i => {
+        i.setSelected(i === item);
+        const panel = document.getElementById(i.controls);
+        if (panel) panel.hidden = i !== item;
+      });
+      this._currentItem = item;
+      this.dispatchEvent(new CustomEvent('tab-change', {
+        detail: { controls: item.controls, item },
+        bubbles: true,
+        composed: true
+      }));
+    }
+
+    _startHold(item) {
+      if (item.disabled) return;
+      this._cancelHold(item);
+      const t0    = performance.now();
+      const state = { raf: null };
+      this._holdState.set(item, state);
+      item.glow.style.transition = 'none';
+      const tick = (now) => {
+        const t = Math.min((now - t0) / 600, 1);
+        item.glow.style.opacity = t * t;
+        if (t < 1) state.raf = requestAnimationFrame(tick);
+      };
+      state.raf = requestAnimationFrame(tick);
+    }
+
+    _cancelHold(item) {
+      const s = this._holdState.get(item);
+      if (s) { cancelAnimationFrame(s.raf); this._holdState.delete(item); }
+    }
+
+    _releaseHold(item) {
+      this._cancelHold(item);
+      if (!item.glow) return;
+      item.glow.style.transition = 'opacity 0.08s ease-out';
+      item.glow.style.opacity    = 0;
+    }
+
+    _addListeners(item) {
+      const inIframe = window.self !== window.top;
+      const handlers = {};
+
+      if (item.disabled) {
+        handlers.click       = () => item.shake();
+        handlers.pointerdown = (e) => { if (!inIframe) { e.preventDefault(); item.shake(); } };
+      } else {
+        if (inIframe) {
+          handlers.click = () => this._selectItem(item);
+        } else {
+          handlers.pointerdown = (e) => { e.preventDefault(); this._selectItem(item); this._startHold(item); };
+        }
+        handlers.pointerdown_hold = () => { if (inIframe) this._startHold(item); };
+        handlers.pointerup        = () => this._releaseHold(item);
+        handlers.pointerleave     = () => this._releaseHold(item);
+        handlers.pointercancel    = () => this._releaseHold(item);
+      }
+
+      // Attach (note: pointerdown may serve dual purpose)
+      if (handlers.click)            item.addEventListener('click',         handlers.click);
+      if (handlers.pointerdown)      item.addEventListener('pointerdown',   handlers.pointerdown);
+      if (handlers.pointerdown_hold) item.addEventListener('pointerdown',   handlers.pointerdown_hold);
+      if (handlers.pointerup)        item.addEventListener('pointerup',     handlers.pointerup);
+      if (handlers.pointerleave)     item.addEventListener('pointerleave',  handlers.pointerleave);
+      if (handlers.pointercancel)    item.addEventListener('pointercancel', handlers.pointercancel);
+
+      this._listeners.set(item, handlers);
+    }
+
+    _removeListeners(item) {
+      const handlers = this._listeners.get(item);
+      if (!handlers) return;
+      if (handlers.click)            item.removeEventListener('click',         handlers.click);
+      if (handlers.pointerdown)      item.removeEventListener('pointerdown',   handlers.pointerdown);
+      if (handlers.pointerdown_hold) item.removeEventListener('pointerdown',   handlers.pointerdown_hold);
+      if (handlers.pointerup)        item.removeEventListener('pointerup',     handlers.pointerup);
+      if (handlers.pointerleave)     item.removeEventListener('pointerleave',  handlers.pointerleave);
+      if (handlers.pointercancel)    item.removeEventListener('pointercancel', handlers.pointercancel);
+      this._listeners.delete(item);
+    }
+
+    _setupKeyboard() {
+      this._keyHandler = (e) => {
+        const items = this._enabledItems();
+        const index = items.indexOf(document.activeElement);
+        if (index === -1) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); const n = items[index+1]; if (n) { n.focus(); this._selectItem(n); } }
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); const p = items[index-1]; if (p) { p.focus(); this._selectItem(p); } }
+      };
+      this.addEventListener('keydown', this._keyHandler);
+    }
+
+    _setupItems() {
+      this._items().forEach(item => this._addListeners(item));
+      this._setupKeyboard();
+
+      // Init first selected
+      const first = this._items().find(i => i.hasAttribute('selected')) || this._enabledItems()[0];
+      if (first) {
+        // Wait one more frame for tab-item connectedCallback to finish
+        requestAnimationFrame(() => {
+          const { x, w } = this._getPos(first);
+          this._thumb.style.transform = `translateX(${x}px)`;
+          this._thumb.style.width     = w + 'px';
+          this._thumb._x = x;
+          this._thumb._w = w;
+          this._items().forEach(i => {
+            i.setSelected(i === first);
+            const panel = document.getElementById(i.controls);
+            if (panel) panel.hidden = i !== first;
+          });
+          this._currentItem = first;
+        });
+      }
+    }
+
+    _observeMutations() {
+      this._mo = new MutationObserver((mutations) => {
+        mutations.forEach(m => {
+          m.addedNodes.forEach(node => {
+            if (node instanceof TabItem) {
+              customElements.upgrade(node);
+              this._addListeners(node);
+            }
+          });
+          m.removedNodes.forEach(node => {
+            if (node instanceof TabItem) {
+              this._removeListeners(node);
+              this._cancelHold(node);
+              // If removed tab was selected, select first available
+              if (node === this._currentItem) {
+                const next = this._enabledItems()[0];
+                if (next) this._selectItem(next);
+              }
+            }
+          });
+        });
+      });
+      this._mo.observe(this, { childList: true });
+    }
+  }
+
+  customElements.define('tab-item',     TabItem);
+  customElements.define('tab-switcher', TabSwitcher);
+  </script>
+
+</body>
+</html>

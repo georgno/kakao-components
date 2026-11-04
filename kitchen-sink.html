@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kitchen Sink</title>
+<link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/demo.css" />
+<link rel="stylesheet" href="components/tabs/tabs.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="components/button/button.css" />
+<link rel="stylesheet" href="components/number-input/number-input.css" />
+<script src="shared/demo.js"></script>
+<script src="components/switch-group/switch-group.js" defer></script>
+<script src="components/step-switch/step-switch.js" defer></script>
+<script src="components/popover/popover.js" defer></script>
+<script src="components/tabs/tabs.js" defer></script>
+<script src="components/list/list.js" defer></script>
+<script src="components/button/button.js" defer></script>
+<script src="components/number-input/number-input.js" defer></script>
+<script src="components/slider/slider.js" defer></script>
+<script src="components/animated-number/animated-number.js" defer></script>
+<script src="components/file-upload/file-upload.js" defer></script>
+<script src="components/multi-dropdown/multi-dropdown.js" defer></script>
+<style>
+  /* ---- bare form layout for this page only ---- */
+  kakao-tabs { margin-bottom: 0.5rem; }
+
+  .field {
+    display: grid;
+    grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+    gap: 0.5rem 1.5rem;
+    align-items: start;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--line);
+  }
+  [role="tabpanel"] > .field:first-child { border-top: 0; }
+  .field-label { display: flex; align-items: center; gap: 0.25rem; font-weight: 600; font-size: 0.95rem; }
+  .field-hint { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.82rem; }
+  .field-control { min-width: 0; }
+  .field-control.narrow { max-width: 12rem; }
+  @media (max-width: 640px) {
+    .field { grid-template-columns: 1fr; }
+  }
+
+  input[type="text"], input[type="email"] {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font: inherit;
+    line-height: 1.5;
+    color: inherit;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    outline: none;
+  }
+  input[type="text"]:focus-visible, input[type="email"]:focus-visible {
+    box-shadow: 0 0 0 4px rgba(24, 24, 27, 0.14);
+  }
+
+  .summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .price { display: flex; align-items: baseline; gap: 0.35rem; }
+  .price small { color: var(--muted); }
+  kakao-animated-number { --kakao-animated-number-font-size: 2rem; --kakao-animated-number-font-weight: 700; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .danger-zone { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+  .popover-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="index.html">← All components</a>
+    <h1>Kitchen sink</h1>
+    <p>Every component inside one realistic form: the settings page of a made-up streaming subscription. The price updates live.</p>
+  </header>
+
+  <form id="settings" class="card" novalidate>
+    <kakao-tabs role="tablist">
+      <kakao-tab controls="tab-plan" selected>Plan</kakao-tab>
+      <kakao-tab controls="tab-playback">Playback</kakao-tab>
+      <kakao-tab controls="tab-notifications">Notifications</kakao-tab>
+      <kakao-tab controls="tab-account">Account</kakao-tab>
+    </kakao-tabs>
+
+    <!-- ============================== Plan ============================== -->
+    <div id="tab-plan" role="tabpanel">
+      <div class="field">
+        <div>
+          <div class="field-label">
+            Streaming quality
+            <kakao-button id="help-quality" icon="fas fa-circle-info" aria-label="About quality" variant="ghost" size="sm"></kakao-button>
+            <kakao-popover for="help-quality" trigger="hover" placement="top">
+              <div slot="content">SD is 480p, HD is 1080p, Ultra is 4K with HDR. The plan price depends on it.</div>
+            </kakao-popover>
+          </div>
+          <p class="field-hint">Sets your plan.</p>
+        </div>
+        <div class="field-control">
+          <kakao-step-switch id="quality" label="Streaming quality" value="hd"
+            list-data='[{"value":"sd","label":"SD"},{"value":"hd","label":"HD"},{"value":"uhd","label":"Ultra"}]'></kakao-step-switch>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <label class="field-label" for="screens">Screens at once</label>
+          <p class="field-hint">First screen included, €2.50 per extra.</p>
+        </div>
+        <div class="field-control narrow">
+          <kakao-number-input>
+            <input id="screens" name="screens" type="number" min="1" max="6" step="1" value="2" />
+          </kakao-number-input>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Billing</div>
+          <p class="field-hint">Yearly billing saves 15%.</p>
+        </div>
+        <div class="field-control">
+          <kakao-switch-group id="billing" label="Billing" color-labels
+            list-data='[{"name":"yearly","label":"Pay yearly (−15%)"}]'></kakao-switch-group>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================== Playback ============================== -->
+    <div id="tab-playback" role="tabpanel" hidden>
+      <div class="field">
+        <div>
+          <div class="field-label">Autoplay</div>
+          <p class="field-hint">What happens when an episode ends.</p>
+        </div>
+        <div class="field-control">
+          <kakao-switch-group id="autoplay" label="Autoplay" orientation="vertical"
+            list-data='[{"name":"next","label":"Play next episode","checked":true},{"name":"previews","label":"Play previews while browsing"},{"name":"skip","label":"Skip intros automatically","checked":true}]'></kakao-switch-group>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Subtitles</div>
+          <p class="field-hint">Size and alignment.</p>
+        </div>
+        <div class="field-control">
+          <kakao-step-switch id="subtitle-size" label="Subtitle size" value="m"
+            list-data='[{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}]'></kakao-step-switch>
+          <div class="kakao-button-segment" id="subtitle-align" style="margin-top: 0.75rem">
+            <kakao-button icon="fas fa-align-left" aria-label="Align left" value="left" toggle></kakao-button>
+            <kakao-button icon="fas fa-align-center" aria-label="Align center" value="center" toggle pressed></kakao-button>
+            <kakao-button icon="fas fa-align-right" aria-label="Align right" value="right" toggle></kakao-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Mobile data limit</div>
+          <p class="field-hint">Pause streaming on cellular after this much per month.</p>
+        </div>
+        <div class="field-control">
+          <kakao-slider id="data-limit" min="0" max="20" step="1" value="5" unit="GB" label="Limit"></kakao-slider>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Audio language</div>
+          <p class="field-hint">Selected: <strong id="language-out">English</strong></p>
+        </div>
+        <div class="field-control">
+          <kakao-list id="language" width="240" height="220"
+            list-data='[{"group":"Popular","names":["English","Deutsch","Español","Français"]},{"group":"More","names":["Italiano","Nederlands","Polski","Português","Türkçe","日本語","한국어"]}]'></kakao-list>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================== Notifications ============================== -->
+    <div id="tab-notifications" role="tabpanel" hidden>
+      <div class="field">
+        <div>
+          <div class="field-label">Email</div>
+          <p class="field-hint">Sent to your account address.</p>
+        </div>
+        <div class="field-control">
+          <kakao-switch-group id="notify-email" label="Email notifications" orientation="vertical" color-labels
+            list-data='[{"name":"new","label":"New episodes of my shows","checked":true},{"name":"recs","label":"Recommendations"},{"name":"billing","label":"Billing receipts","checked":true,"disabled":true}]'></kakao-switch-group>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Push</div>
+          <p class="field-hint">On your phone and TV. Saved to your devices right away.</p>
+        </div>
+        <div class="field-control">
+          <kakao-switch-group id="notify-push" label="Push notifications" orientation="vertical" color-labels async
+            list-data='[{"name":"live","label":"Live events starting"},{"name":"downloads","label":"Downloads finished","checked":true}]'></kakao-switch-group>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Frequency</div>
+          <p class="field-hint">Batch everything that is not urgent.</p>
+        </div>
+        <div class="field-control">
+          <kakao-step-switch id="frequency" label="Notification frequency" value="daily"
+            list-data='[{"value":"instant","label":"Instant"},{"value":"daily","label":"Daily"},{"value":"weekly","label":"Weekly"},{"value":"never","label":"Never"}]'></kakao-step-switch>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================== Account ============================== -->
+    <div id="tab-account" role="tabpanel" hidden>
+      <div class="field">
+        <div><label class="field-label" for="name">Display name</label></div>
+        <div class="field-control"><input id="name" name="name" type="text" value="Kakao Fan" autocomplete="nickname" /></div>
+      </div>
+
+      <div class="field">
+        <div><label class="field-label" for="email">Email</label></div>
+        <div class="field-control"><input id="email" name="email" type="email" value="fan@example.com" autocomplete="email" /></div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Date of birth</div>
+          <p class="field-hint">Don't remember the exact day? Pick “Unknown” for day or month.</p>
+        </div>
+        <div class="field-control">
+          <kakao-multi-dropdown id="dob" type="date" name="dob" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Verification</div>
+          <p class="field-hint">Photo of your ID, front and back. Images or PDF, up to 5 MB each.</p>
+        </div>
+        <div class="field-control">
+          <kakao-file-upload id="documents" name="documents" label="ID documents" accept="image/*,.pdf" max-size="5MB" max-files="2"></kakao-file-upload>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Delete account</div>
+          <p class="field-hint">Removes your profile and history. Cannot be undone.</p>
+        </div>
+        <div class="field-control danger-zone">
+          <kakao-button id="delete" label="Delete account" icon="fas fa-trash" variant="danger" size="sm"></kakao-button>
+          <kakao-popover id="delete-confirm" for="delete" trigger="click" placement="top">
+            <span slot="header">Are you sure?</span>
+            <div slot="content">
+              Your watch history and profiles will be gone.
+              <div class="popover-actions">
+                <kakao-button id="delete-yes" label="Yes, delete" variant="danger" size="sm"></kakao-button>
+                <kakao-button id="delete-no" label="Keep it" variant="secondary" size="sm"></kakao-button>
+              </div>
+            </div>
+          </kakao-popover>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- ============================== Summary ============================== -->
+  <div class="card summary" style="margin-top: 1rem">
+    <div class="price">
+      <span>€</span>
+      <kakao-animated-number id="price" value="13.49" decimals="2"></kakao-animated-number>
+      <small id="price-period">/ month</small>
+    </div>
+    <div class="actions">
+      <kakao-button id="reset" label="Reset" variant="ghost"></kakao-button>
+      <kakao-button id="save" label="Save changes" icon="fas fa-check" type="submit" form="settings"></kakao-button>
+    </div>
+  </div>
+
+  <h2>Submitted values</h2>
+  <p>What a save would send, collected from the component APIs.</p>
+  <div class="log" id="log" role="log" aria-label="Submitted values"></div>
+</main>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const form = $('settings');
+  const log = $('log');
+
+  // ---- price ----
+  const PLAN_PRICE = { sd: 6.99, hd: 10.99, uhd: 15.99 };
+  const EXTRA_SCREEN = 2.5;
+  const isChecked = (group, name) => (group.getData().find((i) => i.name === name) || {}).checked === true;
+
+  function updatePrice() {
+    const quality = $('quality').getAttribute('value') || 'hd';
+    const screens = Math.max(1, Number($('screens').value) || 1);
+    const yearly = isChecked($('billing'), 'yearly');
+    const monthly = PLAN_PRICE[quality] + (screens - 1) * EXTRA_SCREEN;
+    const total = yearly ? monthly * 12 * 0.85 : monthly;
+    $('price').update(Math.round(total * 100) / 100);
+    $('price-period').textContent = yearly ? '/ year' : '/ month';
+  }
+
+  $('quality').addEventListener('step-change', updatePrice);
+  $('screens').addEventListener('input', updatePrice);
+  $('billing').addEventListener('switch-change', updatePrice);
+
+  // ---- subtitle alignment: exclusive segment ----
+  const align = $('subtitle-align');
+  align.addEventListener('kakao-button-action', (e) => {
+    align.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b === e.target));
+  });
+
+  // ---- audio language ----
+  let language = 'English';
+  $('language').addEventListener('item-select', (e) => {
+    language = e.detail.name;
+    $('language-out').textContent = language;
+  });
+
+  // ---- push settings sync to the server on every toggle; live events are not available in this region ----
+  $('notify-push').addEventListener('switch-request', (e) => {
+    const refused = e.detail.name === 'live';
+    e.detail.waitUntil(new Promise((resolve, reject) => setTimeout(refused ? () => reject(new Error('Not available in your region')) : resolve, 1000)));
+  });
+  $('notify-push').addEventListener('switch-error', (e) => logLine(log, 'push sync failed', { name: e.detail.name, reason: e.detail.error.message }));
+
+  // ---- delete confirmation ----
+  const deleteConfirm = $('delete-confirm');
+  $('delete-no').addEventListener('click', () => deleteConfirm.close());
+  $('delete-yes').addEventListener('click', () => {
+    deleteConfirm.close();
+    logLine(log, 'delete', 'Pretend the account is gone.');
+  });
+
+  // ---- collect, save, reset ----
+  const checkedNames = (group) => group.getData().filter((i) => i.checked).map((i) => i.name);
+
+  function collect() {
+    return {
+      plan: {
+        quality: $('quality').getAttribute('value'),
+        screens: Number($('screens').value),
+        yearly: isChecked($('billing'), 'yearly'),
+      },
+      playback: {
+        autoplay: checkedNames($('autoplay')),
+        subtitleSize: $('subtitle-size').getAttribute('value'),
+        subtitleAlign: (align.querySelector('kakao-button[pressed]') || {}).getAttribute?.('value'),
+        dataLimitGB: $('data-limit').getValue(),
+        language,
+      },
+      notifications: {
+        email: checkedNames($('notify-email')),
+        push: checkedNames($('notify-push')),
+        frequency: $('frequency').getAttribute('value'),
+      },
+      account: {
+        name: $('name').value,
+        email: $('email').value,
+        dateOfBirth: $('dob').value,
+        documents: $('documents').files.map((f) => f.name),
+      },
+    };
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    $('save').run(() => new Promise((resolve) => setTimeout(resolve, 900)))
+      .then(() => logLine(log, 'saved', collect()));
+  });
+
+  // Snapshot the initial state once everything is upgraded, so Reset can restore it
+  let initial = null;
+  window.addEventListener('load', () => requestAnimationFrame(() => {
+    initial = {
+      switches: ['billing', 'autoplay', 'notify-email', 'notify-push'].map((id) => [id, $(id).getData()]),
+      steps: ['quality', 'subtitle-size', 'frequency'].map((id) => [id, $(id).getAttribute('value')]),
+      dataLimit: $('data-limit').getValue(),
+    };
+    updatePrice();
+  }));
+
+  $('reset').addEventListener('click', () => {
+    form.reset();
+    if (initial) {
+      initial.switches.forEach(([id, data]) => $(id).setData(data));
+      initial.steps.forEach(([id, value]) => $(id).setValue(value));
+      $('data-limit').setValue(initial.dataLimit);
+    }
+    align.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b.getAttribute('value') === 'center'));
+    language = 'English';
+    $('language-out').textContent = language;
+    // setData() on the switch groups applies in a microtask
+    Promise.resolve().then(() => Promise.resolve()).then(updatePrice);
+    logLine(log, 'reset');
+  });
+</script>
+</body>
+</html>

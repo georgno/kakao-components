@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-switch-group — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="switch-group.js" defer></script>
+<style>
+  .green {
+    --kakao-switch-track-bg-on: #16a34a;
+    --kakao-switch-thumb-bg: #fefce8;
+    --kakao-switch-anim-duration: 450ms;
+    --kakao-switch-anim-easing: cubic-bezier(.34, 1.56, .64, 1);
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Switch group</h1>
+    <p><code>&lt;kakao-switch-group&gt;</code> — on/off switches. Drag the thumb past an end and it squashes into the wall. Tap, drag or use the keyboard.</p>
+  </header>
+
+  <h2>Variants</h2>
+  <p>Data comes from the <code>list-data</code> attribute.</p>
+  <div class="grid">
+    <div class="card full">
+      <h3>In a row · default <code>orientation="horizontal"</code> (stacks itself when narrower than 220px)</h3>
+      <kakao-switch-group label="Preferences"
+        list-data='[{"name":"dark","label":"Dark mode"},{"name":"sound","label":"Sound","checked":true},{"name":"haptics","label":"Haptics","checked":true}]'></kakao-switch-group>
+    </div>
+
+    <div class="card">
+      <h3>Stacked · <code>orientation="vertical"</code></h3>
+      <kakao-switch-group id="group1" label="Notifications" orientation="vertical"
+        list-data='[
+          {"name":"email","label":"Email","checked":true},
+          {"name":"sms","label":"SMS"},
+          {"name":"push","label":"Push notifications","checked":true},
+          {"name":"digest","label":"Weekly digest","disabled":true}
+        ]'></kakao-switch-group>
+    </div>
+
+    <div class="card">
+      <h3>Whole group disabled</h3>
+      <kakao-switch-group label="Locked" orientation="vertical" disabled
+        list-data='[{"name":"c","label":"Locked on","checked":true},{"name":"d","label":"Locked off"}]'></kakao-switch-group>
+    </div>
+
+    <div class="card">
+      <h3>Async · <code>async</code></h3>
+      <kakao-switch-group class="async-demo" label="Synced settings" orientation="vertical" async
+        list-data='[{"name":"fast","label":"Saves fast (150ms, no loader)"},{"name":"ok","label":"Saves (1.2s)"},{"name":"fail","label":"Server refuses"},{"name":"flaky","label":"Fails 50% of the time","checked":true}]'></kakao-switch-group>
+    </div>
+
+    <div class="card">
+      <h3>Themed · <code>color-labels</code></h3>
+      <kakao-switch-group class="green" label="Privacy" orientation="vertical" color-labels
+        list-data='[
+          {"name":"analytics","label":"Share analytics"},
+          {"name":"location","label":"Location access","checked":true},
+          {"name":"ads","label":"Personalised ads"}
+        ]'></kakao-switch-group>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Drive the API of the first group by hand.</p>
+  <div class="card">
+    <div class="toolbar">
+      <kakao-button id="optDrag" variant="secondary" size="sm" toggle pressed></kakao-button>
+      <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
+      <kakao-button id="optColorLabels" variant="secondary" size="sm" toggle></kakao-button>
+    </div>
+    <div class="toolbar">
+      <kakao-button id="apiToggle" label="setChecked(1, !checked)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiFocus" label="focusSwitch(2)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiData" label="setData() — new switches" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiGet" label="getData()" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>label</code>, <code>list-data</code>, <code>orientation</code>, <code>disabled</code>, <code>thumb-drag</code>, <code>color-labels</code>, <code>async</code>, <code>loading-delay</code>. Full reference in the header of <code>switch-group.js</code>.</footer>
+</main>
+
+<script>
+  const group = document.getElementById('group1');
+  const log = document.getElementById('log');
+  logEvents(log, ['switch-change', 'switch-drag-start', 'switch-drag-end', 'switch-focus', 'group-ready', 'switch-request', 'switch-error']);
+
+  // Async demo: every toggle waits on a fake request; "fail" always rejects, "flaky" half the time
+  document.querySelectorAll('.async-demo').forEach((el) => el.addEventListener('switch-request', (e) => {
+    const fail = e.detail.name === 'fail' || (e.detail.name === 'flaky' && Math.random() < 0.5);
+    const ms = e.detail.name === 'fast' ? 150 : 1200;
+    e.detail.waitUntil(new Promise((resolve, reject) => setTimeout(fail ? () => reject(new Error('refused')) : resolve, ms)));
+  }));
+
+  toggleButton(document.getElementById('optDrag'), 'thumb-drag', (on) => { group.thumbDrag = on; });
+  toggleButton(document.getElementById('optDisabled'), 'disabled', (on) => { group.disabled = on; });
+  toggleButton(document.getElementById('optColorLabels'), 'color-labels', (on) => { group.colorLabels = on; });
+
+  document.getElementById('apiToggle').addEventListener('click', () => {
+    const item = group.getData()[1];
+    if (item) group.setChecked(1, !item.checked);
+  });
+  document.getElementById('apiFocus').addEventListener('click', () => group.focusSwitch(2));
+  document.getElementById('apiData').addEventListener('click', () => {
+    group.setData([
+      { name: 'wifi', label: 'Wi-Fi', checked: true },
+      { name: 'bt', label: 'Bluetooth' },
+      { name: 'airplane', label: 'Airplane mode' },
+    ]);
+  });
+  document.getElementById('apiGet').addEventListener('click', () => {
+    logLine(log, 'getData()', group.getData());
+  });
+</script>
+</body>
+</html>

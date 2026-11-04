@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-file-upload — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="file-upload.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<main data-construction data-target="file-upload" data-source="file-upload.js" data-title="File upload">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default · with files of every type</figcaption>
+      <kakao-file-upload id="filled" label="Attachments"></kakao-file-upload>
+    </figure>
+    <figure>
+      <figcaption>Horizontal</figcaption>
+      <kakao-file-upload id="side" label="Project files" horizontal></kakao-file-upload>
+    </figure>
+    <figure>
+      <figcaption>Disabled</figcaption>
+      <kakao-file-upload label="Locked" disabled></kakao-file-upload>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-file-upload-accent", "label": "Accent", "group": "Colour", "type": "color", "hint": "icon, drag-over, focus" },
+    { "property": "--kakao-file-upload-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-file-upload-border", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-file-upload-dot-color", "label": "Dots", "group": "Colour", "type": "color" },
+    { "property": "--kakao-file-upload-spotlight-color", "label": "Spotlight dots", "group": "Colour", "type": "color", "hint": "default: accent 25% into dots" },
+    { "property": "--kakao-file-upload-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-file-upload-muted", "label": "Muted text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-file-upload-error", "label": "Error", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-file-upload-type-color", "label": "Other files", "group": "File types", "type": "color" },
+    { "property": "--kakao-file-upload-type-image", "label": "Images", "group": "File types", "type": "color" },
+    { "property": "--kakao-file-upload-type-pdf", "label": "PDF", "group": "File types", "type": "color" },
+    { "property": "--kakao-file-upload-type-video", "label": "Video", "group": "File types", "type": "color" },
+    { "property": "--kakao-file-upload-type-audio", "label": "Audio", "group": "File types", "type": "color" },
+    { "property": "--kakao-file-upload-type-archive", "label": "Archives", "group": "File types", "type": "color" },
+    { "property": "--kakao-file-upload-type-text", "label": "Text files", "group": "File types", "type": "color" },
+    { "property": "--kakao-file-upload-type-tag-text", "label": "Extension tag text", "group": "File types", "type": "color" },
+
+    { "property": "--kakao-file-upload-min-height", "label": "Drop area height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-file-upload-drop-padding", "label": "Drop area padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-file-upload-label-gap", "label": "Gap under label", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-file-upload-icon-size", "label": "Icon size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-file-upload-list-gap", "label": "Gap between files", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-file-upload-item-padding", "label": "File row padding", "group": "Size & spacing", "type": "text", "hint": "1–4 lengths" },
+    { "property": "--kakao-file-upload-thumb-size", "label": "Thumbnail size", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-file-upload-radius", "label": "Drop area radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-file-upload-drop-border-width", "label": "Drop border width", "group": "Shape", "type": "length" },
+    { "property": "--kakao-file-upload-drop-border-style", "label": "Drop border style", "group": "Shape", "type": "text", "hint": "dashed, dotted, solid" },
+    { "property": "--kakao-file-upload-item-radius", "label": "File row radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-file-upload-thumb-radius", "label": "Thumbnail radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-file-upload-font", "label": "Font", "group": "Typography", "type": "font" },
+
+    { "property": "--kakao-file-upload-dot-size", "label": "Dot size", "group": "Dots & spotlight", "type": "length" },
+    { "property": "--kakao-file-upload-dot-gap", "label": "Dot spacing", "group": "Dots & spotlight", "type": "length" },
+    { "property": "--kakao-file-upload-spotlight", "label": "Spotlight radius", "group": "Dots & spotlight", "type": "length" },
+    { "property": "--kakao-file-upload-drag-spotlight", "label": "Spotlight while dragging", "group": "Dots & spotlight", "type": "length" },
+
+    { "property": "--kakao-file-upload-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+    { "property": "--kakao-file-upload-icon-lift", "label": "Icon lift on hover", "group": "Effects", "type": "length" }
+  ]
+  </script>
+</main>
+<script>
+  // Generated files, one per type, so thumbnails and type colours are visible
+  customElements.whenDefined('kakao-file-upload').then(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 80; canvas.height = 80;
+    const g = canvas.getContext('2d');
+    const grad = g.createLinearGradient(0, 0, 80, 80);
+    grad.addColorStop(0, '#fbbf24'); grad.addColorStop(1, '#4f46e5');
+    g.fillStyle = grad; g.fillRect(0, 0, 80, 80);
+    canvas.toBlob((blob) => {
+      const files = [
+        new File([blob], 'cover.png', { type: 'image/png' }),
+        new File([new Uint8Array(240000)], 'report.pdf', { type: 'application/pdf' }),
+        new File([new Uint8Array(900000)], 'clip.mp4', { type: 'video/mp4' }),
+        new File([new Uint8Array(500000)], 'voice.mp3', { type: 'audio/mpeg' }),
+        new File([new Uint8Array(1800000)], 'archive.zip', { type: 'application/zip' }),
+        new File(['hello'], 'notes.txt', { type: 'text/plain' }),
+        new File(['x'], 'data.bin', { type: 'application/octet-stream' }),
+      ];
+      document.getElementById('filled').addFiles(files);
+      document.getElementById('side').addFiles(files.slice(0, 3));
+    });
+  });
+</script>
+</body>
+</html>

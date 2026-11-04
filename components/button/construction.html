@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-button — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="button.css" />
+<script src="button.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
+</style>
+</head>
+<body>
+<main data-construction data-target="button" data-source="button.css" data-title="Button">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Variants</figcaption>
+      <div class="row">
+        <kakao-button label="Primary"></kakao-button>
+        <kakao-button label="Secondary" variant="secondary"></kakao-button>
+        <kakao-button label="Ghost" variant="ghost"></kakao-button>
+        <kakao-button label="Danger" variant="danger" icon="fas fa-trash"></kakao-button>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Sizes · icon only</figcaption>
+      <div class="row">
+        <kakao-button label="Small" size="sm"></kakao-button>
+        <kakao-button label="Medium" size="md"></kakao-button>
+        <kakao-button label="Large" size="lg"></kakao-button>
+        <kakao-button icon="fas fa-gear" aria-label="Settings" icon-position="only" variant="secondary" size="sm"></kakao-button>
+        <kakao-button icon="fas fa-gear" aria-label="Settings" icon-position="only" variant="secondary"></kakao-button>
+        <kakao-button icon="fas fa-gear" aria-label="Settings" icon-position="only" variant="secondary" size="lg"></kakao-button>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>States · loading, disabled, toggle</figcaption>
+      <div class="row">
+        <kakao-button id="loading" label="Saving"></kakao-button>
+        <kakao-button label="Disabled" disabled></kakao-button>
+        <kakao-button label="Toggle off" variant="secondary" toggle></kakao-button>
+        <kakao-button label="Toggle on" variant="secondary" toggle pressed></kakao-button>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Segmented toggle</figcaption>
+      <div class="kakao-button-segment" id="segment">
+        <kakao-button icon="fas fa-list" aria-label="List" icon-position="only" toggle pressed></kakao-button>
+        <kakao-button icon="fas fa-table-cells" aria-label="Grid" icon-position="only" toggle></kakao-button>
+        <kakao-button icon="fas fa-map" aria-label="Map" icon-position="only" toggle></kakao-button>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-button-ink", "label": "Ink", "group": "Colour", "type": "color", "hint": "dark base colour" },
+    { "property": "--kakao-button-ink-soft", "label": "Soft ink", "group": "Colour", "type": "color" },
+    { "property": "--kakao-button-paper", "label": "Paper", "group": "Colour", "type": "color", "hint": "light base colour" },
+
+    { "property": "--kakao-button-primary-bg", "label": "Background", "group": "Primary", "type": "color" },
+    { "property": "--kakao-button-primary-text", "label": "Text", "group": "Primary", "type": "color" },
+    { "property": "--kakao-button-primary-hover-bg", "label": "Hover background", "group": "Primary", "type": "color" },
+    { "property": "--kakao-button-primary-ring", "label": "Focus ring", "group": "Primary", "type": "color" },
+    { "property": "--kakao-button-primary-shadow", "label": "Shadow", "group": "Primary", "type": "shadow" },
+
+    { "property": "--kakao-button-secondary-bg", "label": "Background", "group": "Secondary", "type": "color" },
+    { "property": "--kakao-button-secondary-text", "label": "Text", "group": "Secondary", "type": "color" },
+    { "property": "--kakao-button-secondary-hover-bg", "label": "Hover background", "group": "Secondary", "type": "color" },
+    { "property": "--kakao-button-secondary-ring", "label": "Focus ring", "group": "Secondary", "type": "color" },
+
+    { "property": "--kakao-button-ghost-text", "label": "Text", "group": "Ghost", "type": "color" },
+    { "property": "--kakao-button-ghost-hover-bg", "label": "Hover background", "group": "Ghost", "type": "color" },
+    { "property": "--kakao-button-ghost-ring", "label": "Focus ring", "group": "Ghost", "type": "color" },
+
+    { "property": "--kakao-button-danger-bg", "label": "Background", "group": "Danger", "type": "color" },
+    { "property": "--kakao-button-danger-text", "label": "Text", "group": "Danger", "type": "color" },
+    { "property": "--kakao-button-danger-hover-bg", "label": "Hover background", "group": "Danger", "type": "color" },
+    { "property": "--kakao-button-danger-ring", "label": "Focus ring", "group": "Danger", "type": "color" },
+    { "property": "--kakao-button-danger-shadow", "label": "Shadow", "group": "Danger", "type": "shadow" },
+
+    { "property": "--kakao-button-sm-height", "label": "Height", "group": "Size sm", "type": "length" },
+    { "property": "--kakao-button-sm-padding-x", "label": "Padding x", "group": "Size sm", "type": "length" },
+    { "property": "--kakao-button-sm-font-size", "label": "Font size", "group": "Size sm", "type": "length" },
+    { "property": "--kakao-button-sm-radius", "label": "Radius", "group": "Size sm", "type": "radius" },
+    { "property": "--kakao-button-sm-gap", "label": "Icon gap", "group": "Size sm", "type": "length" },
+
+    { "property": "--kakao-button-md-height", "label": "Height", "group": "Size md", "type": "length" },
+    { "property": "--kakao-button-md-padding-x", "label": "Padding x", "group": "Size md", "type": "length" },
+    { "property": "--kakao-button-md-font-size", "label": "Font size", "group": "Size md", "type": "length" },
+    { "property": "--kakao-button-md-radius", "label": "Radius", "group": "Size md", "type": "radius" },
+    { "property": "--kakao-button-md-gap", "label": "Icon gap", "group": "Size md", "type": "length" },
+
+    { "property": "--kakao-button-lg-height", "label": "Height", "group": "Size lg", "type": "length" },
+    { "property": "--kakao-button-lg-padding-x", "label": "Padding x", "group": "Size lg", "type": "length" },
+    { "property": "--kakao-button-lg-font-size", "label": "Font size", "group": "Size lg", "type": "length" },
+    { "property": "--kakao-button-lg-radius", "label": "Radius", "group": "Size lg", "type": "radius" },
+    { "property": "--kakao-button-lg-gap", "label": "Icon gap", "group": "Size lg", "type": "length" },
+
+    { "property": "--kakao-button-font", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-button-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-button-focus-ring-width", "label": "Focus ring width", "group": "States", "type": "length" },
+    { "property": "--kakao-button-disabled-opacity", "label": "Disabled opacity", "group": "States", "type": "number", "min": 0, "max": 1 },
+    { "property": "--kakao-button-toggle-off-opacity", "label": "Toggle off opacity", "group": "States", "type": "number", "min": 0, "max": 1 },
+    { "property": "--kakao-button-spinner-size", "label": "Spinner size", "group": "States", "type": "length" },
+    { "property": "--kakao-button-transition", "label": "Transition", "group": "States", "type": "duration" },
+
+    { "property": "--kakao-button-segment-bg", "label": "Background", "group": "Segmented toggle", "type": "color" },
+    { "property": "--kakao-button-segment-pressed-bg", "label": "Pressed background", "group": "Segmented toggle", "type": "color" },
+    { "property": "--kakao-button-segment-pressed-shadow", "label": "Pressed shadow", "group": "Segmented toggle", "type": "shadow" },
+    { "property": "--kakao-button-segment-padding", "label": "Padding", "group": "Segmented toggle", "type": "length" },
+    { "property": "--kakao-button-segment-gap", "label": "Gap", "group": "Segmented toggle", "type": "length" },
+    { "property": "--kakao-button-segment-radius", "label": "Radius", "group": "Segmented toggle", "type": "radius" },
+    { "property": "--kakao-button-segment-item-radius", "label": "Item radius", "group": "Segmented toggle", "type": "radius" },
+    { "property": "--kakao-button-segment-item-size", "label": "Item size", "group": "Segmented toggle", "type": "length" }
+  ]
+  </script>
+</main>
+<script>
+  customElements.whenDefined('kakao-button').then(() => {
+    // A loading button that never finishes, so the spinner can be tuned
+    requestAnimationFrame(() => document.getElementById('loading').run(new Promise(() => {})));
+    // The segment is exclusive: pressing one releases the others
+    const segment = document.getElementById('segment');
+    segment.addEventListener('kakao-button-action', (e) => {
+      segment.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b === e.target.closest('kakao-button')));
+    });
+  });
+</script>
+</body>
+</html>

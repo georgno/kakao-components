@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-number-input — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="number-input.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="number-input.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Number input</h1>
+    <p><code>&lt;kakao-number-input&gt;</code> — wraps a native <code>&lt;input type="number"&gt;</code> with custom stepper arrows; scroll the wheel over the arrows to step. Light DOM: load <code>number-input.css</code> next to the script.</p>
+  </header>
+
+  <h2>Variants</h2>
+  <p><code>min</code>, <code>max</code>, <code>step</code>, <code>value</code> and <code>disabled</code> stay on the inner input.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Default</h3>
+      <kakao-number-input>
+        <input id="num1" type="number" min="0" max="100" step="1" value="10" aria-label="Quantity" />
+      </kakao-number-input>
+    </div>
+    <div class="card">
+      <h3>Small · step 0.5</h3>
+      <kakao-number-input size="sm">
+        <input type="number" min="0" max="10" step="0.5" value="2.5" aria-label="Hours" />
+      </kakao-number-input>
+    </div>
+    <div class="card">
+      <h3>Disabled</h3>
+      <kakao-number-input>
+        <input type="number" value="42" disabled aria-label="Locked" />
+      </kakao-number-input>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Changes bubble as normal <code>input</code> / <code>change</code> events from the inner input.</p>
+  <div class="card">
+    <div class="toolbar">
+      <kakao-button id="optSize" variant="secondary" size="sm" toggle></kakao-button>
+      <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attribute on the host: <code>size</code> (<code>sm</code>). Everything else lives on the wrapped input. Full reference in the header of <code>number-input.js</code>.</footer>
+</main>
+
+<script>
+  const input = document.getElementById('num1');
+  const log = document.getElementById('log');
+  input.addEventListener('change', () => logLine(log, 'change', { value: input.value }));
+
+  toggleButton(document.getElementById('optSize'), 'size sm', (on) => {
+    input.parentElement.toggleAttribute('size', on);
+    if (on) input.parentElement.setAttribute('size', 'sm');
+  });
+  toggleButton(document.getElementById('optDisabled'), 'disabled', (on) => { input.disabled = on; });
+</script>
+</body>
+</html>

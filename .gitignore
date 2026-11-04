@@ -1,0 +1,6 @@
+# local editor/agent settings and OS junk
+.claude/settings.local.json
+.DS_Store
+Thumbs.db
+*.swp
+node_modules/

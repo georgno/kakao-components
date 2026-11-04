@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-step-switch — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="step-switch.js" defer></script>
+<style>
+  .grid.steps { grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); }
+  kakao-step-switch { --kakao-step-switch-label-overhang: 1.1rem; }
+
+  .heat {
+    --kakao-step-switch-track-bg-off: #fbbf24;
+    --kakao-step-switch-track-bg-on: #dc2626;
+    --kakao-step-switch-label-active-color: #991b1b;
+  }
+  .chunky {
+    --kakao-step-switch-track-height: 2.25rem;
+    --kakao-step-switch-thumb-size: 1.8rem;
+    --kakao-step-switch-track-bg: #0f766e;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Step switch</h1>
+    <p><code>&lt;kakao-step-switch&gt;</code> — one thumb, several positions. It snaps to the nearest step; arrow keys move one step, Home and End jump to the ends.</p>
+  </header>
+
+  <h2>Variants</h2>
+  <p>Steps come from the <code>list-data</code> attribute, the selection from <code>value</code>.</p>
+  <div class="grid steps">
+    <div class="card">
+      <h3>Three steps</h3>
+      <kakao-step-switch id="steps1" label="Quality" value="med"
+        list-data='[{"value":"low","label":"Low"},{"value":"med","label":"Medium"},{"value":"high","label":"High"}]'></kakao-step-switch>
+    </div>
+
+    <div class="card">
+      <h3>Five steps, color-shift</h3>
+      <kakao-step-switch class="heat" label="Playback speed" value="3" color-shift
+        list-data='[{"value":"1","label":"0.5×"},{"value":"2","label":"0.75×"},{"value":"3","label":"1×"},{"value":"4","label":"1.5×"},{"value":"5","label":"2×"}]'></kakao-step-switch>
+    </div>
+
+    <div class="card">
+      <h3>Disabled step</h3>
+      <kakao-step-switch label="Day of the week" value="d"
+        list-data='[{"value":"a","label":"Mon"},{"value":"b","label":"Tue"},{"value":"c","label":"Wed","disabled":true},{"value":"d","label":"Thu"},{"value":"e","label":"Fri"},{"value":"f","label":"Sat"},{"value":"g","label":"Sun"}]'></kakao-step-switch>
+    </div>
+
+    <div class="card">
+      <h3>Larger, no ticks</h3>
+      <kakao-step-switch class="chunky" label="Size" value="m" show-ticks="false"
+        list-data='[{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}]'></kakao-step-switch>
+    </div>
+
+    <div class="card">
+      <h3>No labels, plain string data</h3>
+      <kakao-step-switch label="Level" value="2" show-labels="false"
+        list-data='["1","2","3","4"]'></kakao-step-switch>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Drive the API of the first step switch by hand.</p>
+  <div class="card">
+    <div class="toolbar">
+      <kakao-button id="optDrag" variant="secondary" size="sm" toggle pressed></kakao-button>
+      <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
+      <kakao-button id="optShift" variant="secondary" size="sm" toggle></kakao-button>
+    </div>
+    <div class="toolbar">
+      <kakao-button id="apiPrev" label="stepBy(-1)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiNext" label="stepBy(+1)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiHigh" label="setValue(&quot;high&quot;)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiData" label="setData() — new steps" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiGet" label="getData() / getIndex()" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>label</code>, <code>list-data</code>, <code>value</code>, <code>disabled</code>, <code>thumb-drag</code>, <code>show-labels</code>, <code>show-ticks</code>, <code>color-shift</code>. Full reference in the header of <code>step-switch.js</code>.</footer>
+</main>
+
+<script>
+  const steps = document.getElementById('steps1');
+  const log = document.getElementById('log');
+  // step-drag fires on every pointer move, so it's left out of the log
+  logEvents(log, ['step-change', 'step-drag-start', 'step-drag-end']);
+
+  toggleButton(document.getElementById('optDrag'), 'thumb-drag', (on) => { steps.thumbDrag = on; });
+  toggleButton(document.getElementById('optDisabled'), 'disabled', (on) => { steps.disabled = on; });
+  toggleButton(document.getElementById('optShift'), 'color-shift', (on) => { steps.colorShift = on; });
+
+  document.getElementById('apiPrev').addEventListener('click', () => steps.stepBy(-1));
+  document.getElementById('apiNext').addEventListener('click', () => steps.stepBy(1));
+  document.getElementById('apiHigh').addEventListener('click', () => steps.setValue('high'));
+  document.getElementById('apiData').addEventListener('click', () => {
+    steps.setData([
+      { value: 'off', label: 'Off' },
+      { value: 'eco', label: 'Eco' },
+      { value: 'auto', label: 'Auto' },
+      { value: 'boost', label: 'Boost' },
+    ]);
+  });
+  document.getElementById('apiGet').addEventListener('click', () => {
+    logLine(log, 'getData()', steps.getData());
+    logLine(log, 'getIndex()', steps.getIndex());
+  });
+</script>
+</body>
+</html>

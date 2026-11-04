@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-popover — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="popover.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  /* Room for the open popovers next to and under their anchors */
+  .construction-preview figure { min-height: 10rem; }
+</style>
+</head>
+<body>
+<main data-construction data-target="popover" data-source="popover.js" data-title="Popover">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Content · open below</figcaption>
+      <kakao-button id="anchor-content" label="Account info" variant="secondary" size="sm"></kakao-button>
+      <kakao-popover for="anchor-content" trigger="manual" placement="bottom" open>
+        <div slot="content"><strong>Plan:</strong> Pro<br><strong>Renews:</strong> Aug 4</div>
+      </kakao-popover>
+    </figure>
+    <figure>
+      <figcaption>List data · open to the right</figcaption>
+      <kakao-button id="anchor-list" label="Server status" variant="secondary" size="sm"></kakao-button>
+      <kakao-popover for="anchor-list" trigger="manual" placement="right" open
+        list-data='[{"label":"Region","value":"eu-central"},{"label":"Uptime","value":"99.98%"},{"label":"Version","value":"4.2.1"}]'></kakao-popover>
+    </figure>
+    <figure>
+      <figcaption>Click trigger · try it</figcaption>
+      <kakao-button id="anchor-click" label="Click me" variant="secondary" size="sm"></kakao-button>
+      <kakao-popover for="anchor-click" trigger="click" placement="bottom">
+        <div slot="content">Opens and closes on click, closes on Escape.</div>
+      </kakao-popover>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-popover-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-popover-text-color", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-popover-label-color", "label": "Row labels", "group": "Colour", "type": "color" },
+    { "property": "--kakao-popover-border-color", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-popover-header-bg", "label": "Header", "group": "Colour", "type": "color" },
+    { "property": "--kakao-popover-hover-bg", "label": "Row hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-popover-active-bg", "label": "Row pressed", "group": "Colour", "type": "color" },
+    { "property": "--kakao-popover-focus-ring-color", "label": "Focus ring", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-popover-spacing", "label": "Spacing", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-popover-min-width", "label": "Min width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-popover-max-width", "label": "Max width", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-popover-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-popover-font-family", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-popover-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-popover-label-font-size", "label": "Row label size", "group": "Typography", "type": "length" },
+
+    { "property": "--kakao-popover-shadow", "label": "Shadow", "group": "Effects", "type": "shadow" },
+    { "property": "--kakao-popover-z-index", "label": "Z-index", "group": "Effects", "type": "text" },
+
+    { "property": "--kakao-popover-transition-speed", "label": "Fade duration", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+</body>
+</html>

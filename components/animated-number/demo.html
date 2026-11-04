@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-animated-number — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="animated-number.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Animated number</h1>
+    <p><code>&lt;kakao-animated-number&gt;</code> — odometer-style rolling digits whenever the value changes, formatted with <code>Intl.NumberFormat</code>.</p>
+  </header>
+
+  <h2>Variants</h2>
+  <p>Each one rolls to a new random value when you press “Randomize all”.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Integer</h3>
+      <kakao-animated-number class="rnd" value="1280"></kakao-animated-number>
+    </div>
+    <div class="card">
+      <h3>2 decimals · de-DE</h3>
+      <kakao-animated-number class="rnd" value="1234.5" decimals="2" locale="de-DE"></kakao-animated-number>
+    </div>
+    <div class="card">
+      <h3>Sign always · slow</h3>
+      <kakao-animated-number class="rnd" value="12" sign-display="always" duration="1500"></kakao-animated-number>
+    </div>
+    <div class="card">
+      <h3>Themed</h3>
+      <kakao-animated-number class="rnd" value="99"
+        style="--kakao-animated-number-font-size:2.5rem;--kakao-animated-number-font-weight:700;--kakao-animated-number-color:#4f46e5"></kakao-animated-number>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Drive the first number by hand.</p>
+  <div class="card">
+    <kakao-animated-number id="num" value="0" style="--kakao-animated-number-font-size:2rem"></kakao-animated-number>
+    <div class="toolbar">
+      <kakao-button id="apiInc" label="+1" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiAdd" label="+125" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiNeg" label="update(-42)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiRandom" label="Randomize all" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>value</code>, <code>locale</code>, <code>decimals</code>, <code>duration</code>, <code>sign-display</code>. Method <code>update(n)</code>, event <code>kakao-animated-number-complete</code>. Full reference in the header of <code>animated-number.js</code>.</footer>
+</main>
+
+<script>
+  const num = document.getElementById('num');
+  logEvents(document.getElementById('log'), ['kakao-animated-number-complete']);
+
+  document.getElementById('apiInc').addEventListener('click', () => num.update(Number(num.value) + 1));
+  document.getElementById('apiAdd').addEventListener('click', () => num.update(Number(num.value) + 125));
+  document.getElementById('apiNeg').addEventListener('click', () => num.update(-42));
+  document.getElementById('apiRandom').addEventListener('click', () => {
+    document.querySelectorAll('kakao-animated-number').forEach((el) => {
+      el.update(Math.round(Math.random() * 20000) / 10 - (el.getAttribute('sign-display') ? 1000 : 0));
+    });
+  });
+</script>
+</body>
+</html>

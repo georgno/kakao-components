@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-multi-dropdown — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="multi-dropdown.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  /* Leave room for the open list */
+  #open-example { min-height: 22rem; }
+</style>
+</head>
+<body>
+<main data-construction data-target="multi-dropdown" data-source="multi-dropdown.js" data-title="Multi dropdown">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Date · unknown day and month</figcaption>
+      <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+    </figure>
+    <figure>
+      <figcaption>Empty · placeholders</figcaption>
+      <kakao-multi-dropdown type="date" label="First visit" allow-unknown></kakao-multi-dropdown>
+    </figure>
+    <figure id="open-example">
+      <figcaption>Open list · click any box to open it again</figcaption>
+      <kakao-multi-dropdown id="opened" type="date" label="Appointment" min-year="2026" max-year="2030" value="30.04.2026"></kakao-multi-dropdown>
+    </figure>
+    <figure>
+      <figcaption>Disabled</figcaption>
+      <kakao-multi-dropdown type="date" label="Locked" value="01.01.2000" disabled></kakao-multi-dropdown>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-multi-dropdown-accent", "label": "Accent", "group": "Colour", "type": "color", "hint": "focus, selected option" },
+    { "property": "--kakao-multi-dropdown-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-multi-dropdown-border", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-multi-dropdown-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-multi-dropdown-muted", "label": "Muted", "group": "Colour", "type": "color", "hint": "placeholder, Unknown, chevron" },
+    { "property": "--kakao-multi-dropdown-hover-bg", "label": "Hover", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-multi-dropdown-padding", "label": "Box padding", "group": "Size & spacing", "type": "text", "hint": "1–4 lengths" },
+    { "property": "--kakao-multi-dropdown-label-gap", "label": "Gap under label", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-multi-dropdown-chevron-gap", "label": "Gap to chevron", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-multi-dropdown-chevron-size", "label": "Chevron size", "group": "Size & spacing", "type": "length", "units": ["em", "px", "rem"] },
+    { "property": "--kakao-multi-dropdown-popup-height", "label": "List max height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-multi-dropdown-popup-offset", "label": "List offset", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-multi-dropdown-popup-padding", "label": "List padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-multi-dropdown-option-padding", "label": "Option padding", "group": "Size & spacing", "type": "text", "hint": "1–4 lengths" },
+
+    { "property": "--kakao-multi-dropdown-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-multi-dropdown-option-radius", "label": "Option radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-multi-dropdown-font", "label": "Font", "group": "Typography", "type": "font" },
+
+    { "property": "--kakao-multi-dropdown-popup-shadow", "label": "List shadow", "group": "Effects", "type": "shadow" },
+    { "property": "--kakao-multi-dropdown-focus-ring-width", "label": "Focus ring width", "group": "Effects", "type": "length" },
+    { "property": "--kakao-multi-dropdown-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 }
+  ]
+  </script>
+</main>
+<script>
+  // Show one list open from the start, so its styling is visible
+  customElements.whenDefined('kakao-multi-dropdown').then(() => requestAnimationFrame(() => {
+    const trigger = document.getElementById('opened').shadowRoot.querySelector('[aria-haspopup]') ||
+      document.getElementById('opened').shadowRoot.querySelectorAll('.trigger')[1];
+    if (trigger) trigger.click();
+  }));
+</script>
+</body>
+</html>

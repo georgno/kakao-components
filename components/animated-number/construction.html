@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-animated-number — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="animated-number.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .big { font-size: 2.5rem; font-weight: 700; }
+  .roll { margin-top: 0.75rem; }
+</style>
+</head>
+<body>
+<main data-construction data-target="animated-number" data-source="animated-number.js" data-title="Animated number">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Price · inherits a large bold font</figcaption>
+      <div class="big"><kakao-animated-number id="price" value="9.99" decimals="2"></kakao-animated-number> €</div>
+      <kakao-button class="roll" id="roll" label="Roll to a new value" size="sm" variant="secondary"></kakao-button>
+    </figure>
+    <figure>
+      <figcaption>Counter · signed</figcaption>
+      <kakao-animated-number id="delta" value="12" sign-display="always"></kakao-animated-number>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-animated-number-color", "label": "Colour", "group": "Colour", "type": "color", "hint": "default: inherited" },
+    { "property": "--kakao-animated-number-font-family", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-animated-number-font-size", "label": "Font size", "group": "Typography", "type": "length", "units": ["em", "rem", "px"] },
+    { "property": "--kakao-animated-number-font-weight", "label": "Font weight", "group": "Typography", "type": "text", "hint": "100–900 or inherit" },
+    { "property": "--kakao-animated-number-duration", "label": "Roll duration", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+<script>
+  // Each click rolls both numbers to new random values
+  customElements.whenDefined('kakao-animated-number').then(() => {
+    document.getElementById('roll').addEventListener('kakao-button-action', () => {
+      document.getElementById('price').update(Math.round(Math.random() * 20000) / 100);
+      document.getElementById('delta').update(Math.round(Math.random() * 200 - 100));
+    });
+  });
+</script>
+</body>
+</html>

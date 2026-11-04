@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-number-input — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="number-input.css" />
+<script src="../button/button.js" defer></script>
+<script src="number-input.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .construction-preview kakao-number-input { max-width: 12rem; }
+</style>
+</head>
+<body>
+<main data-construction data-target="number-input" data-source="number-input.css" data-title="Number input">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default</figcaption>
+      <kakao-number-input><input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity" /></kakao-number-input>
+    </figure>
+    <figure>
+      <figcaption>Small · size="sm"</figcaption>
+      <kakao-number-input size="sm"><input type="number" min="0" max="10" step="0.5" value="2.5" aria-label="Rating" /></kakao-number-input>
+    </figure>
+    <figure>
+      <figcaption>Disabled</figcaption>
+      <kakao-number-input><input type="number" value="42" disabled aria-label="Locked" /></kakao-number-input>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-number-input-input-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-number-input-input-color", "label": "Text", "group": "Colour", "type": "color", "hint": "default: inherited" },
+    { "property": "--kakao-number-input-input-border", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-number-input-focus-color", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-number-input-arrow-border", "label": "Stepper border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-number-input-arrow-color", "label": "Stepper arrows", "group": "Colour", "type": "color" },
+    { "property": "--kakao-number-input-arrow-hover-bg", "label": "Stepper hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-number-input-arrow-hover-color", "label": "Stepper hover arrows", "group": "Colour", "type": "color" },
+    { "property": "--kakao-number-input-arrow-active-bg", "label": "Stepper pressed", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-number-input-input-padding", "label": "Padding", "group": "Size & spacing", "type": "text", "hint": "1–4 lengths" },
+    { "property": "--kakao-number-input-input-padding-right", "label": "Padding right", "group": "Size & spacing", "type": "length", "hint": "room for the stepper" },
+    { "property": "--kakao-number-input-arrow-width", "label": "Stepper width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-number-input-arrow-size", "label": "Arrow size", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-number-input-input-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-number-input-font-size", "label": "Font size", "group": "Typography", "type": "text", "hint": "length or inherit" },
+
+    { "property": "--kakao-number-input-focus-ring-width", "label": "Focus ring width", "group": "Effects", "type": "length" },
+    { "property": "--kakao-number-input-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+
+    { "property": "--kakao-number-input-sm-arrow-width", "label": "Stepper width", "group": "Size sm", "type": "length" },
+    { "property": "--kakao-number-input-sm-input-padding-right", "label": "Padding right", "group": "Size sm", "type": "length" },
+    { "property": "--kakao-number-input-sm-font-size", "label": "Font size", "group": "Size sm", "type": "length" },
+    { "property": "--kakao-number-input-sm-arrow-size", "label": "Arrow size", "group": "Size sm", "type": "length" }
+  ]
+  </script>
+</main>
+</body>
+</html>

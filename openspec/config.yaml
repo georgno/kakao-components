@@ -1,0 +1,54 @@
+schema: spec-driven
+
+context: |
+  Vanilla Web Components: plain JS, no dependencies, no build step, no framework.
+  Every element is named kakao-<generic name> (kakao-button, kakao-tabs, ...); CSS
+  custom properties use --kakao-<component>-*.
+  Styling is deliberately bare for now; a real visual design comes later, so
+  changes focus on behaviour, accessibility and theming hooks, not looks.
+  JSON configuration attributes are called list-data, never data.
+  Component files must stay inlineable in an HTML page: no literal closing
+  script tag anywhere in the source.
+  Every component ships components/<name>/<name>.js plus demo.html, and gets a
+  card with several examples on index.html; demos use kakao-button instead of
+  native buttons. kitchen-sink.html shows the components together in a real form.
+  Every new component, and every component being changed, also ships an
+  up-to-date components/<name>/construction.html: live preview plus a settings
+  table for all its visual --kakao-<component>-* properties, saved into the
+  component's settings block via the construction server. Defaults that match a
+  main variable (shared/tokens.css) refer to it with a literal fallback.
+  Components may be used in Yii2 projects (yii2-base), so form participation and
+  data-* passthrough matter.
+  Verification is done in the browser (Firefox is the reference); there is no
+  test suite.
+
+# Project context (optional)
+# Add only constraints that should guide OpenSpec artifacts and workflows.
+# Include constraints an agent cannot infer by reading the code.
+# Keep general project documentation and discoverable codebase facts out.
+# Example:
+#   context: |
+#     Designs and tasks must cover Windows, macOS, and Linux
+#     Write all artifacts in Spanish
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

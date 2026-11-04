@@ -1,0 +1,3026 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Squashy Components</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Layout: documentation page. Sticky top bar, left navigation, centred content column,
+     right "Content" outline. Each component gets a live preview box followed by its code. */
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --fg: #000000;
+    --fg-strong: #000000;
+    --muted: #555555;
+    --line: #cfcfcf;
+    --accent: #000000;
+    --accent-soft: #eeeeee;
+    --code-bg: #f4f4f4;
+    --track-off: #bdbdbd;
+    --radius: 3px;
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    --nav-h: 3.5rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #000000;
+      --surface: #000000;
+      --fg: #ffffff;
+      --fg-strong: #ffffff;
+      --muted: #a3a3a3;
+      --line: #3a3a3a;
+      --accent: #ffffff;
+      --accent-soft: #1f1f1f;
+      --code-bg: #141414;
+      --track-off: #555555;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #000000;
+    --surface: #000000;
+    --fg: #ffffff;
+    --fg-strong: #ffffff;
+    --muted: #a3a3a3;
+    --line: #3a3a3a;
+    --accent: #ffffff;
+    --accent-soft: #1f1f1f;
+    --code-bg: #141414;
+    --track-off: #555555;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: calc(var(--nav-h) + 1rem); scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.6 var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  a { color: var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+  /* The components read their colours from the page tokens, so both themes work. */
+  squashy-switch-group, squashy-step-switch {
+    --squashy-switch-label-color: var(--fg);
+    --squashy-switch-track-bg-off: var(--track-off);
+    --squashy-switch-focus-color: var(--fg);
+    --squashy-switch-track-bg-on: var(--fg);
+    --squashy-switch-thumb-bg: var(--bg);
+    --squashy-switch-track-bg-disabled: var(--line);
+    --squashy-step-switch-label-color: var(--muted);
+    --squashy-step-switch-label-active-color: var(--fg-strong);
+    --squashy-step-switch-track-bg: var(--fg);
+    --squashy-step-switch-thumb-bg: var(--bg);
+    --squashy-step-switch-tick-color: var(--bg);
+    --squashy-step-switch-track-bg-disabled: var(--line);
+    --squashy-step-switch-focus-color: var(--fg);
+    --squashy-step-switch-label-overhang: 1.1rem;
+  }
+
+  /* ---------- top bar ---------- */
+  .bar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 5;
+    height: var(--nav-h);
+    margin: 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+    padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: var(--bg);
+  }
+  .bar-in {
+    max-width: 78rem;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .brand { color: var(--fg-strong); font-weight: 700; letter-spacing: -0.01em; display: flex; align-items: center; gap: 0.55rem; }
+  .brand, .brand:hover { text-decoration: none; }
+  .brand-mark { display: none; }
+  .bar nav { display: flex; gap: 1.1rem; margin-left: auto; font-size: 0.92rem; }
+  .bar nav a { color: var(--muted); }
+  .bar nav a { text-decoration: none; }
+  .bar nav a:hover { color: var(--fg-strong); text-decoration: underline; }
+  .theme-btn {
+    font: inherit; font-size: 0.85rem; color: var(--fg); background: transparent;
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 0.3rem 0.7rem; cursor: pointer;
+  }
+  .theme-btn:hover { border-color: var(--muted); }
+
+  /* ---------- three-column shell ---------- */
+  .shell {
+    max-width: 78rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 1fr) 12.5rem;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  aside.side, aside.toc {
+    position: sticky;
+    top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+    max-height: calc(100vh - var(--nav-h));
+    overflow-y: auto;
+    padding: 1.75rem 0;
+    font-size: 0.9rem;
+  }
+  aside h6 {
+    margin: 1.25rem 0 0.35rem;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);
+  }
+  aside h6:first-child { margin-top: 0; }
+  aside ul { list-style: none; margin: 0; padding: 0; }
+  aside li a {
+    display: block; padding: 0.22rem 0.6rem; margin-left: -0.6rem; border-radius: var(--radius); color: var(--fg);
+  }
+  aside li a { text-decoration: none; }
+  aside li a:hover { background: var(--accent-soft); }
+  aside li a[aria-current="true"] { color: var(--fg); background: var(--accent-soft); font-weight: 700; }
+  .badge { font-size: 0.7rem; color: var(--muted); margin-left: 0.3rem; }
+  aside.toc li a { color: var(--muted); }
+  aside.toc li a[aria-current="true"] { color: var(--fg); background: transparent; font-weight: 700; }
+  aside.toc li.group { margin-top: 0.75rem; font-weight: 600; color: var(--fg-strong); }
+
+  main { min-width: 0; padding: 2.25rem 0 4rem; }
+  main > section + section { margin-top: 4.5rem; padding-top: 2.5rem; border-top: 1px solid var(--line); }
+  h1 { margin: 0 0 0.5rem; font-size: 2.1rem; line-height: 1.2; letter-spacing: -0.02em; color: var(--fg-strong); text-wrap: balance; }
+  h2 { margin: 2.75rem 0 0.5rem; font-size: 1.4rem; line-height: 1.3; letter-spacing: -0.01em; color: var(--fg-strong); }
+  h1 + .lead + h2, .lead + h2 { margin-top: 2rem; }
+  p { margin: 0 0 1rem; max-width: 65ch; }
+  .lead { font-size: 1.15rem; color: var(--muted); max-width: 60ch; }
+  code {
+    font: 0.86em var(--font-mono); background: var(--code-bg); padding: 0.12em 0.4em; border-radius: var(--radius); color: var(--fg-strong);
+  }
+
+  /* ---------- preview + code ---------- */
+  .preview {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 2rem 1.5rem;
+    min-height: 6.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+    align-items: center;
+  }
+  .preview.col { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .preview > squashy-switch-group { width: max-content; max-width: 100%; }
+  .preview.col > squashy-step-switch { align-self: stretch; }
+  .codebox { position: relative; margin-bottom: 1.25rem; }
+  .codebox pre {
+    margin: 0;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.15rem;
+    overflow-x: auto;
+    font: 0.8rem/1.65 var(--font-mono);
+    color: var(--fg-strong);
+    tab-size: 2;
+  }
+  .preview + .codebox pre { border-top: 0; border-radius: 0 0 var(--radius) var(--radius); }
+  .preview + .log, .preview + .codebox { margin-top: 0; }
+  .codebox pre code { padding: 0; background: none; border-radius: 0; font-size: inherit; }
+  .copy {
+    position: absolute; top: 0.55rem; right: 0.55rem;
+    font: inherit; font-size: 0.72rem; color: var(--muted); background: var(--bg);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 0.15rem 0.5rem; cursor: pointer;
+  }
+  .copy:hover { color: var(--fg-strong); border-color: var(--muted); }
+
+  .log {
+    margin: 0 0 1.25rem;
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.7rem 1rem;
+    font: 0.78rem/1.6 var(--font-mono);
+    height: 6.4rem;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    color: var(--fg-strong);
+  }
+  .log:empty::before { content: "Interact with the preview above to see events."; color: var(--muted); }
+
+  .btn {
+    font: inherit; font-size: 0.85rem; color: var(--fg-strong); background: var(--bg);
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 0.35rem 0.8rem; cursor: pointer;
+  }
+  .btn:hover { border-color: var(--muted); }
+  .btn[aria-pressed="true"] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+
+  /* ---------- reference tables ---------- */
+  .table-wrap { overflow-x: auto; margin-bottom: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.88rem; min-width: 32rem; }
+  th, td { text-align: left; padding: 0.6rem 0.9rem; vertical-align: top; border-bottom: 1px solid var(--line); }
+  th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { white-space: nowrap; }
+
+  footer { max-width: 78rem; margin: 0 auto; padding: 2rem 0 3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1100px) {
+    .shell { grid-template-columns: 14rem minmax(0, 1fr); }
+    aside.toc { display: none; }
+  }
+  @media (max-width: 800px) {
+    .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    aside.side { position: static; max-height: none; padding: 1rem 0 0; border-bottom: 1px solid var(--line); }
+    aside.side h6 { margin-top: 1rem; }
+    aside.side { padding-bottom: 1rem; }
+    .bar nav { display: none; }
+    .theme-btn { margin-left: auto; }
+    h1 { font-size: 1.7rem; }
+    .preview { padding: 1.5rem 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span>Squashy</a>
+    <nav aria-label="Primary">
+      <a href="#switch-group">Switch group</a>
+      <a href="#step-switch">Step switch</a>
+      <a href="#theming">Theming</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
+  </div>
+</header>
+
+<div class="shell" id="top">
+  <aside class="side" aria-label="Components">
+    <h6>Getting started</h6>
+    <ul>
+      <li><a href="#install">Install</a></li>
+    </ul>
+    <h6>Components</h6>
+    <ul>
+      <li><a href="#switch-group">Switch group</a></li>
+      <li><a href="#step-switch">Step switch <span class="badge">New</span></a></li>
+    </ul>
+    <h6>Customization</h6>
+    <ul>
+      <li><a href="#theming">Theming</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <section id="install">
+      <h1>Squashy components</h1>
+      <p class="lead">Form controls with squash and stretch motion. Vanilla Web Components with Shadow DOM, no dependencies, styled with CSS custom properties.</p>
+
+      <h2 id="install-h">Install</h2>
+      <p>Each component is one file. Load it with a script tag and use the element anywhere in your markup.</p>
+      <div class="codebox">
+        <pre><code>&lt;script src="squashy-switch-group.js"&gt;&lt;/script&gt;
+&lt;script src="squashy-step-switch.js"&gt;&lt;/script&gt;</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+      <p>Data goes in a JSON <code>list-data</code> attribute. Every option is an attribute, so plain HTML is enough. Methods exist for the same things and the attribute always wins.</p>
+    </section>
+
+    <!-- ====================== SWITCH GROUP ====================== -->
+    <section id="switch-group">
+      <h1>Switch group</h1>
+      <p class="lead">A set of on/off switches. Drag the thumb with a finger or mouse, or tap and use the keyboard. Pull past an end and the thumb squashes into the wall.</p>
+
+      <h2 id="sg-syntax">Syntax</h2>
+      <div class="preview">
+        <squashy-switch-group id="sg1" label="Notifications" orientation="vertical"
+          list-data='[{"name":"email","label":"Email","checked":true},{"name":"sms","label":"SMS"},{"name":"push","label":"Push notifications","checked":true}]'></squashy-switch-group>
+      </div>
+      <div class="codebox">
+        <pre><code>&lt;squashy-switch-group label="Notifications" orientation="vertical"
+  list-data='[
+    {"name":"email","label":"Email","checked":true},
+    {"name":"sms","label":"SMS"},
+    {"name":"push","label":"Push notifications","checked":true}
+  ]'&gt;
+&lt;/squashy-switch-group&gt;</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="sg-horizontal">Horizontal</h2>
+      <p>The default orientation lays the switches in a row and wraps when space runs out.</p>
+      <div class="preview">
+        <squashy-switch-group label="Preferences"
+          list-data='[{"name":"dark","label":"Dark mode"},{"name":"sound","label":"Sound","checked":true},{"name":"haptics","label":"Haptics","checked":true}]'></squashy-switch-group>
+      </div>
+      <div class="codebox">
+        <pre><code>&lt;squashy-switch-group label="Preferences"
+  list-data='[{"name":"dark","label":"Dark mode"}, …]'&gt;
+&lt;/squashy-switch-group&gt;</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="sg-disabled">Disabled</h2>
+      <p>Disable a single switch with <code>"disabled": true</code> in its data, or the whole group with the <code>disabled</code> attribute. Disabled controls leave the tab order and set <code>aria-disabled</code>.</p>
+      <div class="preview">
+        <squashy-switch-group label="One disabled item" orientation="vertical"
+          list-data='[{"name":"a","label":"Available","checked":true},{"name":"b","label":"Not available","disabled":true}]'></squashy-switch-group>
+        <squashy-switch-group label="Whole group disabled" orientation="vertical" disabled
+          list-data='[{"name":"c","label":"Locked on","checked":true},{"name":"d","label":"Locked off"}]'></squashy-switch-group>
+      </div>
+      <div class="codebox">
+        <pre><code>&lt;squashy-switch-group list-data='[{"name":"b","label":"Not available","disabled":true}]'&gt;&lt;/squashy-switch-group&gt;
+&lt;squashy-switch-group disabled list-data='…'&gt;&lt;/squashy-switch-group&gt;</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="sg-drag">Thumb drag</h2>
+      <p>Dragging is on by default. Set <code>thumb-drag="false"</code> to keep taps and the keyboard only.</p>
+      <div class="preview">
+        <squashy-switch-group id="sg-drag-demo" label="Drag demo" orientation="vertical"
+          list-data='[{"name":"drag","label":"Try dragging me","checked":true}]'></squashy-switch-group>
+        <button class="btn" id="sgDragBtn" type="button" aria-pressed="true">thumb-drag: on</button>
+      </div>
+      <div class="codebox">
+        <pre><code>&lt;squashy-switch-group thumb-drag="false" list-data='…'&gt;&lt;/squashy-switch-group&gt;</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="sg-events">Events</h2>
+      <p>Events bubble and cross the shadow boundary, so one listener on the document is enough.</p>
+      <div class="log" id="sgLog" role="log" aria-label="Switch group events"></div>
+      <div class="codebox">
+        <pre><code>el.addEventListener('switch-change', (e) =&gt; {
+  const { name, index, checked } = e.detail;
+});</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="sg-ref">Reference</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>label</code></td><td>Switch group</td><td>Accessible name of the group.</td></tr>
+          <tr><td><code>list-data</code></td><td>none</td><td>JSON array of <code>{name, label, checked, disabled}</code>.</td></tr>
+          <tr><td><code>orientation</code></td><td>horizontal</td><td><code>horizontal</code> or <code>vertical</code>.</td></tr>
+          <tr><td><code>disabled</code></td><td>off</td><td>Blocks all interaction.</td></tr>
+          <tr><td><code>thumb-drag</code></td><td>on</td><td>Drag the thumb. <code>false</code>, <code>off</code>, <code>0</code>, <code>no</code> turn it off.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Method / event</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td><code>setData(items)</code></td><td>Replace all switches. Sets <code>aria-busy</code> while it works.</td></tr>
+          <tr><td><code>getData()</code></td><td>Copy of the current items.</td></tr>
+          <tr><td><code>setChecked(i, on)</code></td><td>Turn one switch on or off.</td></tr>
+          <tr><td><code>focusSwitch(i)</code></td><td>Move focus to a switch.</td></tr>
+          <tr><td><code>switch-change</code></td><td><code>{name, index, checked}</code></td></tr>
+          <tr><td><code>switch-drag-start / -end</code></td><td><code>{name, index, checked, changed, cancelled}</code></td></tr>
+          <tr><td><code>switch-focus</code>, <code>group-ready</code></td><td><code>{name, index}</code>, <code>{count}</code></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- ====================== STEP SWITCH ====================== -->
+    <section id="step-switch">
+      <h1>Step switch</h1>
+      <p class="lead">One thumb with several positions. It snaps to the nearest step, the label under the thumb swells as it gets close, and each step is a radio button for assistive technology.</p>
+
+      <h2 id="ss-syntax">Syntax</h2>
+      <div class="preview col">
+        <squashy-step-switch id="ss1" label="Quality" value="med"
+          list-data='[{"value":"low","label":"Low"},{"value":"med","label":"Medium"},{"value":"high","label":"High"}]'></squashy-step-switch>
+      </div>
+      <div class="codebox">
+        <pre><code>&lt;squashy-step-switch label="Quality" value="med"
+  list-data='[
+    {"value":"low","label":"Low"},
+    {"value":"med","label":"Medium"},
+    {"value":"high","label":"High"}
+  ]'&gt;
+&lt;/squashy-step-switch&gt;</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="ss-many">Many steps</h2>
+      <p>Any number of steps works. The track widens as needed so every label stays visible.</p>
+      <div class="preview col">
+        <squashy-step-switch label="Playback speed" value="3"
+          list-data='[{"value":"1","label":"0.5×"},{"value":"2","label":"0.75×"},{"value":"3","label":"1×"},{"value":"4","label":"1.5×"},{"value":"5","label":"2×"}]'></squashy-step-switch>
+      </div>
+      <div class="codebox">
+        <pre><code>&lt;squashy-step-switch label="Playback speed" value="3"
+  list-data='[{"value":"1","label":"0.5×"}, … ,{"value":"5","label":"2×"}]'&gt;
+&lt;/squashy-step-switch&gt;</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="ss-disabled">Disabled steps</h2>
+      <p>A disabled step has no dot, is skipped by the arrow keys and cannot be selected. A drag that ends on it snaps to the nearest enabled step.</p>
+      <div class="preview col">
+        <squashy-step-switch label="Day of the week" value="d"
+          list-data='[{"value":"a","label":"Mon"},{"value":"b","label":"Tue"},{"value":"c","label":"Wed","disabled":true},{"value":"d","label":"Thu"},{"value":"e","label":"Fri"},{"value":"f","label":"Sat"},{"value":"g","label":"Sun"}]'></squashy-step-switch>
+      </div>
+      <div class="codebox">
+        <pre><code>{"value":"c","label":"Wed","disabled":true}</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="ss-options">Labels and ticks</h2>
+      <p>Hide the dots with <code>show-ticks="false"</code> or the labels with <code>show-labels="false"</code>.</p>
+      <div class="preview col">
+        <squashy-step-switch label="No ticks" value="m" show-ticks="false"
+          list-data='[{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}]'></squashy-step-switch>
+        <squashy-step-switch label="No labels" value="2" show-labels="false"
+          list-data='["1","2","3","4"]'></squashy-step-switch>
+      </div>
+      <div class="codebox">
+        <pre><code>&lt;squashy-step-switch show-ticks="false" list-data='…'&gt;&lt;/squashy-step-switch&gt;
+&lt;squashy-step-switch show-labels="false" list-data='["1","2","3","4"]'&gt;&lt;/squashy-step-switch&gt;</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="ss-api">Methods</h2>
+      <p>Everything the attributes do is also available from script.</p>
+      <div class="preview">
+        <squashy-step-switch id="ss-api-demo" label="Heating" value="auto"
+          list-data='[{"value":"off","label":"Off"},{"value":"eco","label":"Eco"},{"value":"auto","label":"Auto"},{"value":"boost","label":"Boost"}]'></squashy-step-switch>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <button class="btn" id="ssPrev" type="button">stepBy(-1)</button>
+          <button class="btn" id="ssNext" type="button">stepBy(+1)</button>
+          <button class="btn" id="ssBoost" type="button">setValue('boost')</button>
+        </div>
+      </div>
+      <div class="log" id="ssLog" role="log" aria-label="Step switch events"></div>
+      <div class="codebox">
+        <pre><code>el.stepBy(1);
+el.setValue('boost');
+el.addEventListener('step-change', (e) =&gt; console.log(e.detail.value));</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="ss-ref">Reference</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Attribute</th><th>Default</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>label</code></td><td>Step switch</td><td>Accessible name of the radio group.</td></tr>
+          <tr><td><code>list-data</code></td><td>none</td><td>JSON array of strings or <code>{value, label, disabled}</code>.</td></tr>
+          <tr><td><code>value</code></td><td>first step</td><td>Selected value. Always mirrors the real selection.</td></tr>
+          <tr><td><code>disabled</code></td><td>off</td><td>Blocks all interaction.</td></tr>
+          <tr><td><code>thumb-drag</code></td><td>on</td><td>Drag the thumb and snap to a step.</td></tr>
+          <tr><td><code>show-labels</code></td><td>on</td><td>Labels under the track.</td></tr>
+          <tr><td><code>show-ticks</code></td><td>on</td><td>Dots marking each enabled step.</td></tr>
+          <tr><td><code>color-shift</code></td><td>off</td><td>Blend the track colour from the first to the last step.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Method / event</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td><code>setData(steps)</code></td><td>Replace all steps.</td></tr>
+          <tr><td><code>setValue(v)</code>, <code>stepBy(n)</code></td><td>Select a step by value, or move by enabled steps.</td></tr>
+          <tr><td><code>getData()</code>, <code>getIndex()</code></td><td>Current steps and selected index.</td></tr>
+          <tr><td><code>step-change</code></td><td><code>{value, label, index, previousValue, previousIndex, source}</code></td></tr>
+          <tr><td><code>step-drag-start / -end</code></td><td><code>{value, index, changed, cancelled}</code></td></tr>
+          <tr><td><code>step-drag</code></td><td><code>{progress, overdrag, nearestIndex, nearestValue}</code></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- ====================== THEMING ====================== -->
+    <section id="theming">
+      <h1>Theming</h1>
+      <p class="lead">Colours, sizes and motion are CSS custom properties, set from outside the shadow root. Every variable is listed in the README at the top of each component file.</p>
+
+      <h2 id="th-colors">Colours</h2>
+      <p>Nothing changes colour by default. These two are examples of what is possible. The step switch only shifts its colour along the track when you add <code>color-shift</code>.</p>
+      <div class="preview col">
+        <squashy-switch-group id="sg-theme" label="Themed" orientation="vertical"
+          style="--squashy-switch-track-bg-on:#16a34a;--squashy-switch-thumb-bg:#fefce8;--squashy-switch-anim-duration:450ms;--squashy-switch-anim-easing:cubic-bezier(.34,1.56,.64,1)"
+          list-data='[{"name":"a","label":"Green, slower and bouncier","checked":true},{"name":"b","label":"Same switch, off"}]'></squashy-switch-group>
+        <squashy-step-switch label="Heat" value="3"
+          color-shift style="--squashy-step-switch-track-bg-off:#fbbf24;--squashy-step-switch-track-bg-on:#dc2626"
+          list-data='[{"value":"1","label":"Mild"},{"value":"2","label":"Warm"},{"value":"3","label":"Hot"},{"value":"4","label":"Fire"}]'></squashy-step-switch>
+      </div>
+      <div class="codebox">
+        <pre><code>squashy-switch-group {
+  --squashy-switch-track-bg-on: #16a34a;
+  --squashy-switch-thumb-bg: #fefce8;
+  --squashy-switch-anim-duration: 450ms;
+}
+/* opt in with the color-shift attribute */
+squashy-step-switch {
+  --squashy-step-switch-track-bg-off: #fbbf24;
+  --squashy-step-switch-track-bg-on: #dc2626;
+}</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+
+      <h2 id="th-size">Size</h2>
+      <div class="preview col">
+        <squashy-step-switch label="Large" value="m"
+          style="--squashy-step-switch-track-height:2.25rem;--squashy-step-switch-thumb-size:1.8rem;--squashy-step-switch-track-bg:#0f766e"
+          list-data='[{"value":"s","label":"Small"},{"value":"m","label":"Medium"},{"value":"l","label":"Large"}]'></squashy-step-switch>
+      </div>
+      <div class="codebox">
+        <pre><code>squashy-step-switch {
+  --squashy-step-switch-track-height: 2.25rem;
+  --squashy-step-switch-thumb-size: 1.8rem;
+}</code></pre>
+        <button class="copy" type="button">Copy</button>
+      </div>
+    </section>
+  </main>
+
+  <aside class="toc" aria-label="On this page"><h6>Content</h6><ul id="tocList"></ul></aside>
+</div>
+
+<footer>
+  <div style="padding: 0 0.1rem">Squashy components. Vanilla JS, Shadow DOM, no dependencies.</div>
+</footer>
+
+<script>
+/**
+ * <squashy-switch-group>
+ * ============================================================================
+ * A production-ready, fully accessible group of toggle switches with a fluid
+ * "squash and stretch" animation, built with vanilla JS + Shadow DOM.
+ *
+ * ----------------------------------------------------------------------------
+ * USAGE
+ * ----------------------------------------------------------------------------
+ * <\/script>  <!-- safe to inline in HTML, see note below -->
+ *
+ *   <script src="squashy-switch-group.js"><\/script>
+ *
+ *   <squashy-switch-group
+ *     label="Notification settings"
+ *     list-data='[{"name":"email","label":"Email","checked":true},
+ *                 {"name":"sms","label":"SMS","checked":false},
+ *                 {"name":"push","label":"Push","checked":true,"disabled":true}]'>
+ *   </squashy-switch-group>
+ *
+ * Note: the literal "<\/script>" sequence above is escaped as "<\/script>"
+ * anywhere it appears inside this JSDoc comment block so that this file can
+ * be safely inlined inside a parent <script> tag (e.g. in demo-embedded.html)
+ * without prematurely closing the tag.
+ *
+ * ----------------------------------------------------------------------------
+ * ATTRIBUTES (all observed, all reflect into the public API)
+ * ----------------------------------------------------------------------------
+ *  - label            string   Accessible group label (used as aria-label on
+ *                               the group container). Default: "Switch group".
+ *  - list-data         JSON     Array of switch definitions. NEVER use the
+ *                               reserved `data` attribute name.
+ *                               Shape: [{ name, label, checked, disabled }]
+ *  - orientation       string   "horizontal" (default) | "vertical"
+ *  - disabled          boolean  Disables the entire group, sets aria-disabled
+ *                               on the host, and blocks all interaction.
+ *  - thumb-drag        boolean  Lets the user grab the thumb (the dot) with a
+ *                               finger or mouse and drag it along the track.
+ *                               On release the thumb snaps to whichever end it
+ *                               is nearer to. Dragging past either end squashes
+ *                               the thumb into the end of the track: it widens
+ *                               into the wall while the side facing away from the
+ *                               wall turns into a squircle edge, so it looks like
+ *                               the thumb's volume is pressed into the corner. It
+ *                               springs back on release. The thumb is clipped at
+ *                               the track's inner edge (the inset), so it can
+ *                               never bleed into the padding.
+ *                               Default: ON. Turn it off with
+ *                               thumb-drag="false" (also "off", "0", "no").
+ *                               Taps, clicks and the keyboard work either way.
+ *                               JS property: thumbDrag (boolean).
+ *                               (Deliberately not called `draggable`: that is a
+ *                               native HTML attribute which would switch on
+ *                               browser drag-and-drop for the host element.)
+ *
+ * Attributes always take priority over method calls; if both are present the
+ * latest one to be applied wins (attributeChangedCallback re-syncs state).
+ *
+ * ----------------------------------------------------------------------------
+ * CSS CUSTOM PROPERTIES (theming hooks — nothing else is themeable)
+ * ----------------------------------------------------------------------------
+ *  --squashy-switch-track-width        Track width.            Default: 3.25rem
+ *  --squashy-switch-track-height       Track height.            Default: 1.75rem
+ *  --squashy-switch-track-radius       Track border-radius.     Default: 999px
+ *  --squashy-switch-track-bg-off       Track bg when off.       Default: #d1d5db
+ *  --squashy-switch-track-bg-on        Track bg when on.        Default: #4f46e5
+ *  --squashy-switch-track-bg-disabled  Track bg when disabled.  Default: #e5e7eb
+ *  --squashy-switch-thumb-bg           Thumb color.             Default: #ffffff
+ *  --squashy-switch-thumb-size         Thumb diameter.          Default: 1.35rem
+ *  --squashy-switch-thumb-shadow       Thumb box-shadow.
+ *                                      Default: 0 1px 3px rgba(0,0,0,0.3)
+ *  --squashy-switch-gap                Gap between switches.    Default: 1rem
+ *  --squashy-switch-label-color        Label text color.        Default: #111827
+ *  --squashy-switch-label-font         Label font shorthand.
+ *                                      Default: 0.95rem/1.4 system-ui, sans-serif
+ *  --squashy-switch-focus-color        focus-visible outline.   Default: #2563eb
+ *  --squashy-switch-anim-duration      Squash/stretch duration. Default: 320ms
+ *  --squashy-switch-anim-easing        Squash/stretch easing.
+ *                                      Default: cubic-bezier(.5,1.8,.4,1)
+ *  --squashy-switch-thumb-inset        Padding between the thumb and the edge of
+ *                                      the track. The thumb is clipped to the
+ *                                      area inside this padding. Default: 0.2rem
+ *  --squashy-switch-item-gap           Gap between track and label.
+ *                                      Default: 0.6rem
+ *  --squashy-switch-group-padding      Padding around the group. Default: 0.25rem
+ *  --squashy-switch-focus-width        focus-visible outline width. Default: 2px
+ *  --squashy-switch-focus-offset       focus-visible outline offset. Default: 2px
+ *  --squashy-switch-disabled-opacity   Opacity when disabled.   Default: 0.55
+ *  --squashy-switch-drag-scale-x       Thumb stretch while pressed or dragged.
+ *                                      Default: 1.2
+ *  --squashy-switch-drag-scale-y       Thumb squash while pressed or dragged.
+ *                                      Default: 0.88
+ *  --squashy-switch-overdrag-scale-x   Thumb width scale at full overdrag. It
+ *                                      widens into the wall, where the clip hides
+ *                                      the overlap. Default: 1.5
+ *  --squashy-switch-overdrag-scale-y   Thumb height scale at full overdrag. Above
+ *                                      1 it fills the track's inner height, so the
+ *                                      clip cuts it flat top and bottom. Default: 1.12
+ *  --squashy-switch-overdrag-squircle-radius  Corner radius (% of the thumb) of the
+ *                                      side facing away from the wall at full
+ *                                      overdrag. 50% = round, lower = flatter, more
+ *                                      squircle. Default: 28%
+ *  --squashy-switch-drag-follow-duration  Smoothing on the squash while a drag
+ *                                      is in progress. Default: 80ms
+ *
+ * ----------------------------------------------------------------------------
+ * PUBLIC METHODS
+ * ----------------------------------------------------------------------------
+ *  setData(items: Array<{name,label,checked,disabled}>): void
+ *      Replace the full set of switches. Triggers aria-busy during update.
+ *
+ *  getData(): Array<{name,label,checked,disabled}>
+ *      Returns a deep copy of current switch state.
+ *
+ *  setChecked(index: number, checked: boolean): void
+ *      Programmatically set a single switch's checked state (fires change
+ *      event just like a user interaction would).
+ *
+ *  scrollBy(amount: number): void
+ *      Scrolls the internal switch list by `amount` pixels (useful when the
+ *      group overflows its container in horizontal orientation).
+ *
+ *  focusSwitch(index: number): void
+ *      Moves roving-tabindex focus to the switch at `index`.
+ *
+ * Methods called before the element is connected to the DOM are queued
+ * internally (the `_pending` pattern) and flushed in connectedCallback.
+ *
+ * ----------------------------------------------------------------------------
+ * EVENTS (all `bubbles:true, composed:true` so they cross the Shadow DOM)
+ * ----------------------------------------------------------------------------
+ *  "switch-change"   detail: { name, index, checked }
+ *      Fired whenever a switch is toggled by the user or via setChecked().
+ *
+ *  "switch-focus"    detail: { name, index }
+ *      Fired when keyboard/roving focus moves to a switch.
+ *
+ *  "group-ready"     detail: { count }
+ *      Fired once after the first render completes.
+ *
+ *  "switch-drag-start"  detail: { name, index, checked }
+ *      Fired when a press on a switch turns into a drag (after a few pixels of
+ *      movement). Plain taps do not fire it.
+ *
+ *  "switch-drag"     detail: { name, index, progress, overdrag }
+ *      Fired on every pointer move while dragging. progress runs from 0 (thumb
+ *      at the off end) to 1 (thumb at the on end). overdrag is 0 while the
+ *      pointer is within the track, and eases towards -1 (past the off end)
+ *      or +1 (past the on end) the further the pointer goes beyond it.
+ *
+ *  "switch-drag-end" detail: { name, index, checked, changed, cancelled }
+ *      Fired when the drag is released or cancelled. If the state changed,
+ *      "switch-change" fires first.
+ *
+ * ----------------------------------------------------------------------------
+ * ACCESSIBILITY NOTES
+ * ----------------------------------------------------------------------------
+ *  - Each switch uses role="switch" with aria-checked reflecting state.
+ *  - The group container uses role="group" with aria-label.
+ *  - Roving tabindex: exactly one switch has tabindex="0" at a time; all
+ *    others have tabindex="-1". Arrow keys (Left/Right/Up/Down) move focus
+ *    and wrap around; Home/End jump to first/last.
+ *  - aria-posinset / aria-setsize are set on every switch.
+ *  - aria-busy="true" is set on the group while setData() is processing.
+ *  - :host([disabled]) drives disabled visuals and blocks pointer/keyboard
+ *    interaction; aria-disabled is reflected on the host element itself.
+ *  - All interactive elements get a visible focus-visible outline.
+ *  - Dragging is a pointer-only enhancement. Every action stays available from
+ *    the keyboard (Space/Enter) and via assistive-technology activation. While
+ *    thumb-drag is on, tracks use touch-action: pan-y, so horizontal gestures
+ *    drive the thumb and vertical gestures still scroll the page.
+ * ============================================================================
+ */
+(function () {
+  'use strict';
+
+  const TAG_NAME = 'squashy-switch-group';
+
+  /** Pointer travel (px) before a press counts as a drag; below it, it is a tap. */
+  const DRAG_THRESHOLD_PX = 4;
+  /** How long (ms) the click that trails a handled pointer gesture is ignored. */
+  const TRAILING_CLICK_MS = 500;
+  /**
+   * How hard the rubber band resists when dragging past an end, in units of the
+   * thumb's travel distance. Higher = the squash builds up more slowly.
+   */
+  const OVERDRAG_RESISTANCE = 0.75;
+  const clamp01 = (n) => Math.min(1, Math.max(0, n));
+
+  const TEMPLATE = document.createElement('template');
+  TEMPLATE.innerHTML = `
+    <style>
+      /* ---- Full CSS reset, scoped entirely inside the shadow root ---- */
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :host {
+        display: block;
+        --squashy-switch-track-width: 3.25rem;
+        --squashy-switch-track-height: 1.75rem;
+        --squashy-switch-track-radius: 999px;
+        --squashy-switch-track-bg-off: #d1d5db;
+        --squashy-switch-track-bg-on: #4f46e5;
+        --squashy-switch-track-bg-disabled: #e5e7eb;
+        --squashy-switch-thumb-bg: #ffffff;
+        --squashy-switch-thumb-size: 1.35rem;
+        --squashy-switch-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --squashy-switch-gap: 1rem;
+        --squashy-switch-label-color: #111827;
+        --squashy-switch-label-font: 0.95rem/1.4 system-ui, -apple-system, sans-serif;
+        --squashy-switch-focus-color: #2563eb;
+        --squashy-switch-anim-duration: 320ms;
+        --squashy-switch-anim-easing: cubic-bezier(.5, 1.8, .4, 1);
+        --squashy-switch-thumb-inset: 0.2rem;
+        --squashy-switch-item-gap: 0.6rem;
+        --squashy-switch-group-padding: 0.25rem;
+        --squashy-switch-focus-width: 2px;
+        --squashy-switch-focus-offset: 2px;
+        --squashy-switch-disabled-opacity: 0.55;
+        --squashy-switch-drag-scale-x: 1.2;
+        --squashy-switch-drag-scale-y: 0.88;
+        --squashy-switch-drag-follow-duration: 80ms;
+        --squashy-switch-overdrag-scale-x: 1.5;
+        --squashy-switch-overdrag-scale-y: 1.12;
+        --squashy-switch-overdrag-squircle-radius: 28%;
+        font: var(--squashy-switch-label-font);
+      }
+
+      :host([disabled]) {
+        opacity: var(--squashy-switch-disabled-opacity);
+        cursor: not-allowed;
+      }
+
+      .group {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--squashy-switch-gap);
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+        padding: var(--squashy-switch-group-padding);
+      }
+
+      .group[data-orientation="vertical"] {
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .item {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--squashy-switch-item-gap);
+        cursor: pointer;
+        user-select: none;
+        flex-shrink: 0;
+      }
+
+      :host([disabled]) .item,
+      .item[data-item-disabled="true"] {
+        cursor: not-allowed;
+      }
+
+      .label {
+        color: var(--squashy-switch-label-color);
+        font: var(--squashy-switch-label-font);
+        white-space: nowrap;
+      }
+
+      .track {
+        position: relative;
+        width: var(--squashy-switch-track-width);
+        height: var(--squashy-switch-track-height);
+        background: var(--squashy-switch-track-bg-off);
+        border-radius: var(--squashy-switch-track-radius);
+        border: none;
+        padding: 0;
+        flex-shrink: 0;
+        /* Private: 0 = thumb at the off end, 1 = at the on end. It positions
+           the thumb; the drag gesture overrides it inline while dragging. */
+        --_progress: 0;
+        /* Private: rubber-band overdrag past an end. --_over is signed (-1 = past
+           the off end, +1 = past the on end), --_over-abs is its magnitude. */
+        --_over: 0;
+        --_over-abs: 0;
+        transition: background-color var(--squashy-switch-anim-duration) var(--squashy-switch-anim-easing);
+      }
+
+      .track[aria-checked="true"] {
+        --_progress: 1;
+        background: var(--squashy-switch-track-bg-on);
+      }
+
+      .track[aria-disabled="true"] {
+        background: var(--squashy-switch-track-bg-disabled);
+      }
+
+      .track:focus-visible {
+        outline: var(--squashy-switch-focus-width) solid var(--squashy-switch-focus-color);
+        outline-offset: var(--squashy-switch-focus-offset);
+      }
+
+      /* The clip is the track's inner area: the track shrunk by the inset on every
+         side, with the same pill ends. It acts like an inset border in the track's
+         own colour laid over the thumb. Whatever part of the thumb would spill into
+         the padding (from the squash, the stretch or the spring overshoot) is cut
+         off, so the squashed shape of the thumb is formed by the track itself. A
+         clip rather than a coloured border means it can never drift out of sync
+         with the track colour while that blends, and it works with any theme. */
+      .clip {
+        position: absolute;
+        inset: var(--squashy-switch-thumb-inset);
+        overflow: hidden;
+        border-radius: calc(var(--squashy-switch-track-radius) - var(--squashy-switch-thumb-inset));
+      }
+
+      .thumb {
+        position: absolute;
+        top: 50%;
+        /* Positioned inside the clip, so 0 is the resting off position and
+           (100% - thumb size) the resting on position. */
+        left: calc((100% - var(--squashy-switch-thumb-size)) * var(--_progress));
+        width: var(--squashy-switch-thumb-size);
+        height: var(--squashy-switch-thumb-size);
+        background: var(--squashy-switch-thumb-bg);
+        /* A full circle at rest. While overdragged, the corners on the side facing
+           AWAY from the wall morph from round to a squircle, as if the thumb's
+           volume were being pressed into the corner. The wall side stays round;
+           it is pushed into the wall and cut off by the clip anyway. */
+        --_r-left: calc(50% - (50% - var(--squashy-switch-overdrag-squircle-radius)) * max(var(--_over), 0));
+        --_r-right: calc(50% - (50% - var(--squashy-switch-overdrag-squircle-radius)) * max(var(--_over) * -1, 0));
+        border-radius: var(--_r-left) var(--_r-right) var(--_r-right) var(--_r-left);
+        box-shadow: var(--squashy-switch-thumb-shadow);
+        transform: translateY(-50%);
+        /* Centre normally; slides to the edge facing away from the wall during
+           overdrag. That edge stays put while the thumb widens, so the extra
+           width goes into the wall, where the clip hides it. */
+        transform-origin: calc(50% - var(--_over) * 50%) 50%;
+        transition:
+          left var(--squashy-switch-anim-duration) var(--squashy-switch-anim-easing),
+          transform var(--squashy-switch-anim-duration) var(--squashy-switch-anim-easing),
+          transform-origin var(--squashy-switch-anim-duration) var(--squashy-switch-anim-easing),
+          border-radius var(--squashy-switch-anim-duration) var(--squashy-switch-anim-easing);
+        will-change: left, transform;
+      }
+
+      /* ---- Thumb dragging (on by default, see the thumb-drag attribute) ---- */
+      .group[data-thumb-drag="true"] .track:not(:disabled) {
+        /* Horizontal gestures belong to the thumb; vertical ones still scroll. */
+        touch-action: pan-y;
+        cursor: grab;
+      }
+
+      .group[data-thumb-drag="true"] .track.is-pressed:not(:disabled) {
+        cursor: grabbing;
+      }
+
+      /* Pressed: the thumb stretches wide and flat, then springs back on release. */
+      .track.is-pressed .thumb {
+        transform: translateY(-50%) scale(
+          calc(var(--squashy-switch-drag-scale-x) + (var(--squashy-switch-overdrag-scale-x) - var(--squashy-switch-drag-scale-x)) * var(--_over-abs)),
+          calc(var(--squashy-switch-drag-scale-y) + (var(--squashy-switch-overdrag-scale-y) - var(--squashy-switch-drag-scale-y)) * var(--_over-abs))
+        );
+      }
+
+      /* Dragging: position and colour follow the pointer 1:1, with no easing. */
+      .track.is-dragging {
+        transition: none;
+        background: color-mix(
+          in srgb,
+          var(--squashy-switch-track-bg-on) calc(var(--_progress) * 100%),
+          var(--squashy-switch-track-bg-off)
+        );
+      }
+
+      /* Position is not eased while dragging; only the squash gets a short follow
+         so it glides instead of stepping with every pointer move. */
+      .track.is-dragging .thumb {
+        transition: transform var(--squashy-switch-drag-follow-duration) ease-out;
+      }
+
+      /* Squash & stretch keyframes, triggered via a transient class */
+      @keyframes squashy-stretch-on {
+        0%   { transform: translateY(-50%) scaleX(1)    scaleY(1); }
+        35%  { transform: translateY(-50%) scaleX(1.45) scaleY(0.72); }
+        65%  { transform: translateY(-50%) scaleX(0.85) scaleY(1.15); }
+        100% { transform: translateY(-50%) scaleX(1)    scaleY(1); }
+      }
+
+      @keyframes squashy-stretch-off {
+        0%   { transform: translateY(-50%) scaleX(1)    scaleY(1); }
+        35%  { transform: translateY(-50%) scaleX(1.45) scaleY(0.72); }
+        65%  { transform: translateY(-50%) scaleX(0.85) scaleY(1.15); }
+        100% { transform: translateY(-50%) scaleX(1)    scaleY(1); }
+      }
+
+      .thumb.is-animating-on {
+        animation: squashy-stretch-on var(--squashy-switch-anim-duration) var(--squashy-switch-anim-easing);
+      }
+
+      .thumb.is-animating-off {
+        animation: squashy-stretch-off var(--squashy-switch-anim-duration) var(--squashy-switch-anim-easing);
+      }
+
+      .track.is-track-animating {
+        animation: squashy-track-pulse var(--squashy-switch-anim-duration) var(--squashy-switch-anim-easing);
+      }
+
+      @keyframes squashy-track-pulse {
+        0%   { transform: scaleY(1); }
+        40%  { transform: scaleY(0.88); }
+        100% { transform: scaleY(1); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .thumb, .track {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+        }
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+    </style>
+    <div class="group" part="group" role="group">
+      <span class="visually-hidden" data-empty-msg>No switches configured.</span>
+    </div>
+  `;
+
+  class SquashySwitchGroup extends HTMLElement {
+    static get observedAttributes() {
+      return ['label', 'list-data', 'orientation', 'disabled', 'thumb-drag'];
+    }
+
+    constructor() {
+      super();
+      const shadow = this.attachShadow({ mode: 'open' });
+      shadow.appendChild(TEMPLATE.content.cloneNode(true));
+
+      this._groupEl = shadow.querySelector('.group');
+      this._items = []; // [{name,label,checked,disabled}]
+      this._connected = false;
+      this._pending = []; // queued public-method calls before connectedCallback
+      this._resizeObserver = null;
+      this._readyFired = false;
+      this._drag = null; // state of the active pointer gesture, or null
+      this._swallow = null; // { track, until }: ignore the click trailing a pointer gesture
+
+      // Bound handlers so we can remove them later.
+      this._onClick = this._onClick.bind(this);
+      this._onKeydown = this._onKeydown.bind(this);
+      this._onPointerDown = this._onPointerDown.bind(this);
+      this._onPointerMove = this._onPointerMove.bind(this);
+      this._onPointerUp = this._onPointerUp.bind(this);
+      this._onPointerCancel = this._onPointerCancel.bind(this);
+      this._onLostPointerCapture = this._onLostPointerCapture.bind(this);
+    }
+
+    /* -------------------------- Lifecycle -------------------------- */
+
+    connectedCallback() {
+      this._connected = true;
+
+      if (!this.hasAttribute('role')) {
+        // host itself doesn't need a role; the inner .group carries it.
+      }
+
+      this._groupEl.addEventListener('click', this._onClick);
+      this._groupEl.addEventListener('keydown', this._onKeydown);
+      this._groupEl.addEventListener('pointerdown', this._onPointerDown);
+      this._groupEl.addEventListener('pointermove', this._onPointerMove);
+      this._groupEl.addEventListener('pointerup', this._onPointerUp);
+      this._groupEl.addEventListener('pointercancel', this._onPointerCancel);
+      this._groupEl.addEventListener('lostpointercapture', this._onLostPointerCapture);
+
+      this._resizeObserver = new ResizeObserver((entries) => {
+        this._handleResize(entries);
+      });
+      this._resizeObserver.observe(this);
+
+      // Sync from attributes present at connect time.
+      this._syncThumbDrag();
+      this._syncLabel();
+      this._syncOrientation();
+      this._syncDisabled();
+      this._syncListDataFromAttribute();
+
+      // Flush any method calls that arrived before we were connected.
+      while (this._pending.length) {
+        const { method, args } = this._pending.shift();
+        this[method](...args);
+      }
+
+      this._render();
+
+      if (!this._readyFired) {
+        this._readyFired = true;
+        this._dispatch('group-ready', { count: this._items.length });
+      }
+    }
+
+    disconnectedCallback() {
+      this._connected = false;
+      this._groupEl.removeEventListener('click', this._onClick);
+      this._groupEl.removeEventListener('keydown', this._onKeydown);
+      this._groupEl.removeEventListener('pointerdown', this._onPointerDown);
+      this._groupEl.removeEventListener('pointermove', this._onPointerMove);
+      this._groupEl.removeEventListener('pointerup', this._onPointerUp);
+      this._groupEl.removeEventListener('pointercancel', this._onPointerCancel);
+      this._groupEl.removeEventListener('lostpointercapture', this._onLostPointerCapture);
+      this._abortDrag();
+      this._swallow = null;
+
+      if (this._resizeObserver) {
+        this._resizeObserver.disconnect();
+        this._resizeObserver = null;
+      }
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (oldValue === newValue) return;
+
+      // If we're not connected yet, defer real work to connectedCallback,
+      // but still keep internal state reasonably in sync for early reads.
+      switch (name) {
+        case 'label':
+          this._syncLabel();
+          break;
+        case 'orientation':
+          this._syncOrientation();
+          break;
+        case 'disabled':
+          this._syncDisabled();
+          break;
+        case 'thumb-drag':
+          this._syncThumbDrag();
+          break;
+        case 'list-data':
+          this._syncListDataFromAttribute();
+          if (this._connected) this._render();
+          break;
+      }
+    }
+
+    /* -------------------------- Public API -------------------------- */
+
+    /**
+     * Replace all switch data. Queued via _pending if called pre-connect.
+     * @param {Array<{name:string,label?:string,checked?:boolean,disabled?:boolean}>} items
+     */
+    setData(items) {
+      if (!this._connected) {
+        this._pending.push({ method: 'setData', args: [items] });
+        return;
+      }
+      this.setAttribute('aria-busy', 'true');
+      // Simulate microtask boundary so aria-busy is observable for async UIs.
+      Promise.resolve().then(() => {
+        this._items = this._normalizeItems(items);
+        this._render();
+        this.removeAttribute('aria-busy');
+      });
+    }
+
+    /**
+     * @returns {Array<{name:string,label:string,checked:boolean,disabled:boolean}>}
+     */
+    getData() {
+      return JSON.parse(JSON.stringify(this._items));
+    }
+
+    /**
+     * @param {number} index
+     * @param {boolean} checked
+     */
+    setChecked(index, checked) {
+      if (!this._connected) {
+        this._pending.push({ method: 'setChecked', args: [index, checked] });
+        return;
+      }
+      const item = this._items[index];
+      if (!item || item.disabled || this.disabled) return;
+      this._toggle(index, !!checked, /* animate */ true);
+    }
+
+    /**
+     * @param {number} amount pixels to scroll the switch list by.
+     */
+    scrollBy(amount) {
+      if (!this._connected) {
+        this._pending.push({ method: 'scrollBy', args: [amount] });
+        return;
+      }
+      this._groupEl.scrollBy({
+        left: this._orientation === 'vertical' ? 0 : amount,
+        top: this._orientation === 'vertical' ? amount : 0,
+        behavior: 'smooth',
+      });
+    }
+
+    /**
+     * @param {number} index
+     */
+    focusSwitch(index) {
+      if (!this._connected) {
+        this._pending.push({ method: 'focusSwitch', args: [index] });
+        return;
+      }
+      this._moveRovingFocus(index, /* fromKeyboard */ false);
+    }
+
+    /* -------------------------- Attribute reflection -------------------------- */
+
+    get disabled() {
+      return this.hasAttribute('disabled');
+    }
+    set disabled(val) {
+      if (val) this.setAttribute('disabled', '');
+      else this.removeAttribute('disabled');
+    }
+
+    get orientation() {
+      return this._orientation || 'horizontal';
+    }
+    set orientation(val) {
+      this.setAttribute('orientation', val);
+    }
+
+    /** Whether the thumb can be dragged. Default true; thumb-drag="false" turns it off. */
+    get thumbDrag() {
+      const raw = this.getAttribute('thumb-drag');
+      if (raw === null) return true;
+      return !['false', 'off', '0', 'no'].includes(raw.trim().toLowerCase());
+    }
+    set thumbDrag(val) {
+      this.setAttribute('thumb-drag', val ? 'true' : 'false');
+    }
+
+    /* -------------------------- Internal sync helpers -------------------------- */
+
+    _syncLabel() {
+      const label = this.getAttribute('label') || 'Switch group';
+      this._groupEl.setAttribute('aria-label', label);
+    }
+
+    _syncOrientation() {
+      const raw = this.getAttribute('orientation');
+      this._orientation = raw === 'vertical' ? 'vertical' : 'horizontal';
+      this._groupEl.setAttribute('data-orientation', this._orientation);
+    }
+
+    _syncThumbDrag() {
+      const on = this.thumbDrag;
+      this._groupEl.setAttribute('data-thumb-drag', String(on));
+      if (!on) this._abortDrag();
+    }
+
+    _syncDisabled() {
+      const isDisabled = this.hasAttribute('disabled');
+      this.setAttribute('aria-disabled', String(isDisabled));
+      if (isDisabled) {
+        // Pull all items out of the tab order while host-disabled.
+        this._items.forEach((item) => {});
+      }
+      if (this._connected) this._render();
+    }
+
+    _syncListDataFromAttribute() {
+      const raw = this.getAttribute('list-data');
+      if (raw == null) return;
+      try {
+        const parsed = JSON.parse(raw);
+        this._items = this._normalizeItems(parsed);
+      } catch (err) {
+        console.error(`<${TAG_NAME}> failed to parse list-data attribute as JSON:`, err);
+        this._items = [];
+      }
+    }
+
+    _normalizeItems(items) {
+      if (!Array.isArray(items)) return [];
+      return items.map((raw, i) => ({
+        name: raw && raw.name != null ? String(raw.name) : `switch-${i}`,
+        label: raw && raw.label != null ? String(raw.label) : (raw && raw.name) || `Switch ${i + 1}`,
+        checked: !!(raw && raw.checked),
+        disabled: !!(raw && raw.disabled),
+      }));
+    }
+
+    /* -------------------------- Rendering -------------------------- */
+
+    _render() {
+      this._abortDrag(); // the tracks are about to be replaced
+      const emptyMsg = this._groupEl.querySelector('[data-empty-msg]');
+      this._groupEl.innerHTML = '';
+
+      if (!this._items.length) {
+        this._groupEl.appendChild(emptyMsg || document.createTextNode('No switches configured.'));
+        return;
+      }
+
+      const hostDisabled = this.disabled;
+      const focusIndex = this._currentRovingIndex(hostDisabled);
+
+      this._items.forEach((item, index) => {
+        const wrapper = document.createElement('label');
+        wrapper.className = 'item';
+        wrapper.setAttribute('data-index', String(index));
+        wrapper.setAttribute('data-item-disabled', String(item.disabled || hostDisabled));
+
+        const track = document.createElement('button');
+        track.type = 'button';
+        track.className = 'track';
+        track.setAttribute('part', 'track');
+        track.setAttribute('role', 'switch');
+        track.setAttribute('aria-checked', String(item.checked));
+        track.setAttribute('aria-disabled', String(item.disabled || hostDisabled));
+        track.setAttribute('aria-posinset', String(index + 1));
+        track.setAttribute('aria-setsize', String(this._items.length));
+        track.setAttribute('aria-label', item.label);
+        track.setAttribute('data-index', String(index));
+        track.tabIndex = index === focusIndex ? 0 : -1;
+        if (item.disabled || hostDisabled) track.disabled = true;
+
+        const thumb = document.createElement('span');
+        thumb.className = 'thumb';
+        thumb.setAttribute('part', 'thumb');
+
+        // The clip is the track's inner area (track minus the inset); the thumb
+        // lives inside it and is cut off wherever it would enter the padding.
+        const clip = document.createElement('span');
+        clip.className = 'clip';
+        clip.setAttribute('part', 'clip');
+        clip.appendChild(thumb);
+        track.appendChild(clip);
+
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'label';
+        labelSpan.textContent = item.label;
+
+        wrapper.appendChild(track);
+        wrapper.appendChild(labelSpan);
+        this._groupEl.appendChild(wrapper);
+      });
+    }
+
+    _currentRovingIndex(hostDisabled) {
+      if (hostDisabled) return -1;
+      const enabledIndices = this._items
+        .map((it, i) => (it.disabled ? -1 : i))
+        .filter((i) => i !== -1);
+      if (!enabledIndices.length) return -1;
+      if (this._lastFocusedIndex != null && enabledIndices.includes(this._lastFocusedIndex)) {
+        return this._lastFocusedIndex;
+      }
+      return enabledIndices[0];
+    }
+
+    /* -------------------------- Interaction -------------------------- */
+
+    _onClick(evt) {
+      if (this.disabled) return;
+      const track = evt.target.closest('.track');
+      if (!track || track.disabled) return;
+
+      // A pointer gesture on this track was already handled in pointerup, so
+      // the click that follows it must not toggle a second time. Clicks that
+      // never came from a pointer (assistive tech, el.click()) still get here.
+      const swallow = this._swallow;
+      this._swallow = null;
+      if (swallow && swallow.track === track && performance.now() < swallow.until) return;
+
+      const index = Number(track.getAttribute('data-index'));
+      const item = this._items[index];
+      if (!item) return;
+      this._toggle(index, !item.checked, /* animate */ true);
+      this._moveRovingFocus(index, false);
+    }
+
+    /* -------------------------- Thumb dragging -------------------------- */
+
+    _onPointerDown(evt) {
+      if (this._drag || !this.thumbDrag || this.disabled) return;
+      if (!evt.isPrimary) return;
+      if (evt.pointerType === 'mouse' && evt.button !== 0) return;
+
+      const track = evt.target.closest('.track');
+      if (!track || track.disabled) return;
+      const index = Number(track.getAttribute('data-index'));
+      const item = this._items[index];
+      const clip = track.querySelector('.clip');
+      const thumb = track.querySelector('.thumb');
+      if (!item || item.disabled || !clip || !thumb) return;
+
+      // Work out how many screen pixels the thumb can travel inside the clip,
+      // and where it is right now (it may still be mid-animation from a
+      // previous toggle). Computed styles give exact, unrounded layout pixels.
+      const clipWidth = parseFloat(getComputedStyle(clip).width) || 0;
+      const thumbWidth = parseFloat(getComputedStyle(thumb).width) || 0;
+      const screenScale = clipWidth ? clip.getBoundingClientRect().width / clipWidth : 1; // ancestor CSS transforms
+      const travel = Math.max(1, clipWidth - thumbWidth);
+      const leftNow = parseFloat(getComputedStyle(thumb).left);
+      const startProgress = Number.isFinite(leftNow)
+        ? clamp01(leftNow / travel)
+        : (item.checked ? 1 : 0);
+
+      this._drag = {
+        pointerId: evt.pointerId,
+        index,
+        track,
+        startX: evt.clientX,
+        startProgress,
+        progress: startProgress,
+        travelPx: travel * screenScale,
+        moved: false,
+      };
+      track.classList.add('is-pressed');
+      try {
+        track.setPointerCapture(evt.pointerId);
+      } catch (err) {
+        /* capture unsupported or the pointer is already gone: dragging still works inside the track */
+      }
+      // Keep the roving tabindex on the pressed switch. The browser focuses the
+      // button itself on press, without the focus-visible ring a script focus() can add.
+      this._moveRovingFocus(index, false, /* focusElement */ false);
+    }
+
+    _onPointerMove(evt) {
+      const d = this._drag;
+      if (!d || evt.pointerId !== d.pointerId) return;
+
+      const dx = evt.clientX - d.startX;
+      const item = this._items[d.index];
+      if (!item) return;
+
+      if (!d.moved) {
+        if (Math.abs(dx) < DRAG_THRESHOLD_PX) return;
+        d.moved = true;
+        d.track.classList.add('is-dragging');
+        this._dispatch('switch-drag-start', { name: item.name, index: d.index, checked: item.checked });
+      }
+
+      // The thumb stops at the ends, but the pointer may keep going. Everything
+      // past an end turns into a rubber-band squash that eases towards a limit.
+      const raw = d.startProgress + dx / d.travelPx;
+      d.progress = clamp01(raw);
+      const excess = raw > 1 ? raw - 1 : raw < 0 ? raw : 0; // signed, in units of travel
+      const overdrag = Math.sign(excess) * (1 - Math.exp(-Math.abs(excess) / OVERDRAG_RESISTANCE));
+
+      const style = d.track.style;
+      style.setProperty('--_progress', String(d.progress));
+      style.setProperty('--_over', overdrag.toFixed(4));
+      style.setProperty('--_over-abs', Math.abs(overdrag).toFixed(4));
+      this._dispatch('switch-drag', { name: item.name, index: d.index, progress: d.progress, overdrag });
+    }
+
+    _onPointerUp(evt) {
+      if (this._drag && evt.pointerId === this._drag.pointerId) this._finishDrag(false);
+    }
+
+    _onPointerCancel(evt) {
+      if (this._drag && evt.pointerId === this._drag.pointerId) this._finishDrag(true);
+    }
+
+    _onLostPointerCapture(evt) {
+      // Normal releases end the drag in pointerup first, so reaching this with a
+      // live drag means the capture was taken away (e.g. the element was removed).
+      if (this._drag && evt.pointerId === this._drag.pointerId) this._finishDrag(true);
+    }
+
+    /**
+     * Ends the active gesture. A tap toggles the switch; a drag commits to the
+     * nearer end. Either way the thumb then springs to its final position via
+     * the normal CSS transition, which is where the squash and stretch comes from.
+     * @param {boolean} cancelled true when the browser cancelled the gesture
+     */
+    _finishDrag(cancelled) {
+      const d = this._drag;
+      if (!d) return;
+      this._drag = null;
+
+      try {
+        d.track.releasePointerCapture(d.pointerId);
+      } catch (err) {
+        /* not captured */
+      }
+      d.track.classList.remove('is-pressed', 'is-dragging');
+      this._clearDragStyle(d.track);
+
+      const item = this._items[d.index];
+      if (!item) return;
+
+      if (cancelled) {
+        if (d.moved) {
+          this._dispatch('switch-drag-end', {
+            name: item.name, index: d.index, checked: item.checked, changed: false, cancelled: true,
+          });
+        }
+        return;
+      }
+
+      const next = d.moved ? d.progress >= 0.5 : !item.checked;
+      const changed = next !== item.checked;
+      if (changed) this._toggle(d.index, next, /* animate */ false); // the release spring is the animation
+      if (d.moved) {
+        this._dispatch('switch-drag-end', {
+          name: item.name, index: d.index, checked: next, changed, cancelled: false,
+        });
+      }
+      this._swallow = { track: d.track, until: performance.now() + TRAILING_CLICK_MS };
+    }
+
+    /** Removes the inline values the drag wrote, so the CSS state takes over (and springs the thumb back). */
+    _clearDragStyle(track) {
+      track.style.removeProperty('--_progress');
+      track.style.removeProperty('--_over');
+      track.style.removeProperty('--_over-abs');
+    }
+
+    /** Drops an active gesture without committing anything. */
+    _abortDrag() {
+      const d = this._drag;
+      if (!d) return;
+      this._drag = null;
+      try {
+        d.track.releasePointerCapture(d.pointerId);
+      } catch (err) {
+        /* not captured */
+      }
+      d.track.classList.remove('is-pressed', 'is-dragging');
+      this._clearDragStyle(d.track);
+    }
+
+    _onKeydown(evt) {
+      if (this.disabled) return;
+      const track = evt.target.closest('.track');
+      if (!track) return;
+      const index = Number(track.getAttribute('data-index'));
+
+      const enabledIndices = this._items
+        .map((it, i) => (it.disabled ? -1 : i))
+        .filter((i) => i !== -1);
+      if (!enabledIndices.length) return;
+
+      const currentPos = enabledIndices.indexOf(index);
+
+      const moveTo = (pos) => {
+        const wrapped = ((pos % enabledIndices.length) + enabledIndices.length) % enabledIndices.length;
+        this._moveRovingFocus(enabledIndices[wrapped], true);
+      };
+
+      switch (evt.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          evt.preventDefault();
+          moveTo(currentPos + 1);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          evt.preventDefault();
+          moveTo(currentPos - 1);
+          break;
+        case 'Home':
+          evt.preventDefault();
+          moveTo(0);
+          break;
+        case 'End':
+          evt.preventDefault();
+          moveTo(enabledIndices.length - 1);
+          break;
+        case ' ':
+        case 'Enter':
+          evt.preventDefault();
+          if (!track.disabled) {
+            const item = this._items[index];
+            this._toggle(index, !item.checked, true);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+
+    /**
+     * Moves the roving tabindex (and, unless told otherwise, real focus) to a switch.
+     * @param {number} index
+     * @param {boolean} fromKeyboard
+     * @param {boolean} [focusElement=true] false = only update tabindex and fire the event
+     */
+    _moveRovingFocus(index, fromKeyboard, focusElement = true) {
+      this._lastFocusedIndex = index;
+      const tracks = this._groupEl.querySelectorAll('.track');
+      tracks.forEach((t) => {
+        const i = Number(t.getAttribute('data-index'));
+        t.tabIndex = i === index ? 0 : -1;
+      });
+      const target = this._groupEl.querySelector(`.track[data-index="${index}"]`);
+      if (target && focusElement) target.focus();
+      const item = this._items[index];
+      if (item) {
+        this._dispatch('switch-focus', { name: item.name, index });
+      }
+    }
+
+    _toggle(index, checked, animate) {
+      const item = this._items[index];
+      if (!item) return;
+      item.checked = checked;
+
+      const track = this._groupEl.querySelector(`.track[data-index="${index}"]`);
+      if (track) {
+        track.setAttribute('aria-checked', String(checked));
+        if (animate) {
+          const thumb = track.querySelector('.thumb');
+          const animClass = checked ? 'is-animating-on' : 'is-animating-off';
+          thumb.classList.remove('is-animating-on', 'is-animating-off');
+          track.classList.remove('is-track-animating');
+          // Force reflow so the animation restarts reliably.
+          void thumb.offsetWidth;
+          thumb.classList.add(animClass);
+          track.classList.add('is-track-animating');
+          const cleanup = () => {
+            thumb.classList.remove(animClass);
+            track.classList.remove('is-track-animating');
+            thumb.removeEventListener('animationend', cleanup);
+          };
+          thumb.addEventListener('animationend', cleanup);
+        }
+      }
+
+      this._dispatch('switch-change', { name: item.name, index, checked });
+    }
+
+    /* -------------------------- Misc -------------------------- */
+
+    _handleResize(entries) {
+      // React to container size: collapse to vertical stacking automatically
+      // when the host becomes too narrow to fit items horizontally, unless
+      // the consumer has explicitly forced an orientation via the attribute.
+      if (this.hasAttribute('orientation')) return;
+      const entry = entries[0];
+      if (!entry) return;
+      const width = entry.contentRect.width;
+      const shouldStack = width > 0 && width < 220;
+      this._groupEl.setAttribute('data-orientation', shouldStack ? 'vertical' : 'horizontal');
+    }
+
+    _dispatch(eventName, detail) {
+      this.dispatchEvent(
+        new CustomEvent(eventName, {
+          detail,
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
+  }
+
+  if (!customElements.get(TAG_NAME)) {
+    customElements.define(TAG_NAME, SquashySwitchGroup);
+  }
+})();
+
+</script>
+<script>
+/**
+ * ============================================================================
+ * <squashy-step-switch>
+ * ============================================================================
+ * A multi-position switch: one thumb, any number of steps in between. It keeps
+ * the squash & stretch feel of <squashy-switch-group>: the thumb flattens when
+ * grabbed, can be dragged with a finger or mouse, snaps to the nearest step on
+ * release with a springy overshoot, and rubber-bands into the wall when you
+ * drag past either end. Vanilla JS, Shadow DOM, no dependencies.
+ *
+ * Why a separate element: a two-state toggle is a "switch" in ARIA, but a
+ * choice of one out of N ordered options is a "radiogroup". Each step is a
+ * role="radio" button, so screen readers announce "Medium, radio button, 3 of
+ * 5, selected", which a role="switch" cannot express.
+ *
+ * ----------------------------------------------------------------------------
+ * USAGE
+ * ----------------------------------------------------------------------------
+ *   (load squashy-step-switch.js with a normal script tag, src="squashy-step-switch.js")
+ *
+ *   <squashy-step-switch
+ *     label="Quality"
+ *     value="med"
+ *     list-data='[
+ *       {"value":"low","label":"Low"},
+ *       {"value":"med","label":"Medium"},
+ *       {"value":"high","label":"High"}
+ *     ]'>
+ *   </squashy-step-switch>
+ *
+ *   const sw = document.querySelector('squashy-step-switch');
+ *   sw.addEventListener('step-change', (e) => console.log(e.detail.value));
+ *
+ * To inline the file in an HTML page, the source must never contain a literal
+ * closing script tag; this file is checked for that.
+ *
+ * ----------------------------------------------------------------------------
+ * ATTRIBUTES (all observed)
+ * ----------------------------------------------------------------------------
+ *  label        Accessible name of the radiogroup. Default "Step switch".
+ *  list-data    JSON array of steps (never "data"). Each entry is either a
+ *               string/number or an object:
+ *                 { value: string, label?: string, disabled?: boolean }
+ *               "value" defaults to the index, "label" to the value.
+ *  value        The value of the selected step. Changing it moves the thumb
+ *               (animated); user input and setValue() write it back, so the
+ *               attribute always reflects the current state. If it matches no
+ *               step, the first enabled step is selected.
+ *  disabled     Boolean. Blocks all interaction, removes the control from the
+ *               tab order and sets aria-disabled="true" on the host.
+ *  thumb-drag   Dragging the thumb. Default ON; "false" / "off" / "0" / "no"
+ *               turns it off (taps on a step and the keyboard still work).
+ *  show-labels  Step labels under the track. Default ON; "false" hides them.
+ *  show-ticks   Small dots marking the steps inside the track. Default ON.
+ *  color-shift  Boolean, default OFF. When present, the track colour blends
+ *               from track-bg-off at the first step to track-bg-on at the last
+ *               as the thumb moves. Without it the track keeps one colour
+ *               (--squashy-step-switch-track-bg).
+ *
+ *  Attributes always win: setting one after a method call overrides it.
+ *
+ * ----------------------------------------------------------------------------
+ * PUBLIC API
+ * ----------------------------------------------------------------------------
+ *  setData(steps)       Replace all steps (same shape as list-data). While it
+ *                       works the host has aria-busy="true".
+ *  getData()            Deep copy of the steps: [{value,label,disabled}].
+ *  setValue(value)      Select a step by value. Ignored if disabled / unknown.
+ *  value                Property mirror of the "value" attribute.
+ *  getIndex()           Index of the selected step (-1 if there are none).
+ *  stepBy(delta)        Move the selection by delta enabled steps (clamped).
+ *  focusStep(index)     Move keyboard focus to a step.
+ *  thumbDrag, showLabels, showTicks, colorShift, disabled   Property mirrors.
+ *
+ *  Calls made before the element is connected are queued and replayed in
+ *  order once it is.
+ *
+ * ----------------------------------------------------------------------------
+ * EVENTS (all bubble and are composed, so they cross the shadow boundary)
+ * ----------------------------------------------------------------------------
+ *  step-ready       { count }
+ *  step-change      { value, label, index, previousValue, previousIndex,
+ *                     source }   source: "pointer" (tap/drag) | "keyboard"
+ *                                (arrows, Home, End) | "click" (Space/Enter,
+ *                                label click, assistive tech) | "api" |
+ *                                "attribute"
+ *  step-focus       { value, index }
+ *  step-drag-start  { value, index }
+ *  step-drag        { progress, overdrag, nearestIndex, nearestValue }
+ *                     progress 0..1 across the whole track, overdrag is the
+ *                     signed rubber-band amount (-1..1) past either end.
+ *  step-drag-end    { value, index, changed, cancelled }
+ *                     Fires after step-change when the drag changed the step.
+ *
+ * ----------------------------------------------------------------------------
+ * CSS CUSTOM PROPERTIES (set them on the element or an ancestor)
+ * ----------------------------------------------------------------------------
+ *  --squashy-step-switch-track-width          min(100%, 18rem)   (a minimum is enforced so all labels fit)
+ *  --squashy-step-switch-track-height         1.75rem
+ *  --squashy-step-switch-track-radius         999px
+ *  --squashy-step-switch-track-bg             #6b7280   the track colour (default behaviour)
+ *  --squashy-step-switch-track-bg-off         #d1d5db   with color-shift: colour at the first step
+ *  --squashy-step-switch-track-bg-on          #4f46e5   with color-shift: colour at the last step
+ *  --squashy-step-switch-track-bg-disabled    #e5e7eb
+ *  --squashy-step-switch-thumb-bg             #ffffff
+ *  --squashy-step-switch-thumb-size           1.35rem
+ *  --squashy-step-switch-thumb-shadow         0 1px 3px rgba(0,0,0,.3)
+ *  --squashy-step-switch-thumb-inset          0.2rem    padding between thumb and track edge
+ *  --squashy-step-switch-tick-size            0.28rem
+ *  --squashy-step-switch-tick-color           rgba(255,255,255,.8)
+ *  --squashy-step-switch-label-color          #4b5563
+ *  --squashy-step-switch-label-active-color   #111827
+ *  --squashy-step-switch-label-font           0.85rem/1.3 system-ui, ...
+ *  --squashy-step-switch-label-weight         400       label weight with the thumb far away
+ *  --squashy-step-switch-label-weight-active  700       label weight with the thumb on the step
+ *                                                       (in between, it follows the thumb live;
+ *                                                       fonts without variable weights step
+ *                                                       through their available weights)
+ *  --squashy-step-switch-label-gap            0.5rem    space between track and labels
+ *  --squashy-step-switch-label-overhang       1.5rem    room for the end labels to centre under the end steps
+ *  --squashy-step-switch-focus-color          #2563eb
+ *  --squashy-step-switch-focus-width          2px
+ *  --squashy-step-switch-focus-offset         2px
+ *  --squashy-step-switch-anim-duration        320ms
+ *  --squashy-step-switch-anim-easing          cubic-bezier(.5,1.8,.4,1)
+ *  --squashy-step-switch-disabled-opacity     0.55
+ *  --squashy-step-switch-drag-scale-x / -y    1.2 / 0.88   thumb while held
+ *  --squashy-step-switch-drag-follow-duration 80ms
+ *  --squashy-step-switch-overdrag-scale-x/-y  1.5 / 1.12   thumb pressed into a wall
+ *  --squashy-step-switch-overdrag-squircle-radius 28%
+ *
+ *  Parts: root, track, clip, thumb, steps, step, labels, label.
+ *
+ * ----------------------------------------------------------------------------
+ * ACCESSIBILITY NOTES
+ * ----------------------------------------------------------------------------
+ *  - role="radiogroup" with aria-label; every step is a button with
+ *    role="radio", aria-checked, aria-posinset, aria-setsize and an
+ *    aria-label. Visible labels are aria-hidden duplicates.
+ *  - Roving tabindex: only the selected step is in the tab order.
+ *  - Arrow keys (Left/Right/Up/Down) select the previous / next enabled step
+ *    and move focus with it; Home / End select the first / last. Unlike a
+ *    plain radio group the selection does NOT wrap, because the steps are an
+ *    ordered scale and jumping from "High" to "Low" by accident is
+ *    surprising. At an end, the key press does nothing.
+ *  - Space / Enter on a focused step select it. Disabled steps are skipped.
+ *  - aria-busy="true" on the host while setData() is processing.
+ *  - :host([disabled]) blocks pointer and keyboard and sets aria-disabled.
+ *  - Visible focus ring (:focus-visible only, never after a mouse press).
+ *  - prefers-reduced-motion shortens the animations to almost nothing.
+ *  - Dragging is a pointer-only enhancement; everything also works by tap and
+ *    keyboard. Tracks use touch-action: pan-y while dragging is on, so
+ *    horizontal gestures move the thumb and vertical ones still scroll.
+ *  - Layout is left-to-right; the arrow keys are not mirrored in RTL.
+ * ============================================================================
+ */
+(function () {
+  'use strict';
+
+  const TAG_NAME = 'squashy-step-switch';
+
+  /** Pointer travel (px) before a press counts as a drag; below it, it is a tap. */
+  const DRAG_THRESHOLD_PX = 4;
+  /** How long (ms) the click that trails a handled pointer gesture is ignored. */
+  const TRAILING_CLICK_MS = 500;
+  /**
+   * Rubber-band stiffness when dragging past an end, in thumb widths of pointer
+   * travel. It is measured in thumb sizes, not in track lengths, so a long
+   * step track squashes exactly as fast as a short on/off switch: the squash
+   * is a property of the thumb, not of how far it can slide.
+   */
+  const OVERDRAG_RESISTANCE_THUMBS = 0.83;
+  const clamp01 = (n) => Math.min(1, Math.max(0, n));
+  const FALSEY = ['false', 'off', '0', 'no'];
+
+  const TEMPLATE = document.createElement('template');
+  TEMPLATE.innerHTML = `
+    <style>
+      /* ---- Full CSS reset, scoped entirely inside the shadow root ---- */
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :host {
+        display: block;
+        --squashy-step-switch-track-width: min(100%, 18rem);
+        --squashy-step-switch-track-height: 1.75rem;
+        --squashy-step-switch-track-radius: 999px;
+        --squashy-step-switch-track-bg: #6b7280;
+        --squashy-step-switch-track-bg-off: #d1d5db;
+        --squashy-step-switch-track-bg-on: #4f46e5;
+        --squashy-step-switch-track-bg-disabled: #e5e7eb;
+        --squashy-step-switch-thumb-bg: #ffffff;
+        --squashy-step-switch-thumb-size: 1.35rem;
+        --squashy-step-switch-thumb-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --squashy-step-switch-thumb-inset: 0.2rem;
+        --squashy-step-switch-tick-size: 0.28rem;
+        --squashy-step-switch-tick-color: rgba(255, 255, 255, 0.8);
+        --squashy-step-switch-label-color: #4b5563;
+        --squashy-step-switch-label-active-color: #111827;
+        --squashy-step-switch-label-font: 0.85rem/1.3 system-ui, -apple-system, sans-serif;
+        --squashy-step-switch-label-weight: 400;
+        --squashy-step-switch-label-weight-active: 700;
+        --squashy-step-switch-label-gap: 0.5rem;
+        --squashy-step-switch-label-overhang: 1.5rem;
+        --squashy-step-switch-focus-color: #2563eb;
+        --squashy-step-switch-focus-width: 2px;
+        --squashy-step-switch-focus-offset: 2px;
+        --squashy-step-switch-anim-duration: 320ms;
+        --squashy-step-switch-anim-easing: cubic-bezier(.5, 1.8, .4, 1);
+        --squashy-step-switch-disabled-opacity: 0.55;
+        --squashy-step-switch-drag-scale-x: 1.2;
+        --squashy-step-switch-drag-scale-y: 0.88;
+        --squashy-step-switch-drag-follow-duration: 80ms;
+        --squashy-step-switch-overdrag-scale-x: 1.5;
+        --squashy-step-switch-overdrag-scale-y: 1.12;
+        --squashy-step-switch-overdrag-squircle-radius: 28%;
+        font: var(--squashy-step-switch-label-font);
+      }
+
+      :host([disabled]) {
+        opacity: var(--squashy-step-switch-disabled-opacity);
+        cursor: not-allowed;
+      }
+
+      .root {
+        padding: 0.4rem var(--squashy-step-switch-label-overhang);
+      }
+
+      .root[data-labels="false"] {
+        padding-inline: 0.4rem;
+      }
+
+      /* The track and its labels share one box. Its minimum width is measured
+         from the labels (--_min-width), so they can never overlap or be hidden:
+         a track set narrower than its labels need simply grows. */
+      .body {
+        width: var(--squashy-step-switch-track-width);
+        min-width: var(--_min-width, 0px);
+      }
+
+      .root {
+        overflow-x: auto;
+      }
+
+      .track {
+        position: relative;
+        width: 100%;
+        height: var(--squashy-step-switch-track-height);
+        border-radius: var(--squashy-step-switch-track-radius);
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        /* Private: 0 = first step, 1 = last step (continuous while dragging).
+           The thumb position and the track colour both derive from it. */
+        --_progress: 0;
+        /* Private: signed rubber-band overdrag past an end, and its magnitude. */
+        --_over: 0;
+        --_over-abs: 0;
+        background: var(--squashy-step-switch-track-bg);
+        transition: background-color var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing);
+      }
+
+      /* Opt-in (color-shift attribute): the track blends from the "off" to the "on"
+         colour as the thumb travels. Off by default: the track keeps one colour. */
+      .root[data-color-shift="true"] .track {
+        background: color-mix(
+          in srgb,
+          var(--squashy-step-switch-track-bg-on) calc(var(--_progress) * 100%),
+          var(--squashy-step-switch-track-bg-off)
+        );
+      }
+
+      :host([disabled]) .root .track,
+      :host([disabled]) .root[data-color-shift="true"] .track {
+        background: var(--squashy-step-switch-track-bg-disabled);
+      }
+
+      /* The focus ring wraps the whole track, shown only for keyboard focus. */
+      .track:has(.step:focus-visible) {
+        outline: var(--squashy-step-switch-focus-width) solid var(--squashy-step-switch-focus-color);
+        outline-offset: var(--squashy-step-switch-focus-offset);
+      }
+
+      /* The clip is the track's inner area (track minus the inset). It cuts off
+         whatever part of the squashed or overshooting thumb would enter the
+         padding, so the thumb's squashed shape is formed by the track itself. */
+      .clip {
+        position: absolute;
+        inset: var(--squashy-step-switch-thumb-inset);
+        overflow: hidden;
+        border-radius: calc(var(--squashy-step-switch-track-radius) - var(--squashy-step-switch-thumb-inset));
+        pointer-events: none;
+      }
+
+      .tick {
+        position: absolute;
+        top: 50%;
+        left: calc(var(--squashy-step-switch-thumb-size) / 2 + (100% - var(--squashy-step-switch-thumb-size)) * var(--_f));
+        width: var(--squashy-step-switch-tick-size);
+        height: var(--squashy-step-switch-tick-size);
+        border-radius: 50%;
+        background: var(--squashy-step-switch-tick-color);
+        transform: translate(-50%, -50%);
+      }
+
+      .root[data-ticks="false"] .tick {
+        display: none;
+      }
+
+      .thumb {
+        position: absolute;
+        top: 50%;
+        left: calc((100% - var(--squashy-step-switch-thumb-size)) * var(--_progress));
+        width: var(--squashy-step-switch-thumb-size);
+        height: var(--squashy-step-switch-thumb-size);
+        background: var(--squashy-step-switch-thumb-bg);
+        /* A circle at rest. Overdragged into a wall, the side facing away from
+           the wall morphs towards a squircle, as if the volume were pressed in. */
+        --_r-left: calc(50% - (50% - var(--squashy-step-switch-overdrag-squircle-radius)) * max(var(--_over), 0));
+        --_r-right: calc(50% - (50% - var(--squashy-step-switch-overdrag-squircle-radius)) * max(var(--_over) * -1, 0));
+        border-radius: var(--_r-left) var(--_r-right) var(--_r-right) var(--_r-left);
+        box-shadow: var(--squashy-step-switch-thumb-shadow);
+        transform: translateY(-50%);
+        transform-origin: calc(50% - var(--_over) * 50%) 50%;
+        transition:
+          left var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing),
+          transform var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing),
+          transform-origin var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing),
+          border-radius var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing);
+        will-change: left, transform;
+      }
+
+      /* The invisible hit areas, one per step, laid over the track. */
+      .steps {
+        position: absolute;
+        inset: var(--squashy-step-switch-thumb-inset);
+      }
+
+      .step {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(var(--squashy-step-switch-thumb-size) / 2 + (100% - var(--squashy-step-switch-thumb-size)) * var(--_f));
+        width: max(var(--squashy-step-switch-thumb-size), calc((100% - var(--squashy-step-switch-thumb-size)) / max(var(--_n) - 1, 1)));
+        transform: translateX(-50%);
+        background: transparent;
+        border: none;
+        outline: none;
+        color: inherit;
+        font: inherit;
+        cursor: inherit;
+      }
+
+      .step[aria-disabled="true"] {
+        cursor: not-allowed;
+      }
+
+      /* ---- Labels ---- */
+      .labels {
+        position: relative;
+        width: 100%;
+        height: 1.3em;
+        margin-top: var(--squashy-step-switch-label-gap);
+      }
+
+      .root[data-labels="false"] .labels {
+        display: none;
+      }
+
+      .label {
+        position: absolute;
+        top: 0;
+        left: calc(
+          var(--squashy-step-switch-thumb-inset) + var(--squashy-step-switch-thumb-size) / 2 +
+          (100% - 2 * var(--squashy-step-switch-thumb-inset) - var(--squashy-step-switch-thumb-size)) * var(--_f)
+        );
+        transform: translateX(-50%);
+        color: var(--squashy-step-switch-label-color);
+        font: var(--squashy-step-switch-label-font);
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        /* --_prox: 0 = thumb far away, 1 = thumb right on this step. It is
+           updated every frame while the thumb moves, so the label swells and
+           darkens as the thumb approaches and relaxes as it leaves. */
+        --_prox: 0;
+        font-weight: calc(var(--squashy-step-switch-label-weight) + (var(--squashy-step-switch-label-weight-active) - var(--squashy-step-switch-label-weight)) * var(--_prox));
+        color: color-mix(in srgb, var(--squashy-step-switch-label-active-color) calc(var(--_prox) * 100%), var(--squashy-step-switch-label-color));
+      }
+
+      .label[data-disabled="true"] {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      /* ---- Thumb dragging (on by default, see the thumb-drag attribute) ---- */
+      .root[data-thumb-drag="true"] .track {
+        touch-action: pan-y;
+        cursor: grab;
+      }
+
+      .root[data-thumb-drag="true"] .track.is-pressed {
+        cursor: grabbing;
+      }
+
+      :host([disabled]) .root .track {
+        cursor: not-allowed;
+        touch-action: auto;
+      }
+
+      /* The first and last step are walls: the thumb arrives there without the
+         spring's overshoot, so it never bounces into the end. Interior steps
+         keep the springy overshoot. */
+      .track[data-edge="true"] .thumb {
+        transition:
+          left var(--squashy-step-switch-anim-duration) cubic-bezier(.2, .8, .3, 1),
+          transform var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing),
+          transform-origin var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing),
+          border-radius var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing);
+      }
+
+      /* Pressed: the thumb goes wide and flat, then springs when released. */
+      .track.is-pressed .thumb {
+        transform: translateY(-50%) scale(
+          calc(var(--squashy-step-switch-drag-scale-x) + (var(--squashy-step-switch-overdrag-scale-x) - var(--squashy-step-switch-drag-scale-x)) * var(--_over-abs)),
+          calc(var(--squashy-step-switch-drag-scale-y) + (var(--squashy-step-switch-overdrag-scale-y) - var(--squashy-step-switch-drag-scale-y)) * var(--_over-abs))
+        );
+      }
+
+      /* Dragging: position and colour follow the pointer 1:1, with no easing. */
+      .track.is-dragging {
+        transition: none;
+      }
+
+      .track.is-dragging .thumb,
+      .track.is-dragging[data-edge="true"] .thumb {
+        transition: transform var(--squashy-step-switch-drag-follow-duration) ease-out;
+      }
+
+      /* Squash & stretch when the selection moves by tap, keyboard or API. */
+      @keyframes squashy-step-stretch {
+        0%   { transform: translateY(-50%) scaleX(1) scaleY(1); }
+        35%  { transform: translateY(-50%) scaleX(var(--_stretch, 1.4)) scaleY(var(--_squeeze, 0.75)); }
+        65%  { transform: translateY(-50%) scaleX(0.88) scaleY(1.12); }
+        100% { transform: translateY(-50%) scaleX(1) scaleY(1); }
+      }
+
+      .thumb.is-animating {
+        animation: squashy-step-stretch var(--squashy-step-switch-anim-duration) var(--squashy-step-switch-anim-easing);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .thumb, .track, .label {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+        }
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+    </style>
+    <div class="root" part="root" role="radiogroup">
+      <span class="visually-hidden" data-empty-msg>No steps configured.</span>
+    </div>
+  `;
+
+  class SquashyStepSwitch extends HTMLElement {
+    static get observedAttributes() {
+      return ['label', 'list-data', 'value', 'disabled', 'thumb-drag', 'show-labels', 'show-ticks', 'color-shift'];
+    }
+
+    constructor() {
+      super();
+      const shadow = this.attachShadow({ mode: 'open' });
+      shadow.appendChild(TEMPLATE.content.cloneNode(true));
+
+      this._rootEl = shadow.querySelector('.root');
+      this._steps = []; // [{value,label,disabled}]
+      this._index = -1; // selected step
+      this._connected = false;
+      this._pending = []; // public-method calls made before connectedCallback
+      this._resizeObserver = null;
+      this._readyFired = false;
+      this._reflecting = false; // true while we write the value attribute ourselves
+      this._raf = 0; // pending requestAnimationFrame for the label loop
+      this._drag = null; // active pointer gesture, or null
+      this._swallow = null; // { track, until }: ignore the click trailing a pointer gesture
+
+      this._onClick = this._onClick.bind(this);
+      this._onKeydown = this._onKeydown.bind(this);
+      this._onFocusin = this._onFocusin.bind(this);
+      this._onPointerDown = this._onPointerDown.bind(this);
+      this._onPointerMove = this._onPointerMove.bind(this);
+      this._onPointerUp = this._onPointerUp.bind(this);
+      this._onPointerCancel = this._onPointerCancel.bind(this);
+      this._onLostPointerCapture = this._onLostPointerCapture.bind(this);
+    }
+
+    /* -------------------------- Lifecycle -------------------------- */
+
+    connectedCallback() {
+      this._connected = true;
+
+      const r = this._rootEl;
+      r.addEventListener('click', this._onClick);
+      r.addEventListener('keydown', this._onKeydown);
+      r.addEventListener('focusin', this._onFocusin);
+      r.addEventListener('pointerdown', this._onPointerDown);
+      r.addEventListener('pointermove', this._onPointerMove);
+      r.addEventListener('pointerup', this._onPointerUp);
+      r.addEventListener('pointercancel', this._onPointerCancel);
+      r.addEventListener('lostpointercapture', this._onLostPointerCapture);
+
+      this._resizeObserver = new ResizeObserver(() => this._updateMinWidth());
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this._connected && this._updateMinWidth());
+      this._resizeObserver.observe(this);
+
+      this._syncLabel();
+      this._syncFlags();
+      this._syncDisabled();
+      this._syncListDataFromAttribute();
+      this._resolveIndex();
+
+      while (this._pending.length) {
+        const { method, args } = this._pending.shift();
+        this[method](...args);
+      }
+
+      this._render();
+
+      if (!this._readyFired) {
+        this._readyFired = true;
+        this._dispatch('step-ready', { count: this._steps.length });
+      }
+    }
+
+    disconnectedCallback() {
+      this._connected = false;
+      const r = this._rootEl;
+      r.removeEventListener('click', this._onClick);
+      r.removeEventListener('keydown', this._onKeydown);
+      r.removeEventListener('focusin', this._onFocusin);
+      r.removeEventListener('pointerdown', this._onPointerDown);
+      r.removeEventListener('pointermove', this._onPointerMove);
+      r.removeEventListener('pointerup', this._onPointerUp);
+      r.removeEventListener('pointercancel', this._onPointerCancel);
+      r.removeEventListener('lostpointercapture', this._onLostPointerCapture);
+      this._abortDrag();
+      this._swallow = null;
+      if (this._raf) {
+        cancelAnimationFrame(this._raf);
+        this._raf = 0;
+      }
+      if (this._resizeObserver) {
+        this._resizeObserver.disconnect();
+        this._resizeObserver = null;
+      }
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (oldValue === newValue) return;
+      switch (name) {
+        case 'label':
+          this._syncLabel();
+          break;
+        case 'disabled':
+          this._syncDisabled();
+          break;
+        case 'thumb-drag':
+        case 'show-labels':
+        case 'show-ticks':
+        case 'color-shift':
+          this._syncFlags();
+          if (name === 'show-labels' && this._connected) this._updateMinWidth();
+          break;
+        case 'list-data':
+          this._syncListDataFromAttribute();
+          this._resolveIndex();
+          if (this._connected) this._render();
+          break;
+        case 'value':
+          if (this._reflecting) break; // our own write-back
+          this._onValueAttribute();
+          break;
+      }
+    }
+
+    /* -------------------------- Public API -------------------------- */
+
+    /**
+     * Replace all steps. Queued if called before the element is connected.
+     * @param {Array<string|number|{value?:string,label?:string,disabled?:boolean}>} steps
+     */
+    setData(steps) {
+      if (!this._connected) {
+        this._pending.push({ method: 'setData', args: [steps] });
+        return;
+      }
+      // Applied synchronously, so calls queued right after it (setValue...) see the new
+      // steps; aria-busy stays up until the end of the microtask for async UIs to observe.
+      this.setAttribute('aria-busy', 'true');
+      this._steps = this._normalizeSteps(steps);
+      this._resolveIndex();
+      this._render();
+      Promise.resolve().then(() => this.removeAttribute('aria-busy'));
+    }
+
+    /** @returns {Array<{value:string,label:string,disabled:boolean}>} */
+    getData() {
+      return JSON.parse(JSON.stringify(this._steps));
+    }
+
+    /** @param {string|number} value value of the step to select */
+    setValue(value) {
+      if (!this._connected) {
+        this._pending.push({ method: 'setValue', args: [value] });
+        return;
+      }
+      if (this.disabled) return;
+      const index = this._steps.findIndex((s) => s.value === String(value));
+      if (index === -1 || this._steps[index].disabled) return;
+      this._select(index, { source: 'api', animate: true });
+    }
+
+    /** @returns {number} index of the selected step, -1 when there are no steps */
+    getIndex() {
+      return this._index;
+    }
+
+    /**
+     * Move the selection by `delta` enabled steps, clamped to the ends.
+     * @param {number} delta
+     */
+    stepBy(delta) {
+      if (!this._connected) {
+        this._pending.push({ method: 'stepBy', args: [delta] });
+        return;
+      }
+      if (this.disabled || !delta) return;
+      const target = this._neighbour(this._index, delta);
+      if (target !== -1) this._select(target, { source: 'api', animate: true });
+    }
+
+    /** @param {number} index */
+    focusStep(index) {
+      if (!this._connected) {
+        this._pending.push({ method: 'focusStep', args: [index] });
+        return;
+      }
+      const el = this._rootEl.querySelector(`.step[data-index="${index}"]`);
+      if (el && !this.disabled) el.focus();
+    }
+
+    /* -------------------------- Attribute reflection -------------------------- */
+
+    get disabled() {
+      return this.hasAttribute('disabled');
+    }
+    set disabled(val) {
+      if (val) this.setAttribute('disabled', '');
+      else this.removeAttribute('disabled');
+    }
+
+    get value() {
+      const s = this._steps[this._index];
+      return s ? s.value : '';
+    }
+    set value(val) {
+      this.setAttribute('value', String(val));
+    }
+
+    get thumbDrag() {
+      return this._flag('thumb-drag');
+    }
+    set thumbDrag(val) {
+      this.setAttribute('thumb-drag', val ? 'true' : 'false');
+    }
+
+    get showLabels() {
+      return this._flag('show-labels');
+    }
+    set showLabels(val) {
+      this.setAttribute('show-labels', val ? 'true' : 'false');
+    }
+
+    get showTicks() {
+      return this._flag('show-ticks');
+    }
+    set showTicks(val) {
+      this.setAttribute('show-ticks', val ? 'true' : 'false');
+    }
+
+    /** Track colour follows the thumb from the "off" to the "on" colour. Default OFF; opt in with color-shift. */
+    get colorShift() {
+      const raw = this.getAttribute('color-shift');
+      if (raw === null) return false;
+      return !FALSEY.includes(raw.trim().toLowerCase());
+    }
+    set colorShift(val) {
+      if (val) this.setAttribute('color-shift', '');
+      else this.removeAttribute('color-shift');
+    }
+
+    /** Boolean attribute that is ON when absent and OFF for "false"/"off"/"0"/"no". */
+    _flag(name) {
+      const raw = this.getAttribute(name);
+      if (raw === null) return true;
+      return !FALSEY.includes(raw.trim().toLowerCase());
+    }
+
+    /* -------------------------- Internal sync helpers -------------------------- */
+
+    _syncLabel() {
+      this._rootEl.setAttribute('aria-label', this.getAttribute('label') || 'Step switch');
+    }
+
+    _syncFlags() {
+      this._rootEl.setAttribute('data-thumb-drag', String(this.thumbDrag));
+      this._rootEl.setAttribute('data-labels', String(this.showLabels));
+      this._rootEl.setAttribute('data-ticks', String(this.showTicks));
+      this._rootEl.setAttribute('data-color-shift', String(this.colorShift));
+      if (!this.thumbDrag) this._abortDrag();
+    }
+
+    _syncDisabled() {
+      this.setAttribute('aria-disabled', String(this.disabled));
+      if (this.disabled) this._abortDrag();
+      if (this._connected) this._render();
+    }
+
+    _syncListDataFromAttribute() {
+      const raw = this.getAttribute('list-data');
+      if (raw == null) return;
+      try {
+        this._steps = this._normalizeSteps(JSON.parse(raw));
+      } catch (err) {
+        console.error(`<${TAG_NAME}> failed to parse list-data attribute as JSON:`, err);
+        this._steps = [];
+      }
+    }
+
+    _normalizeSteps(steps) {
+      if (!Array.isArray(steps)) return [];
+      return steps.map((raw, i) => {
+        if (raw !== null && typeof raw === 'object') {
+          const value = raw.value != null ? String(raw.value) : String(i);
+          return {
+            value,
+            label: raw.label != null ? String(raw.label) : value,
+            disabled: !!raw.disabled,
+          };
+        }
+        const value = raw != null ? String(raw) : String(i);
+        return { value, label: value, disabled: false };
+      });
+    }
+
+    /**
+     * Decides which step is selected: the value attribute if it matches,
+     * otherwise the step that was selected before, otherwise the first enabled one.
+     */
+    _resolveIndex() {
+      const attr = this.getAttribute('value');
+      let index = attr == null ? -1 : this._steps.findIndex((s) => s.value === attr);
+      if (index === -1) {
+        const keep = this._steps[this._index];
+        if (keep) index = this._steps.findIndex((s) => s.value === keep.value);
+      }
+      if (index === -1) index = this._steps.findIndex((s) => !s.disabled);
+      if (index === -1 && this._steps.length) index = 0;
+      this._index = index;
+      // The attribute always mirrors the real selection.
+      if (this._steps[index]) this._reflectValue(this._steps[index].value);
+    }
+
+    _onValueAttribute() {
+      const attr = this.getAttribute('value');
+      const index = this._steps.findIndex((s) => s.value === attr);
+      if (index === -1 || index === this._index) return;
+      if (this._connected && !this.disabled) {
+        this._select(index, { source: 'attribute', animate: true });
+      } else {
+        this._index = index;
+        if (this._connected) this._updateSelectionUi();
+      }
+    }
+
+    _reflectValue(value) {
+      if (this.getAttribute('value') === value) return;
+      this._reflecting = true;
+      this.setAttribute('value', value);
+      this._reflecting = false;
+    }
+
+    /* -------------------------- Rendering -------------------------- */
+
+    _render() {
+      this._abortDrag(); // the track is about to be replaced
+      const emptyMsg = this._rootEl.querySelector('[data-empty-msg]');
+      this._rootEl.innerHTML = '';
+
+      const n = this._steps.length;
+      if (!n) {
+        this._rootEl.appendChild(emptyMsg || document.createTextNode('No steps configured.'));
+        return;
+      }
+
+      const hostDisabled = this.disabled;
+      const f = (i) => (n > 1 ? i / (n - 1) : 0);
+
+      const body = document.createElement('div');
+      body.className = 'body';
+      const track = document.createElement('div');
+      track.className = 'track';
+      track.setAttribute('part', 'track');
+      track.style.setProperty('--_n', String(n));
+
+      const clip = document.createElement('span');
+      clip.className = 'clip';
+      clip.setAttribute('part', 'clip');
+      this._steps.forEach((step, i) => {
+        if (step.disabled) return; // no dot for a step that cannot be selected
+        const tick = document.createElement('span');
+        tick.className = 'tick';
+        tick.style.setProperty('--_f', String(f(i)));
+        clip.appendChild(tick);
+      });
+      const thumb = document.createElement('span');
+      thumb.className = 'thumb';
+      thumb.setAttribute('part', 'thumb');
+      clip.appendChild(thumb);
+      track.appendChild(clip);
+
+      const stepsLayer = document.createElement('span');
+      stepsLayer.className = 'steps';
+      stepsLayer.setAttribute('part', 'steps');
+      this._steps.forEach((step, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'step';
+        btn.setAttribute('part', 'step');
+        btn.setAttribute('role', 'radio');
+        btn.setAttribute('aria-label', step.label);
+        btn.setAttribute('aria-posinset', String(i + 1));
+        btn.setAttribute('aria-setsize', String(n));
+        btn.setAttribute('aria-disabled', String(step.disabled || hostDisabled));
+        btn.setAttribute('data-index', String(i));
+        btn.style.setProperty('--_f', String(f(i)));
+        stepsLayer.appendChild(btn);
+      });
+      track.appendChild(stepsLayer);
+      body.appendChild(track);
+      this._rootEl.appendChild(body);
+
+      const labels = document.createElement('div');
+      labels.className = 'labels';
+      labels.setAttribute('part', 'labels');
+      this._steps.forEach((step, i) => {
+        const span = document.createElement('span');
+        span.className = 'label';
+        span.setAttribute('part', 'label');
+        span.setAttribute('aria-hidden', 'true'); // the radios already carry the names
+        span.setAttribute('data-index', String(i));
+        span.setAttribute('data-disabled', String(step.disabled || hostDisabled));
+        span.style.setProperty('--_f', String(f(i)));
+        span.textContent = step.label;
+        labels.appendChild(span);
+      });
+      body.appendChild(labels);
+
+      this._updateSelectionUi();
+      this._updateMinWidth();
+    }
+
+    /** Syncs radios, labels and thumb position with the selected index. */
+    _updateSelectionUi() {
+      this._rootEl.querySelectorAll('.step').forEach((btn) => {
+        const i = Number(btn.getAttribute('data-index'));
+        btn.setAttribute('aria-checked', String(i === this._index));
+        btn.tabIndex = i === this._index && !this.disabled ? 0 : -1;
+      });
+      this._rootEl.querySelectorAll('.label').forEach((el) => {
+        el.classList.toggle('is-active', Number(el.getAttribute('data-index')) === this._index);
+        el.classList.remove('is-near');
+      });
+      this._applyProgress();
+      this._updateLabels();
+    }
+
+    /**
+     * Sets each label's --_prox from the thumb's live position. Reading the
+     * computed left means it also follows the release spring, not just the drag.
+     * @returns {number} the thumb's current 0..1 position, or -1 without a track
+     */
+    _updateLabels() {
+      const track = this._rootEl.querySelector('.track');
+      if (!track) return -1;
+      const clip = track.querySelector('.clip');
+      const thumb = track.querySelector('.thumb');
+      const travel = Math.max(1, parseFloat(getComputedStyle(clip).width) - parseFloat(getComputedStyle(thumb).width));
+      const p = parseFloat(getComputedStyle(thumb).left) / travel || 0;
+      const pos = Math.min(1, Math.max(0, p)) * Math.max(this._steps.length - 1, 0);
+      this._rootEl.querySelectorAll('.label').forEach((el, i) => {
+        // A disabled step never reacts to the thumb: it stays at its resting weight.
+        const prox = this._steps[i] && this._steps[i].disabled ? 0 : Math.max(0, 1 - Math.abs(pos - i));
+        el.style.setProperty('--_prox', prox.toFixed(3));
+      });
+      return p;
+    }
+
+    /** Keeps the labels in step with the thumb until it comes to rest. */
+    _startLabelLoop() {
+      if (this._raf) return;
+      let last = null;
+      let still = 0;
+      const tick = () => {
+        this._raf = 0;
+        const p = this._updateLabels();
+        if (p === -1) return;
+        still = !this._drag && last !== null && Math.abs(p - last) < 1e-4 ? still + 1 : 0;
+        last = p;
+        if (still > 6) return; // settled
+        this._raf = requestAnimationFrame(tick);
+      };
+      this._raf = requestAnimationFrame(tick);
+    }
+
+    /** Writes the inline progress that matches the selected step. */
+    _applyProgress() {
+      const track = this._rootEl.querySelector('.track');
+      if (!track) return;
+      const n = this._steps.length;
+      const p = n > 1 && this._index > 0 ? this._index / (n - 1) : 0;
+      track.style.setProperty('--_progress', String(p));
+      track.setAttribute('data-edge', String(n > 1 && (this._index === 0 || this._index === n - 1)));
+      this._startLabelLoop();
+    }
+
+    /**
+     * Measures the labels and sets the smallest track width at which neighbours
+     * still have a gap between them, so every label is always fully visible.
+     * (The selected label is bold, so the widest width is padded for that.)
+     */
+    _updateMinWidth() {
+      const body = this._rootEl.querySelector('.body');
+      const n = this._steps.length;
+      if (!body) return;
+      if (n < 2 || !this.showLabels) {
+        body.style.removeProperty('--_min-width');
+        return;
+      }
+      const thumb = body.querySelector('.thumb');
+      const inset = parseFloat(getComputedStyle(body.querySelector('.clip')).left) || 0;
+      let widest = 0;
+      body.querySelectorAll('.label').forEach((el) => {
+        widest = Math.max(widest, el.offsetWidth);
+      });
+      const gap = 8; // px of air between neighbouring labels
+      const spacing = widest * 1.12 + gap;
+      body.style.setProperty('--_min-width', `${Math.ceil((n - 1) * spacing + thumb.offsetWidth + inset * 2)}px`);
+    }
+
+    /* -------------------------- Selection -------------------------- */
+
+    /**
+     * Nearest enabled step to a continuous position, -1 if every step is disabled.
+     * @param {number} progress 0..1 across the track
+     */
+    _nearestEnabled(progress) {
+      const ideal = clamp01(progress) * Math.max(this._steps.length - 1, 0);
+      let best = -1;
+      let bestDist = Infinity;
+      this._steps.forEach((s, i) => {
+        if (s.disabled) return;
+        const d = Math.abs(i - ideal);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      return best;
+    }
+
+    /** The enabled step `delta` enabled steps away from `from`, clamped; -1 if none moves. */
+    _neighbour(from, delta) {
+      const enabled = this._steps.map((s, i) => (s.disabled ? -1 : i)).filter((i) => i !== -1);
+      if (!enabled.length) return -1;
+      let pos = enabled.indexOf(from);
+      if (pos === -1) {
+        // The selection sits on a disabled step: count from the gap it leaves, so a
+        // step forward lands on the next enabled step and one back on the previous.
+        const before = enabled.filter((i) => i < from).length;
+        pos = delta > 0 ? before - 1 : before;
+      }
+      const next = Math.min(enabled.length - 1, Math.max(0, pos + delta));
+      const target = enabled[next];
+      return target === from ? -1 : target;
+    }
+
+    /**
+     * Makes `index` the selected step.
+     * @param {number} index
+     * @param {{source:string, animate:boolean}} opts animate = play the stretch
+     *        keyframes (tap / key / API); false when a drag release already
+     *        springs the thumb into place.
+     * @returns {boolean} whether the selection changed
+     */
+    _select(index, { source, animate }) {
+      const step = this._steps[index];
+      if (!step || index === this._index) {
+        this._applyProgress();
+        return false;
+      }
+      const previousIndex = this._index;
+      const previous = this._steps[previousIndex];
+      this._index = index;
+      this._reflectValue(step.value);
+      this._updateSelectionUi();
+      if (animate) this._playStretch(Math.abs(index - previousIndex) / Math.max(this._steps.length - 1, 1));
+      this._dispatch('step-change', {
+        value: step.value,
+        label: step.label,
+        index,
+        previousValue: previous ? previous.value : null,
+        previousIndex,
+        source,
+      });
+      return true;
+    }
+
+    /** Stretch & squash of the thumb (the track itself stays still) for a move covering `fraction` of the track. */
+    _playStretch(fraction) {
+      const track = this._rootEl.querySelector('.track');
+      const thumb = track && track.querySelector('.thumb');
+      if (!thumb) return;
+      thumb.style.setProperty('--_stretch', (1.25 + 0.3 * fraction).toFixed(3));
+      thumb.style.setProperty('--_squeeze', (0.85 - 0.13 * fraction).toFixed(3));
+      thumb.classList.remove('is-animating');
+      void thumb.offsetWidth; // restart the animation reliably
+      thumb.classList.add('is-animating');
+      const cleanup = () => {
+        thumb.classList.remove('is-animating');
+        thumb.removeEventListener("animationend", cleanup);
+      };
+      thumb.addEventListener('animationend', cleanup);
+    }
+
+    /* -------------------------- Clicks and keyboard -------------------------- */
+
+    _onClick(evt) {
+      if (this.disabled) return;
+      const hit = evt.target.closest('.step, .label');
+      if (!hit) return;
+
+      // A pointer gesture on the track was handled in pointerup already; the
+      // click that trails it must not select a second time.
+      const swallow = this._swallow;
+      this._swallow = null;
+      const track = hit.closest('.track');
+      if (track && swallow && swallow.track === track && performance.now() < swallow.until) return;
+
+      const index = Number(hit.getAttribute('data-index'));
+      const step = this._steps[index];
+      if (!step || step.disabled) return;
+      // Space/Enter on a step, assistive-tech activation and label clicks arrive here.
+      this._select(index, { source: 'click', animate: true });
+    }
+
+    _onFocusin(evt) {
+      const btn = evt.target.closest && evt.target.closest('.step');
+      if (!btn) return;
+      const index = Number(btn.getAttribute('data-index'));
+      const step = this._steps[index];
+      if (step) this._dispatch('step-focus', { value: step.value, index });
+    }
+
+    _onKeydown(evt) {
+      if (this.disabled) return;
+      const btn = evt.target.closest('.step');
+      if (!btn) return;
+      if (evt.altKey || evt.ctrlKey || evt.metaKey) return;
+
+      let target = null;
+      switch (evt.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          target = this._neighbour(this._index, 1);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          target = this._neighbour(this._index, -1);
+          break;
+        case 'Home':
+          target = this._steps.findIndex((s) => !s.disabled);
+          if (target === this._index) target = -1;
+          break;
+        case 'End': {
+          let last = -1;
+          this._steps.forEach((s, i) => { if (!s.disabled) last = i; });
+          target = last === this._index ? -1 : last;
+          break;
+        }
+        default:
+          return;
+      }
+      evt.preventDefault();
+      if (target === -1 || target == null) return; // already at the end: nothing moves, nothing bounces
+      this._select(target, { source: 'keyboard', animate: true });
+      const el = this._rootEl.querySelector(`.step[data-index="${target}"]`);
+      if (el) el.focus();
+    }
+
+    /* -------------------------- Thumb dragging -------------------------- */
+
+    _onPointerDown(evt) {
+      if (this._drag || !this.thumbDrag || this.disabled) return;
+      if (!evt.isPrimary) return;
+      if (evt.pointerType === 'mouse' && evt.button !== 0) return;
+
+      const track = evt.target.closest('.track');
+      if (!track || !this._steps.some((s) => !s.disabled)) return;
+      const clip = track.querySelector('.clip');
+      const thumb = track.querySelector('.thumb');
+      if (!clip || !thumb) return;
+
+      // Exact layout pixels: the thumb may still be mid-spring from a previous move.
+      const clipWidth = parseFloat(getComputedStyle(clip).width) || 0;
+      const thumbWidth = parseFloat(getComputedStyle(thumb).width) || 0;
+      const clipRect = clip.getBoundingClientRect();
+      const screenScale = clipWidth ? clipRect.width / clipWidth : 1; // ancestor CSS transforms
+      const travel = Math.max(1, clipWidth - thumbWidth);
+      const travelPx = travel * screenScale;
+      const leftNow = parseFloat(getComputedStyle(thumb).left);
+      const startProgress = Number.isFinite(leftNow) ? clamp01(leftNow / travel) : 0;
+
+      this._drag = {
+        pointerId: evt.pointerId,
+        track,
+        startX: evt.clientX,
+        startProgress,
+        progress: startProgress,
+        travelPx,
+        resistPx: OVERDRAG_RESISTANCE_THUMBS * thumbWidth * screenScale,
+        // Where a tap would put the thumb's centre, as a 0..1 track position.
+        tapProgress: clamp01((evt.clientX - clipRect.left - (thumbWidth * screenScale) / 2) / travelPx),
+        near: this._index,
+        moved: false,
+      };
+      track.classList.add('is-pressed');
+      this._startLabelLoop();
+      try {
+        track.setPointerCapture(evt.pointerId);
+      } catch (err) {
+        /* capture unsupported or the pointer is gone: dragging still works inside the track */
+      }
+    }
+
+    _onPointerMove(evt) {
+      const d = this._drag;
+      if (!d || evt.pointerId !== d.pointerId) return;
+
+      const dx = evt.clientX - d.startX;
+      if (!d.moved) {
+        if (Math.abs(dx) < DRAG_THRESHOLD_PX) return;
+        d.moved = true;
+        d.track.classList.add('is-dragging');
+        const cur = this._steps[this._index];
+        this._dispatch('step-drag-start', { value: cur ? cur.value : null, index: this._index });
+      }
+
+      // The thumb stops at the ends; whatever the pointer does beyond turns into a rubber-band squash.
+      const raw = d.startProgress + dx / d.travelPx;
+      d.progress = clamp01(raw);
+      const excessPx = (raw > 1 ? raw - 1 : raw < 0 ? raw : 0) * d.travelPx; // signed, in screen px
+      const overdrag = Math.sign(excessPx) * (1 - Math.exp(-Math.abs(excessPx) / d.resistPx));
+
+      const style = d.track.style;
+      style.setProperty('--_progress', String(d.progress));
+      style.setProperty('--_over', overdrag.toFixed(4));
+      style.setProperty('--_over-abs', Math.abs(overdrag).toFixed(4));
+
+      const near = this._nearestEnabled(d.progress);
+      if (near !== d.near) {
+        d.near = near;
+        this._rootEl.querySelectorAll('.label').forEach((el) => {
+          el.classList.toggle('is-near', Number(el.getAttribute('data-index')) === near);
+        });
+      }
+      const nearStep = this._steps[near];
+      this._dispatch('step-drag', {
+        progress: d.progress,
+        overdrag,
+        nearestIndex: near,
+        nearestValue: nearStep ? nearStep.value : null,
+      });
+    }
+
+    _onPointerUp(evt) {
+      if (this._drag && evt.pointerId === this._drag.pointerId) this._finishDrag(false);
+    }
+
+    _onPointerCancel(evt) {
+      if (this._drag && evt.pointerId === this._drag.pointerId) this._finishDrag(true);
+    }
+
+    _onLostPointerCapture(evt) {
+      // Normal releases end the drag in pointerup first; a live drag here means
+      // the capture was taken away (e.g. the element was removed).
+      if (this._drag && evt.pointerId === this._drag.pointerId) this._finishDrag(true);
+    }
+
+    /**
+     * Ends the gesture. A tap selects the step under the pointer; a drag snaps
+     * to the nearest enabled step. The thumb then springs there through the
+     * normal CSS transition, which is where the squash and stretch comes from.
+     * @param {boolean} cancelled true when the browser cancelled the gesture
+     */
+    _finishDrag(cancelled) {
+      const d = this._drag;
+      if (!d) return;
+      this._drag = null;
+
+      try {
+        d.track.releasePointerCapture(d.pointerId);
+      } catch (err) {
+        /* not captured */
+      }
+      d.track.classList.remove('is-pressed', 'is-dragging');
+      this._clearDragStyle(d.track);
+      this._rootEl.querySelectorAll('.label.is-near').forEach((el) => el.classList.remove('is-near'));
+
+      const cur = this._steps[this._index];
+      if (cancelled) {
+        this._applyProgress(); // back to the selected step
+        if (d.moved) {
+          this._dispatch('step-drag-end', {
+            value: cur ? cur.value : null, index: this._index, changed: false, cancelled: true,
+          });
+        }
+        return;
+      }
+
+      const target = this._nearestEnabled(d.moved ? d.progress : d.tapProgress);
+      const changed = target !== -1 && this._select(target, { source: 'pointer', animate: false });
+      this._applyProgress(); // also covers "same step": the thumb springs back to it
+      if (d.moved) {
+        const now = this._steps[this._index];
+        this._dispatch('step-drag-end', {
+          value: now ? now.value : null, index: this._index, changed, cancelled: false,
+        });
+      }
+      this._swallow = { track: d.track, until: performance.now() + TRAILING_CLICK_MS };
+    }
+
+    /** Removes the overdrag values the drag wrote (the progress stays inline and is re-applied). */
+    _clearDragStyle(track) {
+      track.style.removeProperty('--_over');
+      track.style.removeProperty('--_over-abs');
+    }
+
+    /** Drops an active gesture without committing anything. */
+    _abortDrag() {
+      const d = this._drag;
+      if (!d) return;
+      this._drag = null;
+      try {
+        d.track.releasePointerCapture(d.pointerId);
+      } catch (err) {
+        /* not captured */
+      }
+      d.track.classList.remove('is-pressed', 'is-dragging');
+      this._clearDragStyle(d.track);
+      this._applyProgress();
+    }
+
+    /* -------------------------- Misc -------------------------- */
+
+    _dispatch(name, detail) {
+      this.dispatchEvent(new CustomEvent(name, { detail, bubbles: true, composed: true }));
+    }
+  }
+
+  if (!customElements.get(TAG_NAME)) {
+    customElements.define(TAG_NAME, SquashyStepSwitch);
+  }
+})();
+
+</script>
+
+<script>
+  (function () {
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+    /* ---- theme toggle: system -> dark -> light -> system ---- */
+    var root = document.documentElement;
+    var themeBtn = $('#themeBtn');
+    var themes = ['system', 'dark', 'light'];
+    var themeIdx = 0;
+    function applyTheme() {
+      var t = themes[themeIdx];
+      if (t === 'system') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+      themeBtn.textContent = 'Theme: ' + t;
+    }
+    themeBtn.addEventListener('click', function () { themeIdx = (themeIdx + 1) % themes.length; applyTheme(); });
+    applyTheme();
+
+    /* ---- copy buttons ---- */
+    $$('.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var code = $('code', btn.parentNode);
+        var text = code.textContent;
+        var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1400); };
+        var fallback = function () {
+          var r = document.createRange(); r.selectNodeContents(code);
+          var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        };
+        try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+      });
+    });
+
+    /* ---- live event logs ---- */
+    function logTo(el, name, detail) {
+      var line = name + ' ' + JSON.stringify(detail);
+      el.textContent += (el.textContent ? '\n' : '') + line;
+      el.scrollTop = el.scrollHeight;
+    }
+    var sgLog = $('#sgLog'), ssLog = $('#ssLog');
+    ['switch-change', 'switch-drag-end'].forEach(function (n) {
+      document.addEventListener(n, function (e) { logTo(sgLog, n, e.detail); });
+    });
+    ['step-change', 'step-drag-end'].forEach(function (n) {
+      document.addEventListener(n, function (e) {
+        if (e.target.id === 'ss-api-demo' || e.target.id === 'ss1') logTo(ssLog, n, e.detail);
+      });
+    });
+
+    /* ---- demos ---- */
+    var dragBtn = $('#sgDragBtn'), dragDemo = $('#sg-drag-demo');
+    dragBtn.addEventListener('click', function () {
+      var on = dragBtn.getAttribute('aria-pressed') !== 'true';
+      dragBtn.setAttribute('aria-pressed', String(on));
+      dragBtn.textContent = 'thumb-drag: ' + (on ? 'on' : 'off');
+      dragDemo.thumbDrag = on;
+    });
+    var api = $('#ss-api-demo');
+    $('#ssPrev').addEventListener('click', function () { api.stepBy(-1); });
+    $('#ssNext').addEventListener('click', function () { api.stepBy(1); });
+    $('#ssBoost').addEventListener('click', function () { api.setValue('boost'); });
+
+    /* ---- right-hand outline built from the section headings, with scroll spy ---- */
+    var tocList = $('#tocList');
+    var heads = $$('main h2[id]').filter(function (h) { return h.id !== 'install-h'; });
+    var lastSection = null;
+    var tocLinks = {};
+    $$('main > section').forEach(function (sec) {
+      var h1 = $('h1', sec);
+      if (sec.id === 'install') return;
+      var g = document.createElement('li'); g.className = 'group'; g.textContent = h1.textContent; tocList.appendChild(g);
+      $$('h2[id]', sec).forEach(function (h) {
+        var li = document.createElement('li');
+        var a = document.createElement('a'); a.href = '#' + h.id; a.textContent = h.textContent;
+        li.appendChild(a); tocList.appendChild(li); tocLinks[h.id] = a;
+      });
+    });
+    var sideLinks = $$('aside.side a');
+    function setCurrent(id, secId) {
+      Object.keys(tocLinks).forEach(function (k) { tocLinks[k].removeAttribute('aria-current'); });
+      if (tocLinks[id]) tocLinks[id].setAttribute('aria-current', 'true');
+      sideLinks.forEach(function (a) {
+        if (a.getAttribute('href') === '#' + secId) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) {
+            var sec = en.target.closest('section');
+            setCurrent(en.target.id, sec ? sec.id : '');
+          }
+        });
+      }, { rootMargin: '-15% 0px -75% 0px' });
+      heads.forEach(function (h) { io.observe(h); });
+      $$('main > section').forEach(function (s) {
+        new IntersectionObserver(function (en) {
+          if (en[0].isIntersecting && !$('#tocList a[aria-current]')) setCurrent('', s.id);
+        }, { rootMargin: '-15% 0px -75% 0px' }).observe($('h1', s));
+      });
+    }
+  })();
+</script>
+
+</body></html>

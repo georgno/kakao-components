@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-button — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<!-- icons are Font Awesome class names (the success check uses "fas fa-check") -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="button.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Button</h1>
+    <p><code>&lt;kakao-button&gt;</code> — button with variants, sizes, icons, toggle state and an async loading → success/fail animation via <code>run(promise)</code>. Light DOM: load <code>button.css</code> next to the script.</p>
+  </header>
+
+  <h2>Variants</h2>
+  <p><code>variant</code>: primary (default), secondary, ghost, danger.</p>
+  <div class="card row">
+    <kakao-button label="Primary"></kakao-button>
+    <kakao-button label="Secondary" variant="secondary"></kakao-button>
+    <kakao-button label="Ghost" variant="ghost"></kakao-button>
+    <kakao-button label="Danger" variant="danger" icon="fas fa-trash"></kakao-button>
+    <kakao-button label="Disabled" disabled></kakao-button>
+  </div>
+
+  <h2>Sizes &amp; icons</h2>
+  <p><code>size</code>: sm, md, lg. <code>icon-position</code>: left, right, only (inferred when no label).</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Sizes</h3>
+      <div class="row">
+        <kakao-button label="Small" size="sm"></kakao-button>
+        <kakao-button label="Medium" size="md"></kakao-button>
+        <kakao-button label="Large" size="lg"></kakao-button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Icons</h3>
+      <div class="row">
+        <kakao-button label="Save" icon="fas fa-floppy-disk" variant="secondary"></kakao-button>
+        <kakao-button label="Next" icon="fas fa-arrow-right" icon-position="right" variant="secondary"></kakao-button>
+        <kakao-button icon="fas fa-gear" aria-label="Settings" variant="secondary"></kakao-button>
+        <kakao-button icon="fas fa-heart" aria-label="Like" size="sm" variant="ghost"></kakao-button>
+      </div>
+    </div>
+  </div>
+
+  <h2>Toggle</h2>
+  <p><code>toggle</code> flips <code>pressed</code> on click. Inside <code>.kakao-button-segment</code> they look like a segmented control.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Single toggle</h3>
+      <kakao-button id="toggle1" label="Bold" icon="fas fa-bold" variant="secondary" toggle></kakao-button>
+    </div>
+    <div class="card">
+      <h3>Segment (exclusive)</h3>
+      <div class="kakao-button-segment" id="segment">
+        <kakao-button icon="fas fa-align-left" aria-label="Left" toggle pressed></kakao-button>
+        <kakao-button icon="fas fa-align-center" aria-label="Center" toggle></kakao-button>
+        <kakao-button icon="fas fa-align-right" aria-label="Right" toggle></kakao-button>
+      </div>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p><code>run()</code> wires a promise to the loading animation; it resolves to a check, rejects back to the label.</p>
+  <div class="card">
+    <div class="row">
+      <kakao-button id="runOk" label="Save (succeeds)" icon="fas fa-cloud-arrow-up"></kakao-button>
+      <kakao-button id="runFail" label="Save (fails)" variant="danger"></kakao-button>
+    </div>
+    <div class="toolbar">
+      <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
+      <kakao-button id="apiLabel" label="Change label of first button" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>label</code>, <code>icon</code>, <code>icon-position</code>, <code>variant</code>, <code>size</code>, <code>disabled</code>, <code>toggle</code>, <code>pressed</code>, <code>type</code>, <code>name</code>, <code>value</code>, <code>form</code>, <code>href</code>, <code>aria-label</code>. <code>data-*</code> is mirrored onto the inner button. Event <code>kakao-button-action</code>.</footer>
+</main>
+
+<script>
+  const log = document.getElementById('log');
+  document.addEventListener('kakao-button-action', (e) => {
+    const el = e.target;
+    logLine(log, 'kakao-button-action', {
+      label: el.getAttribute('label') || el.getAttribute('aria-label'),
+      pressed: el.hasAttribute('toggle') ? el.hasAttribute('pressed') : undefined,
+    });
+  });
+
+  // Make the segment exclusive: pressing one releases the others
+  const segment = document.getElementById('segment');
+  segment.addEventListener('kakao-button-action', (e) => {
+    segment.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b === e.target));
+  });
+
+  const wait = (ms, fail) => new Promise((resolve, reject) => setTimeout(fail ? reject : resolve, ms));
+  const runOk = document.getElementById('runOk');
+  const runFail = document.getElementById('runFail');
+  runOk.addEventListener('kakao-button-action', () => {
+    runOk.run(() => wait(1200)).then(() => logLine(log, 'run() resolved'));
+  });
+  runFail.addEventListener('kakao-button-action', () => {
+    runFail.run(() => wait(1200, true)).catch(() => logLine(log, 'run() rejected'));
+  });
+
+  toggleButton(document.getElementById('optDisabled'), 'disabled', (on) => runOk.toggleAttribute('disabled', on));
+  let n = 0;
+  document.getElementById('apiLabel').addEventListener('click', () => runOk.setAttribute('label', `Renamed ${++n}`));
+</script>
+</body>
+</html>

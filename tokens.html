@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Main variables — Construction</title>
+<link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/construction.css" />
+<link rel="stylesheet" href="components/button/button.css" />
+<link rel="stylesheet" href="components/tabs/tabs.css" />
+<link rel="stylesheet" href="components/number-input/number-input.css" />
+<script src="components/button/button.js" defer></script>
+<script src="components/tabs/tabs.js" defer></script>
+<script src="components/number-input/number-input.js" defer></script>
+<script src="components/switch-group/switch-group.js" defer></script>
+<script src="components/step-switch/step-switch.js" defer></script>
+<script src="components/slider/slider.js" defer></script>
+<script src="components/multi-dropdown/multi-dropdown.js" defer></script>
+<script src="components/file-upload/file-upload.js" defer></script>
+<script src="shared/construction.js" defer></script>
+</head>
+<body>
+<main data-construction data-target="tokens" data-source="shared/tokens.css" data-title="Main variables">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Buttons</figcaption>
+      <kakao-button label="Primary"></kakao-button>
+      <kakao-button label="Secondary" variant="secondary"></kakao-button>
+      <kakao-button label="Delete" variant="danger"></kakao-button>
+    </figure>
+    <figure>
+      <figcaption>Tabs</figcaption>
+      <kakao-tabs>
+        <kakao-tab selected>Plan</kakao-tab>
+        <kakao-tab>Playback</kakao-tab>
+        <kakao-tab>Account</kakao-tab>
+      </kakao-tabs>
+    </figure>
+    <figure>
+      <figcaption>Switches</figcaption>
+      <kakao-switch-group label="Notifications" color-labels
+        list-data='[{"name":"email","label":"Email","checked":true},{"name":"sms","label":"SMS"}]'></kakao-switch-group>
+    </figure>
+    <figure>
+      <figcaption>Step switch</figcaption>
+      <kakao-step-switch label="Quality" value="med"
+        list-data='[{"value":"low","label":"Low"},{"value":"med","label":"Medium"},{"value":"high","label":"High"}]'></kakao-step-switch>
+    </figure>
+    <figure>
+      <figcaption>Slider · number input</figcaption>
+      <kakao-slider min="0" max="100" value="40" unit="%" label="Volume"></kakao-slider>
+    </figure>
+    <figure>
+      <figcaption>Multi dropdown</figcaption>
+      <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+    </figure>
+    <figure>
+      <figcaption>File upload</figcaption>
+      <kakao-file-upload label="Attachments"></kakao-file-upload>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-color-primary", "label": "Primary colour", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-text", "label": "Text colour", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-muted", "label": "Muted text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-subtle", "label": "Subtle fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-border", "label": "Border colour", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-danger", "label": "Danger colour", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-space-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-space-y", "label": "Padding y", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-space-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-radius", "label": "Radius", "group": "Shape", "type": "length" },
+    { "property": "--kakao-font-family", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-motion-duration", "label": "Motion duration", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+</body>
+</html>

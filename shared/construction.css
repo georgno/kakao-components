@@ -1,0 +1,274 @@
+/*
+ * construction.css — layout of the construction pages (shared/construction.js).
+ * Bare and neutral like demo.css; it never styles the components themselves.
+ */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #f6f7f9;
+  color: #111827;
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+[data-construction] {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+a { color: #4f46e5; }
+
+code {
+  font: 0.8em ui-monospace, "SF Mono", Menlo, monospace;
+  color: #6b7280;
+}
+
+/* ---- header ------------------------------------------------------------ */
+
+.construction-header { margin-bottom: 1.25rem; }
+.construction-header .back { display: inline-block; margin-bottom: 0.75rem; font-size: 0.85rem; }
+
+.construction-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+.construction-heading h1 { margin: 0; font-size: 1.5rem; letter-spacing: -0.02em; }
+.construction-kicker {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+.construction-links { display: flex; gap: 1rem; font-size: 0.9rem; }
+
+.construction-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.construction-status { margin: 0 0 0 0.5rem; font-size: 0.85rem; color: #6b7280; }
+.construction-status[data-kind="ok"] { color: #15803d; }
+.construction-status[data-kind="error"] { color: #dc2626; }
+.construction-status[data-kind="pending"] { color: #b45309; }
+
+.construction-warnings {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #fcd34d;
+  border-radius: 10px;
+  background: #fffbeb;
+  font-size: 0.85rem;
+  color: #92400e;
+}
+.construction-warnings ul { margin: 0.35rem 0 0; padding-left: 1.2rem; }
+
+/* ---- body: canvas + panel ---------------------------------------------- */
+
+.construction-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 28rem);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .construction-body { grid-template-columns: minmax(0, 1fr); }
+}
+
+.construction-canvas {
+  position: sticky;
+  top: 1rem;
+  min-width: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 3rem 2rem 2rem;
+  background: #ffffff;
+  min-height: 20rem;
+}
+@media (max-width: 860px) { .construction-canvas { position: static; } }
+
+.construction-canvas[data-canvas="dark"] { background: #18181b; border-color: #27272a; color: #f4f4f5; }
+.construction-canvas[data-canvas="checker"] {
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(45deg, #eceef1 25%, transparent 25%, transparent 75%, #eceef1 75%),
+    linear-gradient(45deg, #eceef1 25%, transparent 25%, transparent 75%, #eceef1 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+}
+
+.construction-canvas-picker {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.15rem;
+  font-size: 0.75rem;
+}
+.construction-canvas-picker input { position: absolute; opacity: 0; pointer-events: none; }
+.construction-canvas-picker label {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  color: #6b7280;
+  cursor: pointer;
+}
+.construction-canvas-picker input:checked + label { background: #eef0f4; color: #111827; }
+.construction-canvas-picker input:focus-visible + label { outline: 2px solid #2563eb; outline-offset: 1px; }
+.construction-canvas[data-canvas="dark"] .construction-canvas-picker input:checked + label { background: #3f3f46; color: #f4f4f5; }
+
+/* Preview states: a figure per state, caption above */
+.construction-preview { display: grid; gap: 2rem; }
+.construction-preview figure { margin: 0; min-width: 0; }
+.construction-preview figcaption {
+  margin-bottom: 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+/* ---- settings panel ---------------------------------------------------- */
+
+.construction-panel {
+  min-width: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 0.75rem;
+}
+
+.construction-filter {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.construction-group { border-top: 1px solid #f0f1f3; }
+.construction-group:first-child { border-top: 0; }
+.construction-group > summary {
+  padding: 0.6rem 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #6b7280;
+  cursor: pointer;
+}
+.construction-group-body { display: grid; gap: 0.15rem; padding-bottom: 0.5rem; }
+
+.construction-row {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) 1.75rem 1.75rem;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.25rem 0.3rem 0.6rem;
+  border-radius: 8px;
+  position: relative;
+}
+.construction-row:hover { background: #f9fafb; }
+/* changed: a dot before the label */
+.construction-row.is-changed::before {
+  content: "";
+  position: absolute;
+  left: 0.1rem;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: #4f46e5;
+}
+
+.construction-label { display: grid; min-width: 0; font-size: 0.82rem; }
+.construction-label > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.construction-label small { color: #9ca3af; font-size: 0.72rem; }
+
+.construction-control { min-width: 0; }
+.construction-editor,
+.construction-simple { display: flex; align-items: center; gap: 0.3rem; min-width: 0; }
+.construction-editor[hidden], .construction-simple[hidden] { display: none; }
+
+.construction-control input,
+.construction-control select {
+  min-width: 0;
+  height: 1.85rem;
+  padding: 0 0.45rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-size: 0.82rem;
+}
+.construction-text { flex: 1; font-family: ui-monospace, "SF Mono", Menlo, monospace !important; }
+.construction-number { width: 5rem; flex: 1; }
+.construction-unit { width: 4.2rem; flex: none; }
+.construction-range { flex: 1; padding: 0 !important; border: 0 !important; }
+.construction-swatch { width: 2.2rem; flex: none; padding: 2px !important; cursor: pointer; }
+.construction-suffix { font-size: 0.8rem; color: #6b7280; }
+.construction-token-menu { width: 100%; margin-top: 0.3rem; }
+
+.construction-row.is-invalid .construction-control input { border-color: #dc2626; background: #fef2f2; }
+
+.construction-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #6b7280;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.construction-icon:hover:not(:disabled) { background: #eef0f4; color: #111827; }
+.construction-icon:disabled { opacity: 0.3; cursor: default; }
+.construction-icon.is-active { color: #4f46e5; }
+.construction-icon.is-unavailable { visibility: hidden; }
+.construction-icon:focus-visible,
+.construction-control :focus-visible { outline: 2px solid #2563eb; outline-offset: 1px; }
+.construction-fx { flex: none; font-style: italic; }
+.construction-fx[aria-pressed="true"] { background: #eef0f4; color: #111827; }
+
+.construction-bound { display: flex; align-items: center; gap: 0.25rem; min-width: 0; }
+.construction-bound[hidden] { display: none; }
+.construction-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  flex: 1;
+  height: 1.85rem;
+  padding: 0 0.55rem;
+  border-radius: 6px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-size: 0.82rem;
+}
+.construction-chip > span:not(.construction-chip-swatch) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.construction-chip.is-follow { background: #f3f4f6; color: #374151; }
+.construction-chip.is-follow small { color: #6b7280; }
+.construction-chip small { margin-left: auto; color: #6366f1; font-size: 0.72rem; white-space: nowrap; }
+.construction-chip-swatch {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: none;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+}

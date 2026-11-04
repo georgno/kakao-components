@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-popover — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="popover.js" defer></script>
+<style>
+  dl { margin: 0; font-size: 14px; }
+  dt { font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; margin-top: 8px; }
+  dd { margin: 0 0 4px; }
+
+  .dark kakao-popover {
+    --kakao-popover-bg: #111;
+    --kakao-popover-text-color: #fff;
+    --kakao-popover-border-color: #333;
+    --kakao-popover-header-bg: #1c1c1c;
+    --kakao-popover-hover-bg: #1f1f1f;
+    --kakao-popover-active-bg: #2a2a2a;
+    --kakao-popover-label-color: #999;
+    --kakao-popover-focus-ring-color: #fff;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Popover</h1>
+    <p><code>&lt;kakao-popover&gt;</code> — anchored to any element via <code>for</code>. Click, hover and manual trigger modes, four placements with auto-flip.</p>
+  </header>
+
+  <h2>Triggers &amp; content</h2>
+  <p>Content comes from <code>slot="content"</code> or the <code>list-data</code> attribute.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Click · slotted content</h3>
+      <kakao-button id="anchor-click" label="Account info" variant="secondary" size="sm"></kakao-button>
+      <kakao-popover for="anchor-click" trigger="click" placement="bottom">
+        <span slot="header">Account</span>
+        <div slot="content">
+          <dl>
+            <dt>Plan</dt><dd>Pro</dd>
+            <dt>Renews</dt><dd>Aug 4, 2026</dd>
+            <dt>Seats</dt><dd>12 / 20 used</dd>
+          </dl>
+        </div>
+      </kakao-popover>
+    </div>
+
+    <div class="card">
+      <h3>Hover · placement top</h3>
+      <kakao-button id="anchor-hover" label="Hover for a tip" variant="secondary" size="sm"></kakao-button>
+      <kakao-popover for="anchor-hover" trigger="hover" placement="top" close-delay="150">
+        <div slot="content">This action can’t be undone once confirmed.</div>
+      </kakao-popover>
+    </div>
+
+    <div class="card">
+      <h3>list-data · placement right</h3>
+      <kakao-button id="anchor-list" label="Server status" variant="secondary" size="sm"></kakao-button>
+      <kakao-popover id="list-popover" for="anchor-list" trigger="click" placement="right"
+        list-data='[{"label":"Region","value":"us-east-1"},{"label":"Status","value":"Operational"},{"label":"Latency","value":"42ms"},{"label":"Uptime","value":"99.98%"}]'>
+        <span slot="header">Server status</span>
+      </kakao-popover>
+    </div>
+
+    <div class="card">
+      <h3>Disabled</h3>
+      <kakao-button id="anchor-disabled" label="Does nothing" variant="secondary" size="sm"></kakao-button>
+      <kakao-popover for="anchor-disabled" trigger="click" disabled>
+        <div slot="content">You should never see this — the popover is disabled.</div>
+      </kakao-popover>
+    </div>
+
+    <div class="card dark">
+      <h3>Themed via custom properties</h3>
+      <kakao-button id="anchor-dark" label="Dark popover" variant="secondary" size="sm"></kakao-button>
+      <kakao-popover for="anchor-dark" trigger="click" placement="bottom">
+        <span slot="header">Theming</span>
+        <div slot="content">Every colour here comes from <code>--kakao-popover-*</code> custom properties.</div>
+      </kakao-popover>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>A <code>trigger="manual"</code> popover, opened only through the API.</p>
+  <div class="card">
+    <kakao-button id="anchor-manual" label="Anchor (no auto trigger)" variant="secondary" size="sm"></kakao-button>
+    <kakao-popover id="manual-popover" for="anchor-manual" trigger="manual" placement="bottom">
+      <span slot="header">Manual</span>
+      <div slot="content">Opened only via the public API.</div>
+    </kakao-popover>
+    <div class="toolbar">
+      <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiClose" label="close()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiToggle" label="toggle()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiData" label="setData() on “Server status”" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>for</code>, <code>trigger</code>, <code>placement</code>, <code>open</code>, <code>disabled</code>, <code>close-delay</code>, <code>offset</code>, <code>list-data</code>. Full reference in the header of <code>popover.js</code>.</footer>
+</main>
+
+<script>
+  logEvents(document.getElementById('log'), ['kakao-popover-open', 'kakao-popover-close', 'kakao-popover-item-select']);
+
+  const manual = document.getElementById('manual-popover');
+  document.getElementById('apiOpen').addEventListener('click', () => manual.open());
+  document.getElementById('apiClose').addEventListener('click', () => manual.close());
+  document.getElementById('apiToggle').addEventListener('click', () => manual.toggle());
+
+  document.getElementById('apiData').addEventListener('click', () => {
+    document.getElementById('list-popover').setData([
+      { label: 'Region', value: 'eu-west-2' },
+      { label: 'Status', value: 'Degraded' },
+      { label: 'Latency', value: '210ms' },
+    ]);
+  });
+</script>
+</body>
+</html>

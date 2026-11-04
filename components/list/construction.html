@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-list — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="list.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .construction-preview { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+</style>
+</head>
+<body>
+<main data-construction data-target="list" data-source="list.js" data-title="List">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Grouped</figcaption>
+      <kakao-list width="260" height="320" groups="true"
+        list-data='[{"group":"Fruit","names":["Apple","Banana","Cherry","Date","Elderberry"]},{"group":"Vegetables","names":["Artichoke","Broccoli","Carrot","Daikon","Eggplant","Fennel"]}]'></kakao-list>
+    </figure>
+    <figure>
+      <figcaption>Flat · tighter rows</figcaption>
+      <kakao-list width="260" height="320" groups="false" item-height="36"
+        list-data='[{"group":"All","names":["Amsterdam","Berlin","Copenhagen","Dublin","Edinburgh","Florence","Geneva","Helsinki","Istanbul","Jakarta"]}]'></kakao-list>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-list-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-border-color", "label": "Dividers", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-item-color", "label": "Item text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-item-hover-bg", "label": "Item hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-item-active-bg", "label": "Item pressed", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-item-selected-bg", "label": "Item selected", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-group-bg", "label": "Group header", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-group-color", "label": "Group header text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-action-color", "label": "Chevron", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-action-hover-color", "label": "Chevron hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-focus-color", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-scrollbar-track", "label": "Scrollbar track", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-scrollbar-thumb", "label": "Scrollbar thumb", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-scrollbar-thumb-hover", "label": "Scrollbar thumb hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-scrollbar-thumb-active", "label": "Scrollbar thumb dragged", "group": "Colour", "type": "color" },
+    { "property": "--kakao-list-fade-color", "label": "Edge fade (r, g, b)", "group": "Colour", "type": "text", "hint": "three numbers, e.g. 255,255,255" },
+
+    { "property": "--kakao-list-item-padding-x", "label": "Item padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-list-group-height", "label": "Group header height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-list-fade-height", "label": "Edge fade height", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-list-item-font", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-list-item-font-size", "label": "Item size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-list-group-font-size", "label": "Group header size", "group": "Typography", "type": "length" },
+
+    { "property": "--kakao-list-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 }
+  ]
+  </script>
+</main>
+</body>
+</html>

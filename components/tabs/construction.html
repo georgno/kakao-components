@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-tabs — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="tabs.css" />
+<script src="../button/button.js" defer></script>
+<script src="tabs.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .dark-sample { padding: 1rem; border-radius: 12px; background: #18181b; color: #f4f4f5; }
+</style>
+</head>
+<body>
+<main data-construction data-target="tabs" data-source="tabs.css" data-title="Tabs">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default · with a disabled tab</figcaption>
+      <kakao-tabs>
+        <kakao-tab selected>Plan</kakao-tab>
+        <kakao-tab>Playback</kakao-tab>
+        <kakao-tab>Notifications</kakao-tab>
+        <kakao-tab disabled>Billing</kakao-tab>
+      </kakao-tabs>
+    </figure>
+    <figure>
+      <figcaption>Two tabs</figcaption>
+      <kakao-tabs>
+        <kakao-tab>Monthly</kakao-tab>
+        <kakao-tab selected>Yearly</kakao-tab>
+      </kakao-tabs>
+    </figure>
+    <figure>
+      <figcaption>Dark mode · data-bs-theme="dark"</figcaption>
+      <div class="dark-sample" data-bs-theme="dark">
+        <kakao-tabs>
+          <kakao-tab selected>Overview</kakao-tab>
+          <kakao-tab>Activity</kakao-tab>
+          <kakao-tab>Settings</kakao-tab>
+        </kakao-tabs>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-tabs-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tabs-color", "label": "Text", "group": "Colour", "type": "color", "hint": "default: inherited" },
+    { "property": "--kakao-tabs-thumb-bg", "label": "Thumb", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tabs-hold-glow", "label": "Hold glow", "group": "Colour", "type": "color", "hint": "press and hold" },
+    { "property": "--kakao-tabs-focus-color", "label": "Focus ring", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-tabs-padding", "label": "Padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tabs-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tabs-tab-padding", "label": "Tab padding", "group": "Size & spacing", "type": "text", "hint": "1–4 lengths" },
+    { "property": "--kakao-tabs-tab-min-width", "label": "Tab min width", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-tabs-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-tabs-thumb-radius", "label": "Thumb radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-tabs-tab-weight", "label": "Tab weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-tabs-selected-weight", "label": "Selected weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-tabs-thumb-shadow", "label": "Thumb shadow", "group": "Effects", "type": "shadow" },
+    { "property": "--kakao-tabs-tab-opacity", "label": "Unselected opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+    { "property": "--kakao-tabs-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+
+    { "property": "--kakao-tabs-transition", "label": "Transition", "group": "Motion", "type": "duration" },
+
+    { "property": "--kakao-tabs-dark-bg", "label": "Background", "group": "Dark mode", "type": "color" },
+    { "property": "--kakao-tabs-dark-thumb-bg", "label": "Thumb", "group": "Dark mode", "type": "color" },
+    { "property": "--kakao-tabs-dark-thumb-shadow", "label": "Thumb shadow", "group": "Dark mode", "type": "shadow" },
+    { "property": "--kakao-tabs-dark-hold-glow", "label": "Hold glow", "group": "Dark mode", "type": "color" }
+  ]
+  </script>
+</main>
+</body>
+</html>

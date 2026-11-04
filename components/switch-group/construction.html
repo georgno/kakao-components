@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-switch-group — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="switch-group.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<main data-construction data-target="switch-group" data-source="switch-group.js" data-title="Switch group">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default · on, off, disabled</figcaption>
+      <kakao-switch-group label="Notifications"
+        list-data='[{"name":"email","label":"Email","checked":true},{"name":"sms","label":"SMS"},{"name":"push","label":"Push","checked":true,"disabled":true}]'></kakao-switch-group>
+    </figure>
+    <figure>
+      <figcaption>Coloured labels · vertical</figcaption>
+      <kakao-switch-group label="Privacy" orientation="vertical" color-labels
+        list-data='[{"name":"profile","label":"Public profile","checked":true},{"name":"search","label":"Show in search"}]'></kakao-switch-group>
+    </figure>
+    <figure>
+      <figcaption>Async · fails after a second</figcaption>
+      <kakao-switch-group id="async" label="Sync" async loading-delay="0"
+        list-data='[{"name":"sync","label":"Cloud sync"}]'></kakao-switch-group>
+    </figure>
+    <figure>
+      <figcaption>Disabled group</figcaption>
+      <kakao-switch-group label="Locked" disabled
+        list-data='[{"name":"a","label":"Locked on","checked":true},{"name":"b","label":"Locked off"}]'></kakao-switch-group>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-switch-track-bg-off", "label": "Track off", "group": "Colour", "type": "color" },
+    { "property": "--kakao-switch-track-bg-on", "label": "Track on", "group": "Colour", "type": "color" },
+    { "property": "--kakao-switch-track-bg-disabled", "label": "Track disabled", "group": "Colour", "type": "color" },
+    { "property": "--kakao-switch-track-bg-error", "label": "Track error", "group": "Colour", "type": "color", "hint": "async failure" },
+    { "property": "--kakao-switch-thumb-bg", "label": "Thumb", "group": "Colour", "type": "color" },
+    { "property": "--kakao-switch-label-color", "label": "Label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-switch-label-color-on", "label": "Label on", "group": "Colour", "type": "color", "hint": "with color-labels" },
+    { "property": "--kakao-switch-spinner-color", "label": "Spinner", "group": "Colour", "type": "color", "hint": "async loading" },
+    { "property": "--kakao-switch-success-color", "label": "Checkmark", "group": "Colour", "type": "color", "hint": "async success" },
+    { "property": "--kakao-switch-focus-color", "label": "Focus ring", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-switch-track-width", "label": "Track width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-switch-track-height", "label": "Track height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-switch-thumb-size", "label": "Thumb size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-switch-thumb-inset", "label": "Thumb inset", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-switch-gap", "label": "Gap between switches", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-switch-item-gap", "label": "Gap to label", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-switch-group-padding", "label": "Group padding", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-switch-track-radius", "label": "Track radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-switch-overdrag-squircle-radius", "label": "Squash corner", "group": "Shape", "type": "percent", "hint": "thumb pressed into a wall" },
+
+    { "property": "--kakao-switch-label-font", "label": "Label font", "group": "Typography", "type": "font" },
+
+    { "property": "--kakao-switch-thumb-shadow", "label": "Thumb shadow", "group": "Effects", "type": "shadow" },
+    { "property": "--kakao-switch-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+    { "property": "--kakao-switch-focus-width", "label": "Focus width", "group": "Effects", "type": "length" },
+    { "property": "--kakao-switch-focus-offset", "label": "Focus offset", "group": "Effects", "type": "length" },
+
+    { "property": "--kakao-switch-anim-duration", "label": "Duration", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-switch-anim-easing", "label": "Easing", "group": "Motion", "type": "easing" },
+    { "property": "--kakao-switch-drag-follow-duration", "label": "Drag follow", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-switch-drag-scale-x", "label": "Held stretch x", "group": "Motion", "type": "number", "min": 0.5, "max": 2 },
+    { "property": "--kakao-switch-drag-scale-y", "label": "Held stretch y", "group": "Motion", "type": "number", "min": 0.5, "max": 2 },
+    { "property": "--kakao-switch-overdrag-scale-x", "label": "Squash x", "group": "Motion", "type": "number", "min": 0.5, "max": 2 },
+    { "property": "--kakao-switch-overdrag-scale-y", "label": "Squash y", "group": "Motion", "type": "number", "min": 0.5, "max": 2 }
+  ]
+  </script>
+</main>
+<script>
+  // The async example always fails, so the error state can be tuned too
+  document.getElementById('async').addEventListener('switch-request', (e) => {
+    e.detail.waitUntil(new Promise((_, reject) => setTimeout(() => reject(new Error('offline')), 1000)));
+  });
+</script>
+</body>
+</html>

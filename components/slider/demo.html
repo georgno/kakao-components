@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-slider — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../number-input/number-input.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<!-- optional: when kakao-number-input is loaded first, the slider's number field gets stepper arrows -->
+<script src="../number-input/number-input.js" defer></script>
+<script src="slider.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Slider</h1>
+    <p><code>&lt;kakao-slider&gt;</code> — value slider with animated friction points per step, a linked number field and a unit badge.</p>
+  </header>
+
+  <h2>Variants</h2>
+  <p>Configured through <code>min</code>, <code>max</code>, <code>step</code>, <code>value</code>, <code>unit</code> and <code>label</code>.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Pixels, step 10</h3>
+      <kakao-slider id="slider1" min="0" max="200" step="10" value="60" unit="px" label="Width"></kakao-slider>
+    </div>
+    <div class="card">
+      <h3>Percent, step 1</h3>
+      <kakao-slider min="0" max="100" step="1" value="35" unit="%" label="Opacity"></kakao-slider>
+    </div>
+    <div class="card">
+      <h3>Native number field</h3>
+      <kakao-slider min="0" max="10" step="1" value="4" label="Rating" scroll-input="false"></kakao-slider>
+    </div>
+    <div class="card">
+      <h3>Disabled</h3>
+      <kakao-slider min="0" max="100" step="5" value="50" unit="€" label="Budget" disabled></kakao-slider>
+    </div>
+    <div class="card">
+      <h3>Themed</h3>
+      <kakao-slider min="0" max="50" step="5" value="25" unit="kg" label="Weight"
+        style="--kakao-slider-accent:#4f46e5;--kakao-slider-track-height:6px;--kakao-slider-thumb-size:20px"></kakao-slider>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Drive the API of the first slider by hand.</p>
+  <div class="card">
+    <div class="toolbar">
+      <kakao-button id="apiSet" label="setValue(150)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiData" label="setData({min:0,max:1000,step:100,unit:&quot;ms&quot;})" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiGet" label="getValue()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>min</code>, <code>max</code>, <code>value</code>, <code>step</code>, <code>unit</code>, <code>label</code>, <code>disabled</code>, <code>scroll-input</code>. Events: <code>slider-change</code>, <code>slider-input</code>, <code>slider-focus</code>, <code>slider-blur</code>. Full reference in the header of <code>slider.js</code>.</footer>
+</main>
+
+<script>
+  const slider = document.getElementById('slider1');
+  const log = document.getElementById('log');
+  // slider-input fires continuously while dragging, so it's left out of the log
+  logEvents(log, ['slider-change', 'slider-focus', 'slider-blur']);
+
+  document.getElementById('apiSet').addEventListener('click', () => slider.setValue(150));
+  document.getElementById('apiData').addEventListener('click', () => {
+    slider.setData({ min: 0, max: 1000, step: 100, value: 300, unit: 'ms', label: 'Delay' });
+  });
+  document.getElementById('apiGet').addEventListener('click', () => logLine(log, 'getValue()', slider.getValue()));
+  toggleButton(document.getElementById('optDisabled'), 'disabled', (on) => slider.toggleAttribute('disabled', on));
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-step-switch — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="step-switch.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<main data-construction data-target="step-switch" data-source="step-switch.js" data-title="Step switch">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default · with a disabled step</figcaption>
+      <kakao-step-switch label="Quality" value="med"
+        list-data='[{"value":"low","label":"Low"},{"value":"med","label":"Medium"},{"value":"high","label":"High"},{"value":"ultra","label":"Ultra","disabled":true}]'></kakao-step-switch>
+    </figure>
+    <figure>
+      <figcaption>Colour shift</figcaption>
+      <kakao-step-switch label="Volume" value="3" color-shift
+        list-data='["0","1","2","3","4","5"]'></kakao-step-switch>
+    </figure>
+    <figure>
+      <figcaption>Without labels</figcaption>
+      <kakao-step-switch label="Speed" value="b" show-labels="false"
+        list-data='[{"value":"a","label":"Slow"},{"value":"b","label":"Normal"},{"value":"c","label":"Fast"}]'></kakao-step-switch>
+    </figure>
+    <figure>
+      <figcaption>Disabled</figcaption>
+      <kakao-step-switch label="Locked" value="med" disabled
+        list-data='[{"value":"low","label":"Low"},{"value":"med","label":"Medium"},{"value":"high","label":"High"}]'></kakao-step-switch>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-step-switch-track-bg", "label": "Track", "group": "Colour", "type": "color" },
+    { "property": "--kakao-step-switch-track-bg-off", "label": "Track at first step", "group": "Colour", "type": "color", "hint": "with color-shift" },
+    { "property": "--kakao-step-switch-track-bg-on", "label": "Track at last step", "group": "Colour", "type": "color", "hint": "with color-shift" },
+    { "property": "--kakao-step-switch-track-bg-disabled", "label": "Track disabled", "group": "Colour", "type": "color" },
+    { "property": "--kakao-step-switch-thumb-bg", "label": "Thumb", "group": "Colour", "type": "color" },
+    { "property": "--kakao-step-switch-tick-color", "label": "Step dot", "group": "Colour", "type": "color" },
+    { "property": "--kakao-step-switch-tick-disabled-color", "label": "Disabled step dot", "group": "Colour", "type": "color" },
+    { "property": "--kakao-step-switch-label-color", "label": "Label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-step-switch-label-active-color", "label": "Active label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-step-switch-focus-color", "label": "Focus ring", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-step-switch-track-width", "label": "Track width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-step-switch-track-height", "label": "Track height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-step-switch-thumb-size", "label": "Thumb size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-step-switch-thumb-inset", "label": "Thumb inset", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-step-switch-tick-size", "label": "Step dot size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-step-switch-label-gap", "label": "Gap to labels", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-step-switch-label-overhang", "label": "Label overhang", "group": "Size & spacing", "type": "length", "hint": "room for the end labels" },
+
+    { "property": "--kakao-step-switch-track-radius", "label": "Track radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-step-switch-overdrag-squircle-radius", "label": "Squash corner", "group": "Shape", "type": "percent" },
+
+    { "property": "--kakao-step-switch-label-font", "label": "Label font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-step-switch-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-step-switch-label-weight-active", "label": "Active label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+
+    { "property": "--kakao-step-switch-thumb-shadow", "label": "Thumb shadow", "group": "Effects", "type": "shadow" },
+    { "property": "--kakao-step-switch-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+    { "property": "--kakao-step-switch-focus-width", "label": "Focus width", "group": "Effects", "type": "length" },
+    { "property": "--kakao-step-switch-focus-offset", "label": "Focus offset", "group": "Effects", "type": "length" },
+
+    { "property": "--kakao-step-switch-anim-duration", "label": "Duration", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-step-switch-anim-easing", "label": "Easing", "group": "Motion", "type": "easing" },
+    { "property": "--kakao-step-switch-drag-follow-duration", "label": "Drag follow", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-step-switch-drag-scale-x", "label": "Held stretch x", "group": "Motion", "type": "number", "min": 0.5, "max": 2 },
+    { "property": "--kakao-step-switch-drag-scale-y", "label": "Held stretch y", "group": "Motion", "type": "number", "min": 0.5, "max": 2 },
+    { "property": "--kakao-step-switch-overdrag-scale-x", "label": "Squash x", "group": "Motion", "type": "number", "min": 0.5, "max": 2 },
+    { "property": "--kakao-step-switch-overdrag-scale-y", "label": "Squash y", "group": "Motion", "type": "number", "min": 0.5, "max": 2 }
+  ]
+  </script>
+</main>
+</body>
+</html>

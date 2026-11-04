@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-tabs — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="tabs.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="tabs.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Tabs</h1>
+    <p><code>&lt;kakao-tabs&gt;</code> + <code>&lt;kakao-tab&gt;</code> — segmented tabs with a bouncing thumb. Each item's <code>controls</code> points at the panel it shows. Press and hold for the glow; disabled tabs shake.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <p>Light-DOM component: load <code>tabs.css</code> next to the script.</p>
+  <div class="card">
+    <kakao-tabs id="tabs" role="tablist">
+      <kakao-tab controls="panel-one" selected>Tech</kakao-tab>
+      <kakao-tab controls="panel-two">Photos</kakao-tab>
+      <kakao-tab controls="panel-four" disabled>Travel</kakao-tab>
+      <kakao-tab controls="panel-three">Crafts</kakao-tab>
+    </kakao-tabs>
+    <div id="panel-one" role="tabpanel">Latest in Tech</div>
+    <div id="panel-two" role="tabpanel" hidden>Your Photos</div>
+    <div id="panel-three" role="tabpanel" hidden>Crafts &amp; DIY</div>
+    <div id="panel-four" role="tabpanel" hidden>Travel (coming soon)</div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Programmatic selection and adding/removing tabs at runtime.</p>
+  <div class="card">
+    <div class="toolbar">
+      <kakao-button id="apiPhotos" label="select(&quot;panel-two&quot;)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiCrafts" label="select(&quot;panel-three&quot;)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiAdd" label="Append a tab" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiRemove" label="Remove last tab" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>API: <code>select(controlsOrUrlOrItem)</code>, event <code>tab-change</code> <code>{controls, item, url}</code>. <code>&lt;kakao-tab&gt;</code> attributes: <code>controls</code> / <code>data-controls</code>, <code>href</code> / <code>data-url</code>, <code>selected</code>, <code>disabled</code>, <code>data-no-select</code> (host for an embedded control). Full reference in the header of <code>tabs.js</code>.</footer>
+</main>
+
+<script>
+  const tabs = document.getElementById('tabs');
+  logEvents(document.getElementById('log'), ['tab-change']);
+
+  document.getElementById('apiPhotos').addEventListener('click', () => tabs.select('panel-two'));
+  document.getElementById('apiCrafts').addEventListener('click', () => tabs.select('panel-three'));
+
+  let added = 0;
+  document.getElementById('apiAdd').addEventListener('click', () => {
+    const item = document.createElement('kakao-tab');
+    item.setAttribute('controls', 'panel-extra-' + ++added);
+    item.textContent = 'New ' + added;
+    tabs.append(item);
+  });
+  document.getElementById('apiRemove').addEventListener('click', () => {
+    const items = tabs.querySelectorAll('kakao-tab');
+    if (items.length > 1) items[items.length - 1].remove();
+  });
+</script>
+</body>
+</html>
