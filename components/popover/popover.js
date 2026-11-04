@@ -205,7 +205,7 @@
         --_header-bg: var(--kakao-popover-header-bg, #f7f7f7);
         --_hover-bg: var(--kakao-popover-hover-bg, #f5f5f5);
         --_active-bg: var(--kakao-popover-active-bg, #ebebeb);
-        --_font-family: var(--kakao-popover-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+        --_font-family: var(--kakao-popover-font-family, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));
         --_font-size: var(--kakao-popover-font-size, 14px);
         --_label-font-size: var(--kakao-popover-label-font-size, 11px);
         --_radius: var(--kakao-popover-radius, 4px);

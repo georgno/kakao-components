@@ -1,0 +1,10 @@
+/*
+ * font.css — loads Inter Tight, the project font.
+ *
+ * Optional. The components never require it: they read the main variable
+ * --kakao-font-family (shared/tokens.css), whose stack starts with
+ * "Inter Tight" and falls back to the system UI font when Inter Tight is not
+ * loaded. Pages that want Inter Tight link this file after tokens.css;
+ * pages that don't simply leave it out (or set --kakao-font-family themselves).
+ */
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap");

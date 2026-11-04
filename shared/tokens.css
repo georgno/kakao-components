@@ -4,6 +4,9 @@
  * Components refer to these as var(--kakao-<token>, <fallback>), so they also
  * work on pages that don't load this file. Edit the values on tokens.html
  * (with `node tools/construct-server.js` running) rather than by hand.
+ *
+ * The font stack starts with Inter Tight but only uses it when the page loads
+ * it (shared/font.css); otherwise the system UI font is used.
  */
 :root {
   /* @kakao-settings:start prefix=--kakao- (written by tokens.html, edit there) */
@@ -19,7 +22,7 @@
   --kakao-space-y: 0.5rem;
   --kakao-space-gap: 1rem;
   --kakao-radius: 8px;
-  --kakao-font-family: system-ui, -apple-system, sans-serif;
+  --kakao-font-family: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kakao-font-size: 0.95rem;
   --kakao-motion-duration: 320ms;
   /* @kakao-settings:end */

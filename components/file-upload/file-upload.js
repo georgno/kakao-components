@@ -78,7 +78,7 @@
  *  --kakao-file-upload-text            #111827
  *  --kakao-file-upload-muted           #6b7280
  *  --kakao-file-upload-error           #dc2626
- *  --kakao-file-upload-font            0.95rem/1.4 system-ui, sans-serif
+ *  --kakao-file-upload-font            0.95rem/1.4 --kakao-font-family (else system-ui)
  *
  * ----------------------------------------------------------------------------
  * ACCESSIBILITY
@@ -203,7 +203,7 @@
         --_text: var(--kakao-file-upload-text, var(--kakao-color-text, #111827));
         --_muted: var(--kakao-file-upload-muted, var(--kakao-color-muted, #6b7280));
         --_error: var(--kakao-file-upload-error, var(--kakao-color-danger, #dc2626));
-        --_font: var(--kakao-file-upload-font, 0.95rem/1.4 system-ui, -apple-system, sans-serif);
+        --_font: var(--kakao-file-upload-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_disabled-opacity: var(--kakao-file-upload-disabled-opacity, 0.55);
         --_label-gap: var(--kakao-file-upload-label-gap, 0.5rem);
         --_drop-padding: var(--kakao-file-upload-drop-padding, 1.25rem);
@@ -482,7 +482,7 @@
         border-radius: 3px;
         background: var(--_cat);
         color: var(--_type-tag-text);
-        font: 700 0.45rem/1 system-ui, sans-serif;
+        font: 700 0.45rem/1 var(--kakao-font-family, system-ui, sans-serif);
         letter-spacing: 0.03em;
         text-align: center;
         text-transform: uppercase;

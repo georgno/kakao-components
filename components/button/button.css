@@ -10,7 +10,7 @@
 kakao-button,
 .kakao-button-segment {
   /* @kakao-settings:start prefix=--kakao-button- (written by construction.html, edit there) */
-  --_font: var(--kakao-button-font, inherit);
+  --_font: var(--kakao-button-font, var(--kakao-font-family, inherit));
   --_ink: var(--kakao-button-ink, #18181b);
   --_ink-soft: var(--kakao-button-ink-soft, #3f3f46);
   --_paper: var(--kakao-button-paper, #fafafa);

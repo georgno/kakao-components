@@ -37,7 +37,7 @@
  *
  * | Property                  | Default                              | Description                    |
  * |---------------------------|--------------------------------------|--------------------------------|
- * | --kakao-slider-font-family          | system-ui, -apple-system, sans-serif | Font family                    |
+ * | --kakao-slider-font-family          | --kakao-font-family, else system-ui  | Font family                    |
  * | --kakao-slider-accent               | #111                                 | Fill, active thumb border      |
  * | --kakao-slider-track-bg             | #e0e0e0                              | Unfilled track colour          |
  * | --kakao-slider-track-height         | 4px                                  | Track height                   |
@@ -182,7 +182,7 @@ class KakaoSlider extends HTMLElement {
 
         :host {
           /* @kakao-settings:start prefix=--kakao-slider- (written by construction.html, edit there) */
-          --_font-family: var(--kakao-slider-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+          --_font-family: var(--kakao-slider-font-family, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));
           --_accent: var(--kakao-slider-accent, #111);
           --_track-bg: var(--kakao-slider-track-bg, #e0e0e0);
           --_track-height: var(--kakao-slider-track-height, 4px);

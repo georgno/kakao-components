@@ -31,7 +31,7 @@
  *   --kakao-list-bg              Background color (default: #fff)
  *   --kakao-list-border-color    Item divider color (default: #eee)
  *   --kakao-list-item-color      Item text color (default: #111)
- *   --kakao-list-item-font       Item font (default: system-ui)
+ *   --kakao-list-item-font       Item font (default: --kakao-font-family, else system-ui)
  *   --kakao-list-item-hover-bg   Item hover bg (default: #f5f5f5)
  *   --kakao-list-item-active-bg  Item press bg (default: #ebebeb)
  *   --kakao-list-item-selected-bg Selected item bg (default: #e8e8e8)
@@ -122,7 +122,7 @@ class KakaoList extends HTMLElement {
           --_bg: var(--kakao-list-bg, #fff);
           --_border-color: var(--kakao-list-border-color, #eee);
           --_item-color: var(--kakao-list-item-color, #111);
-          --_item-font: var(--kakao-list-item-font, -apple-system, BlinkMacSystemFont, sans-serif);
+          --_item-font: var(--kakao-list-item-font, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));
           --_item-font-size: var(--kakao-list-item-font-size, 14px);
           --_item-padding-x: var(--kakao-list-item-padding-x, 12px);
           --_item-hover-bg: var(--kakao-list-item-hover-bg, #f5f5f5);

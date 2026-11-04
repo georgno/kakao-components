@@ -264,7 +264,7 @@
         --_track-bg-error: var(--kakao-switch-track-bg-error, var(--kakao-color-danger, #dc2626));
         --_spinner-color: var(--kakao-switch-spinner-color, var(--_track-bg-on));
         --_success-color: var(--kakao-switch-success-color, var(--_track-bg-on));
-        --_label-font: var(--kakao-switch-label-font, 0.95rem/1.4 system-ui, -apple-system, sans-serif);
+        --_label-font: var(--kakao-switch-label-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_focus-color: var(--kakao-switch-focus-color, var(--kakao-color-focus, #2563eb));
         --_anim-duration: var(--kakao-switch-anim-duration, var(--kakao-motion-duration, 320ms));
         --_anim-easing: var(--kakao-switch-anim-easing, cubic-bezier(.5, 1.8, .4, 1));

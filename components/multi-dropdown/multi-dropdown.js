@@ -91,7 +91,7 @@
  *  --kakao-multi-dropdown-muted         #9ca3af   placeholders, unknown values
  *  --kakao-multi-dropdown-hover-bg      #f3f4f6
  *  --kakao-multi-dropdown-popup-height  16rem     max height of an open list
- *  --kakao-multi-dropdown-font          0.95rem/1.4 system-ui, sans-serif
+ *  --kakao-multi-dropdown-font          0.95rem/1.4 --kakao-font-family (else system-ui)
  *
  * ----------------------------------------------------------------------------
  * ACCESSIBILITY
@@ -140,7 +140,7 @@
         --_muted: var(--kakao-multi-dropdown-muted, #9ca3af);
         --_hover-bg: var(--kakao-multi-dropdown-hover-bg, #f3f4f6);
         --_popup-height: var(--kakao-multi-dropdown-popup-height, 16rem);
-        --_font: var(--kakao-multi-dropdown-font, 0.95rem/1.4 system-ui, -apple-system, sans-serif);
+        --_font: var(--kakao-multi-dropdown-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_disabled-opacity: var(--kakao-multi-dropdown-disabled-opacity, 0.55);
         --_label-gap: var(--kakao-multi-dropdown-label-gap, 0.4rem);
         --_padding: var(--kakao-multi-dropdown-padding, 0.45rem 0.55rem 0.45rem 0.75rem);

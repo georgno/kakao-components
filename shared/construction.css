@@ -9,7 +9,7 @@ body {
   margin: 0;
   background: #f6f7f9;
   color: #111827;
-  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 15px/1.45 var(--kakao-font-family, system-ui, -apple-system, "Segoe UI", sans-serif);
   -webkit-font-smoothing: antialiased;
 }
 

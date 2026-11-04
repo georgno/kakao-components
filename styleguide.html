@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kakao style guide</title>
+<link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/font.css" />
+<link rel="stylesheet" href="shared/demo.css" />
+<link rel="stylesheet" href="components/button/button.css" />
+<link rel="stylesheet" href="components/tabs/tabs.css" />
+<link rel="stylesheet" href="components/number-input/number-input.css" />
+<script src="components/button/button.js" defer></script>
+<script src="components/tabs/tabs.js" defer></script>
+<script src="components/number-input/number-input.js" defer></script>
+<script src="components/switch-group/switch-group.js" defer></script>
+<script src="components/step-switch/step-switch.js" defer></script>
+<script src="components/slider/slider.js" defer></script>
+<script src="components/multi-dropdown/multi-dropdown.js" defer></script>
+<style>
+  /* ---- page-only styles; the guide itself, not the components ---- */
+  main { max-width: 960px; }
+  .sg-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .sg-meta .badge { margin: 0; }
+  .tag { display: inline-block; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; vertical-align: 0.15em; }
+  .tag.now { background: #e4e4e7; color: #3f3f46; }
+  .tag.proposed { background: #e0e7ff; color: #3730a3; }
+  .tag.issue { background: #fde8e6; color: #9f2d25; }
+  .tag.ok { background: #dcfce7; color: #166534; }
+
+  nav.toc { margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; font-size: 0.9rem; }
+  nav.toc a { text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  section { scroll-margin-top: 1rem; }
+  section > h2 { font-size: 1.35rem; letter-spacing: -0.02em; margin-top: 3.5rem; }
+  section > h2 + p { font-size: 0.95rem; max-width: 64ch; }
+  h3.sub { margin: 2rem 0 0.75rem; font-size: 1rem; letter-spacing: -0.01em; }
+  .lede { color: var(--muted); max-width: 64ch; }
+  .card p { margin: 0; }
+  .card p + p { margin-top: 0.5rem; }
+  .card h4 { margin: 0 0 0.35rem; font-size: 0.95rem; }
+  .muted { color: var(--muted); }
+  .small { font-size: 0.85rem; }
+
+  pre {
+    margin: 0.75rem 0 0;
+    padding: 0.9rem 1rem;
+    background: #18181b;
+    color: #e4e4e7;
+    border-radius: 10px;
+    font: 0.8rem/1.6 ui-monospace, "SF Mono", Menlo, monospace;
+    overflow-x: auto;
+  }
+  pre .c { color: #71717a; }
+
+  .table-wrap { overflow-x: auto; margin-top: 0.75rem; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+  th, td { text-align: left; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  td code { white-space: nowrap; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* type specimen */
+  .specimen { display: grid; gap: 0.9rem; }
+  .specimen-row { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; align-items: baseline; }
+  .specimen-row .meta { font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .specimen-row .meta b { display: block; color: var(--ink); font-weight: 600; }
+  .specimen-row .sample { min-width: 0; overflow-wrap: anywhere; }
+  .eyebrow { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+  .weights { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-size: 1.5rem; letter-spacing: -0.01em; }
+  .weights span small { display: block; font-size: 0.7rem; color: var(--muted); letter-spacing: 0; }
+  .font-check { font-size: 0.85rem; }
+
+  /* colour */
+  .swatches { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); }
+  .swatch { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--card); }
+  .swatch .chip { height: 4.25rem; border-bottom: 1px solid var(--line); }
+  .swatch .info { padding: 0.5rem 0.65rem 0.6rem; font-size: 0.78rem; line-height: 1.35; }
+  .swatch .info b { display: block; font-size: 0.82rem; }
+  .swatch .info code { background: none; padding: 0; font-size: 0.72rem; color: var(--muted); }
+  .ramp { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+  .ramp div { height: 3.5rem; display: flex; align-items: flex-end; padding: 0.3rem 0.35rem; font-size: 0.65rem; font-variant-numeric: tabular-nums; }
+  .roles { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .role-demo { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-top: 0.9rem; }
+
+  /* shape */
+  .radii { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end; }
+  .radius-box { width: 5.5rem; height: 4rem; background: #f4f4f5; border: 1.5px solid #a1a1aa; }
+  .radius-item { font-size: 0.78rem; }
+  .radius-item b { display: block; margin-top: 0.4rem; font-size: 0.82rem; }
+  .nest { display: inline-flex; padding: 4px; background: #ebebeb; border-radius: 10px; gap: 4px; }
+  .nest span { padding: 0.55rem 1rem; border-radius: 6px; font-size: 0.85rem; }
+  .nest span:first-child { background: #fff; box-shadow: 0 2px 24px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.03); font-weight: 600; }
+  .nest span:not(:first-child) { opacity: 0.6; }
+
+  /* spacing */
+  .space-scale { display: grid; gap: 0.4rem; }
+  .space-scale div { display: grid; grid-template-columns: 3.5rem 4.5rem 1fr; gap: 0.75rem; align-items: center; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+  .space-scale i { display: block; height: 0.6rem; background: #c7d2fe; border-radius: 2px; }
+  .heights { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end; }
+  .height-guide { position: relative; padding-left: 0.75rem; border-left: 2px solid #e4e4e7; font-size: 0.75rem; color: var(--muted); }
+
+  /* elevation */
+  .elev { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); padding: 1.5rem; background: #f4f4f5; border-radius: 14px; }
+  .elev div { background: #fff; border-radius: 12px; padding: 1rem; min-height: 6rem; font-size: 0.8rem; }
+  .elev b { display: block; font-size: 0.9rem; margin-bottom: 0.25rem; }
+
+  /* focus + states */
+  .focus-row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; }
+  .focus-sample {
+    display: inline-flex; align-items: center; height: 44px; padding: 0 22px;
+    border-radius: 13px; background: #18181b; color: #fafafa; font-size: 14.5px; font-weight: 550;
+    outline: none; cursor: default; user-select: none;
+  }
+  .focus-sample.soft:focus { box-shadow: 0 0 0 4px rgba(24,24,27,.16); }
+  .focus-sample.solid:focus { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+  .focus-sample.both:focus { box-shadow: 0 0 0 4px rgba(24,24,27,.10); outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 4px; }
+  .focus-sample.always.soft { box-shadow: 0 0 0 4px rgba(24,24,27,.16); }
+  .focus-sample.always.solid { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+  .focus-label { display: block; margin-top: 0.5rem; font-size: 0.78rem; color: var(--muted); }
+  .opacity-row { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .opacity-row figure { margin: 0; text-align: center; font-size: 0.75rem; color: var(--muted); }
+  .opacity-row figure > span { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 11px; background: #18181b; color: #fafafa; font-size: 13px; font-weight: 550; margin-bottom: 0.35rem; }
+
+  /* motion */
+  .motion-lanes { display: grid; gap: 0.6rem; margin-top: 0.9rem; }
+  .lane { position: relative; height: 2.25rem; background: #f4f4f5; border-radius: 999px; }
+  .lane .dot { position: absolute; top: 0.25rem; left: 0.25rem; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+  .lane span { position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: var(--muted); }
+  .motion-lanes.go .dot { left: calc(100% - 2rem); }
+  .lane.spring { background: #e0e7ff; }
+
+  .principles { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .principles .num { font-size: 0.72rem; font-weight: 600; color: #4f46e5; letter-spacing: 0.06em; }
+
+  @media (max-width: 560px) {
+    .specimen-row { grid-template-columns: 1fr; gap: 0.15rem; }
+    .ramp div { font-size: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lane .dot { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" href="index.html">← All components</a>
+    <h1>Style guide</h1>
+    <p>How kakao components should look, feel and be themed. Built from a close reading of all eleven components as they ship today: what they already agree on is written down as the rule; where they disagree, the guide picks a direction.</p>
+    <div class="sg-meta">
+      <span class="badge">Draft 0.1 · November 2026</span>
+      <span class="tag now">Now</span><span class="muted small">= what ships today</span>
+      <span class="tag proposed">Proposed</span><span class="muted small">= the target; not built yet</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Contents">
+    <a href="#principles">Principles</a>
+    <a href="#type">Typography</a>
+    <a href="#colour">Colour</a>
+    <a href="#space">Spacing &amp; sizing</a>
+    <a href="#shape">Shape</a>
+    <a href="#elevation">Elevation</a>
+    <a href="#focus">Focus &amp; states</a>
+    <a href="#motion">Motion</a>
+    <a href="#audit">Component audit</a>
+    <a href="#tokens">Proposed tokens</a>
+  </nav>
+
+  <!-- ================================================================ -->
+  <section id="principles">
+    <h2>Principles</h2>
+    <p>The common character of the best-finished components (button, tabs, switches): quiet surfaces, one confident colour, and controls that feel physical.</p>
+    <div class="principles">
+      <div class="card"><div class="num">01</div><h4>Quiet by default</h4><p class="muted small">Neutral greys carry the layout. Fills are soft (#f0f0f1, #ebebeb), borders are hairlines, shadows are barely there. Nothing competes with content.</p></div>
+      <div class="card"><div class="num">02</div><h4>Ink for actions, accent for state</h4><p class="muted small">The main action is near-black ink. The indigo accent marks state: a switch that is on, the filled part of a slider, a selected step. Never both jobs.</p></div>
+      <div class="card"><div class="num">03</div><h4>Tactile motion</h4><p class="muted small">Thumbs overshoot a little and settle (spring easing), squash while dragged, and glow while held. Motion explains what changed; it is never decoration, and it stops under reduced motion.</p></div>
+      <div class="card"><div class="num">04</div><h4>Tokens first</h4><p class="muted small">Every visual value is a <code>--kakao-&lt;component&gt;-*</code> property whose default points at a main variable with a literal fallback. A page restyles everything by setting a handful of main variables.</p></div>
+      <div class="card"><div class="num">05</div><h4>Accessible without trying</h4><p class="muted small">Text meets 4.5:1, UI boundaries and focus indicators meet 3:1, everything works from the keyboard. The defaults must pass on their own.</p></div>
+      <div class="card"><div class="num">06</div><h4>Works anywhere</h4><p class="muted small">No dependency, no build step, no required font. A component dropped into a Yii2 page with none of our CSS still looks right.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="type">
+    <h2>Typography</h2>
+    <p>Inter Tight is the project font. It is optional for the components: they use it only when the page loads it.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>How it is wired <span class="tag now">Now</span></h3>
+        <p class="small">The main variable <code>--kakao-font-family</code> is <code>"Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif</code>. Every component font property defaults to it, with a system font as the literal fallback. <code>shared/font.css</code> loads the font file from Google Fonts.</p>
+        <pre><span class="c">&lt;!-- project pages: Inter Tight --&gt;</span>
+&lt;link rel="stylesheet" href="shared/tokens.css"&gt;
+&lt;link rel="stylesheet" href="shared/font.css"&gt;
+
+<span class="c">&lt;!-- elsewhere: leave font.css out → system font,
+     or bring your own --&gt;</span>
+:root { --kakao-font-family: "Your Font", sans-serif; }</pre>
+      </div>
+      <div class="card">
+        <h3>Why Inter Tight</h3>
+        <p class="small">Inter's tighter-spaced cut. It suits the small, dense labels of controls (11–16px), has a variable weight axis (the button's 550 weight renders exactly), tabular figures for numbers, and true italics (used for “unknown” values in the multi dropdown).</p>
+        <p class="font-check muted" id="font-check">Checking whether Inter Tight loaded…</p>
+      </div>
+    </div>
+
+    <h3 class="sub">Type scale <span class="tag proposed">Proposed</span></h3>
+    <p class="lede small">Components use more than a dozen different font sizes today, mixing <code>px</code>, <code>rem</code> and <code>em</code>. They cluster around six steps; these become the scale, in <code>rem</code> so they follow the user's font-size setting.</p>
+    <div class="card specimen" style="margin-top:.75rem">
+      <div class="specimen-row"><div class="meta"><b>2xl · 1.75rem</b>28px · 650 · −0.02em</div><div class="sample" style="font-size:1.75rem;font-weight:650;letter-spacing:-0.02em">Page title</div></div>
+      <div class="specimen-row"><div class="meta"><b>xl · 1.125rem</b>18px · 600 · −0.01em</div><div class="sample" style="font-size:1.125rem;font-weight:600;letter-spacing:-0.01em">Section heading, dialog title</div></div>
+      <div class="specimen-row"><div class="meta"><b>lg · 1rem</b>16px · 400 / 550</div><div class="sample" style="font-size:1rem">Body text and large button labels. Pack my box with five dozen liquor jugs.</div></div>
+      <div class="specimen-row"><div class="meta"><b>base · 0.9375rem</b>15px · 400</div><div class="sample" style="font-size:0.9375rem">Form field values and labels: switches, file upload, multi dropdown.</div></div>
+      <div class="specimen-row"><div class="meta"><b>sm · 0.875rem</b>14px · 400 / 550</div><div class="sample" style="font-size:0.875rem">Dense UI: list items, popover rows, slider input, medium button labels.</div></div>
+      <div class="specimen-row"><div class="meta"><b>xs · 0.8125rem</b>13px · 400 / 550</div><div class="sample" style="font-size:0.8125rem">Small buttons, helper text, step-switch labels, file sizes.</div></div>
+      <div class="specimen-row"><div class="meta"><b>2xs · 0.6875rem</b>11px · 600 · +0.07em</div><div class="sample"><span class="eyebrow">Group label · Range · Eyebrow</span></div></div>
+    </div>
+
+    <div class="grid" style="margin-top:1rem">
+      <div class="card">
+        <h3>Weights</h3>
+        <div class="weights">
+          <span style="font-weight:400">Aa<small>400 text</small></span>
+          <span style="font-weight:550">Aa<small>550 control labels</small></span>
+          <span style="font-weight:600">Aa<small>600 selected, emphasis</small></span>
+          <span style="font-weight:700">Aa<small>700 rare</small></span>
+        </div>
+        <p class="small muted" style="margin-top:.75rem">Selection is shown with weight as well as colour (tabs 400 → 600, step switch 400 → 700). Keep that pairing so state never depends on colour alone.</p>
+      </div>
+      <div class="card">
+        <h3>Numbers</h3>
+        <p style="font-size:1.5rem;font-variant-numeric:tabular-nums;letter-spacing:-0.01em">1,280.00 <span class="muted" style="font-size:1rem">tabular</span></p>
+        <p class="small muted">Any value that changes in place (slider input, multi dropdown, animated number, counters) uses <code>font-variant-numeric: tabular-nums</code> so the layout doesn't jump. Animated number defaults to a monospace stack on purpose (odometer look); set <code>--kakao-animated-number-font-family: var(--kakao-font-family)</code> to use Inter Tight.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="colour">
+    <h2>Colour</h2>
+    <p>Main variables from <code>shared/tokens.css</code>, read live from this page. Only four components refer to them today; the others hard-code their greys.</p>
+
+    <h3 class="sub">Main variables <span class="tag now">Now</span></h3>
+    <div class="swatches" id="token-swatches"></div>
+
+    <h3 class="sub">Roles <span class="tag proposed">Proposed</span></h3>
+    <div class="roles">
+      <div class="card">
+        <h4>Ink — actions</h4>
+        <p class="small muted">Primary buttons, selected segments, text. <code>#18181b</code> on <code>#fafafa</code> is 17:1. Today the button family uses zinc ink (<code>#18181b</code>) while the form family uses Tailwind gray (<code>#111827</code>); settle on zinc.</p>
+        <div class="role-demo">
+          <kakao-button label="Save"></kakao-button>
+          <kakao-button label="Cancel" variant="secondary"></kakao-button>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Accent — state</h4>
+        <p class="small muted">On, selected, filled, in progress. <code>#4f46e5</code>, 6.3:1 on white. The slider's accent is <code>#111</code> today; it should follow the accent like the switches do.</p>
+        <div class="role-demo">
+          <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Danger — destruction &amp; errors</h4>
+        <p class="small muted">Destructive buttons, invalid fields, failed uploads. The button uses a softened red <code>#bd4b43</code> (4.6:1 with its light label); the form family uses <code>#dc2626</code>. Settle on one danger colour and derive the tints.</p>
+        <div class="role-demo">
+          <kakao-button label="Delete" variant="danger"></kakao-button>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">Neutral ramp <span class="tag proposed">Proposed</span></h3>
+    <p class="lede small">One grey ramp (zinc) replacing the four in use today: zinc (button, tabs), Tailwind gray (switches, file upload, multi dropdown), Bootstrap grey (number input) and plain hex greys like <code>#eee</code>, <code>#999</code>, <code>#555</code> (list, popover, slider).</p>
+    <div class="ramp" style="margin-top:.75rem">
+      <div style="background:#fafafa">50</div><div style="background:#f4f4f5">100</div><div style="background:#e4e4e7">200</div><div style="background:#d4d4d8">300</div><div style="background:#a1a1aa">400</div>
+      <div style="background:#71717a;color:#fff">500</div><div style="background:#52525b;color:#fff">600</div><div style="background:#3f3f46;color:#fff">700</div><div style="background:#27272a;color:#fff">800</div><div style="background:#18181b;color:#fff">900</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Step</th><th>Hex</th><th>Use</th><th>Rule</th></tr></thead>
+        <tbody>
+          <tr><td>50</td><td><code>#fafafa</code></td><td>Page, text on ink</td><td></td></tr>
+          <tr><td>100</td><td><code>#f4f4f5</code></td><td>Secondary fill, segment &amp; tab track, hover</td><td></td></tr>
+          <tr><td>200</td><td><code>#e4e4e7</code></td><td>Hairlines, dividers, card borders</td><td>Decorative only</td></tr>
+          <tr><td>300</td><td><code>#d4d4d8</code></td><td>Disabled track, subtle fills</td><td>Decorative only</td></tr>
+          <tr><td>400</td><td><code>#a1a1aa</code></td><td>Input borders, off-switch track, icons</td><td>3:1 on white — UI boundaries</td></tr>
+          <tr><td>500</td><td><code>#71717a</code></td><td>Muted text, placeholders, captions</td><td>Lightest allowed text, 4.8:1</td></tr>
+          <tr><td>700</td><td><code>#3f3f46</code></td><td>Secondary text, ghost button</td><td></td></tr>
+          <tr><td>900</td><td><code>#18181b</code></td><td>Ink: text, primary actions</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Contrast findings <span class="tag now">Now</span></h3>
+    <p class="lede small">Default colours checked against WCAG 2.2: text needs 4.5:1 (1.4.3), UI parts and focus indicators 3:1 (1.4.11).</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Where</th><th>Pair</th><th>Ratio</th><th>Needs</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>Multi dropdown placeholder</td><td><code>#9ca3af</code> on white</td><td class="num">2.54</td><td>4.5</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>List group label</td><td><code>#999</code> on <code>#f7f7f7</code></td><td class="num">2.66</td><td>4.5</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>Slider min/max labels</td><td><code>#999</code> on white</td><td class="num">2.85</td><td>4.5</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>Tabs, unselected tab</td><td>ink at 45% on <code>#ebebeb</code></td><td class="num">2.82</td><td>4.5</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>List row action icon</td><td><code>#aaa</code> on white</td><td class="num">2.32</td><td>3</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>Switch, off track</td><td><code>#d1d5db</code> on white</td><td class="num">1.47</td><td>3</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>Button focus ring</td><td>ink 16% halo on white</td><td class="num">1.40</td><td>3</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>Number input focus ring</td><td>ink 14% halo on white</td><td class="num">1.33</td><td>3</td><td><span class="tag issue">Fails</span></td></tr>
+          <tr><td>Tabs focus outline</td><td><code>#888</code> on <code>#ebebeb</code></td><td class="num">2.97</td><td>3</td><td><span class="tag issue">Just fails</span></td></tr>
+          <tr><td>Muted text token</td><td><code>#6b7280</code> on white</td><td class="num">4.83</td><td>4.5</td><td><span class="tag ok">Passes</span></td></tr>
+          <tr><td>Switch focus outline</td><td><code>#2563eb</code> on white</td><td class="num">5.17</td><td>3</td><td><span class="tag ok">Passes</span></td></tr>
+          <tr><td>Accent</td><td><code>#4f46e5</code> ↔ white</td><td class="num">6.29</td><td>4.5</td><td><span class="tag ok">Passes</span></td></tr>
+          <tr><td>Danger button</td><td><code>#fdf4f3</code> on <code>#bd4b43</code></td><td class="num">4.57</td><td>4.5</td><td><span class="tag ok">Passes</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted" style="margin-top:.6rem">Fix: lift muted text to zinc 500 or darker, the off track and icon greys to zinc 400, and use the focus rule below.</p>
+
+    <h3 class="sub">File types <span class="tag now">Now</span></h3>
+    <p class="lede small">The file upload tags files with a small categorical palette. It's the only place we use more than one hue, so it stays local to that component.</p>
+    <div class="swatches" style="margin-top:.75rem">
+      <div class="swatch"><div class="chip" style="background:#0d9488"></div><div class="info"><b>Image</b><code>#0d9488</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#dc2626"></div><div class="info"><b>PDF</b><code>#dc2626</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#7c3aed"></div><div class="info"><b>Video</b><code>#7c3aed</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#db2777"></div><div class="info"><b>Audio</b><code>#db2777</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#d97706"></div><div class="info"><b>Archive</b><code>#d97706</code></div></div>
+      <div class="swatch"><div class="chip" style="background:#0891b2"></div><div class="info"><b>Text</b><code>#0891b2</code></div></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="space">
+    <h2>Spacing &amp; sizing</h2>
+    <p>Almost every spacing value in the components already sits on a 4px grid (4, 8, 12, 16, 22, 28…). Make it explicit.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Space scale <span class="tag proposed">Proposed</span></h3>
+        <div class="space-scale">
+          <div><b>1</b><span>4px</span><i style="width:4px"></i></div>
+          <div><b>2</b><span>8px</span><i style="width:8px"></i></div>
+          <div><b>3</b><span>12px</span><i style="width:12px"></i></div>
+          <div><b>4</b><span>16px</span><i style="width:16px"></i></div>
+          <div><b>5</b><span>20px</span><i style="width:20px"></i></div>
+          <div><b>6</b><span>24px</span><i style="width:24px"></i></div>
+          <div><b>8</b><span>32px</span><i style="width:32px"></i></div>
+        </div>
+        <p class="small muted" style="margin-top:.75rem">The current main variables map to it: <code>--kakao-space-y</code> 8px = 2, <code>--kakao-space-x</code> 12px = 3, <code>--kakao-space-gap</code> 16px = 4. Odd values like 22px and 0.45rem should move to the nearest step.</p>
+      </div>
+      <div class="card">
+        <h3>Control heights <span class="tag proposed">Proposed</span></h3>
+        <p class="small muted">The button already defines 36 / 44 / 52px. Text fields, dropdowns and the number input should use the same heights so a button and a field line up in a form row. Today the multi dropdown and number input size themselves from padding and line height, and come out shorter than 44px.</p>
+        <div class="heights" style="margin-top:.9rem">
+          <kakao-button label="sm 36" size="sm" variant="secondary"></kakao-button>
+          <kakao-button label="md 44" variant="secondary"></kakao-button>
+          <kakao-button label="lg 52" size="lg" variant="secondary"></kakao-button>
+        </div>
+        <p class="small muted" style="margin-top:.75rem">Toggles are their own family: tracks are 28px (1.75rem) tall with a 22px thumb and 3px inset. Keep the tap target at least 24×24px (WCAG 2.5.8).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="shape">
+    <h2>Shape</h2>
+    <p>Corners are generous and rounder as things get bigger. Radii in use today: 3, 4, 6, 7, 8, 9, 10, 11, 13, 14, 15 and 999px. They reduce to five steps.</p>
+
+    <div class="card">
+      <h3>Radius scale <span class="tag proposed">Proposed</span></h3>
+      <div class="radii">
+        <div class="radius-item"><div class="radius-box" style="border-radius:4px"></div><b>xs · 4px</b>Ticks, small chips</div>
+        <div class="radius-item"><div class="radius-box" style="border-radius:6px"></div><b>sm · 6px</b>Options, tab thumb, small inputs</div>
+        <div class="radius-item"><div class="radius-box" style="border-radius:10px"></div><b>md · 10px</b>Fields, menus, tab track</div>
+        <div class="radius-item"><div class="radius-box" style="border-radius:14px"></div><b>lg · 14px</b>Cards, drop zone, segments</div>
+        <div class="radius-item"><div class="radius-box" style="border-radius:999px;width:7rem"></div><b>pill · 999px</b>Switch tracks, badges</div>
+      </div>
+      <p class="small muted" style="margin-top:1rem">Buttons keep their own size-linked radii (11 / 13 / 15px). It's a deliberate “squircle-ish” ratio of about 0.3 × height. The list (4px), popover (4px) and slider input (3px) are the outliers and read as a different library next to them.</p>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <h3>Nesting rule <span class="tag now">Now</span></h3>
+      <p class="small">Inner radius = outer radius − padding. Tabs (10 − 4 = 6) and the button segment (14 − 4 = 10) already do this. It's why their thumbs look concentric. Apply it to every container with a rounded child: menus and their options, drop zone and file rows.</p>
+      <div style="margin-top:.9rem"><span class="nest"><span>Outer 10</span><span>Padding 4</span><span>Inner 6</span></span></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="elevation">
+    <h2>Elevation</h2>
+    <p>Shadows are soft and wide, never dark. Today there are six different shadow recipes plus “none” for the popover. They reduce to three levels.</p>
+    <div class="elev">
+      <div style="box-shadow:0 2px 24px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.03)"><b>1 · Resting</b><span class="muted">Tab thumb, pressed segment, primary button glow.</span><pre style="margin-top:.5rem;font-size:.68rem">0 2px 24px rgb(0 0 0/.04)</pre></div>
+      <div style="box-shadow:0 1px 3px rgba(0,0,0,.18), 0 1px 8px rgba(0,0,0,.06)"><b>2 · Raised</b><span class="muted">Draggable thumbs (switches, slider).</span><pre style="margin-top:.5rem;font-size:.68rem">0 1px 3px rgb(0 0 0/.18),
+0 1px 8px rgb(0 0 0/.06)</pre></div>
+      <div style="box-shadow:0 8px 24px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.05)"><b>3 · Overlay</b><span class="muted">Popover, dropdown panel, menus.</span><pre style="margin-top:.5rem;font-size:.68rem">0 8px 24px rgb(0 0 0/.08),
+0 0 0 1px rgb(0 0 0/.05)</pre></div>
+    </div>
+    <p class="small muted" style="margin-top:.6rem">The 1px ring in levels 1 and 3 replaces a separate border, so overlays stay crisp on any background. The switch thumb's current <code>0 1px 3px rgba(0,0,0,.3)</code> is the heaviest shadow in the set; level 2 softens it.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="focus">
+    <h2>Focus &amp; states</h2>
+    <p>Two focus styles ship today: a soft translucent halo (button, number input, multi dropdown) and a solid 2px outline (switches, slider, list, popover, tabs). The halo looks nicer but fails the 3:1 rule.</p>
+
+    <div class="card">
+      <h3>Focus indicator <span class="tag proposed">Proposed</span></h3>
+      <p class="small">Every focusable part shows <code>outline: 2px solid var(--kakao-color-focus)</code> with a 2px offset on <code>:focus-visible</code>. The soft halo may stay as an extra layer, but it is never the only sign of focus. Tab through these to compare:</p>
+      <div class="focus-row" style="margin-top:1rem">
+        <div><span class="focus-sample soft" tabindex="0">Halo only</span><span class="focus-label">Today's button · 1.4:1 ✗</span></div>
+        <div><span class="focus-sample solid" tabindex="0">Outline</span><span class="focus-label">Switch style · 5.2:1 ✓</span></div>
+        <div><span class="focus-sample both" tabindex="0">Halo + outline</span><span class="focus-label">Proposed default ✓</span></div>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:1rem">
+      <div class="card">
+        <h3>Disabled <span class="tag proposed">Proposed</span></h3>
+        <p class="small muted">Disabled opacity ranges from 0.2 to 0.55 across components. Use one value: <b>0.45</b>. At 0.2 (button, tabs) a disabled label is close to unreadable, and people still need to read what's unavailable.</p>
+        <div class="opacity-row" style="margin-top:.9rem">
+          <figure><span style="opacity:.2">Submit</span><figcaption>0.2 · button now</figcaption></figure>
+          <figure><span style="opacity:.45">Submit</span><figcaption>0.45 · proposed</figcaption></figure>
+          <figure><span style="opacity:.55">Submit</span><figcaption>0.55 · forms now</figcaption></figure>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Interaction states <span class="tag now">Now</span></h3>
+        <p class="small"><b>Hover</b> darkens a fill one step (ink → <code>#2c2c31</code>, secondary <code>#f0f0f1</code> → <code>#e6e6e8</code>) or adds a 4.5% ink wash on ghost surfaces.</p>
+        <p class="small"><b>Pressed / held</b> scales slightly and glows (tabs hold glow, button press).</p>
+        <p class="small"><b>Busy</b> swaps the label for a spinner and keeps the width; success shows a brief tick (button, switch).</p>
+        <p class="small"><b>Error</b> uses danger on the track or border plus a text message. Never colour alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="motion">
+    <h2>Motion</h2>
+    <p>Durations in use: 80, 150, 200, 320 and 600ms. That's already close to a scale. The spring curve <code>cubic-bezier(.5, 1.8, .4, 1)</code> is the signature move of the switches.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Durations <span class="tag proposed">Proposed</span></h3>
+        <div class="table-wrap" style="margin-top:0">
+          <table>
+            <tbody>
+              <tr><td><code>instant</code></td><td class="num">80ms</td><td>Drag follow</td></tr>
+              <tr><td><code>fast</code></td><td class="num">150ms</td><td>Colour, hover, popover fade</td></tr>
+              <tr><td><code>base</code></td><td class="num">200ms</td><td>Tab thumb, button state</td></tr>
+              <tr><td><code>slow</code></td><td class="num">320ms</td><td>Spring thumbs (<code>--kakao-motion-duration</code>)</td></tr>
+              <tr><td><code>count</code></td><td class="num">600ms</td><td>Animated number</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Easing</h3>
+        <p class="small muted">Spring for things that move into place, standard for everything else.</p>
+        <div class="motion-lanes" id="lanes">
+          <div class="lane"><div class="dot" style="transition:left 320ms cubic-bezier(.2,0,0,1)"></div><span>standard</span></div>
+          <div class="lane spring"><div class="dot" style="transition:left 320ms cubic-bezier(.5,1.8,.4,1)"></div><span>spring</span></div>
+        </div>
+        <div style="margin-top:.9rem"><kakao-button label="Play" size="sm" variant="secondary" id="play"></kakao-button></div>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:.75rem">Reduced motion: <span class="tag ok">8 of 11</span> components honour <code>prefers-reduced-motion</code>. <span class="tag issue">Missing</span> list (smooth scroll, fade), slider (thumb glide) and number input.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="audit">
+    <h2>Component audit</h2>
+    <p>Where each component stands against this guide. “Family” is the visual dialect it was built in: <b>A</b> zinc / ink (button, tabs, number input), <b>B</b> Tailwind gray / indigo (switches, file upload, multi dropdown), <b>C</b> plain hex greys (list, popover, slider).</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Component</th><th>Family</th><th>Font token</th><th>Main colours</th><th>Radius</th><th>Focus</th><th>Disabled</th><th>To do</th></tr></thead>
+        <tbody>
+          <tr><td>Button</td><td>A</td><td><span class="tag ok">Yes</span></td><td>No</td><td class="num">11/13/15</td><td>Halo ✗</td><td class="num">0.2</td><td>Add outline; bind ink, danger to main colours</td></tr>
+          <tr><td>Tabs</td><td>A</td><td>Inherits</td><td>No</td><td class="num">10/6</td><td>#888 ✗</td><td class="num">0.2</td><td>Idle tab contrast; focus colour</td></tr>
+          <tr><td>Number input</td><td>A*</td><td>Inherits</td><td>No</td><td class="num">6</td><td>Halo ✗</td><td class="num">0.55</td><td>Bootstrap greys → zinc; 44px height; outline</td></tr>
+          <tr><td>Switch group</td><td>B</td><td><span class="tag ok">Yes</span></td><td>Yes</td><td class="num">pill</td><td>✓</td><td class="num">0.55</td><td>Off-track contrast; thumb shadow</td></tr>
+          <tr><td>Step switch</td><td>B</td><td><span class="tag ok">Yes</span></td><td>Yes</td><td class="num">pill</td><td>✓</td><td class="num">0.55</td><td>Off-track contrast</td></tr>
+          <tr><td>File upload</td><td>B</td><td><span class="tag ok">Yes</span></td><td>Yes</td><td class="num">14/10/7</td><td>✓</td><td class="num">0.55</td><td>Thumb radius 7 → 6 (nesting rule)</td></tr>
+          <tr><td>Multi dropdown</td><td>B</td><td><span class="tag ok">Yes</span></td><td>Yes</td><td class="num">10/6</td><td>Halo ✗</td><td class="num">0.55</td><td>Placeholder contrast; outline; 44px</td></tr>
+          <tr><td>List</td><td>C</td><td><span class="tag ok">Yes</span></td><td>No</td><td class="num">4/6</td><td>✓</td><td class="num">0.5</td><td>Greys → zinc; group/action contrast; reduced motion</td></tr>
+          <tr><td>Popover</td><td>C</td><td><span class="tag ok">Yes</span></td><td>No</td><td class="num">4</td><td>✓</td><td class="num">—</td><td>Radius 10; overlay shadow instead of none</td></tr>
+          <tr><td>Slider</td><td>C</td><td><span class="tag ok">Yes</span></td><td>No</td><td class="num">3</td><td>✓</td><td class="num">0.4</td><td>Accent #111 → primary; range label contrast; reduced motion</td></tr>
+          <tr><td>Animated number</td><td>—</td><td>Mono by design</td><td>currentColor</td><td class="num">—</td><td>n/a</td><td class="num">—</td><td>None</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted" style="margin-top:.6rem">* Number input borrows the family A focus halo but Bootstrap's greys (<code>#dee2e6</code>, <code>#6c757d</code>).</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="tokens">
+    <h2>Proposed tokens</h2>
+    <p>New main variables for <code>shared/tokens.css</code>. Component settings would point at them with a literal fallback, as the conventions already require. None of these exist yet.</p>
+    <pre><span class="c">/* colour roles */</span>
+--kakao-color-ink:        #18181b;   <span class="c">/* replaces color-text #111827 */</span>
+--kakao-color-muted:      #71717a;
+--kakao-color-subtle:     #f4f4f5;
+--kakao-color-line:       #e4e4e7;   <span class="c">/* decorative hairlines */</span>
+--kakao-color-border:     #a1a1aa;   <span class="c">/* field and control edges, 3:1 */</span>
+--kakao-color-primary:    #4f46e5;   <span class="c">/* accent: state, not actions */</span>
+--kakao-color-danger:     #bd4b43;   <span class="c">/* or #dc2626: pick one */</span>
+--kakao-color-focus:      #2563eb;
+
+<span class="c">/* type */</span>
+--kakao-font-family:      "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+--kakao-text-2xs: 0.6875rem;  --kakao-text-xs: 0.8125rem;  --kakao-text-sm: 0.875rem;
+--kakao-text-base: 0.9375rem; --kakao-text-lg: 1rem;       --kakao-text-xl: 1.125rem;
+--kakao-weight-control: 550;  --kakao-weight-strong: 600;
+
+<span class="c">/* shape, size, depth */</span>
+--kakao-radius-xs: 4px;  --kakao-radius-sm: 6px;  --kakao-radius-md: 10px;
+--kakao-radius-lg: 14px; --kakao-radius-pill: 999px;
+--kakao-control-sm: 36px; --kakao-control-md: 44px; --kakao-control-lg: 52px;
+--kakao-shadow-1: 0 2px 24px rgb(0 0 0 / .04), 0 0 0 1px rgb(0 0 0 / .03);
+--kakao-shadow-2: 0 1px 3px rgb(0 0 0 / .18), 0 1px 8px rgb(0 0 0 / .06);
+--kakao-shadow-3: 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px rgb(0 0 0 / .05);
+
+<span class="c">/* states and motion */</span>
+--kakao-disabled-opacity: 0.45;
+--kakao-focus-width: 2px;  --kakao-focus-offset: 2px;
+--kakao-motion-fast: 150ms; --kakao-motion-base: 200ms; --kakao-motion-duration: 320ms;
+--kakao-ease-standard: cubic-bezier(.2, 0, 0, 1);
+--kakao-ease-spring:   cubic-bezier(.5, 1.8, .4, 1);</pre>
+
+    <h3 class="sub">Suggested order</h3>
+    <div class="card">
+      <ol class="small" style="margin:0;padding-left:1.2rem;display:grid;gap:.35rem">
+        <li><b>Accessibility first:</b> focus outline everywhere, plus the contrast fixes in the table above. Small changes with a big effect.</li>
+        <li><b>Neutrals:</b> add the ramp tokens and move families B and C onto zinc. That removes most of the “three libraries” feel.</li>
+        <li><b>Shape &amp; elevation:</b> radius and shadow tokens; restyle list, popover and slider.</li>
+        <li><b>Sizes:</b> align fields to the 36/44/52 control heights.</li>
+        <li><b>Type scale:</b> swap hard-coded px font sizes for the scale tokens.</li>
+      </ol>
+      <p class="small muted" style="margin-top:.75rem">Each step fits an OpenSpec change and gets its construction pages updated. The existing settings blocks make every step a change to defaults, not to markup.</p>
+    </div>
+  </section>
+
+  <footer>Kakao components · <a href="index.html">All components</a> · <a href="tokens.html">Main variables</a> · <a href="kitchen-sink.html">Kitchen sink</a></footer>
+</main>
+
+<script>
+  // Live swatches for the main colour variables.
+  (function () {
+    const tokens = [
+      ['primary', 'Accent / state'], ['text', 'Text'], ['muted', 'Muted text'], ['bg', 'Background'],
+      ['subtle', 'Subtle fill'], ['border', 'Border'], ['danger', 'Danger'], ['focus', 'Focus'],
+    ];
+    const root = getComputedStyle(document.documentElement);
+    const box = document.getElementById('token-swatches');
+    tokens.forEach(([name, role]) => {
+      const prop = `--kakao-color-${name}`;
+      const value = root.getPropertyValue(prop).trim();
+      const card = document.createElement('div');
+      card.className = 'swatch';
+      card.innerHTML = `<div class="chip"></div><div class="info"><b></b><span></span><br><code></code></div>`;
+      card.querySelector('.chip').style.background = `var(${prop})`;
+      card.querySelector('b').textContent = role;
+      card.querySelector('span').textContent = value;
+      card.querySelector('code').textContent = prop;
+      box.append(card);
+    });
+  })();
+
+  // Report whether Inter Tight actually loaded on this page.
+  (function () {
+    const out = document.getElementById('font-check');
+    if (!document.fonts) { out.textContent = ''; return; }
+    document.fonts.load('400 16px "Inter Tight"').then(() => {
+      const ok = document.fonts.check('400 16px "Inter Tight"');
+      out.textContent = ok
+        ? '✓ Inter Tight is loaded on this page.'
+        : 'Inter Tight is not loaded here, so you are seeing the system fallback, as a page without font.css would.';
+    });
+  })();
+
+  // Motion demo.
+  document.getElementById('play').addEventListener('click', () => {
+    document.getElementById('lanes').classList.toggle('go');
+  });
+</script>
+</body>
+</html>

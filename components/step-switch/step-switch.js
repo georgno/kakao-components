@@ -115,7 +115,7 @@
  *  --kakao-step-switch-tick-disabled-color  rgba(255,255,255,.3)  dot of a disabled step
  *  --kakao-step-switch-label-color          #4b5563
  *  --kakao-step-switch-label-active-color   #111827
- *  --kakao-step-switch-label-font           0.85rem/1.3 system-ui, ...
+ *  --kakao-step-switch-label-font           0.85rem/1.3 --kakao-font-family (else system-ui)
  *  --kakao-step-switch-label-weight         400       label weight with the thumb far away
  *  --kakao-step-switch-label-weight-active  700       label weight with the thumb on the step
  *                                                       (in between, it follows the thumb live;
@@ -206,7 +206,7 @@
         --_tick-disabled-color: var(--kakao-step-switch-tick-disabled-color, rgba(255, 255, 255, 0.3));
         --_label-color: var(--kakao-step-switch-label-color, #4b5563);
         --_label-active-color: var(--kakao-step-switch-label-active-color, var(--kakao-color-text, #111827));
-        --_label-font: var(--kakao-step-switch-label-font, 0.85rem/1.3 system-ui, -apple-system, sans-serif);
+        --_label-font: var(--kakao-step-switch-label-font, 0.85rem/1.3 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_label-weight: var(--kakao-step-switch-label-weight, 400);
         --_label-weight-active: var(--kakao-step-switch-label-weight-active, 700);
         --_label-gap: var(--kakao-step-switch-label-gap, 0.5rem);
