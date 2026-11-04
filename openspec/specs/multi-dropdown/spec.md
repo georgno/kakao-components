@@ -6,11 +6,22 @@
 ## Requirements
 
 ### Requirement: Input group of separate dropdowns
-Each segment SHALL be its own dropdown box with a value and a chevron. The boxes SHALL sit edge to edge as an input group with shared borders and only the outer corners rounded, and the focused or open box SHALL be drawn above its neighbours with an accent border. Each box SHALL be as wide as its widest label, and SHALL shrink and cut its text off with an ellipsis when space is tight. The separator SHALL NOT be drawn between the boxes.
+Each segment SHALL be its own dropdown box with a value and a chevron. The boxes SHALL sit edge to edge as an input group with shared borders and only the outer corners rounded, and the focused or open box SHALL be drawn above its neighbours with an accent border. Each box SHALL be as wide as its widest label (while it is empty, its placeholder counts too), and SHALL shrink and cut its text off with an ellipsis when space is tight. The separator SHALL NOT be drawn between the boxes.
 
 #### Scenario: Stable width
 - **WHEN** the month changes from "May" to "September"
 - **THEN** the boxes keep their size
+
+### Requirement: Placeholders
+An empty box SHALL show its placeholder: the segment's `placeholder`, else the element's `placeholder` attribute, else "Please select". When any empty box of the group has no room for its placeholder, all empty boxes SHALL show their short placeholder instead: the segment's `shortPlaceholder`, else its label; the date preset uses DD, MM and YYYY. The short placeholders SHALL NOT take up the space of the long ones.
+
+#### Scenario: Enough room
+- **WHEN** an empty date group sits in a 600px column
+- **THEN** the boxes show Please select | Please select | Please select
+
+#### Scenario: Cramped
+- **WHEN** the same group sits in a 360px column
+- **THEN** the boxes show DD | MM | YYYY
 
 #### Scenario: Narrow container
 - **WHEN** the group is placed in a 260px column
@@ -28,14 +39,14 @@ With `type="date"` the group SHALL offer Day, Month and Year boxes joined with "
 - **THEN** the day returns to 31
 
 ### Requirement: Unknown parts
-`allow-unknown` SHALL add an "Unknown" option to every segment, or to a comma list of segment names. For dates the unknown value SHALL be zeros ("00", "0000"); for custom segments "?" unless the segment sets its own. The box SHALL show the word "Unknown" while the value stores the code.
+`allow-unknown` SHALL add an "Unknown" option to every segment, or to a comma list of segment names. For dates the unknown value SHALL be zeros ("00", "0000"); for custom segments "?" unless the segment sets its own. The list SHALL offer the choice as "Unknown" (first, without the stored code beside it); the closed box SHALL show an en dash "–" (a segment can set its own with `unknown.display`) while the value stores the code. The box's accessible name SHALL still say "Unknown".
 
 #### Scenario: Partly known date
 - **WHEN** `value="00.00.1990"` is set with `allow-unknown="day,month"`
-- **THEN** the boxes show Unknown | Unknown | 1990 and `value` stays "00.00.1990"
+- **THEN** the boxes show – | – | 1990 and `value` stays "00.00.1990"
 
 ### Requirement: Custom segments
-Without `type`, segments SHALL come from `list-data` (`{ name, label?, placeholder?, options, unknown?, separator? }`) or `setData()`, joined with `separator` (default a space).
+Without `type`, segments SHALL come from `list-data` (`{ name, label?, placeholder?, shortPlaceholder?, options, unknown?, separator? }`) or `setData()`, joined with `separator` (default a space).
 
 #### Scenario: Product variant
 - **WHEN** segments "size" and "color" are set with `separator=" / "` and the user picks M and black

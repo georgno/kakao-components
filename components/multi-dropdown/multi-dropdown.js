@@ -29,14 +29,24 @@
  *  type           "date" builds day / month / year segments (dd.mm.yyyy).
  *                 Without it, segments come from list-data.
  *  list-data      JSON array of segments (never "data"):
- *                   { name, label?, placeholder?, options, unknown?, separator? }
+ *                   { name, label?, placeholder?, shortPlaceholder?, options,
+ *                     unknown?, separator? }
+ *                 placeholder: text of an empty box (default: the placeholder
+ *                 attribute, else "Please select").
+ *                 shortPlaceholder: shown instead when the box is too narrow for
+ *                 the placeholder (default: the segment label; dates use
+ *                 DD / MM / YYYY).
  *                 options: strings or { value, label?, disabled? }.
- *                 unknown: true, or { value, label } to add an "Unknown" choice.
+ *                 unknown: true, or { value, label, display } to add an "Unknown"
+ *                 choice. label is used in the list and for screen readers;
+ *                 display is what the closed box shows (default "–").
  *                 separator: text after this segment (overrides the attribute).
  *  value          The joined value, e.g. "00.00.1990". Reflects the current
  *                 value once every segment has one, "" while incomplete.
  *  separator      Text between the parts in the joined value (not drawn; the
  *                 boxes sit edge to edge). Default "." for type="date", " " else.
+ *  placeholder    Text of empty boxes. Default "Please select". Boxes too narrow
+ *                 for it fall back to each segment's short placeholder.
  *  allow-unknown  Adds an "Unknown" option. Empty / "true" = every segment, or a
  *                 comma list of segment names ("day,month"). For dates the unknown
  *                 value is zeros ("00", "0000"); for custom segments "?" unless
@@ -88,7 +98,7 @@
  *  --kakao-multi-dropdown-border        #d1d5db
  *  --kakao-multi-dropdown-radius        10px
  *  --kakao-multi-dropdown-text          #111827
- *  --kakao-multi-dropdown-muted         #9ca3af   placeholders, unknown values
+ *  --kakao-multi-dropdown-muted         #9ca3af   placeholders, the unknown dash
  *  --kakao-multi-dropdown-hover-bg      #f3f4f6
  *  --kakao-multi-dropdown-popup-height  16rem     max height of an open list
  *  --kakao-multi-dropdown-font          0.95rem/1.4 --kakao-font-family (else system-ui)
@@ -240,12 +250,13 @@
         text-overflow: ellipsis;
       }
       .text > .sizer { visibility: hidden; }
-      .text > .sizer.is-unknown { font-style: italic; }
-      .trigger[data-state="empty"] .text { color: var(--_muted); }
-      .trigger[data-state="unknown"] .text {
-        color: var(--_muted);
-        font-style: italic;
-      }
+      .trigger[data-state="empty"] .text,
+      .trigger[data-state="unknown"] .text { color: var(--_muted); }
+      /* Empty box: full placeholder, or the short one when it doesn't fit. The
+         hidden one still takes up space, so the layout never changes. */
+      .text > .ph-short { visibility: hidden; }
+      .field[data-cramped] .text > .ph-long { display: none; }
+      .field[data-cramped] .text > .ph-short { visibility: visible; }
 
       .trigger svg {
         flex-shrink: 0;
@@ -319,7 +330,7 @@
     }
 
     static get observedAttributes() {
-      return ['label', 'type', 'list-data', 'value', 'separator', 'allow-unknown', 'min-year', 'max-year', 'disabled', 'required', 'name'];
+      return ['label', 'type', 'list-data', 'value', 'separator', 'placeholder', 'allow-unknown', 'min-year', 'max-year', 'disabled', 'required', 'name'];
     }
 
     constructor() {
@@ -330,7 +341,7 @@
       this._labelEl = shadow.querySelector('.label');
       this._fieldEl = shadow.querySelector('.field');
 
-      this._segments = []; // normalized: { name, label, placeholder, options, unknown, separator, width }
+      this._segments = []; // normalized: { name, label, placeholder, shortPlaceholder, options, unknown, separator }
       this._values = {}; // name -> value | null
       this._open = null; // name of the open segment
       this._active = -1; // highlighted option index in the open list
@@ -348,6 +359,7 @@
       this._onDocPointerDown = this._onDocPointerDown.bind(this);
       this._onFocusOut = this._onFocusOut.bind(this);
       this._onMouseDown = this._onMouseDown.bind(this);
+      this._resizeObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(() => this._checkCramped()) : null;
     }
 
     /* -------------------------- Lifecycle -------------------------- */
@@ -359,6 +371,7 @@
       this._fieldEl.addEventListener('focusout', this._onFocusOut);
       this._fieldEl.addEventListener('mousedown', this._onMouseDown);
       this._labelEl.addEventListener('click', () => this.focus());
+      if (this._resizeObserver) this._resizeObserver.observe(this._fieldEl);
 
       this._syncLabel();
       this._buildSegments();
@@ -380,6 +393,7 @@
       this._fieldEl.removeEventListener('focusout', this._onFocusOut);
       this._fieldEl.removeEventListener('mousedown', this._onMouseDown);
       document.removeEventListener('pointerdown', this._onDocPointerDown, true);
+      if (this._resizeObserver) this._resizeObserver.disconnect();
       this._open = null;
     }
 
@@ -403,7 +417,7 @@
         case 'name':
           this._syncForm();
           break;
-        default: // type, list-data, separator, allow-unknown, min-year, max-year
+        default: // type, list-data, separator, placeholder, allow-unknown, min-year, max-year
           this._close();
           this._buildSegments();
           this._applyValue(this.getAttribute('value'));
@@ -511,6 +525,8 @@
       const isDate = (this.getAttribute('type') || '').toLowerCase() === 'date';
       const sepAttr = this.getAttribute('separator');
       const defaultSep = sepAttr !== null ? sepAttr : isDate ? '.' : ' ';
+      const phAttr = this.getAttribute('placeholder');
+      const defaultPlaceholder = phAttr !== null && phAttr.trim() !== '' ? phAttr : 'Please select';
 
       let raw;
       if (this._customData) {
@@ -539,13 +555,18 @@
           unknown = {
             value: String(own.value ?? s.unknownValue ?? '?'),
             label: String(own.label ?? 'Unknown'),
+            display: String(own.display ?? '–'),
           };
         }
-        const placeholder = s.placeholder != null ? String(s.placeholder) : (s.label || name);
+        const placeholder = s.placeholder != null ? String(s.placeholder) : defaultPlaceholder;
+        const shortPlaceholder = s.shortPlaceholder != null
+          ? String(s.shortPlaceholder)
+          : s.placeholder != null ? placeholder : String(s.label != null ? s.label : name);
         return {
           name,
           label: s.label != null ? String(s.label) : name,
           placeholder,
+          shortPlaceholder,
           options,
           unknown,
           separator: i < raw.length - 1 ? (s.separator != null ? String(s.separator) : defaultSep) : '',
@@ -572,15 +593,15 @@
       for (let y = hi; y >= lo; y--) years.push({ value: String(y), label: String(y) });
       return [
         {
-          name: 'day', label: 'Day', placeholder: 'Day', unknownValue: '00',
+          name: 'day', label: 'Day', shortPlaceholder: 'DD', unknownValue: '00',
           options: Array.from({ length: 31 }, (_, i) => ({ value: pad(i + 1, 2), label: pad(i + 1, 2) })),
         },
         {
-          name: 'month', label: 'Month', placeholder: 'Month', unknownValue: '00',
+          name: 'month', label: 'Month', shortPlaceholder: 'MM', unknownValue: '00',
           // Shown by name in the box; the number is the hint in the list and the stored value.
           options: MONTH_NAMES.map((m, i) => ({ value: pad(i + 1, 2), label: m, hint: pad(i + 1, 2) })),
         },
-        { name: 'year', label: 'Year', placeholder: 'Year', unknownValue: '0000', options: years },
+        { name: 'year', label: 'Year', shortPlaceholder: 'YYYY', unknownValue: '0000', options: years },
       ];
     }
 
@@ -593,7 +614,7 @@
     /** Options as shown in a list: Unknown first, then the regular ones (with live disabling for dates). */
     _listFor(seg) {
       const list = [];
-      if (seg.unknown) list.push({ value: seg.unknown.value, label: seg.unknown.label, hint: seg.unknown.value, disabled: false, unknown: true });
+      if (seg.unknown) list.push({ value: seg.unknown.value, label: seg.unknown.label, hint: '', disabled: false, unknown: true });
       const maxDay = seg.name === 'day' && this._isDate() ? this._maxDay() : null;
       seg.options.forEach((o) => {
         const disabled = o.disabled || (maxDay !== null && Number(o.value) > maxDay);
@@ -741,26 +762,32 @@
         trigger.dataset.state = v == null ? 'empty' : isUnknown ? 'unknown' : 'set';
         // The visible label sits on top of invisible copies of every label this box
         // can show, so the box is exactly as wide as its widest label in the real
-        // font and never changes size when the value changes.
+        // font and doesn't change size when one value replaces another. While the
+        // box is empty, the full placeholder also counts; when the group has no
+        // room for it, the short placeholder shows instead (see _checkCramped).
         const text = document.createElement('span');
         text.className = 'text';
         const current = document.createElement('span');
-        current.className = 'current';
-        current.textContent = v == null ? seg.placeholder : isUnknown ? seg.unknown.label : this._optionLabel(seg, v);
-        text.append(current);
-        const sizes = new Set([seg.placeholder, ...seg.options.map((o) => o.label)]);
+        if (v == null) {
+          current.className = 'current ph-long';
+          current.textContent = seg.placeholder;
+          const short = document.createElement('span');
+          short.className = 'current ph-short';
+          short.textContent = seg.shortPlaceholder;
+          text.append(current, short);
+        } else {
+          current.className = 'current';
+          current.textContent = isUnknown ? seg.unknown.display : this._optionLabel(seg, v);
+          text.append(current);
+        }
+        const sizes = new Set([seg.shortPlaceholder, ...seg.options.map((o) => o.label)]);
+        if (seg.unknown) sizes.add(seg.unknown.display);
         sizes.forEach((label) => {
           const sizer = document.createElement('span');
           sizer.className = 'sizer';
           sizer.textContent = label;
           text.append(sizer);
         });
-        if (seg.unknown) {
-          const sizer = document.createElement('span');
-          sizer.className = 'sizer is-unknown'; // italic like the shown Unknown label
-          sizer.textContent = seg.unknown.label;
-          text.append(sizer);
-        }
         trigger.append(text);
         trigger.insertAdjacentHTML('beforeend', CHEVRON);
 
@@ -785,6 +812,25 @@
         if (t) t.focus();
       }
       if (this._open) this._renderPopup();
+      this._checkCramped();
+    }
+
+    /**
+     * Empty boxes show the full placeholder ("Please select") when every one of
+     * them fits, otherwise the whole group switches to the short placeholders
+     * (DD / MM / YYYY) and the long ones stop taking up space. The check is
+     * always made in the uncramped layout, so it can't flip back and forth.
+     */
+    _checkCramped() {
+      const field = this._fieldEl;
+      const longs = field.querySelectorAll('.ph-long');
+      if (!longs.length) {
+        field.removeAttribute('data-cramped');
+        return;
+      }
+      field.removeAttribute('data-cramped');
+      const cramped = Array.from(longs).some((el) => el.scrollWidth > el.clientWidth + 0.5);
+      field.toggleAttribute('data-cramped', cramped);
     }
 
     /** The label shown in a segment's box. */
