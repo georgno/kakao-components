@@ -135,7 +135,12 @@
       html.${RIPPLE_CLASS}::view-transition-old(root),
       html.${RIPPLE_CLASS}::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
       html.${RIPPLE_CLASS}::view-transition-old(root) { z-index: 0; }
-      html.${RIPPLE_CLASS}::view-transition-new(root) { z-index: 1; }
+      /* Start clipped to nothing, so the new theme can't flash in full for a
+         frame before the ripple animation takes over. */
+      html.${RIPPLE_CLASS}::view-transition-new(root) {
+        z-index: 1;
+        clip-path: circle(0px at var(--kakao-ripple-x, 50%) var(--kakao-ripple-y, 50%));
+      }
     `;
     document.head.append(style);
   }
@@ -156,41 +161,138 @@
     return m[2] === 's' ? parseFloat(m[1]) * 1000 : parseFloat(m[1]);
   }
 
+  /*
+   * Colour transitions that start because the theme changed would play inside
+   * the newly revealed theme (it is the live page): components would fade from
+   * their old colours while the ripple grows, which reads as flicker. Right
+   * after a theme is applied they are finished at once, also inside open
+   * shadow roots. Movement (transform, opacity: e.g. the icon morph) is kept.
+   */
+  const COLOR_TRANSITION = /color|background|border|shadow|fill|stroke|outline|^--/;
+
+  function settleColorTransitions() {
+    void ROOT.offsetWidth; // flush styles: the theme's transitions now exist
+    if (typeof CSSTransition === 'undefined') return;
+    const anims = new Set(document.getAnimations());
+    const walk = (root) => {
+      root.querySelectorAll('*').forEach((el) => {
+        if (!el.shadowRoot) return;
+        el.shadowRoot.getAnimations().forEach((a) => anims.add(a));
+        walk(el.shadowRoot);
+      });
+    };
+    walk(document);
+    anims.forEach((a) => {
+      if (a instanceof CSSTransition && COLOR_TRANSITION.test(a.transitionProperty)) a.finish();
+    });
+  }
+
+  /*
+   * One ripple at a time. A switch requested while a ripple runs is queued:
+   * the running ripple completes, then one more ripple goes to the latest
+   * requested theme (however many requests came in). Interrupting instead
+   * would jump to the half-revealed theme and restart, which flickers.
+   */
+  const queue = {
+    target: null,      // the theme the page is heading to (requested, maybe not applied yet)
+    running: false,
+    pending: null,     // { value, options } to run after the current ripple
+    waiters: [],       // resolve() of callers waiting for the next apply
+  };
+
+  let pageRequest = 0; // latest page-level setTheme() call
+
+  /** The theme the page shows or is about to show. */
+  function targetTheme() {
+    return queue.target || ROOT.getAttribute(THEME_ATTR);
+  }
+
   /**
    * Sets a theme on <html>, with the ripple when wanted and possible, and
-   * remembers it. Resolves once the new theme is applied.
+   * remembers it. Resolves once that theme (or a later request) is applied.
    */
-  function switchTheme(value, { animate = true, x, y, storageKey = DEFAULT_KEY, timing } = {}) {
-    const remember = () => storage.set(storageKey, value);
-    if (!animate || reducedMotion() || typeof document.startViewTransition !== 'function') {
+  function switchTheme(value, options = {}) {
+    queue.target = value;
+    storage.set(options.storageKey === undefined ? DEFAULT_KEY : options.storageKey, value);
+    // Switches show the target at once (icon, label), even while a ripple runs.
+    document.querySelectorAll(TAG_NAME).forEach((el) => { if (typeof el._sync === 'function') el._sync(); });
+    return new Promise((resolve) => {
+      queue.waiters.push(resolve);
+      if (queue.running) {
+        queue.pending = { value, options };
+        return;
+      }
+      runSwitch(value, options);
+    });
+  }
+
+  function runSwitch(value, { animate = true, x, y, timing } = {}) {
+    queue.running = true;
+    const applied = () => {
+      const waiters = queue.waiters.splice(0);
+      waiters.forEach((resolve) => resolve());
+    };
+    const finished = () => {
+      queue.running = false;
+      const next = queue.pending;
+      queue.pending = null;
+      if (next && next.value !== ROOT.getAttribute(THEME_ATTR)) runSwitch(next.value, next.options);
+      else {
+        queue.target = null;
+        applied(); // callers whose request turned out to be the current theme
+      }
+    };
+    const update = () => {
       applyTheme(value);
-      remember();
-      return Promise.resolve();
+      settleColorTransitions();
+    };
+
+    if (value === ROOT.getAttribute(THEME_ATTR)) {
+      applied();
+      finished();
+      return;
     }
+    if (!animate || reducedMotion() || typeof document.startViewTransition !== 'function') {
+      update();
+      applied();
+      finished();
+      return;
+    }
+
+    // Ripple: the new theme is revealed as a growing circle from (x, y).
     const cx = Number.isFinite(x) ? x : window.innerWidth / 2;
     const cy = Number.isFinite(y) ? y : window.innerHeight / 2;
     const radius = Math.hypot(Math.max(cx, window.innerWidth - cx), Math.max(cy, window.innerHeight - cy));
     const { duration, easing } = timing || rippleTiming(document.querySelector(TAG_NAME));
 
     ensureRippleStyles();
+    ROOT.style.setProperty('--kakao-ripple-x', `${cx}px`);
+    ROOT.style.setProperty('--kakao-ripple-y', `${cy}px`);
     ROOT.classList.add(RIPPLE_CLASS);
     let transition;
     try {
-      transition = document.startViewTransition(() => applyTheme(value));
+      transition = document.startViewTransition(update);
     } catch {
       ROOT.classList.remove(RIPPLE_CLASS);
-      applyTheme(value);
-      remember();
-      return Promise.resolve();
+      update();
+      applied();
+      finished();
+      return;
     }
     transition.ready.then(() => {
       ROOT.animate(
         { clipPath: [`circle(0px at ${cx}px ${cy}px)`, `circle(${radius}px at ${cx}px ${cy}px)`] },
-        { duration, easing, pseudoElement: '::view-transition-new(root)' },
+        // forwards: stay fully revealed until the transition itself ends
+        { duration, easing, fill: 'forwards', pseudoElement: '::view-transition-new(root)' },
       );
     }).catch(() => { /* skipped: the theme is applied anyway */ });
-    transition.finished.finally(() => ROOT.classList.remove(RIPPLE_CLASS));
-    return transition.updateCallbackDone.then(remember, remember);
+    transition.updateCallbackDone.then(applied, applied);
+    transition.finished.finally(() => {
+      ROOT.classList.remove(RIPPLE_CLASS);
+      ROOT.style.removeProperty('--kakao-ripple-x');
+      ROOT.style.removeProperty('--kakao-ripple-y');
+      finished();
+    });
   }
 
   /** Ripple duration / easing from a switch's settings (defaults without one). */
@@ -321,9 +423,12 @@
   class KakaoThemeSwitch extends HTMLElement {
     /** Page-level: set any theme (with the ripple from x / y). */
     static setTheme(value, options = {}) {
-      const previous = ROOT.getAttribute(THEME_ATTR) || computedScheme();
-      if (value === ROOT.getAttribute(THEME_ATTR)) return Promise.resolve();
+      const previous = targetTheme() || computedScheme();
+      if (value === targetTheme()) return Promise.resolve();
+      const request = ++pageRequest;
       return switchTheme(String(value), options).then(() => {
+        // Only the latest request reports, and only if its theme is the one shown.
+        if (request !== pageRequest || ROOT.getAttribute(THEME_ATTR) !== String(value)) return;
         document.dispatchEvent(new CustomEvent('theme-change', {
           detail: { theme: String(value), previous, scheme: computedScheme(), source: options.source || 'api' },
         }));
@@ -332,7 +437,7 @@
 
     /** Page-level: the theme on <html>, or the system's light / dark when none is chosen. */
     static current() {
-      return ROOT.getAttribute(THEME_ATTR) || computedScheme();
+      return targetTheme() || computedScheme();
     }
 
     static get observedAttributes() {
@@ -468,7 +573,8 @@
 
     /** The theme in effect: the attribute on <html>, else the one matching the OS. */
     _current() {
-      const chosen = this._find(ROOT.getAttribute(THEME_ATTR));
+      // The theme the page is heading to, so quick clicks keep toggling from it.
+      const chosen = this._find(targetTheme());
       if (chosen) return chosen;
       // No theme chosen (follows the OS), or one this switch doesn't list:
       // show the theme with the same colour scheme.
@@ -487,7 +593,8 @@
 
     _switchTo(theme, { animate, x, y, source }) {
       const previous = this._current();
-      if (theme === previous && ROOT.getAttribute(THEME_ATTR) === theme.value) return;
+      if (theme.value === targetTheme()) return;
+      const request = (this._request = (this._request || 0) + 1);
       const r = this._button.getBoundingClientRect();
       switchTheme(theme.value, {
         animate,
@@ -497,6 +604,8 @@
         timing: rippleTiming(this),
       }).then(() => {
         this._sync();
+        // Only the latest request reports, and only if its theme is the one shown.
+        if (request !== this._request || ROOT.getAttribute(THEME_ATTR) !== theme.value) return;
         if (source === 'user') this._statusEl.textContent = `${theme.label} theme`;
         this.dispatchEvent(new CustomEvent('theme-change', {
           bubbles: true,

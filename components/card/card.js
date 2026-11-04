@@ -38,7 +38,8 @@
  *  changes and themes, and needs no JavaScript. The colour is a registered
  *  <color> property, so it fades smoothly instead of jumping.
  *
- *  Primary → ink, danger → danger, secondary → its fill, ghost → its text.
+ *  Primary → ink, danger → danger, secondary → its fill. A ghost button has no
+ *  colour of its own, so it gives no glow.
  *  Overrides of --kakao-button-* set on the card or an ancestor are followed;
  *  ones set only on the button itself are not (CSS can't read them upwards).
  *
@@ -85,9 +86,6 @@
     }
     kakao-card:not([no-glow]):has(${FIRST_BUTTON('secondary')}) {
       --kakao-card-glow-color: var(--kakao-button-secondary-bg, var(--kakao-color-subtle-strong, #e6e6e8));
-    }
-    kakao-card:not([no-glow]):has(${FIRST_BUTTON('ghost')}) {
-      --kakao-card-glow-color: var(--kakao-button-ghost-text, var(--kakao-button-ink-soft, var(--kakao-color-text-soft, #3f3f46)));
     }
     kakao-card:not([no-glow]):has(${FIRST_BUTTON('danger')}) {
       --kakao-card-glow-color: var(--kakao-button-danger-bg, var(--kakao-color-danger, #dc2626));
