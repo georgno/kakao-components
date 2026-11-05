@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-aside-menu — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="aside-menu.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="aside-menu.js" defer></script>
+<style>
+  /* a taller page so the body push is visible while scrolling */
+  main { min-height: 160vh; }
+  .demo-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  .menu-demo nav a { margin-bottom: 2px; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Aside menu</h1>
+    <p><code>&lt;kakao-aside-menu&gt;</code> — a completely hidden slide-in menu. The built-in hamburger button pushes the whole page aside and slides the panel into the freed space; a close button in the panel header closes it again. Light DOM: load <code>aside-menu.css</code> next to the script.</p>
+  </header>
+
+  <h2>Try it</h2>
+  <p>The menu below is a normal site menu. Open it and watch the page — including this text and the theme switch — slide to the right.</p>
+  <div class="card demo-row">
+    <kakao-aside-menu id="menu1" label="Site menu" class="menu-demo">
+      <nav aria-label="Site menu">
+        <a href="#" onclick="return false">Home</a>
+        <a href="#" onclick="return false">Browse</a>
+        <a href="#" onclick="return false">My list</a>
+        <a href="#" onclick="return false">Downloads</a>
+        <a href="#" onclick="return false">Settings</a>
+        <a href="#" onclick="return false">Sign out</a>
+      </nav>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.82rem">Any markup works here: this is a plain slot.</p>
+    </kakao-aside-menu>
+    <kakao-button id="toggleBtn" variant="secondary" size="sm" label="Open via API"></kakao-button>
+  </div>
+
+  <h2>Variants</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>From the right · <code>position="right"</code></h3>
+      <kakao-aside-menu position="right" label="Chat &amp; friends">
+        <nav aria-label="Chat menu">
+          <a href="#" onclick="return false">New chat</a>
+          <a href="#" onclick="return false">Contacts</a>
+          <a href="#" onclick="return false">Invites</a>
+        </nav>
+      </kakao-aside-menu>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The body is pushed to the left instead.</p>
+    </div>
+    <div class="card">
+      <h3>Wide · <code>width="22rem"</code></h3>
+      <kakao-aside-menu width="22rem" label="Filters">
+        <nav aria-label="Filters">
+          <a href="#" onclick="return false">Genre</a>
+          <a href="#" onclick="return false">Release year</a>
+          <a href="#" onclick="return false">Rating</a>
+        </nav>
+      </kakao-aside-menu>
+    </div>
+    <div class="card">
+      <h3>No built-in button · <code>no-open-button</code></h3>
+      <kakao-aside-menu no-open-button id="menu3" label="External trigger">
+        <nav aria-label="External trigger menu">
+          <a href="#" onclick="return false">Item one</a>
+          <a href="#" onclick="return false">Item two</a>
+        </nav>
+      </kakao-aside-menu>
+      <kakao-button id="openMenu3" variant="secondary" size="sm" label="Open menu →"></kakao-button>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The page calls <code>menu3.open()</code> itself.</p>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Changes bubble as <code>aside-change</code> events with <code>{ open }</code> in the detail.</p>
+  <div class="card">
+    <div class="toolbar">
+      <kakao-button id="optPosition" variant="secondary" size="sm" toggle></kakao-button>
+      <kakao-button id="optWidth" variant="secondary" size="sm" toggle></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes on the host: <code>label</code>, <code>position</code> (<code>left</code> · <code>right</code>), <code>width</code> (any CSS length), <code>open</code>, <code>no-open-button</code>. Methods: <code>open()</code>, <code>close()</code>, <code>toggle()</code>. Escape closes, focus is trapped inside the open panel and returned to the trigger. Full reference in the header of <code>aside-menu.js</code>.</footer>
+</main>
+
+<script>
+  const menu1 = document.getElementById('menu1');
+  const menu3 = document.getElementById('menu3');
+  const log = document.getElementById('log');
+  logEvents(log, ['aside-change'], menu1);
+
+  document.getElementById('toggleBtn').addEventListener('kakao-button-action', () => menu1.toggle());
+  document.getElementById('openMenu3').addEventListener('kakao-button-action', () => menu3.open());
+
+  toggleButton(document.getElementById('optPosition'), 'position right', (on) => {
+    on ? menu1.setAttribute('position', 'right') : menu1.setAttribute('position', 'left');
+  });
+  toggleButton(document.getElementById('optWidth'), 'width 22rem', (on) => {
+    on ? menu1.setAttribute('width', '22rem') : menu1.removeAttribute('width');
+  });
+</script>
+</body>
+</html>
