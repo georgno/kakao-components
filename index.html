@@ -283,7 +283,7 @@
                 </div>
                 <div class="panel p-downloads">
                   <p class="panel-title">Downloads</p>
-                  <kakao-switch-group label="Downloads" orientation="vertical"
+                  <kakao-switch-group id="dl" async label="Downloads" orientation="vertical"
                     list-data='[{"name":"wifi","label":"Only on Wi-Fi","checked":true},{"name":"auto","label":"Auto-delete"}]'></kakao-switch-group>
                 </div>
               </div>
@@ -404,6 +404,49 @@
     customElements.whenDefined('kakao-card').then(schedule);
     mark();
   })();
+
+  // The Downloads switches are async — a real toggle waits for a request — so
+  // they can show the loader and the checkmark. One flips every few seconds,
+  // under the same manners as the theme walk: it holds still while the pointer or
+  // focus is in the portal, and it does not start for reduced motion.
+  customElements.whenDefined('kakao-switch-group').then(() => {
+    const group = document.getElementById('dl');
+    const portal = document.querySelector('.portal');
+    if (!group || !portal) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    group.addEventListener('switch-request', (event) => {
+      event.detail.waitUntil(new Promise((resolve) => setTimeout(resolve, 900)));
+    });
+
+    const INTERVAL = 3200;
+    let index = 0;
+    let timer = null;
+
+    const step = () => {
+      const tracks = group.shadowRoot ? [...group.shadowRoot.querySelectorAll('.track')] : [];
+      if (!tracks.length) return;
+      const track = tracks[index % tracks.length];
+      index += 1;
+      track.click(); // the same path a real tap takes, request included
+    };
+
+    const play = () => {
+      if (timer) return;
+      timer = setInterval(step, INTERVAL);
+    };
+    const stop = () => {
+      clearInterval(timer);
+      timer = null;
+    };
+    portal.addEventListener('pointerenter', stop);
+    portal.addEventListener('pointerleave', play);
+    portal.addEventListener('focusin', stop);
+    portal.addEventListener('focusout', play);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
+
+    play();
+  });
 </script>
 </body>
 </html>
