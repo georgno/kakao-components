@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-text-input — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+    <script src="text-input.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="text-input" data-source="text-input.js" data-title="Text input">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Basic</figcaption>
+      <kakao-text-input label="Email" type="email" placeholder="you@example.com" hint="We only use it for receipts."></kakao-text-input>
+    </figure>
+    <figure>
+      <figcaption>Icon · clearable · error</figcaption>
+      <kakao-text-input icon="fas fa-magnifying-glass" clearable value="kakao" label="Search"></kakao-text-input>
+      <div style="height:.75rem"></div>
+      <kakao-text-input value="acme" error="Already taken"></kakao-text-input>
+    </figure>
+    <figure>
+      <figcaption>Sizes</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-text-input size="sm" value="Small"></kakao-text-input>
+        <kakao-text-input value="Medium"></kakao-text-input>
+        <kakao-text-input size="lg" value="Large"></kakao-text-input>
+      </div>
+    </figure>
+
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+    [
+      {
+        "property": "--kakao-text-input-bg",
+        "label": "Background",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-text-input-text",
+        "label": "Text",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-text-input-muted",
+        "label": "Muted text",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-text-input-border",
+        "label": "Border",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-text-input-line",
+        "label": "Hairline",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-text-input-hover-bg",
+        "label": "Hover fill",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-text-input-focus",
+        "label": "Focus",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-text-input-danger",
+        "label": "Danger",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-text-input-font",
+        "label": "Font",
+        "group": "Typography",
+        "type": "font"
+      },
+      {
+        "property": "--kakao-text-input-height",
+        "label": "Height",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-text-input-padding-x",
+        "label": "Padding x",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-text-input-radius",
+        "label": "Radius",
+        "group": "Shape",
+        "type": "radius"
+      },
+      {
+        "property": "--kakao-text-input-icon-size",
+        "label": "Icon size",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-text-input-clear-size",
+        "label": "Clear button size",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-text-input-label-gap",
+        "label": "Label gap",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-text-input-message-gap",
+        "label": "Message gap",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-text-input-label-weight",
+        "label": "Label weight",
+        "group": "Typography",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-text-input-focus-width",
+        "label": "Focus width",
+        "group": "Size & spacing",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-text-input-focus-offset",
+        "label": "Focus offset",
+        "group": "Size & spacing",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-text-input-disabled-opacity",
+        "label": "Disabled opacity",
+        "group": "Effects",
+        "type": "number"
+      }
+    ]
+  </script>
+</main>
+</body>
+</html>

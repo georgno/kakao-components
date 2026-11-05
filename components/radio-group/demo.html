@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-radio-group — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+    <script src="radio-group.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Radio group</h1>
+    <p><code>&lt;kakao-radio-group&gt;</code> — A set of radio buttons from list-data, with label, hint, error, vertical or horizontal layout. Form-associated: the picked value goes with the form under its name.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Vertical · <code>list-data</code></h3>
+      <kakao-radio-group id="r1" label="Plan" name="plan" value="team"
+        list-data='[{"value":"solo","label":"Solo","hint":"one seat"},
+                    {"value":"team","label":"Team","hint":"up to ten people"},
+                    {"value":"enterprise","label":"Enterprise","hint":"talk to us","disabled":true}]'></kakao-radio-group>
+    </div>
+    <div class="card">
+      <h3>Horizontal · <code>orientation</code></h3>
+      <kakao-radio-group label="Billing" orientation="horizontal" value="yearly"
+        list-data='[{"value":"monthly","label":"Monthly"},{"value":"yearly","label":"Yearly"}]'></kakao-radio-group>
+    </div>
+    <div class="card">
+      <h3>Sizes</h3>
+      <div style="display:grid;gap:1rem">
+        <kakao-radio-group size="sm" label="Small" value="b" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+        <kakao-radio-group label="Medium" value="b" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+        <kakao-radio-group size="lg" label="Large" value="b" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · error</h3>
+      <div style="display:grid;gap:1rem">
+        <kakao-radio-group disabled label="Disabled" value="a" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+        <kakao-radio-group error="Please pick one." label="Required" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+      </div>
+    </div>
+    <div class="card">
+      <h3>In a form · <code>name</code> + <code>required</code></h3>
+      <form id="form4" style="display:grid;gap:.6rem">
+        <kakao-radio-group name="shipping" label="Shipping" required value=""
+          list-data='[{"value":"standard","label":"Standard"},{"value":"express","label":"Express"}]'></kakao-radio-group>
+        <div class="row"><kakao-button label="Submit" type="submit"></kakao-button></div>
+      </form>
+      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut4">Submit to see the submitted value.</p>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <div class="toolbar" style="margin-top:0">
+      <kakao-button id="apiA" label="value = &quot;solo&quot;" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiB" label="value = &quot;team&quot;" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiToggle" label="toggle horizontal" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiData" label="setData()" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>radio-group.js</code>.</footer>
+</main>
+<script>
+  const r1 = document.getElementById('r1');
+  const log = document.getElementById('log');
+  logEvents(log, ['change', 'radio-change'], r1);
+  const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+  on('apiA', () => { r1.value = 'solo'; });
+  on('apiB', () => { r1.value = 'team'; });
+  on('apiToggle', () => {
+    r1.setAttribute('orientation', r1.getAttribute('orientation') === 'horizontal' ? 'vertical' : 'horizontal');
+  });
+  on('apiData', () => {
+    r1.setData([{ value: 'a', label: 'Option A' }, { value: 'b', label: 'Option B' }]);
+  });
+  document.getElementById('form4').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    document.getElementById('formOut4').textContent = `Submitted: shipping="${data.get('shipping') || ''}"`;
+  });
+</script>
+</body>
+</html>

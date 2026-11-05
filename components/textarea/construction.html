@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-textarea — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+    <script src="textarea.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="textarea" data-source="textarea.js" data-title="Textarea">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>With label · counter</figcaption>
+      <kakao-textarea label="Bio" maxlength="140" counter value="Design systems, mostly."></kakao-textarea>
+    </figure>
+    <figure>
+      <figcaption>Auto-growing</figcaption>
+      <kakao-textarea label="Notes" autosize rows="2"></kakao-textarea>
+    </figure>
+    <figure>
+      <figcaption>Error</figcaption>
+      <kakao-textarea value="Too short" error="Please write at least 20 characters."></kakao-textarea>
+    </figure>
+
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+    [
+      {
+        "property": "--kakao-textarea-bg",
+        "label": "Background",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-textarea-text",
+        "label": "Text",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-textarea-muted",
+        "label": "Muted text",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-textarea-border",
+        "label": "Border",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-textarea-line",
+        "label": "Hairline",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-textarea-focus",
+        "label": "Focus",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-textarea-danger",
+        "label": "Danger",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-textarea-font",
+        "label": "Font",
+        "group": "Typography",
+        "type": "font"
+      },
+      {
+        "property": "--kakao-textarea-padding",
+        "label": "Padding",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-textarea-radius",
+        "label": "Radius",
+        "group": "Shape",
+        "type": "radius"
+      },
+      {
+        "property": "--kakao-textarea-min-height",
+        "label": "Minimum height",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-textarea-max-height",
+        "label": "Maximum height (autosize)",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-textarea-label-gap",
+        "label": "Label gap",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-textarea-message-gap",
+        "label": "Message gap",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-textarea-label-weight",
+        "label": "Label weight",
+        "group": "Typography",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-textarea-focus-width",
+        "label": "Focus width",
+        "group": "Size & spacing",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-textarea-disabled-opacity",
+        "label": "Disabled opacity",
+        "group": "Effects",
+        "type": "number"
+      }
+    ]
+  </script>
+</main>
+</body>
+</html>

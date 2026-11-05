@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-radio-group — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+    <script src="radio-group.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="radio-group" data-source="radio-group.js" data-title="Radio group">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Vertical</figcaption>
+      <kakao-radio-group label="Plan" value="team"
+        list-data='[{"value":"solo","label":"Solo","hint":"one seat"},{"value":"team","label":"Team","hint":"up to ten people"}]'></kakao-radio-group>
+    </figure>
+    <figure>
+      <figcaption>Horizontal</figcaption>
+      <kakao-radio-group label="Billing" orientation="horizontal" value="yearly"
+        list-data='[{"value":"monthly","label":"Monthly"},{"value":"yearly","label":"Yearly"}]'></kakao-radio-group>
+    </figure>
+    <figure>
+      <figcaption>Error</figcaption>
+      <kakao-radio-group label="Required" error="Please pick one."
+        list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+    </figure>
+
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+    [
+      {
+        "property": "--kakao-radio-group-text",
+        "label": "Text",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-muted",
+        "label": "Muted text",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-dot-bg",
+        "label": "Dot background",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-dot-border",
+        "label": "Dot border",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-dot-checked-bg",
+        "label": "Checked dot",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-dot-checked-border",
+        "label": "Checked dot border",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-mark",
+        "label": "Tick / dot",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-focus",
+        "label": "Focus",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-danger",
+        "label": "Danger",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-hover-bg",
+        "label": "Hover fill",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-radio-group-font",
+        "label": "Font",
+        "group": "Typography",
+        "type": "font"
+      },
+      {
+        "property": "--kakao-radio-group-dot-size",
+        "label": "Dot size",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-radio-group-gap",
+        "label": "Label gap",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-radio-group-option-gap",
+        "label": "Option gap",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-radio-group-option-padding",
+        "label": "Option padding",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-radio-group-radius",
+        "label": "Radius",
+        "group": "Shape",
+        "type": "radius"
+      },
+      {
+        "property": "--kakao-radio-group-label-weight",
+        "label": "Label weight",
+        "group": "Typography",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-radio-group-focus-width",
+        "label": "Focus width",
+        "group": "Size & spacing",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-radio-group-focus-offset",
+        "label": "Focus offset",
+        "group": "Size & spacing",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-radio-group-disabled-opacity",
+        "label": "Disabled opacity",
+        "group": "Effects",
+        "type": "number"
+      }
+    ]
+  </script>
+</main>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-checkbox — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+    <script src="checkbox.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Checkbox</h1>
+    <p><code>&lt;kakao-checkbox&gt;</code> — A checkbox with a label, hint, indeterminate state and three sizes. Form-associated: it submits its value while checked.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Simple</h3>
+      <kakao-checkbox id="c1" label="Send me the newsletter"></kakao-checkbox>
+    </div>
+    <div class="card">
+      <h3>Checked · hint</h3>
+      <kakao-checkbox checked label="Product updates" hint="About once a month."></kakao-checkbox>
+    </div>
+    <div class="card">
+      <h3>Indeterminate</h3>
+      <kakao-checkbox id="c2" indeterminate label="Select all"></kakao-checkbox>
+      <p style="margin:.6rem 0 0;color:var(--muted);font-size:.85rem">Click it: the dash gives way to a tick, as native checkboxes do.</p>
+    </div>
+    <div class="card">
+      <h3>Sizes</h3>
+      <div style="display:grid;gap:.6rem">
+        <kakao-checkbox size="sm" checked label="Small"></kakao-checkbox>
+        <kakao-checkbox checked label="Medium"></kakao-checkbox>
+        <kakao-checkbox size="lg" checked label="Large"></kakao-checkbox>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · error</h3>
+      <div style="display:grid;gap:.6rem">
+        <kakao-checkbox disabled label="Disabled"></kakao-checkbox>
+        <kakao-checkbox error="You have to accept the terms." label="I accept the terms"></kakao-checkbox>
+      </div>
+    </div>
+    <div class="card">
+      <h3>In a form · <code>name</code> + <code>required</code></h3>
+      <form id="form3" style="display:grid;gap:.6rem">
+        <kakao-checkbox name="terms" value="yes" required label="I accept the terms"></kakao-checkbox>
+        <div class="row"><kakao-button label="Submit" type="submit"></kakao-button></div>
+      </form>
+      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut3">Submit to see the submitted value.</p>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <div class="toolbar" style="margin-top:0">
+      <kakao-button id="apiToggle" label="checked = !checked" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiInd" label="toggle indeterminate" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>checkbox.js</code>.</footer>
+</main>
+<script>
+  const c1 = document.getElementById('c1');
+  const log = document.getElementById('log');
+  logEvents(log, ['change', 'checkbox-change'], c1);
+  const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+  on('apiToggle', () => { c1.checked = !c1.checked; });
+  on('apiInd', () => { c1.indeterminate = !c1.indeterminate; });
+  on('apiDisable', () => { c1.disabled = !c1.disabled; });
+  document.getElementById('form3').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    document.getElementById('formOut3').textContent = `Submitted: terms="${data.get('terms') || ''}"`;
+  });
+</script>
+</body>
+</html>

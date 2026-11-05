@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-textarea — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+    <script src="textarea.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Textarea</h1>
+    <p><code>&lt;kakao-textarea&gt;</code> — A multi-line field with label, hint, error, a character counter and optional auto-growing. Form-associated.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>With label</h3>
+      <kakao-textarea id="a1" label="Message" name="message" rows="4" placeholder="Write a message…"></kakao-textarea>
+    </div>
+    <div class="card">
+      <h3>Counter · <code>maxlength</code> + <code>counter</code></h3>
+      <kakao-textarea label="Bio" maxlength="140" counter value="Design systems, mostly."></kakao-textarea>
+    </div>
+    <div class="card">
+      <h3>Auto-growing · <code>autosize</code></h3>
+      <kakao-textarea label="Notes" autosize rows="2" hint="Grows with what you type."></kakao-textarea>
+    </div>
+    <div class="card">
+      <h3>Error</h3>
+      <kakao-textarea label="Reason" value="Too short" error="Please write at least 20 characters."></kakao-textarea>
+    </div>
+    <div class="card">
+      <h3>Sizes · resize</h3>
+      <div style="display:grid;gap:.6rem">
+        <kakao-textarea size="sm" rows="2" value="Small"></kakao-textarea>
+        <kakao-textarea size="lg" rows="2" resize="none" value="Large, no resize"></kakao-textarea>
+      </div>
+    </div>
+    <div class="card">
+      <h3>In a form · <code>required</code></h3>
+      <form id="form2" style="display:grid;gap:.6rem">
+        <kakao-textarea name="feedback" label="Feedback" required rows="3"></kakao-textarea>
+        <div class="row"><kakao-button label="Submit" type="submit"></kakao-button></div>
+      </form>
+      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut2">Submit to see the submitted value.</p>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <div class="toolbar" style="margin-top:0">
+      <kakao-button id="apiFocus" label="focus()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiValue" label="value = long text" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiClear" label="value = &quot;&quot;" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>textarea.js</code>.</footer>
+</main>
+<script>
+  const a1 = document.getElementById('a1');
+  const log = document.getElementById('log');
+  logEvents(log, ['input', 'change'], a1);
+  const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+  on('apiFocus', () => a1.focus());
+  on('apiValue', () => { a1.value = 'A longer piece of text\nwith two lines.'; });
+  on('apiClear', () => { a1.value = ''; });
+  document.getElementById('form2').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    document.getElementById('formOut2').textContent = `Submitted: feedback="${(data.get('feedback') || '').slice(0, 40)}"`;
+  });
+</script>
+</body>
+</html>

@@ -27,6 +27,10 @@
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/card/card.js" defer></script>
 <script src="components/color-picker/color-picker.js" defer></script>
+<script src="components/text-input/text-input.js" defer></script>
+<script src="components/textarea/textarea.js" defer></script>
+<script src="components/checkbox/checkbox.js" defer></script>
+<script src="components/radio-group/radio-group.js" defer></script>
 <style>
   dl { margin: 0; font-size: 14px; }
   dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
@@ -481,6 +485,130 @@
       </div>
     </article>
 
+    <!-- ============================== Text input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Text input</h2>
+        <code>&lt;kakao-text-input&gt;</code>
+        <a href="components/text-input/construction.html">Construction</a>
+        <a href="components/text-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Single-line field with label, hint, error, optional icon and a clear button, in three sizes. Form-associated: <code>name</code>, <code>value</code> and <code>required</code> go with the form.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>With label and hint</h3>
+          <kakao-text-input label="Email" type="email" name="email" placeholder="you@example.com" hint="We only use it for receipts."></kakao-text-input>
+        </div>
+        <div class="example">
+          <h3>Icon · <code>clearable</code></h3>
+          <kakao-text-input type="search" label="Search" icon="fas fa-magnifying-glass" clearable value="kakao"></kakao-text-input>
+        </div>
+        <div class="example">
+          <h3>Error</h3>
+          <kakao-text-input label="Workspace" value="acme" error="That name is already taken."></kakao-text-input>
+        </div>
+        <div class="example">
+          <h3>Sizes</h3>
+          <div style="display:grid;gap:.5rem">
+            <kakao-text-input size="sm" value="Small"></kakao-text-input>
+            <kakao-text-input value="Medium"></kakao-text-input>
+            <kakao-text-input size="lg" value="Large"></kakao-text-input>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Textarea ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Textarea</h2>
+        <code>&lt;kakao-textarea&gt;</code>
+        <a href="components/textarea/construction.html">Construction</a>
+        <a href="components/textarea/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Multi-line field with label, hint, error, a character counter and optional auto-growing. Form-associated.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>With label</h3>
+          <kakao-textarea label="Message" rows="3" placeholder="Write a message…"></kakao-textarea>
+        </div>
+        <div class="example">
+          <h3>Counter · <code>maxlength</code> + <code>counter</code></h3>
+          <kakao-textarea label="Bio" maxlength="140" counter value="Design systems, mostly."></kakao-textarea>
+        </div>
+        <div class="example">
+          <h3>Auto-growing · <code>autosize</code></h3>
+          <kakao-textarea label="Notes" autosize rows="2" hint="Grows as you type."></kakao-textarea>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Checkbox ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Checkbox</h2>
+        <code>&lt;kakao-checkbox&gt;</code>
+        <a href="components/checkbox/construction.html">Construction</a>
+        <a href="components/checkbox/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Checkbox with label, hint, indeterminate state and three sizes. Form-associated: it submits its value while checked.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Unchecked · checked · indeterminate</h3>
+          <div style="display:grid;gap:.5rem">
+            <kakao-checkbox label="Send me the newsletter"></kakao-checkbox>
+            <kakao-checkbox checked label="Product updates" hint="About once a month."></kakao-checkbox>
+            <kakao-checkbox indeterminate label="Select all"></kakao-checkbox>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Sizes</h3>
+          <div style="display:grid;gap:.5rem">
+            <kakao-checkbox size="sm" checked label="Small"></kakao-checkbox>
+            <kakao-checkbox checked label="Medium"></kakao-checkbox>
+            <kakao-checkbox size="lg" checked label="Large"></kakao-checkbox>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Disabled · error</h3>
+          <div style="display:grid;gap:.5rem">
+            <kakao-checkbox disabled label="Disabled"></kakao-checkbox>
+            <kakao-checkbox error="You have to accept the terms." label="I accept the terms"></kakao-checkbox>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Radio group ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Radio group</h2>
+        <code>&lt;kakao-radio-group&gt;</code>
+        <a href="components/radio-group/construction.html">Construction</a>
+        <a href="components/radio-group/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Radio buttons from <code>list-data</code>: label, hint, error, vertical or horizontal. Form-associated: the picked value goes with the form under <code>name</code>.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Vertical</h3>
+          <kakao-radio-group label="Plan" name="plan" value="team"
+            list-data='[{"value":"solo","label":"Solo","hint":"one seat"},{"value":"team","label":"Team","hint":"up to ten people"},{"value":"enterprise","label":"Enterprise","disabled":true}]'></kakao-radio-group>
+        </div>
+        <div class="example">
+          <h3>Horizontal · <code>orientation</code></h3>
+          <kakao-radio-group label="Billing" orientation="horizontal" value="yearly"
+            list-data='[{"value":"monthly","label":"Monthly"},{"value":"yearly","label":"Yearly"}]'></kakao-radio-group>
+        </div>
+        <div class="example">
+          <h3>Error · sizes</h3>
+          <div style="display:grid;gap:.9rem">
+            <kakao-radio-group label="Required" error="Please pick one." list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+            <kakao-radio-group size="sm" label="Small" value="b" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+          </div>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Color picker ============================== -->
     <article class="card">
       <div class="component-head">
@@ -551,45 +679,9 @@
   <p>Placeholders: what a kakao component would replace, shown as the plain native element.</p>
   <div class="grid">
 
-    <article class="card placeholder">
-      <div class="component-head"><h2>Text input</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;input type="text|email|search|password"&gt;</code></p>
-      <div class="native">
-        <input type="text" placeholder="Display name" />
-        <input type="search" placeholder="Search…" />
-        <input type="password" value="secret" />
-        <input type="text" value="Disabled" disabled />
-      </div>
-    </article>
 
-    <article class="card placeholder">
-      <div class="component-head"><h2>Textarea</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;textarea&gt;</code></p>
-      <div class="native">
-        <textarea rows="3" placeholder="Write a message…"></textarea>
-      </div>
-    </article>
 
-    <article class="card placeholder">
-      <div class="component-head"><h2>Checkbox</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;input type="checkbox"&gt;</code></p>
-      <div class="native">
-        <label><input type="checkbox" checked /> Remember me</label>
-        <label><input type="checkbox" /> Subscribe</label>
-        <label><input type="checkbox" id="ov-indeterminate" /> Indeterminate</label>
-        <label><input type="checkbox" disabled /> Disabled</label>
-      </div>
-    </article>
 
-    <article class="card placeholder">
-      <div class="component-head"><h2>Radio group</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;input type="radio"&gt;</code> in a <code>&lt;fieldset&gt;</code></p>
-      <fieldset class="native" style="border: 0; padding: 0; margin-inline: 0">
-        <label><input type="radio" name="ov-radio" checked /> Card</label>
-        <label><input type="radio" name="ov-radio" /> PayPal</label>
-        <label><input type="radio" name="ov-radio" disabled /> Invoice (disabled)</label>
-      </fieldset>
-    </article>
 
     <article class="card placeholder">
       <div class="component-head"><h2>Select</h2><span class="badge">Missing</span></div>

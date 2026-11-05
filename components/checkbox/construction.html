@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-checkbox — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+    <script src="checkbox.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="checkbox" data-source="checkbox.js" data-title="Checkbox">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Unchecked · checked · indeterminate</figcaption>
+      <div style="display:grid;gap:.6rem">
+        <kakao-checkbox label="Unchecked"></kakao-checkbox>
+        <kakao-checkbox checked label="Checked"></kakao-checkbox>
+        <kakao-checkbox indeterminate label="Indeterminate"></kakao-checkbox>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Hint · error</figcaption>
+      <div style="display:grid;gap:.6rem">
+        <kakao-checkbox label="Product updates" hint="About once a month."></kakao-checkbox>
+        <kakao-checkbox error="You have to accept the terms." label="I accept the terms"></kakao-checkbox>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Sizes</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-checkbox size="sm" checked label="Small"></kakao-checkbox>
+        <kakao-checkbox checked label="Medium"></kakao-checkbox>
+        <kakao-checkbox size="lg" checked label="Large"></kakao-checkbox>
+      </div>
+    </figure>
+
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+    [
+      {
+        "property": "--kakao-checkbox-text",
+        "label": "Text",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-muted",
+        "label": "Muted text",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-box-bg",
+        "label": "Box background",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-box-border",
+        "label": "Box border",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-box-checked-bg",
+        "label": "Checked background",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-box-checked-border",
+        "label": "Checked border",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-mark",
+        "label": "Tick / dot",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-focus",
+        "label": "Focus",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-danger",
+        "label": "Danger",
+        "group": "Colour",
+        "type": "color"
+      },
+      {
+        "property": "--kakao-checkbox-font",
+        "label": "Font",
+        "group": "Typography",
+        "type": "font"
+      },
+      {
+        "property": "--kakao-checkbox-box-size",
+        "label": "Box size",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-checkbox-box-radius",
+        "label": "Box radius",
+        "group": "Shape",
+        "type": "radius"
+      },
+      {
+        "property": "--kakao-checkbox-gap",
+        "label": "Label gap",
+        "group": "Size & spacing",
+        "type": "length"
+      },
+      {
+        "property": "--kakao-checkbox-label-weight",
+        "label": "Label weight",
+        "group": "Typography",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-checkbox-focus-width",
+        "label": "Focus width",
+        "group": "Size & spacing",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-checkbox-focus-offset",
+        "label": "Focus offset",
+        "group": "Size & spacing",
+        "type": "number"
+      },
+      {
+        "property": "--kakao-checkbox-disabled-opacity",
+        "label": "Disabled opacity",
+        "group": "Effects",
+        "type": "number"
+      }
+    ]
+  </script>
+</main>
+</body>
+</html>
