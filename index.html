@@ -794,8 +794,7 @@
     e.detail.waitUntil(wait(1200, fail));
   });
 
-  // Placeholders: indeterminate can only be set from script; the dialog needs showModal()
-  document.getElementById('ov-indeterminate').indeterminate = true;
+  // The placeholder dialog opens with showModal()
   document.getElementById('ov-dialog-open').addEventListener('click', () => document.getElementById('ov-dialog').showModal());
 
   // Segment buttons are exclusive: pressing one releases the others
