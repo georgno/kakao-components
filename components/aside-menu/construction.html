@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-aside-menu — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="aside-menu.css" />
+<script src="../button/button.js" defer></script>
+<script src="aside-menu.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .demo-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="aside-menu" data-source="aside-menu.css" data-title="Aside menu">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default · left · list-data</figcaption>
+      <div class="demo-row">
+        <kakao-aside-menu label="Navigation"
+          list-data='[{"value":"home","label":"Home"},{"value":"browse","label":"Browse"},{"value":"account","label":"Account"}]'
+          selected="home"></kakao-aside-menu>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Right · slotted content</figcaption>
+      <div class="demo-row">
+        <kakao-aside-menu position="right" label="Filters">
+          <nav aria-label="Filters">
+            <a href="#" onclick="return false">Genre</a>
+            <a href="#" onclick="return false">Year</a>
+            <a href="#" onclick="return false">Rating</a>
+          </nav>
+        </kakao-aside-menu>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Persistent · <code>persistent="1440px"</code> (open this page wide)</figcaption>
+      <div class="demo-row">
+        <kakao-aside-menu label="Persistent nav" persistent="1440px"
+          list-data='[{"value":"home","label":"Home"},{"value":"library","label":"Library"}]'
+          selected="home"></kakao-aside-menu>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Wide · no-open-button</figcaption>
+      <div class="demo-row">
+        <kakao-aside-menu id="wideMenu" width="22rem" label="Wide panel" no-open-button
+          list-data='[{"value":"a","label":"Item A"},{"value":"b","label":"Item B"}]'></kakao-aside-menu>
+        <kakao-button id="openWide" variant="secondary" size="sm" label="Open wide"></kakao-button>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-aside-width", "label": "Width", "group": "Size", "type": "length" },
+    { "property": "--kakao-aside-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-aside-color", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-aside-accent", "label": "Accent", "group": "Colour", "type": "color", "hint": "selected nav item" },
+    { "property": "--kakao-aside-subtle", "label": "Subtle", "group": "Colour", "type": "color", "hint": "hover / open button hover" },
+    { "property": "--kakao-aside-subtle-strong", "label": "Subtle strong", "group": "Colour", "type": "color", "hint": "open button active" },
+    { "property": "--kakao-aside-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-aside-shadow", "label": "Panel shadow", "group": "Effects", "type": "shadow" },
+
+    { "property": "--kakao-aside-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-aside-z-index", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 9999 },
+
+    { "property": "--kakao-aside-open-size", "label": "Size", "group": "Open button", "type": "length" },
+    { "property": "--kakao-aside-open-icon", "label": "Icon size", "group": "Open button", "type": "length" },
+    { "property": "--kakao-aside-open-bg", "label": "Background", "group": "Open button", "type": "color" },
+    { "property": "--kakao-aside-open-color", "label": "Icon colour", "group": "Open button", "type": "color" },
+    { "property": "--kakao-aside-open-hover-bg", "label": "Hover background", "group": "Open button", "type": "color" },
+    { "property": "--kakao-aside-open-active-bg", "label": "Active background", "group": "Open button", "type": "color" },
+
+    { "property": "--kakao-aside-head-padding", "label": "Head padding", "group": "Header", "type": "text", "hint": "1–4 lengths" },
+    { "property": "--kakao-aside-title-size", "label": "Title size", "group": "Header", "type": "length" },
+    { "property": "--kakao-aside-title-weight", "label": "Title weight", "group": "Header", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-aside-close-size", "label": "Close button size", "group": "Header", "type": "length" },
+    { "property": "--kakao-aside-close-icon", "label": "Close icon size", "group": "Header", "type": "length" },
+
+    { "property": "--kakao-aside-content-padding", "label": "Content padding", "group": "Content", "type": "text", "hint": "1–4 lengths" },
+
+    { "property": "--kakao-aside-duration", "label": "Duration", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-aside-easing", "label": "Easing", "group": "Motion", "type": "text", "hint": "CSS cubic-bezier" }
+  ]
+  </script>
+</main>
+<script>
+  document.getElementById('openWide').addEventListener('kakao-button-action', () => {
+    document.getElementById('wideMenu').open();
+  });
+</script>
+</body>
+</html>
