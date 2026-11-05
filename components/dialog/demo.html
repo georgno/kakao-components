@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-dialog — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="dialog.js" defer></script>
+<style>
+  .demo-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  /* the dialog is fixed, so these only keep the demo page tall enough to scroll */
+  main { min-height: 130vh; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../index.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Dialog</h1>
+    <p><code>&lt;kakao-dialog&gt;</code> — a modal that covers the page and keeps focus inside. Built on a plain fixed overlay rather than <code>&lt;dialog&gt;</code> and <code>showModal()</code>, so it looks and behaves the same on phones, tablets and desktops. Shadow DOM, slots for header, body and footer.</p>
+  </header>
+
+  <h2>Try it</h2>
+  <p>The page behind scrolls normally while the dialog is closed and is locked while one is open. Escape or a click on the covered page closes it, and focus goes back to the button that opened it.</p>
+  <div class="card demo-row">
+    <kakao-button id="open-basic" label="Open dialog"></kakao-button>
+    <kakao-button id="open-confirm" label="Delete account" variant="danger"></kakao-button>
+    <kakao-button id="open-long" label="Long content" variant="secondary"></kakao-button>
+    <kakao-button id="open-static" label="No dismiss" variant="ghost"></kakao-button>
+  </div>
+
+  <h2>Variants</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>No header · <code>label</code> only</h3>
+      <p class="small muted" style="margin:0">The <code>label</code> attribute names the dialog when there is no header element.</p>
+      <div class="demo-row" style="margin-top:.75rem"><kakao-button id="open-bare" label="Open" variant="secondary" size="sm"></kakao-button></div>
+    </div>
+    <div class="card">
+      <h3>Sizes · <code>size="sm" | "lg"</code></h3>
+      <div class="demo-row"><kakao-button id="open-sm" label="sm" variant="secondary" size="sm"></kakao-button><kakao-button id="open-lg" label="lg" variant="secondary" size="sm"></kakao-button></div>
+    </div>
+    <div class="card">
+      <h3>Taller than the screen</h3>
+      <p class="small muted" style="margin:0">Header and footer stay put; only the body scrolls.</p>
+      <div class="demo-row" style="margin-top:.75rem"><kakao-button id="open-tall" label="Open tall" variant="secondary" size="sm"></kakao-button></div>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Every open and close bubbles as <code>dialog-open</code> / <code>dialog-close</code>; <code>data-close</code> decides the return value.</p>
+  <div class="card">
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>open</code>, <code>label</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>), <code>no-dismiss</code>. Methods: <code>open()</code>, <code>close(returnValue)</code>, <code>toggle()</code>, <code>isOpen</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Full reference in the header of <code>dialog.js</code>.</footer>
+</main>
+
+<!-- ============================== the dialogs ============================== -->
+<kakao-dialog id="basic" label="Streaming quality">
+  <h2 slot="header">Streaming quality</h2>
+  <p>SD is 480p, HD is 1080p, Ultra is 4K with HDR. Your plan price follows the choice.</p>
+  <div slot="footer">
+    <kakao-button label="Cancel" variant="secondary" data-close="cancel"></kakao-button>
+    <kakao-button label="Save" data-close="save"></kakao-button>
+  </div>
+</kakao-dialog>
+
+<kakao-dialog id="confirm" label="Delete account">
+  <h2 slot="header">Delete account?</h2>
+  <p>Your watch history and all profiles will be gone. This cannot be undone.</p>
+  <div slot="footer">
+    <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+    <kakao-button label="Delete account" variant="danger" data-close="delete"></kakao-button>
+  </div>
+</kakao-dialog>
+
+<kakao-dialog id="long" size="lg" label="Terms">
+  <h2 slot="header">Terms of use</h2>
+  <p>One paragraph, then a long one, so the body scrolls inside the panel while the header and footer stay where they are.</p>
+  <div id="long-target"></div>
+  <div slot="footer">
+    <kakao-button label="Close" variant="secondary" data-close="close"></kakao-button>
+    <kakao-button label="Accept" data-close="accept"></kakao-button>
+  </div>
+</kakao-dialog>
+
+<kakao-dialog id="static" no-dismiss label="No dismiss">
+  <h2 slot="header">You have to pick one</h2>
+  <p>Escape and the covered page do nothing here — <code>no-dismiss</code>. Only the button ends it.</p>
+  <div slot="footer">
+    <kakao-button label="Fine" data-close="fine"></kakao-button>
+  </div>
+</kakao-dialog>
+
+<kakao-dialog id="bare" label="Renamed from the label attribute">
+  <p>No header element, so <code>label</code> is the accessible name.</p>
+  <div slot="footer"><kakao-button label="Got it" variant="secondary" data-close="ok"></kakao-button></div>
+</kakao-dialog>
+
+<kakao-dialog id="sm" size="sm" label="Small">
+  <h2 slot="header">Small</h2>
+  <p>22rem wide.</p>
+  <div slot="footer"><kakao-button label="Close" variant="secondary" data-close="close"></kakao-button></div>
+</kakao-dialog>
+
+<kakao-dialog id="lg" size="lg" label="Large">
+  <h2 slot="header">Large</h2>
+  <p>42rem wide.</p>
+  <div slot="footer"><kakao-button label="Close" variant="secondary" data-close="close"></kakao-button></div>
+</kakao-dialog>
+
+<kakao-dialog id="tall" label="Tall body">
+  <h2 slot="header">Tall body</h2>
+  <div id="tall-target"></div>
+  <div slot="footer"><kakao-button label="Close" variant="secondary" data-close="close"></kakao-button></div>
+</kakao-dialog>
+
+<script>
+  const log = document.getElementById('log');
+  logEvents(log, ['dialog-open', 'dialog-close']);
+
+  const open = (id, btn) => document.getElementById(btn).addEventListener('kakao-button-action', () => document.getElementById(id).open());
+  open('basic', 'open-basic');
+  open('confirm', 'open-confirm');
+  open('long', 'open-long');
+  open('static', 'open-static');
+  open('bare', 'open-bare');
+  open('sm', 'open-sm');
+  open('lg', 'open-lg');
+  open('tall', 'open-tall');
+
+  // Filler, so the two scroll examples actually overflow.
+  const fill = (id, count, text) => {
+    const box = document.getElementById(id);
+    for (let i = 1; i <= count; i++) {
+      const p = document.createElement('p');
+      p.textContent = text(i);
+      box.append(p);
+    }
+  };
+  fill('long-target', 14, (i) => `Paragraph ${i}. The body scrolls on its own; the header and the footer of the panel stay where they are.`);
+  fill('tall-target', 40, (i) => `Line ${i}.`);
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-dialog — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="dialog.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="dialog" data-source="dialog.js" data-title="Dialog">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Header, body, footer — open it to tune the panel</figcaption>
+      <div class="row">
+        <kakao-button id="open-1" label="Open dialog" size="sm"></kakao-button>
+        <kakao-dialog id="d1" label="Example dialog">
+          <h2 slot="header">Example dialog</h2>
+          <p>The panel, the covered page and the sizing all follow the settings in <code>dialog.js</code>.</p>
+          <div slot="footer">
+            <kakao-button label="Cancel" variant="secondary" data-close="cancel"></kakao-button>
+            <kakao-button label="Save" data-close="save"></kakao-button>
+          </div>
+        </kakao-dialog>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Danger · confirm pattern</figcaption>
+      <div class="row">
+        <kakao-button id="open-2" label="Delete" variant="danger" size="sm"></kakao-button>
+        <kakao-dialog id="d2" size="sm" label="Delete?">
+          <h2 slot="header">Delete project?</h2>
+          <p>This cannot be undone.</p>
+          <div slot="footer">
+            <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+            <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
+          </div>
+        </kakao-dialog>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>No header · label only</figcaption>
+      <div class="row">
+        <kakao-button id="open-3" label="Open bare" variant="secondary" size="sm"></kakao-button>
+        <kakao-dialog id="d3" label="No header here">
+          <p>Without a header element the <code>label</code> attribute is the accessible name.</p>
+          <div slot="footer"><kakao-button label="Got it" variant="secondary" data-close="ok"></kakao-button></div>
+        </kakao-dialog>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-dialog-scrim", "label": "Covered page", "group": "Colour", "type": "color" },
+    { "property": "--kakao-dialog-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-dialog-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-dialog-focus", "label": "Focus outline", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-dialog-padding", "label": "Padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-dialog-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-dialog-footer-gap", "label": "Footer gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-dialog-footer-spacing", "label": "Space above footer", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-dialog-max-height", "label": "Max height", "group": "Size & spacing", "type": "length", "hint": "the body scrolls past it" },
+    { "property": "--kakao-dialog-width-sm", "label": "Width sm", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-dialog-width-md", "label": "Width md", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-dialog-width-lg", "label": "Width lg", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-dialog-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-dialog-shadow", "label": "Shadow", "group": "Shape", "type": "shadow" },
+    { "property": "--kakao-dialog-z", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 9999 },
+
+    { "property": "--kakao-dialog-title-size", "label": "Title size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-dialog-title-weight", "label": "Title weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-dialog-duration", "label": "Duration", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-dialog-easing", "label": "Easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+<script>
+  ['1', '2', '3'].forEach((n) => {
+    document.getElementById(`open-${n}`).addEventListener('kakao-button-action', () => {
+      document.getElementById(`d${n}`).open();
+    });
+  });
+</script>
+</body>
+</html>
