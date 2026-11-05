@@ -104,12 +104,6 @@
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
   }
-  /* Tab into the wall and the fade lifts, so a focused control and its outline
-     are always visible; the frame's hard edge is the price of that. */
-  .window:focus-within {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
   /* Centred by hand: `place-items: center` falls back to start alignment once
      the item is bigger than the box, which would overflow to one side only.
      This centres the wall's box; the rows differ in height, so the middle row
@@ -118,19 +112,19 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, calc(-50% - 1.5rem));
+    transform: translate(-50%, -50%);
     display: grid;
     gap: 1rem;
     width: max-content;
   }
   .wall-row { display: flex; align-items: stretch; justify-content: center; gap: 1rem; }
-  /* 13rem is a floor, not a cap: row 1's own content (radio group + price) is
-     ~18rem, and a hard height let the price paint outside the Plan card and over
-     the next row. The offset belongs in the wall's transform, see below: as a
-     margin it inflated the box the wall is centred by and pushed row 3 out of
-     the frame entirely. Desktop only — below 940px the wall is static. */
+  /* Row 1 is a short band with a gap above it. Desktop only: below 940px the
+     portal sits under the text and the wall is static, so the band would clip
+     cards that are meant to be read.
+     `overflow: hidden` on the cards keeps the band's cut inside each card —
+     without it the Plan card's price paints over the row below. */
   @media (min-width: 941px) {
-    .wall-row:first-child { min-height: 13rem; }
+    .wall-row:first-child { height: 13rem; margin-top: 10rem; }
   }
 
   /* A .card from the kitchen sink, in miniature: same surface, radius, padding
@@ -140,6 +134,7 @@
     align-content: start;
     gap: 0.75rem;
     padding: 1.1rem 1.25rem 1.25rem;
+    overflow: hidden;
     background: var(--kakao-color-bg, #fff);
     border: 1px solid var(--kakao-color-line, #e5e7eb);
     border-radius: 14px;
@@ -377,6 +372,38 @@
 
     play();
   });
+
+  // The frame fades its edges, so a card that is mostly cut away is not really
+  // there: its controls would be tab-stops at a few percent opacity, with their
+  // focus outline masked out. Anything less than ~60% inside the frame is inert;
+  // the fade itself is never lifted.
+  (() => {
+    const win = document.querySelector('.window');
+    if (!win) return;
+    const panels = [...win.querySelectorAll('.panel')];
+
+    const mark = () => {
+      const frame = win.getBoundingClientRect();
+      panels.forEach((panel) => {
+        const box = panel.getBoundingClientRect();
+        const width = Math.min(box.right, frame.right) - Math.max(box.left, frame.left);
+        const height = Math.min(box.bottom, frame.bottom) - Math.max(box.top, frame.top);
+        const shown = box.width && box.height ? (Math.max(0, width) * Math.max(0, height)) / (box.width * box.height) : 0;
+        panel.toggleAttribute('inert', shown < 0.6);
+      });
+    };
+
+    let raf = 0;
+    const schedule = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(mark);
+    };
+    window.addEventListener('resize', schedule);
+    // the wall moves when the theme picker's labels change width
+    if (typeof ResizeObserver === 'function') new ResizeObserver(schedule).observe(win);
+    customElements.whenDefined('kakao-card').then(schedule);
+    mark();
+  })();
 </script>
 </body>
 </html>
