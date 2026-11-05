@@ -56,15 +56,19 @@ html[data-kakao-aside-open] {
   overflow-x: hidden;
 }
 
+/* width: 100% keeps the body exactly one viewport wide while it slides:
+   with the default auto width a margin would make the body narrower and
+   its content reflow (squash). This way the content only moves. */
 html[data-kakao-aside-open] body {
+  width: 100%;
   margin-left: var(--kakao-aside-push, 280px);
   transition: margin-left var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 html[data-kakao-aside-open='right'] body {
-  margin-left: 0;
-  margin-right: var(--kakao-aside-push, 280px);
-  transition: margin-right var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+  width: 100%;
+  margin-left: calc(-1 * var(--kakao-aside-push, 280px));
+  transition: margin-left var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 /* Pages can override the push timing by setting --kakao-aside-duration. */
