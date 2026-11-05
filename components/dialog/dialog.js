@@ -72,6 +72,10 @@
  * Every --kakao-dialog-* property in the settings block of the template can be
  * set on <kakao-dialog> or any ancestor. The defaults live in that block:
  * change them on construction.html.
+ *
+ * shortcut: the covered page is 45% black, so on amoled (a pure #000 page) it
+ * dims nothing — there the raised panel and its edge carry the separation.
+ * Upgrade to a per-theme scrim if amoled needs the page to recede.
  * ============================================================================
  */
 (function () {
@@ -120,19 +124,20 @@
         --kakao-dialog-scrim: color-mix(in srgb, #000 45%, transparent);
         --kakao-dialog-bg: var(--kakao-color-raised, #ffffff);
         --kakao-dialog-text: var(--kakao-color-text, #18181b);
-        --kakao-dialog-radius: var(--kakao-radius, 14px);
+        --kakao-dialog-radius: 14px;
         --kakao-dialog-padding: 1.25rem;
         --kakao-dialog-gap: 0.75rem;
         --kakao-dialog-footer-gap: 0.5rem;
         --kakao-dialog-footer-spacing: 1.25rem;
-        --kakao-dialog-shadow: 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px rgb(0 0 0 / .05);
+        /* one line: the construction parser reads one setting per line */
+        --kakao-dialog-shadow: 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent);
         --kakao-dialog-focus: var(--kakao-color-focus, #2563eb);
         --kakao-dialog-z: 60;
         --kakao-dialog-width-sm: 22rem;
         --kakao-dialog-width-md: 30rem;
         --kakao-dialog-width-lg: 42rem;
         --kakao-dialog-max-height: 85vh;
-        --kakao-dialog-title-size: 1.0625rem;
+        --kakao-dialog-title-size: 1.125rem;
         --kakao-dialog-title-weight: 600;
         --kakao-dialog-duration: 200ms;
         --kakao-dialog-easing: cubic-bezier(.2, 0, 0, 1);
@@ -204,7 +209,7 @@
       .header-box[hidden], .footer-box[hidden] { display: none; }
       ::slotted([slot="header"]) {
         margin: 0;
-        font-size: var(--kakao-dialog-title-size, 1.0625rem);
+        font-size: var(--kakao-dialog-title-size, 1.125rem);
         font-weight: var(--kakao-dialog-title-weight, 600);
         letter-spacing: -0.01em;
         line-height: 1.3;
