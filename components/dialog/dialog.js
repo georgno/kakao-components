@@ -121,26 +121,25 @@
     <style>
       :host {
         /* @kakao-settings:start prefix=--kakao-dialog- (written by construction.html, edit there) */
-        --kakao-dialog-scrim: color-mix(in srgb, #000 45%, transparent);
-        --kakao-dialog-bg: var(--kakao-color-raised, #ffffff);
-        --kakao-dialog-text: var(--kakao-color-text, #18181b);
-        --kakao-dialog-radius: 14px;
-        --kakao-dialog-padding: 1.25rem;
-        --kakao-dialog-gap: 0.75rem;
-        --kakao-dialog-footer-gap: 0.5rem;
-        --kakao-dialog-footer-spacing: 1.25rem;
-        /* one line: the construction parser reads one setting per line */
-        --kakao-dialog-shadow: 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent);
-        --kakao-dialog-focus: var(--kakao-color-focus, #2563eb);
-        --kakao-dialog-z: 60;
-        --kakao-dialog-width-sm: 22rem;
-        --kakao-dialog-width-md: 30rem;
-        --kakao-dialog-width-lg: 42rem;
-        --kakao-dialog-max-height: 85vh;
-        --kakao-dialog-title-size: 1.125rem;
-        --kakao-dialog-title-weight: 600;
-        --kakao-dialog-duration: 200ms;
-        --kakao-dialog-easing: cubic-bezier(.2, 0, 0, 1);
+        --_scrim: var(--kakao-dialog-scrim, rgb(0 0 0 / .45));
+        --_bg: var(--kakao-dialog-bg, var(--kakao-color-raised, #ffffff));
+        --_text: var(--kakao-dialog-text, var(--kakao-color-text, #18181b));
+        --_radius: var(--kakao-dialog-radius, 14px);
+        --_padding: var(--kakao-dialog-padding, 1.25rem);
+        --_gap: var(--kakao-dialog-gap, 0.75rem);
+        --_footer-gap: var(--kakao-dialog-footer-gap, 0.5rem);
+        --_footer-spacing: var(--kakao-dialog-footer-spacing, 1.25rem);
+        --_shadow: var(--kakao-dialog-shadow, 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent));
+        --_focus: var(--kakao-dialog-focus, var(--kakao-color-focus, #2563eb));
+        --_z: var(--kakao-dialog-z, 60);
+        --_width-sm: var(--kakao-dialog-width-sm, 22rem);
+        --_width-md: var(--kakao-dialog-width-md, 30rem);
+        --_width-lg: var(--kakao-dialog-width-lg, 42rem);
+        --_max-height: var(--kakao-dialog-max-height, 85vh);
+        --_title-size: var(--kakao-dialog-title-size, 1.125rem);
+        --_title-weight: var(--kakao-dialog-title-weight, 600);
+        --_duration: var(--kakao-dialog-duration, 200ms);
+        --_easing: var(--kakao-dialog-easing, cubic-bezier(.2, 0, 0, 1));
         /* @kakao-settings:end */
 
         /* The host is the covered page: fixed, so it takes no room in the flow
@@ -148,7 +147,7 @@
            panel can finish its exit animation before everything disappears. */
         position: fixed;
         inset: 0;
-        z-index: var(--kakao-dialog-z, 60);
+        z-index: var(--_z);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -156,7 +155,7 @@
         box-sizing: border-box;
         visibility: hidden;
         pointer-events: none;
-        transition: visibility 0s linear var(--kakao-dialog-duration, 200ms);
+        transition: visibility 0s linear var(--_duration);
       }
       :host([open]) {
         visibility: visible;
@@ -167,9 +166,9 @@
       .scrim {
         position: absolute;
         inset: 0;
-        background: var(--kakao-dialog-scrim, rgb(0 0 0 / .45));
+        background: var(--_scrim);
         opacity: 0;
-        transition: opacity var(--kakao-dialog-duration, 200ms) var(--kakao-dialog-easing, ease);
+        transition: opacity var(--_duration) var(--_easing);
       }
       :host([open]) .scrim { opacity: 1; }
 
@@ -177,31 +176,31 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: var(--kakao-dialog-gap, 0.75rem);
+        gap: var(--_gap);
         box-sizing: border-box;
         width: 100%;
-        max-width: var(--kakao-dialog-width-md, 30rem);
-        max-height: var(--kakao-dialog-max-height, 85vh);
-        padding: var(--kakao-dialog-padding, 1.25rem);
+        max-width: var(--_width-md);
+        max-height: var(--_max-height);
+        padding: var(--_padding);
         overflow: hidden;
-        background: var(--kakao-dialog-bg, #fff);
-        color: var(--kakao-dialog-text, inherit);
-        border-radius: var(--kakao-dialog-radius, 14px);
-        box-shadow: var(--kakao-dialog-shadow, 0 8px 24px rgb(0 0 0 / .08));
+        background: var(--_bg);
+        color: var(--_text);
+        border-radius: var(--_radius);
+        box-shadow: var(--_shadow);
         opacity: 0;
         transform: translateY(8px) scale(.98);
         transition:
-          opacity var(--kakao-dialog-duration, 200ms) var(--kakao-dialog-easing, ease),
-          transform var(--kakao-dialog-duration, 200ms) var(--kakao-dialog-easing, ease);
+          opacity var(--_duration) var(--_easing),
+          transform var(--_duration) var(--_easing);
       }
       :host([open]) .panel { opacity: 1; transform: none; }
-      :host([size="sm"]) .panel { max-width: var(--kakao-dialog-width-sm, 22rem); }
-      :host([size="lg"]) .panel { max-width: var(--kakao-dialog-width-lg, 42rem); }
+      :host([size="sm"]) .panel { max-width: var(--_width-sm); }
+      :host([size="lg"]) .panel { max-width: var(--_width-lg); }
 
       /* The panel takes focus itself when it opens, so Tab starts here. */
       .panel:focus { outline: none; }
       .panel:focus-visible {
-        outline: 2px solid var(--kakao-dialog-focus, #2563eb);
+        outline: 2px solid var(--_focus);
         outline-offset: 2px;
       }
 
@@ -209,8 +208,8 @@
       .header-box[hidden], .footer-box[hidden] { display: none; }
       ::slotted([slot="header"]) {
         margin: 0;
-        font-size: var(--kakao-dialog-title-size, 1.125rem);
-        font-weight: var(--kakao-dialog-title-weight, 600);
+        font-size: var(--_title-size);
+        font-weight: var(--_title-weight);
         letter-spacing: -0.01em;
         line-height: 1.3;
       }
@@ -222,7 +221,7 @@
         overscroll-behavior: contain;
         display: flex;
         flex-direction: column;
-        gap: var(--kakao-dialog-gap, 0.75rem);
+        gap: var(--_gap);
       }
       .body ::slotted(*) { margin-block: 0; }
 
@@ -231,8 +230,8 @@
         flex-wrap: wrap;
         justify-content: flex-end;
         align-items: center;
-        gap: var(--kakao-dialog-footer-gap, 0.5rem);
-        padding-top: calc(var(--kakao-dialog-footer-spacing, 1.25rem) - var(--kakao-dialog-gap, 0.75rem));
+        gap: var(--_footer-gap);
+        padding-top: calc(var(--_footer-spacing) - var(--_gap));
       }
       ::slotted(kakao-button[slot="footer"]) { display: inline-flex; }
 

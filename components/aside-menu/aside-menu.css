@@ -15,30 +15,30 @@
 
 kakao-aside-menu {
   /* @kakao-settings:start prefix=--kakao-aside- (written by construction.html, edit there) */
-  --kakao-aside-width: 280px;
-  --kakao-aside-bg: var(--kakao-color-raised, #ffffff);
-  --kakao-aside-color: var(--kakao-color-text, #18181b);
-  --kakao-aside-accent: var(--kakao-color-primary, #4f46e5);
-  --kakao-aside-subtle: var(--kakao-color-subtle, #f0f0f1);
-  --kakao-aside-subtle-strong: var(--kakao-color-subtle-strong, #e6e6e8);
-  --kakao-aside-focus: var(--kakao-color-focus, #2563eb);
-  --kakao-aside-radius: var(--kakao-radius, 8px);
-  --kakao-aside-duration: var(--kakao-motion-duration, 320ms);
-  --kakao-aside-easing: cubic-bezier(0.22, 1, 0.36, 1);
-  --kakao-aside-z-index: 40;
-  --kakao-aside-shadow: none;
-  --kakao-aside-open-size: 40px;
-  --kakao-aside-open-icon: 20px;
-  --kakao-aside-open-bg: transparent;
-  --kakao-aside-open-color: var(--kakao-color-text, #18181b);
-  --kakao-aside-open-hover-bg: var(--kakao-color-subtle, #f0f0f1);
-  --kakao-aside-open-active-bg: var(--kakao-color-subtle-strong, #e6e6e8);
-  --kakao-aside-head-padding: 0.875rem 1rem;
-  --kakao-aside-title-size: 1rem;
-  --kakao-aside-title-weight: 600;
-  --kakao-aside-close-size: 34px;
-  --kakao-aside-close-icon: 16px;
-  --kakao-aside-content-padding: 0.5rem 0.75rem 1.25rem;
+  --_width: var(--kakao-aside-width, 280px);
+  --_bg: var(--kakao-aside-bg, var(--kakao-color-raised, #ffffff));
+  --_color: var(--kakao-aside-color, var(--kakao-color-text, #18181b));
+  --_accent: var(--kakao-aside-accent, var(--kakao-color-primary, #4f46e5));
+  --_subtle: var(--kakao-aside-subtle, var(--kakao-color-subtle, #f0f0f1));
+  --_subtle-strong: var(--kakao-aside-subtle-strong, var(--kakao-color-subtle-strong, #e6e6e8));
+  --_focus: var(--kakao-aside-focus, var(--kakao-color-focus, #2563eb));
+  --_radius: var(--kakao-aside-radius, var(--kakao-radius, 8px));
+  --_duration: var(--kakao-aside-duration, var(--kakao-motion-duration, 320ms));
+  --_easing: var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+  --_z-index: var(--kakao-aside-z-index, 40);
+  --_shadow: var(--kakao-aside-shadow, none);
+  --_open-size: var(--kakao-aside-open-size, 40px);
+  --_open-icon: var(--kakao-aside-open-icon, 20px);
+  --_open-bg: var(--kakao-aside-open-bg, transparent);
+  --_open-color: var(--kakao-aside-open-color, var(--kakao-color-text, #18181b));
+  --_open-hover-bg: var(--kakao-aside-open-hover-bg, var(--kakao-color-subtle, #f0f0f1));
+  --_open-active-bg: var(--kakao-aside-open-active-bg, var(--kakao-color-subtle-strong, #e6e6e8));
+  --_head-padding: var(--kakao-aside-head-padding, 0.875rem 1rem);
+  --_title-size: var(--kakao-aside-title-size, 1rem);
+  --_title-weight: var(--kakao-aside-title-weight, 600);
+  --_close-size: var(--kakao-aside-close-size, 34px);
+  --_close-icon: var(--kakao-aside-close-icon, 16px);
+  --_content-padding: var(--kakao-aside-content-padding, 0.5rem 0.75rem 1.25rem);
   /* @kakao-settings:end */
   display: inline-block;
 }
@@ -58,6 +58,8 @@ html[data-kakao-aside-open] {
 /* width: 100% keeps the body exactly one viewport wide while it slides:
    with the default auto width a margin would make the body narrower and
    its content reflow (squash). This way the content only moves. */
+/* These live on <html>/<body>, outside the element: they read the public names,
+   because the --_ aliases only exist on <kakao-aside-menu> itself. */
 html[data-kakao-aside-open] body {
   width: 100%;
   margin-left: var(--kakao-aside-push, 280px);
@@ -80,13 +82,13 @@ html[data-kakao-aside-open='right'] body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--kakao-aside-open-size, 40px);
-  height: var(--kakao-aside-open-size, 40px);
+  width: var(--_open-size);
+  height: var(--_open-size);
   padding: 0;
   border: 1px solid transparent;
-  border-radius: var(--kakao-aside-radius, 8px);
-  background: var(--kakao-aside-open-bg, transparent);
-  color: var(--kakao-aside-open-color, inherit);
+  border-radius: var(--_radius);
+  background: var(--_open-bg);
+  color: var(--_open-color);
   cursor: pointer;
 }
 
@@ -103,25 +105,25 @@ kakao-aside-menu[data-persistent] .kakao-aside-close {
 }
 
 .kakao-aside-open svg {
-  width: var(--kakao-aside-open-icon, 20px);
-  height: var(--kakao-aside-open-icon, 20px);
+  width: var(--_open-icon);
+  height: var(--_open-icon);
   fill: none;
   stroke: currentColor;
   stroke-width: 2.2;
   stroke-linecap: round;
-  transition: transform var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+  transition: transform var(--_duration) var(--_easing);
 }
 
 .kakao-aside-open:hover {
-  background: var(--kakao-aside-open-hover-bg, #f0f0f1);
+  background: var(--_open-hover-bg);
 }
 
 .kakao-aside-open:active {
-  background: var(--kakao-aside-open-active-bg, #e6e6e8);
+  background: var(--_open-active-bg);
 }
 
 .kakao-aside-open:focus-visible {
-  outline: 2px solid var(--kakao-aside-focus, #2563eb);
+  outline: 2px solid var(--_focus);
   outline-offset: 2px;
 }
 
@@ -139,20 +141,20 @@ kakao-aside-menu[open] .kakao-aside-open svg {
   top: 0;
   bottom: 0;
   left: 0;
-  width: var(--kakao-aside-width, 280px);
+  width: var(--_width);
   max-width: 100vw;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  background: var(--kakao-aside-bg, #fff);
-  color: var(--kakao-aside-color, inherit);
-  box-shadow: var(--kakao-aside-shadow, none);
+  background: var(--_bg);
+  color: var(--_color);
+  box-shadow: var(--_shadow);
   transform: translateX(-100%);
   visibility: hidden;
-  z-index: var(--kakao-aside-z-index, 40);
+  z-index: var(--_z-index);
   transition:
-    transform var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1)),
-    visibility 0s linear var(--kakao-aside-duration, 320ms);
+    transform var(--_duration) var(--_easing),
+    visibility 0s linear var(--_duration);
 }
 
 .kakao-aside-panel[data-position='right'] {
@@ -166,7 +168,7 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
   transform: translateX(0);
   visibility: visible;
   transition:
-    transform var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+    transform var(--_duration) var(--_easing);
 }
 
 /* ---------------------------------------------------------------------------
@@ -178,7 +180,7 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: var(--kakao-aside-head-padding, 0.875rem 1rem);
+  padding: var(--_head-padding);
 }
 
 /* Menu on the left: the close button sits in the top-left corner (the title
@@ -188,8 +190,8 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
 }
 
 .kakao-aside-title {
-  font-size: var(--kakao-aside-title-size, 1rem);
-  font-weight: var(--kakao-aside-title-weight, 600);
+  font-size: var(--_title-size);
+  font-weight: var(--_title-weight);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -203,12 +205,12 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
    (button.js + button.css must be loaded): shaped into a perfect circle
    here. */
 .kakao-aside-close .kakao-button-inner {
-  width: var(--kakao-aside-close-size, 34px);
-  height: var(--kakao-aside-close-size, 34px);
+  width: var(--_close-size);
+  height: var(--_close-size);
   padding: 0;
   justify-content: center;
   border-radius: 50%;
-  font-size: var(--kakao-aside-close-icon, 16px);
+  font-size: var(--_close-icon);
 }
 
 /* ---------------------------------------------------------------------------
@@ -220,26 +222,26 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  padding: var(--kakao-aside-content-padding, 0.5rem 0.75rem 1.25rem);
+  padding: var(--_content-padding);
 }
 
 /* Opinionated link styling inside the menu; override via the slot markup. */
 .kakao-aside-content nav a {
   display: block;
   padding: 0.5rem 0.625rem;
-  border-radius: var(--kakao-aside-radius, 8px);
-  color: var(--kakao-aside-color, inherit);
+  border-radius: var(--_radius);
+  color: var(--_color);
   text-decoration: none;
   font-size: 0.95rem;
 }
 
 .kakao-aside-content nav a:hover,
 .kakao-aside-content nav a:focus-visible {
-  background: var(--kakao-aside-subtle, #f0f0f1);
+  background: var(--_subtle);
 }
 
 .kakao-aside-content nav a:focus-visible {
-  outline: 2px solid var(--kakao-aside-focus, #2563eb);
+  outline: 2px solid var(--_focus);
   outline-offset: -2px;
 }
 
@@ -266,7 +268,7 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
   width: 100%;
   padding: 0.5rem 0.625rem;
   border: 0;
-  border-radius: var(--kakao-aside-radius, 8px);
+  border-radius: var(--_radius);
   background: transparent;
   color: inherit;
   font: inherit;
@@ -276,17 +278,17 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
 }
 
 .kakao-aside-navitem:hover {
-  background: var(--kakao-aside-subtle, #f0f0f1);
+  background: var(--_subtle);
 }
 
 .kakao-aside-navitem:focus-visible {
-  outline: 2px solid var(--kakao-aside-focus, #2563eb);
+  outline: 2px solid var(--_focus);
   outline-offset: -2px;
 }
 
 .kakao-aside-navitem[aria-current='true'] {
-  background: color-mix(in srgb, var(--kakao-aside-accent, var(--kakao-color-primary, #4f46e5)) 12%, transparent);
-  color: var(--kakao-aside-accent, var(--kakao-color-primary, #4f46e5));
+  background: color-mix(in srgb, var(--_accent) 12%, transparent);
+  color: var(--_accent);
   font-weight: 600;
 }
 
