@@ -23,6 +23,10 @@ context: |
   test suite.
   Colours: components never hard-code a colour the theme should change; every
   colour setting defaults to a theme role (var(--kakao-color-<role>, literal)).
+  Components never reach into each other. When one has to make another react,
+  they use the trigger API in shared/component-api.js (KakaoComponents.emit /
+  on / register, events named kakao-trigger:<name>, declared through register()
+  so the wiring is discoverable). Load component-api.js before the components.
   Themes live in shared/themes.css and must pass `node tools/check-themes.js`
   (WCAG AA). Every page loads tokens.css, themes.css and the theme switch.
   Design rules live in styleguide.html. Never style text in capitals: no

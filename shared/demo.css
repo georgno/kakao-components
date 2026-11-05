@@ -159,3 +159,31 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 
 /* ---- Theme switch, top right on every page ---- */
 .page-theme-switch { position: fixed; top: 1rem; right: 1rem; z-index: 50; }
+
+/* The overview puts a settings link beside the switch, in one fixed row. */
+.page-tools {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.page-tools .page-theme-switch { position: static; }
+.page-icon-link {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--kakao-color-subtle, #f0f0f1);
+  color: var(--kakao-color-text, #18181b);
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background-color 150ms ease;
+}
+.page-icon-link:hover { background: var(--kakao-color-subtle-strong, #e6e6e8); }
+.page-icon-link:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }

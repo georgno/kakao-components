@@ -78,6 +78,15 @@
  *  dropdown-close    { segment }
  *
  * ----------------------------------------------------------------------------
+ * POINTER
+ * ----------------------------------------------------------------------------
+ *  Click a segment to open its list, click an option to pick it. Hovering an
+ *  option highlights it, like the menu items of a <kakao-button>: the highlight
+ *  follows the mouse, and Enter / Space then picks what is under the pointer.
+ *  Disabled options don't take the highlight, and touch / pen input is left
+ *  alone (a moving pointer means scrolling there).
+ *
+ * ----------------------------------------------------------------------------
  * KEYBOARD (on a segment)
  * ----------------------------------------------------------------------------
  *  Closed:  ↑ / ↓ step the value · Enter, Space, Alt+↓ open the list ·
@@ -110,7 +119,8 @@
  *    button with aria-haspopup="listbox" and aria-expanded, named
  *    "<segment label>, <current value>".
  *  - Lists are role="listbox"; focus stays on the segment and the highlighted
- *    option is exposed with aria-activedescendant.
+ *    option (from the keyboard or the mouse) is exposed with
+ *    aria-activedescendant.
  *  - Disabled options (impossible days) are aria-disabled and skipped.
  * ============================================================================
  */
@@ -305,6 +315,7 @@
         font-variant-numeric: tabular-nums;
         white-space: nowrap;
         cursor: pointer;
+        transition: background-color 120ms ease, color 120ms ease;
       }
 
       .option .hint { color: var(--_muted); font-size: 0.85em; }
@@ -315,7 +326,7 @@
 
       @media (prefers-reduced-motion: reduce) {
         .popup { animation: none; }
-        .trigger svg { transition: none; }
+        .option, .trigger svg { transition: none; }
       }
     </style>
     <div class="root">
@@ -359,6 +370,7 @@
       this._onDocPointerDown = this._onDocPointerDown.bind(this);
       this._onFocusOut = this._onFocusOut.bind(this);
       this._onMouseDown = this._onMouseDown.bind(this);
+      this._onPointerMove = this._onPointerMove.bind(this);
       this._resizeObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(() => this._checkCramped()) : null;
     }
 
@@ -370,6 +382,7 @@
       this._fieldEl.addEventListener('keydown', this._onKeydown);
       this._fieldEl.addEventListener('focusout', this._onFocusOut);
       this._fieldEl.addEventListener('mousedown', this._onMouseDown);
+      this._fieldEl.addEventListener('pointermove', this._onPointerMove);
       this._labelEl.addEventListener('click', () => this.focus());
       if (this._resizeObserver) this._resizeObserver.observe(this._fieldEl);
 
@@ -392,6 +405,7 @@
       this._fieldEl.removeEventListener('keydown', this._onKeydown);
       this._fieldEl.removeEventListener('focusout', this._onFocusOut);
       this._fieldEl.removeEventListener('mousedown', this._onMouseDown);
+      this._fieldEl.removeEventListener('pointermove', this._onPointerMove);
       document.removeEventListener('pointerdown', this._onDocPointerDown, true);
       if (this._resizeObserver) this._resizeObserver.disconnect();
       this._open = null;
@@ -937,6 +951,25 @@
 
     _onDocPointerDown(evt) {
       if (!evt.composedPath().includes(this)) this._close();
+    }
+
+    /**
+     * Hovering an option highlights it, the way the menu items of a
+     * <kakao-button> react to the mouse. Like the keyboard, this moves the
+     * active option, so Enter / Space then picks what is under the pointer.
+     * Touch and pen are left alone: there, a moving pointer means scrolling.
+     */
+    _onPointerMove(evt) {
+      if (!this._open || this._isDisabled()) return;
+      if (evt.pointerType && evt.pointerType !== 'mouse') return;
+      if (evt.buttons) return; // dragging (e.g. text selection) is not hovering
+      const option = evt.target.closest ? evt.target.closest('.option') : null;
+      if (!option || option.getAttribute('aria-disabled') === 'true') return;
+      const index = Number(option.dataset.index);
+      if (index === this._active) return;
+      this._active = index;
+      const trigger = this._trigger(this._open);
+      if (trigger) this._syncActive(trigger.nextElementSibling, trigger);
     }
 
     /** Pressing inside an open list must not move focus away, or focusout would close it before the click. */

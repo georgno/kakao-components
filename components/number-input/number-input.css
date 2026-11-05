@@ -16,7 +16,7 @@ kakao-number-input {
   --_arrow-hover-bg: var(--kakao-number-input-arrow-hover-bg, var(--kakao-color-subtle, #e9ecef));
   --_arrow-hover-color: var(--kakao-number-input-arrow-hover-color, var(--kakao-color-text, #212529));
   --_arrow-active-bg: var(--kakao-number-input-arrow-active-bg, var(--kakao-color-subtle-strong, #ced4da));
-  --_input-radius: var(--kakao-number-input-input-radius, 6px);
+  --_input-radius: var(--kakao-number-input-input-radius, var(--kakao-radius, 8px));
   --_font-size: var(--kakao-number-input-font-size, inherit);
   --_input-border: var(--kakao-number-input-input-border, var(--kakao-color-border, #dee2e6));
   --_input-bg: var(--kakao-number-input-input-bg, var(--kakao-color-bg, #fff));
@@ -31,7 +31,7 @@ kakao-number-input {
   --_sm-font-size: var(--kakao-number-input-sm-font-size, 0.875rem);
   --_sm-arrow-size: var(--kakao-number-input-sm-arrow-size, 7px);
   --_touch-size: var(--kakao-number-input-touch-size, 44px);
-  --_touch-radius: var(--kakao-number-input-touch-radius, 10px);
+  --_touch-radius: var(--kakao-number-input-touch-radius, 12px);
   --_touch-glyph-size: var(--kakao-number-input-touch-glyph-size, 20px);
   /* @kakao-settings:end */
   position: relative;
@@ -102,9 +102,11 @@ kakao-number-input .kakao-number-input-arrows span {
   user-select: none;
 }
 
-kakao-number-input .kakao-number-input-arrows span:first-child {
-  border-bottom: 1px solid var(--_arrow-border);
+kakao-number-input .kakao-number-input-arrows span + span {
+  border-top: 1px solid var(--_arrow-border);
 }
+
+kakao-number-input .kakao-number-input-arrows span[hidden] { display: none; }
 
 kakao-number-input .kakao-number-input-arrows span:hover {
   background: var(--_arrow-hover-bg);
@@ -121,62 +123,82 @@ kakao-number-input[size="sm"] {
   --_font-size: var(--_sm-font-size);
   --_arrow-size: var(--_sm-arrow-size);
 }
-/* ---- Touch layout: | value | − | + | with 44px buttons on the right ----
-   On touch screens, or always with the touch-steppers attribute. */
-@media (pointer: coarse) {
-    kakao-number-input:is([size], :not([size])) {
-      --_input-padding-right: calc(2 * var(--_touch-size) + 8px);
-      --_input-radius: var(--_touch-radius);
-    }
-    kakao-number-input:is([size], :not([size])) input[type="number"] {
-      min-height: var(--_touch-size);
-      font-size: max(16px, 1em); /* 16px+ keeps iOS from zooming in */
-    }
-    kakao-number-input:is([size], :not([size])) .kakao-number-input-arrows {
-      width: calc(2 * var(--_touch-size));
-      flex-direction: row-reverse; /* − then + */
-    }
-    kakao-number-input:is([size], :not([size])) .kakao-number-input-arrows span {
-      font-size: 0;
-      touch-action: manipulation;
-    }
-    kakao-number-input:is([size], :not([size])) .kakao-number-input-arrows span:first-child {
-      border-bottom: 0;
-      border-left: 1px solid var(--_arrow-border);
-    }
-    kakao-number-input:is([size], :not([size])) .kakao-number-input-arrows span::before {
-      font-size: var(--_touch-glyph-size);
-      font-weight: 500;
-      line-height: 1;
-    }
-    kakao-number-input:is([size], :not([size])) .kakao-number-input-up::before { content: "+"; }
-    kakao-number-input:is([size], :not([size])) .kakao-number-input-dn::before { content: "\2212"; }
-}
-
-kakao-number-input[touch-steppers]:is([size], :not([size])) {
-  --_input-padding-right: calc(2 * var(--_touch-size) + 8px);
+/* ---- Touch layout: 44px − / + buttons ----
+   Used when the pointer is coarse, or always with touch-steppers. The buttons
+   sit on the sides the plus / minus attributes ask for (or are hidden), and
+   grouped (the default) joins them into one cluster on group-position. The
+   counts are written by number-input.js as --_steps-left / --_steps-right, so
+   the input's padding always matches what is on screen. */
+kakao-number-input[data-touch] {
   --_input-radius: var(--_touch-radius);
 }
-kakao-number-input[touch-steppers]:is([size], :not([size])) input[type="number"] {
+kakao-number-input[data-touch] input[type="number"] {
   min-height: var(--_touch-size);
   font-size: max(16px, 1em); /* 16px+ keeps iOS from zooming in */
+  padding-left: calc(var(--_steps-left, 0) * var(--_touch-size) + 12px);
+  padding-right: calc(var(--_steps-right, 0) * var(--_touch-size) + 12px);
 }
-kakao-number-input[touch-steppers]:is([size], :not([size])) .kakao-number-input-arrows {
-  width: calc(2 * var(--_touch-size));
-  flex-direction: row-reverse; /* − then + */
+kakao-number-input[data-touch] .kakao-number-input-arrows {
+  left: 1px;
+  right: 1px;
+  top: 1px;
+  bottom: 1px;
+  width: auto;
+  box-sizing: border-box;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  pointer-events: none;
 }
-kakao-number-input[touch-steppers]:is([size], :not([size])) .kakao-number-input-arrows span {
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-align="left"] { justify-content: flex-start; }
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-align="right"] { justify-content: flex-end; }
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-align="split"] { justify-content: space-between; }
+
+kakao-number-input[data-touch] .kakao-number-input-arrows span {
+  box-sizing: border-box;
+  flex: none;
+  width: var(--_touch-size);
+  height: var(--_touch-size);
   font-size: 0;
   touch-action: manipulation;
+  pointer-events: auto;
+  border: 1px solid var(--_arrow-border);
+  border-radius: 10px;
+  background: var(--_input-bg);
+  color: var(--_arrow-color);
 }
-kakao-number-input[touch-steppers]:is([size], :not([size])) .kakao-number-input-arrows span:first-child {
-  border-bottom: 0;
-  border-left: 1px solid var(--_arrow-border);
-}
-kakao-number-input[touch-steppers]:is([size], :not([size])) .kakao-number-input-arrows span::before {
+kakao-number-input[data-touch] .kakao-number-input-arrows span + span { border-top: 0; }
+kakao-number-input[data-touch] .kakao-number-input-arrows span::before {
   font-size: var(--_touch-glyph-size);
   font-weight: 500;
   line-height: 1;
 }
-kakao-number-input[touch-steppers]:is([size], :not([size])) .kakao-number-input-up::before { content: "+"; }
-kakao-number-input[touch-steppers]:is([size], :not([size])) .kakao-number-input-dn::before { content: "\2212"; }
+kakao-number-input[data-touch] .kakao-number-input-up::before { content: "+"; }
+kakao-number-input[data-touch] .kakao-number-input-dn::before { content: "\2212"; }
+
+/* Grouped: one joined cluster, flush with the input's edge like a segment of
+   it (no gap, no inner borders, the pair carries the input's outer radius). */
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped] {
+  gap: 0;
+  overflow: hidden;
+}
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped][data-align="right"] {
+  border-radius: 0 var(--_input-radius) var(--_input-radius) 0;
+}
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped][data-align="left"] {
+  border-radius: var(--_input-radius) 0 0 var(--_input-radius);
+}
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped] span {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped] span[data-edge="start"],
+kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped] span[data-edge="end"] {
+  border-left: 1px solid var(--_arrow-border);
+}
+

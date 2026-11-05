@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="shared/tokens.css" />
 <link rel="stylesheet" href="shared/font.css" />
 <link rel="stylesheet" href="shared/themes.css" />
+<script src="shared/component-api.js"></script>
 <script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
 <link rel="stylesheet" href="components/tabs/tabs.css" />
@@ -25,6 +26,7 @@
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/card/card.js" defer></script>
+<script src="components/color-picker/color-picker.js" defer></script>
 <style>
   dl { margin: 0; font-size: 14px; }
   dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
@@ -32,7 +34,10 @@
 </style>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<div class="page-tools">
+  <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+  <a class="page-icon-link" href="settings.html" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></a>
+</div>
 <main>
   <header>
     <h1>Components</h1>
@@ -225,7 +230,7 @@
         <a href="components/number-input/construction.html">Construction</a>
         <a href="components/number-input/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Wraps a native number input with custom stepper arrows; scroll the wheel over the arrows to step.</p>
+      <p class="component-desc">Wraps a native number input with custom stepper arrows; scroll the wheel over the arrows to step. On touch screens the arrows become 44px − / + buttons, and <code>plus</code> / <code>minus</code> / <code>grouped</code> / <code>group-position</code> decide where they sit.</p>
       <div class="examples">
         <div class="example">
           <h3>Default</h3>
@@ -238,6 +243,14 @@
         <div class="example">
           <h3>Disabled</h3>
           <kakao-number-input><input type="number" value="42" disabled aria-label="Locked" /></kakao-number-input>
+        </div>
+        <div class="example">
+          <h3>Touch pair · <code>group-position</code> / <code>plus</code> / <code>minus</code></h3>
+          <kakao-number-input touch-steppers group-position="left"><input type="number" min="0" max="100" value="10" aria-label="Quantity, buttons on the left" /></kakao-number-input>
+        </div>
+        <div class="example">
+          <h3>Touch split · <code>grouped="false"</code></h3>
+          <kakao-number-input touch-steppers grouped="false" plus="left" minus="right"><input type="number" min="0" max="100" value="10" aria-label="Quantity, split buttons" /></kakao-number-input>
         </div>
       </div>
     </article>
@@ -440,7 +453,7 @@
         <a href="components/card/construction.html">Construction</a>
         <a href="components/card/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Content card with header, body and footer. When the footer starts with a button, a faint glow in the button's colour rises from behind it.</p>
+      <p class="component-desc">Content card with header, body and footer. When the footer starts with a button, a faint glow in the button's colour rises from behind it. Without a footer button it can take the glow colour from a theme change instead, through the trigger API.</p>
       <div class="examples wide">
         <div class="example">
           <h3>Primary button first</h3>
@@ -458,6 +471,39 @@
             <div slot="footer"><kakao-button label="Delete" variant="danger" size="sm"></kakao-button><kakao-button label="Cancel" variant="secondary" size="sm"></kakao-button></div>
           </kakao-card>
         </div>
+        <div class="example">
+          <h3>Glow from the theme trigger</h3>
+          <kakao-card>
+            <strong slot="header">No footer button</strong>
+            <span style="color:var(--muted)">Switch the page theme: the card picks up the new theme's primary colour.</span>
+          </kakao-card>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Color picker ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Color picker</h2>
+        <code>&lt;kakao-color-picker&gt;</code>
+        <a href="components/color-picker/construction.html">Construction</a>
+        <a href="components/color-picker/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Colour field with a popover picker. Live while picking: the field and the form value follow every step; <code>change</code> comes when the pick is done. Optional alpha slider, preset swatches and an eyedropper.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Live while picking</h3>
+          <kakao-color-picker label="Brand colour" value="#4f46e5"></kakao-color-picker>
+        </div>
+        <div class="example">
+          <h3>Opacity · <code>alpha</code></h3>
+          <kakao-color-picker label="Overlay" alpha value="#0d948880"></kakao-color-picker>
+        </div>
+        <div class="example">
+          <h3>Presets · <code>list-data</code></h3>
+          <kakao-color-picker label="Tag colour" value="#7c3aed"
+            list-data='[{"value":"#4f46e5","label":"Indigo"},{"value":"#0d9488","label":"Teal"},{"value":"#7c3aed","label":"Violet"},{"value":"#db2777","label":"Pink"},{"value":"#d97706","label":"Amber"},{"value":"#dc2626","label":"Red"},{"value":"#18181b","label":"Ink"},{"value":"#ffffff","label":"White"}]'></kakao-color-picker>
+        </div>
       </div>
     </article>
 
@@ -469,7 +515,7 @@
         <a href="components/theme-switch/construction.html">Construction</a>
         <a href="components/theme-switch/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Switches the page between colour themes with a ripple from the button. The switch toggles light and dark; the dropdown also offers Catppuccin. Remembers the choice; follows the system until then. Themes live in <code>shared/themes.css</code> and must pass <code>tools/check-themes.js</code>.</p>
+      <p class="component-desc">Switches the page between colour themes with a ripple from the button. The switch toggles light and dark and reveals the new theme with a ripple; the menu and the step switch pick any of the seven themes (Light, Beige, Umber, Dark, AMOLED, Catppuccin, Forest) and both follow the pointer, cross-fading as the pointer runs down the menu or the thumb crosses a step. Remembers the choice; follows the system until then. Themes live in <code>shared/themes.css</code> and must pass <code>tools/check-themes.js</code>.</p>
       <div class="examples">
         <div class="example">
           <h3>Icon only</h3>
@@ -485,8 +531,15 @@
         </div>
         <div class="example">
           <h3>Dropdown · <code>kakao-button</code> menu</h3>
-          <kakao-button class="theme-menu" label="Theme" variant="secondary" size="sm" show-selected
-            list-data='[{"value":"light","label":"Light"},{"value":"dark","label":"Dark"},{"value":"catppuccin","label":"Catppuccin"}]'></kakao-button>
+          <kakao-button class="theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+            list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+        </div>
+        <div class="example full">
+          <h3>Step switch · <code>theme-picker</code></h3>
+          <kakao-step-switch theme-picker label="Theme" list-data='[
+            {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
+            {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
+            {"value":"forest","label":"Forest"}]'></kakao-step-switch>
         </div>
       </div>
     </article>
@@ -570,14 +623,6 @@
         <input type="date" value="2026-10-30" />
         <input type="time" value="09:30" />
         <input type="datetime-local" value="2026-10-30T09:30" />
-      </div>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Color picker</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;input type="color"&gt;</code></p>
-      <div class="native">
-        <input type="color" value="#4f46e5" />
       </div>
     </article>
 
@@ -668,17 +713,6 @@
   });
 </script>
 <script>
-  // Theme dropdown: a <kakao-button> menu driving the page-level theme API.
-  customElements.whenDefined('kakao-theme-switch').then(() => {
-    const Themes = customElements.get('kakao-theme-switch');
-    document.querySelectorAll('.theme-menu').forEach((menu) => {
-      const sync = () => menu.setAttribute('selected', Themes.current());
-      sync();
-      new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-kakao-theme'] });
-      if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sync);
-      menu.addEventListener('kakao-button-select', (e) => Themes.setTheme(e.detail.value, { x: e.detail.x, y: e.detail.y }));
-    });
-  });
 </script>
 </body>
 </html>

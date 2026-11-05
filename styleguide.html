@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="shared/tokens.css" />
 <link rel="stylesheet" href="shared/font.css" />
 <link rel="stylesheet" href="shared/themes.css" />
+<script src="shared/component-api.js"></script>
 <script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
 <link rel="stylesheet" href="components/button/button.css" />
@@ -19,6 +20,7 @@
 <script src="components/step-switch/step-switch.js" defer></script>
 <script src="components/slider/slider.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
+<script src="components/color-picker/color-picker.js" defer></script>
 <style>
   /* ---- page-only styles; the guide itself, not the components ---- */
   main { max-width: 960px; }
@@ -181,6 +183,7 @@
     <a href="#elevation">Elevation</a>
     <a href="#focus">Focus &amp; states</a>
     <a href="#motion">Motion</a>
+    <a href="#triggers">Trigger API</a>
     <a href="#audit">Component audit</a>
     <a href="#tokens">Proposed tokens</a>
   </nav>
@@ -360,11 +363,23 @@
   <!-- ================================================================ -->
   <section id="themes">
     <h2>Themes</h2>
-    <p>Light, dark and Catppuccin (Mocha). The switch toggles light and dark; a <code>&lt;kakao-button&gt;</code> menu can pick any theme. A theme only changes the colour variables. Components never hard-code a colour, so every theme reaches every component.</p>
+    <p>Light, Beige (a warm mid-tone), Umber (its dark counterpart), dark, AMOLED (true black), Catppuccin (Mocha) and Forest (green-hued dark). The switch toggles light and dark; a <code>&lt;kakao-button theme-picker&gt;</code> menu or a <code>&lt;kakao-step-switch theme-picker&gt;</code> can pick any theme, and both follow the pointer. A theme only changes the colour variables. Components never hard-code a colour, so every theme reaches every component.</p>
 
     <div class="theme-panels">
       <div class="theme-panel" data-kakao-theme="light">
         <h4>Light</h4>
+        <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
+        <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
+        <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+      </div>
+      <div class="theme-panel" data-kakao-theme="beige">
+        <h4>Beige</h4>
+        <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
+        <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
+        <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+      </div>
+      <div class="theme-panel" data-kakao-theme="umber">
+        <h4>Umber</h4>
         <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
         <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
         <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
@@ -375,18 +390,43 @@
         <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
         <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
       </div>
+      <div class="theme-panel" data-kakao-theme="amoled">
+        <h4>AMOLED</h4>
+        <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
+        <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
+        <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+      </div>
       <div class="theme-panel" data-kakao-theme="catppuccin">
         <h4>Catppuccin</h4>
         <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
         <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
         <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
       </div>
+      <div class="theme-panel" data-kakao-theme="forest">
+        <h4>Forest</h4>
+        <div class="row"><kakao-button label="Save"></kakao-button><kakao-button label="Cancel" variant="secondary"></kakao-button><kakao-button label="Delete" variant="danger"></kakao-button></div>
+        <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
+        <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <h3>Picking a theme with a step switch</h3>
+      <p class="small muted">A step switch with <code>theme-picker</code> lists the themes as steps, and the page follows the thumb: drag it across the track (or tap further away and watch it fly) and the theme changes with every step it crosses. A <code>&lt;kakao-button theme-picker&gt;</code> menu does the same for the pointer: run down the list and the page changes with each item. Both cross-fade the theme's colour roles instead of rippling, so the control under the pointer keeps rendering. <code>theme-switch.js</code> does the wiring, so a page needs no script for it.</p>
+      <div style="margin-top:.9rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
+        <kakao-step-switch theme-picker label="Theme" list-data='[
+          {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
+          {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
+          {"value":"forest","label":"Forest"}]'></kakao-step-switch>
+        <kakao-button theme-picker label="Theme" variant="secondary" show-selected
+          list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+      </div>
     </div>
 
     <div class="grid" style="margin-top:1rem">
       <div class="card">
         <h3>How it works <span class="tag now">Now</span></h3>
-        <p class="small">The light values live in <code>shared/tokens.css</code>; every other theme is a block in <code>shared/themes.css</code>. A page picks a theme with <code>data-kakao-theme</code> on <code>&lt;html&gt;</code>, which is what the switch sets. Any element can carry the attribute to theme just that part, as the two panels above do.</p>
+        <p class="small">The light values live in <code>shared/tokens.css</code>; every other theme is a block in <code>shared/themes.css</code>. A page picks a theme with <code>data-kakao-theme</code> on <code>&lt;html&gt;</code>, which is what the switch sets. Any element can carry the attribute to theme just that part, as the seven panels above do.</p>
         <p class="small muted">With no choice made, the page follows the system's light/dark setting. <code>data-bs-theme="dark"</code> also selects dark, and the switch keeps it in step, so a Bootstrap 5.3 page and the components always agree.</p>
       </div>
       <div class="card">
@@ -404,7 +444,7 @@
     <h3 class="sub">Theme variables <span class="tag now">Now</span></h3>
     <div class="table-wrap">
       <table id="theme-table">
-        <thead><tr><th>Variable</th><th>Light</th><th>Dark</th><th>Catppuccin</th><th>Use</th></tr></thead>
+        <thead><tr><th>Variable</th><th>Light</th><th>Beige</th><th>Umber</th><th>Dark</th><th>AMOLED</th><th>Catppuccin</th><th>Forest</th><th>Use</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -414,7 +454,7 @@
       <ol class="small" style="margin:0;padding-left:1.2rem;display:grid;gap:.35rem">
         <li>In <code>shared/themes.css</code>, copy the dark block, rename it (<code>/* @theme dim */</code>, <code>[data-kakao-theme="dim"]</code>) and set its <code>color-scheme</code>.</li>
         <li>Run <code>node tools/check-themes.js --fix</code> and adjust colours until it passes.</li>
-        <li>Add it to the switch: <code>list-data='[{"value":"light"},{"value":"dark"},{"value":"dim","scheme":"dark"}]'</code>. The switch then cycles through all three.</li>
+        <li>Add it to the switch: <code>list-data='[{"value":"light"},{"value":"dark"},{"value":"dim","scheme":"dark"}]'</code>. The switch then cycles through all three, and any <code>&lt;kakao-step-switch theme-picker&gt;</code> or theme menu can list it too.</li>
       </ol>
     </div>
   </section>
@@ -558,6 +598,40 @@
   </section>
 
   <!-- ================================================================ -->
+  <section id="triggers">
+    <h2>Trigger API</h2>
+    <p>Components don't know each other, so they talk through one small layer: <code>shared/component-api.js</code>. A <b>trigger</b> is a custom event named <code>kakao-trigger:&lt;name&gt;</code> that bubbles and crosses shadow roots; a <b>reaction</b> is a component listening for one. Load the file before the components; they check for <code>KakaoComponents</code> and keep working without it.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Emitting and reacting</h3>
+        <pre><span class="c">/* a component announces something */</span>
+KakaoComponents.emit(this, 'theme-change', {
+  color: '#818cf8'   <span class="c">// plus source, trigger</span>
+});
+
+<span class="c">/* another one reacts */</span>
+const off = KakaoComponents.on('theme-change', (d) =&gt; {
+  glow.style.setProperty('--glow', d.color);
+});
+off(); <span class="c">/* unsubscribe */</span></pre>
+      </div>
+      <div class="card">
+        <h3>Discovery</h3>
+        <p class="small muted">Every component declares what it emits and what it watches, so the wiring is documented where it lives.</p>
+        <pre>KakaoComponents.register('kakao-card', {
+  triggers: [],
+  reactions: { 'theme-change': 'glow color' },
+});
+
+KakaoComponents.meta('kakao-card');</pre>
+      </div>
+    </div>
+
+    <p class="small muted" style="margin-top:.75rem">Live wiring: <code>&lt;kakao-theme-switch&gt;</code> emits <code>theme-change</code> with the new theme's primary colour. <code>&lt;kakao-card&gt;</code> reacts with it: a card without a footer button glows in that colour after a theme change. Its <code>theme-change</code> event carries the same <code>color</code>, so plain page listeners get it too.</p>
+  </section>
+
+  <!-- ================================================================ -->
   <section id="audit">
     <h2>Component audit</h2>
     <p>Where each component stands against this guide. “Family” is the visual dialect it was built in: <b>A</b> zinc / ink (button, tabs, number input), <b>B</b> Tailwind gray / indigo (switches, file upload, multi dropdown), <b>C</b> plain hex greys (list, popover, slider).</p>
@@ -577,6 +651,7 @@
           <tr><td>Slider</td><td>C</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">3</td><td>✓</td><td class="num">0.4</td><td>Reduced motion; accent follows ink, not primary</td></tr>
           <tr><td>Card</td><td>—</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">14</td><td>n/a</td><td class="num">—</td><td>None</td></tr>
           <tr><td>Theme switch</td><td>—</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">pill</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
+          <tr><td>Color picker</td><td>—</td><td><span class="tag ok">Yes</span></td><td><span class="tag ok">Theme</span></td><td class="num">10/7/14</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
           <tr><td>Animated number</td><td>—</td><td>Mono by design</td><td>currentColor</td><td class="num">—</td><td>n/a</td><td class="num">—</td><td>None</td></tr>
         </tbody>
       </table>
@@ -659,10 +734,14 @@
       line: 'Decorative hairlines', border: 'Field edges, off switch track (3:1)', ink: 'Primary button', 'ink-hover': 'Primary button hover',
       'on-ink': 'Text on ink', danger: 'Danger button, errors', 'danger-hover': 'Danger hover', 'on-danger': 'Text on danger', focus: 'Focus outline',
     };
-    const [light, dark, cat] = document.querySelectorAll('.theme-panel');
+    const [light, beige, umber, dark, amoled, cat, forest] = document.querySelectorAll('.theme-panel');
     const L = getComputedStyle(light);
+    const B = getComputedStyle(beige);
+    const U = getComputedStyle(umber);
     const D = getComputedStyle(dark);
+    const A = getComputedStyle(amoled);
     const C = getComputedStyle(cat);
+    const F = getComputedStyle(forest);
     const body = document.querySelector('#theme-table tbody');
     const cell = (v) => {
       const td = document.createElement('td');
@@ -683,7 +762,7 @@
       nameTd.append(code);
       const useTd = document.createElement('td');
       useTd.textContent = uses[name];
-      tr.append(nameTd, cell(L.getPropertyValue(prop).trim()), cell(D.getPropertyValue(prop).trim()), cell(C.getPropertyValue(prop).trim()), useTd);
+      tr.append(nameTd, cell(L.getPropertyValue(prop).trim()), cell(B.getPropertyValue(prop).trim()), cell(U.getPropertyValue(prop).trim()), cell(D.getPropertyValue(prop).trim()), cell(A.getPropertyValue(prop).trim()), cell(C.getPropertyValue(prop).trim()), cell(F.getPropertyValue(prop).trim()), useTd);
       body.append(tr);
     });
   })();

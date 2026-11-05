@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Settings — Kakao Components</title>
+<link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/font.css" />
+<link rel="stylesheet" href="shared/themes.css" />
+<script src="shared/component-api.js"></script>
+<script src="components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="shared/demo.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="components/button/button.css" />
+<script src="components/button/button.js" defer></script>
+<script src="components/step-switch/step-switch.js" defer></script>
+<style>
+  .setting-row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+  .setting-note { margin: 0.9rem 0 0; color: var(--muted); font-size: 0.85rem; }
+  .settings-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+  .settings-card { display: grid; gap: 0.15rem; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: 12px; text-decoration: none; color: inherit; background: var(--card); }
+  .settings-card:hover { border-color: var(--kakao-color-border, #82828b); }
+  .settings-card:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+  .settings-card b { font-size: 0.95rem; }
+  .settings-card span { color: var(--muted); font-size: 0.82rem; }
+  .now { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="index.html">← All components</a>
+    <h1>Settings</h1>
+    <p>The look of these pages. The theme is the only setting that is stored; it applies to every page, because every page reads the same colour variables.</p>
+  </header>
+
+  <h2>Theme</h2>
+  <p>Pick one of the themes from <code>shared/themes.css</code>. The thumb and the menu follow the pointer, and both cross-fade the page.</p>
+  <div class="card">
+    <kakao-step-switch id="picker" theme-picker label="Theme" list-data='[
+      {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
+      {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
+      {"value":"forest","label":"Forest"}]'></kakao-step-switch>
+    <div class="setting-row" style="margin-top:1.1rem">
+      <kakao-button id="menu" theme-picker label="Theme" variant="secondary" show-selected
+        list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+      <kakao-button id="follow" label="Follow the system" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <p class="setting-note">Now: <b class="now" id="now">—</b> · <span id="stored">—</span></p>
+    <p class="setting-note">A choice is remembered in this browser (<code>localStorage</code>, key <code>kakao-theme</code>). “Follow the system” forgets it: the pages then follow the operating system's light or dark setting.</p>
+  </div>
+
+  <h2>Component settings</h2>
+  <p>Every component's look is a set of <code>--kakao-&lt;component&gt;-*</code> custom properties. Each has a construction page that previews it live and edits those values; the shared colour and size variables sit on one page.</p>
+  <div class="card">
+    <div class="settings-grid">
+      <a class="settings-card" href="tokens.html"><b>Main variables</b><span>Colours, type, spacing, motion</span></a>
+      <a class="settings-card" href="components/button/construction.html"><b>Button</b><span>Variants, sizes, menu</span></a>
+      <a class="settings-card" href="components/card/construction.html"><b>Card</b><span>Surface, padding, glow</span></a>
+      <a class="settings-card" href="components/color-picker/construction.html"><b>Color picker</b><span>Field, popover, swatches</span></a>
+      <a class="settings-card" href="components/file-upload/construction.html"><b>File upload</b><span>Drop zone, density</span></a>
+      <a class="settings-card" href="components/list/construction.html"><b>List</b><span>Rows, fade, radius</span></a>
+      <a class="settings-card" href="components/multi-dropdown/construction.html"><b>Multi dropdown</b><span>Segments, popup</span></a>
+      <a class="settings-card" href="components/number-input/construction.html"><b>Number input</b><span>Steppers, sizes</span></a>
+      <a class="settings-card" href="components/popover/construction.html"><b>Popover</b><span>Surface, shadow, offset</span></a>
+      <a class="settings-card" href="components/slider/construction.html"><b>Slider</b><span>Track, thumb, steppers</span></a>
+      <a class="settings-card" href="components/step-switch/construction.html"><b>Step switch</b><span>Track, thumb, labels</span></a>
+      <a class="settings-card" href="components/switch-group/construction.html"><b>Switch group</b><span>Track, thumb, labels</span></a>
+      <a class="settings-card" href="components/tabs/construction.html"><b>Tabs</b><span>Track, thumb, sizes</span></a>
+      <a class="settings-card" href="components/theme-switch/construction.html"><b>Theme switch</b><span>Button, ripple, fade</span></a>
+      <a class="settings-card" href="components/animated-number/construction.html"><b>Animated number</b><span>Font, duration</span></a>
+    </div>
+    <p class="setting-note">Editing needs the construction server: <code>node tools/construct-server.js</code>, then open a construction page from <code>http://localhost:8790</code>. Without it the pages still preview, but saving is disabled.</p>
+  </div>
+
+  <h2>Other ways to look around</h2>
+  <div class="card">
+    <p>The <a href="styleguide.html">style guide</a> explains the rules the components follow, the <a href="tokens.html">main variables</a> page holds the shared values, and the <a href="kitchen-sink.html">kitchen sink</a> shows the components together in a real form.</p>
+  </div>
+
+  <footer>Themes live in <code>shared/themes.css</code> and must pass <code>node tools/check-themes.js</code> (WCAG 2.2 AA). Pickers are described in the header of <code>components/theme-switch/theme-switch.js</code>.</footer>
+</main>
+
+<script>
+  (function () {
+    const Themes = customElements.get('kakao-theme-switch');
+    const nowEl = document.getElementById('now');
+    const storedEl = document.getElementById('stored');
+
+    /** The theme's label as the pickers show it ("AMOLED", not "Amoled"). */
+    const labelOf = (theme) => {
+      const picker = document.getElementById('picker');
+      const step = picker && picker.getData ? picker.getData().find((s) => s.value === theme) : null;
+      return step ? step.label : theme[0].toUpperCase() + theme.slice(1);
+    };
+
+    const render = () => {
+      const theme = Themes.current();
+      nowEl.textContent = labelOf(theme);
+      let saved = null;
+      try { saved = localStorage.getItem('kakao-theme'); } catch (err) { /* storage blocked */ }
+      storedEl.textContent = saved ? 'remembered in this browser' : 'following the system';
+    };
+
+    render();
+    document.addEventListener('theme-change', render);
+    if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
+
+    document.getElementById('follow').addEventListener('kakao-button-action', () => {
+      const previous = Themes.current();
+      try { localStorage.removeItem('kakao-theme'); } catch (err) { /* storage blocked */ }
+      document.documentElement.removeAttribute('data-kakao-theme');
+      document.documentElement.removeAttribute('data-bs-theme');
+      render();
+      // Tell the pickers (and anything else listening) that the page changed.
+      const theme = Themes.current();
+      if (theme !== previous) {
+        document.dispatchEvent(new CustomEvent('theme-change', {
+          detail: { theme, previous, source: 'api' },
+        }));
+      }
+    });
+  })();
+</script>
+</body>
+</html>

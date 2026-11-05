@@ -7,12 +7,14 @@
 <link rel="stylesheet" href="../../shared/tokens.css" />
 <link rel="stylesheet" href="../../shared/font.css" />
 <link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
 <link rel="stylesheet" href="../button/button.css" />
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="../switch-group/switch-group.js" defer></script>
+<script src="../step-switch/step-switch.js" defer></script>
 <script src="../slider/slider.js" defer></script>
 </head>
 <body>
@@ -22,7 +24,7 @@
     <a class="back" href="../../index.html">← All components</a>
     <a class="back" href="construction.html">Construction page →</a>
     <h1>Theme switch</h1>
-    <p><code>&lt;kakao-theme-switch&gt;</code> — switches the page between colour themes: light, dark and Catppuccin. The new theme spreads from the button as a ripple. The choice is remembered; until then the page follows the operating system.</p>
+    <p><code>&lt;kakao-theme-switch&gt;</code> — switches the page between colour themes: light, beige, umber, dark, AMOLED, Catppuccin and Forest. The button spreads the new theme as a ripple; the two <code>theme-picker</code> controls cross-fade instead. The choice is remembered; until then the page follows the operating system. Any control can pick a theme, and the two <code>theme-picker</code> forms follow the pointer: a <code>&lt;kakao-button&gt;</code> menu and a <code>&lt;kakao-step-switch&gt;</code>.</p>
   </header>
 
   <h2>Variants</h2>
@@ -42,9 +44,17 @@
     </div>
     <div class="card">
       <h3>Dropdown · <code>kakao-button</code> menu</h3>
-      <kakao-button class="theme-menu" label="Theme" variant="secondary" show-selected
-        list-data='[{"value":"light","label":"Light"},{"value":"dark","label":"Dark"},{"value":"catppuccin","label":"Catppuccin"}]'></kakao-button>
-      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Picks any theme, also ones the switch doesn't cycle through. The ripple starts at the picked item.</p>
+      <kakao-button class="theme-menu" theme-picker label="Theme" variant="secondary" show-selected
+        list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Picks any theme, also ones the switch doesn't cycle through. Run the pointer down the list and the page cross-fades after it; the check mark and the label move with the theme. No page script: <code>theme-switch.js</code> wires it.</p>
+    </div>
+    <div class="card full">
+      <h3>Step switch · <code>theme-picker</code></h3>
+      <kakao-step-switch theme-picker label="Theme" list-data='[
+        {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
+        {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
+        {"value":"forest","label":"Forest"}]'></kakao-step-switch>
+      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The page follows the thumb: drag it across the track and every step it crosses changes the theme, also the ones it only flies over when you tap further away. The page cross-fades between themes instead of rippling, so nothing freezes under the pointer. No page script: <code>theme-switch.js</code> wires it.</p>
     </div>
     <div class="card">
       <h3>Themed components</h3>
@@ -76,7 +86,7 @@
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 
-  <footer>Attributes: <code>list-data</code>, <code>storage-key</code>, <code>show-label</code>, <code>disabled</code>. Event: <code>theme-change</code>. Themes live in <code>shared/themes.css</code>. Full reference in the header of <code>theme-switch.js</code>.</footer>
+  <footer>Attributes: <code>list-data</code>, <code>storage-key</code>, <code>show-label</code>, <code>disabled</code>. Events: <code>theme-change</code>. Pickers follow the pointer via <code>step-cross</code> (step switch) and <code>kakao-button-menu-hover</code> (menu), and pick via <code>kakao-button-select</code>. Themes live in <code>shared/themes.css</code>. Full reference in the header of <code>theme-switch.js</code>.</footer>
 </main>
 
 <script>
@@ -93,19 +103,6 @@
     document.documentElement.removeAttribute('data-kakao-theme');
     document.documentElement.removeAttribute('data-bs-theme');
     logLine(log, 'forgot the choice', { following: 'system' });
-  });
-</script>
-<script>
-  // Theme dropdown: a <kakao-button> menu driving the page-level theme API.
-  customElements.whenDefined('kakao-theme-switch').then(() => {
-    const Themes = customElements.get('kakao-theme-switch');
-    document.querySelectorAll('.theme-menu').forEach((menu) => {
-      const sync = () => menu.setAttribute('selected', Themes.current());
-      sync();
-      new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-kakao-theme'] });
-      if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sync);
-      menu.addEventListener('kakao-button-select', (e) => Themes.setTheme(e.detail.value, { x: e.detail.x, y: e.detail.y }));
-    });
   });
 </script>
 </body>

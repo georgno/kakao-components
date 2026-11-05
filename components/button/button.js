@@ -31,6 +31,12 @@
  *                         { value, label, previous, x, y } (x / y: viewport point
  *                         of the pick, for effects that start there)
  *   kakao-button-menu   — bubbles when the menu opens or closes: { open }
+ *   kakao-button-menu-hover — bubbles when the pointer moves onto a different
+ *                         menu item: { value, label, index }. Mouse only (keys
+ *                         and taps don't fire it), so a listener can follow the
+ *                         pointer, e.g. a theme menu switching the page as the
+ *                         pointer passes. It fires again after the pointer left
+ *                         the menu or the menu was reopened.
  *
  * Public methods:
  *   run(promiseOrFactory, { successHold? }) — loading → success/fail animation
@@ -88,6 +94,7 @@
       this._menuOpen = false;
       this._typed = '';
       this._typedAt = 0;
+      this._hovered = -1; // menu item the pointer is over (for kakao-button-menu-hover)
     }
 
     connectedCallback() {
@@ -293,8 +300,11 @@
       this._on(this._menu, 'keydown', (e) => this._onMenuKey(e));
       this._on(this._menu, 'pointermove', (e) => {
         const el = e.target.closest('[role="menuitemradio"]');
-        if (el && el !== document.activeElement && el.getAttribute('aria-disabled') !== 'true') el.focus({ preventScroll: true });
+        const usable = el && el.getAttribute('aria-disabled') !== 'true';
+        if (usable && el !== document.activeElement) el.focus({ preventScroll: true });
+        this._reportHover(usable ? Number(el.dataset.index) : -1);
       });
+      this._on(this._menu, 'pointerleave', () => this._reportHover(-1));
       this._on(this, 'focusout', (e) => {
         if (this._menuOpen && !this.contains(e.relatedTarget)) this.closeMenu(false);
       });
@@ -375,6 +385,23 @@
       });
     }
 
+    /**
+     * Announces the menu item the pointer is over, once per item: mouse only, so
+     * a listener can follow the pointer (the theme menu previews the theme the
+     * pointer is on). Disabled items and the gap between items report -1.
+     * @param {number} index item index, or -1 for "none"
+     */
+    _reportHover(index) {
+      if (index === this._hovered) return;
+      this._hovered = index;
+      const it = this._items[index];
+      if (!it || !this._menuOpen) return;
+      this.dispatchEvent(new CustomEvent('kakao-button-menu-hover', {
+        bubbles: true,
+        detail: { value: it.value, label: it.label, index },
+      }));
+    }
+
     _menuItems() {
       return Array.from(this._menu.querySelectorAll('[role="menuitemradio"]:not([aria-disabled="true"])'));
     }
@@ -382,6 +409,7 @@
     openMenu(focus = 'selected') {
       if (!this._isMenu() || this._menuOpen || this._btn.disabled) return;
       this._menuOpen = true;
+      this._hovered = -1;
       this._menu.hidden = false;
       // Open upwards when there is no room below.
       const r = this._btn.getBoundingClientRect();
@@ -404,6 +432,7 @@
     closeMenu(returnFocus = true) {
       if (!this._menuOpen) return;
       this._menuOpen = false;
+      this._hovered = -1;
       this._menu.hidden = true;
       this._syncMenu();
       if (returnFocus) this._btn.focus();
@@ -536,9 +565,13 @@
       const labelText = this.getAttribute('label') || '';
       const shownItem = this.hasAttribute('show-selected') ? this._selectedItem() : null;
 
-      this.setAttribute('icon-position', iconPos);
+      // Write it back only when it really changes: icon-position is observed, so an
+      // unconditional set would call attributeChangedCallback → this method → set…
+      // again, recursing hundreds of times per button (a visible stutter on load).
+      if (this.getAttribute('icon-position') !== iconPos) this.setAttribute('icon-position', iconPos);
 
-      this._label.textContent = shownItem ? shownItem.label : labelText;
+      const label = shownItem ? shownItem.label : labelText;
+      if (this._label.textContent !== label) this._label.textContent = label;
       this._label.style.display = iconPos === 'only' ? 'none' : '';
 
       this._iconLeft.style.display =

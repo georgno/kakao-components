@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../../shared/tokens.css" />
 <link rel="stylesheet" href="../../shared/font.css" />
 <link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
 <link rel="stylesheet" href="../button/button.css" />
@@ -98,7 +99,7 @@
   const steps = document.getElementById('steps1');
   const log = document.getElementById('log');
   // step-drag fires on every pointer move, so it's left out of the log
-  logEvents(log, ['step-change', 'step-drag-start', 'step-drag-end']);
+  logEvents(log, ['step-change', 'step-drag-start', 'step-drag-end', 'step-cross']);
 
   toggleButton(document.getElementById('optDrag'), 'thumb-drag', (on) => { steps.thumbDrag = on; });
   toggleButton(document.getElementById('optDisabled'), 'disabled', (on) => { steps.disabled = on; });

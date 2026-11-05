@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../../shared/tokens.css" />
 <link rel="stylesheet" href="../../shared/font.css" />
 <link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -52,6 +53,15 @@
       <h3 slot="header">Invite your team</h3>
       <p>A single button can go straight into the footer.</p>
       <kakao-button slot="footer" label="Send invites" variant="secondary"></kakao-button>
+    </kakao-card>
+  </div>
+
+  <h2>Theme trigger glow</h2>
+  <p>A card without a footer button can still glow when the <code>&lt;kakao-theme-switch&gt;</code> sends its colour through the <code>KakaoComponents</code> trigger API. Switch the page theme to see the glow follow <code style="white-space:nowrap">--kakao-color-primary</code>.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Theme glow</h3>
+      <p>This card has no footer button. It reacts to the <code>theme-change</code> trigger and uses the theme's primary colour for the glow.</p>
     </kakao-card>
   </div>
 

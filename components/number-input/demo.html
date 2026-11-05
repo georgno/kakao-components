@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../../shared/tokens.css" />
 <link rel="stylesheet" href="../../shared/font.css" />
 <link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
 <link rel="stylesheet" href="../button/button.css" />
@@ -45,7 +46,26 @@
       <kakao-number-input touch-steppers>
         <input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity (touch)" />
       </kakao-number-input>
-      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Used automatically on touch screens: − and + as 44px buttons on the right; hold to repeat.</p>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Used automatically on touch screens: − and + as 44px buttons in one joined pair; hold to repeat.</p>
+    </div>
+    <div class="card">
+      <h3>Pair on the left · <code>group-position="left"</code></h3>
+      <kakao-number-input touch-steppers group-position="left">
+        <input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity, buttons on the left" />
+      </kakao-number-input>
+    </div>
+    <div class="card">
+      <h3>Split · <code>grouped="false" plus="left"</code></h3>
+      <kakao-number-input touch-steppers grouped="false" plus="left">
+        <input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity, split buttons" />
+      </kakao-number-input>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">+ on the left, − on the right, as two separate buttons.</p>
+    </div>
+    <div class="card">
+      <h3>One button · <code>minus="false"</code></h3>
+      <kakao-number-input touch-steppers minus="false">
+        <input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity, plus only" />
+      </kakao-number-input>
     </div>
     <div class="card">
       <h3>Disabled</h3>
@@ -65,7 +85,7 @@
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 
-  <footer>Attributes on the host: <code>size</code> (<code>sm</code>), <code>touch-steppers</code>. Everything else lives on the wrapped input. Full reference in the header of <code>number-input.js</code>.</footer>
+  <footer>Attributes on the host: <code>size</code> (<code>sm</code>), <code>touch-steppers</code>, <code>plus</code> / <code>minus</code> (<code>left</code> · <code>right</code> · <code>false</code>), <code>grouped</code> (default on, <code>false</code> = separate), <code>group-position</code> (<code>left</code> · <code>right</code>). Everything else lives on the wrapped input. Full reference in the header of <code>number-input.js</code>.</footer>
 </main>
 
 <script>

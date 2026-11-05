@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../../shared/tokens.css" />
 <link rel="stylesheet" href="../../shared/font.css" />
 <link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/construction.css" />
 <link rel="stylesheet" href="../button/button.css" />
@@ -33,6 +34,14 @@
     <figure>
       <figcaption>Disabled</figcaption>
       <kakao-number-input><input type="number" value="42" disabled aria-label="Locked" /></kakao-number-input>
+    </figure>
+    <figure>
+      <figcaption>Touch layout · pair on the left</figcaption>
+      <kakao-number-input touch-steppers group-position="left"><input type="number" min="0" max="100" value="10" aria-label="Quantity (touch, left)" /></kakao-number-input>
+    </figure>
+    <figure>
+      <figcaption>Touch layout · split buttons</figcaption>
+      <kakao-number-input touch-steppers grouped="false" plus="left"><input type="number" min="0" max="100" value="10" aria-label="Quantity (touch, split)" /></kakao-number-input>
     </figure>
     <figure>
       <figcaption>Touch layout (touch screens)</figcaption>

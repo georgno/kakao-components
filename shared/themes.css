@@ -44,6 +44,56 @@
 }
 /* @generated:end */
 
+/* @theme beige */
+/* A warm, mid-light beige: between the light and the dark theme in tone, with a
+   deep amber accent. Every pair passes tools/check-themes.js. */
+[data-kakao-theme="beige"] {
+  color-scheme: light;
+  --kakao-color-primary: #8a4b12;
+  --kakao-color-text: #2b2317;
+  --kakao-color-text-soft: #4b412e;
+  --kakao-color-muted: #5f5238;
+  --kakao-color-page: #d6c8ad;
+  --kakao-color-bg: #e9dfcb;
+  --kakao-color-raised: #f6efe2;
+  --kakao-color-subtle: #ded2ba;
+  --kakao-color-subtle-strong: #d0c2a6;
+  --kakao-color-line: #cdbfa4;
+  --kakao-color-border: #6f6149;
+  --kakao-color-ink: #2b2317;
+  --kakao-color-ink-hover: #453a28;
+  --kakao-color-on-ink: #f6efe2;
+  --kakao-color-danger: #971d18;
+  --kakao-color-danger-hover: #ad2822;
+  --kakao-color-on-danger: #ffffff;
+  --kakao-color-focus: #1a5f8a;
+}
+
+/* @theme umber */
+/* A warm, mid-dark brown: the step between the beige and the dark theme, with a
+   soft amber accent. Every pair passes tools/check-themes.js. */
+[data-kakao-theme="umber"] {
+  color-scheme: dark;
+  --kakao-color-primary: #f0b96b;
+  --kakao-color-text: #f3ece0;
+  --kakao-color-text-soft: #ddd2c0;
+  --kakao-color-muted: #c0b5a2;
+  --kakao-color-page: #332c23;
+  --kakao-color-bg: #423a2f;
+  --kakao-color-raised: #6b6151;
+  --kakao-color-subtle: #4d4438;
+  --kakao-color-subtle-strong: #5a5042;
+  --kakao-color-line: #4a4136;
+  --kakao-color-border: #9c9080;
+  --kakao-color-ink: #f3ece0;
+  --kakao-color-ink-hover: #ddd2c0;
+  --kakao-color-on-ink: #2a241d;
+  --kakao-color-danger: #f2a09a;
+  --kakao-color-danger-hover: #f7b8b3;
+  --kakao-color-on-danger: #2a241d;
+  --kakao-color-focus: #93cbf2;
+}
+
 /* @theme dark */
 [data-kakao-theme="dark"],
 [data-bs-theme="dark"]:not([data-kakao-theme]) {
@@ -65,6 +115,31 @@
   --kakao-color-danger: #f87171;
   --kakao-color-danger-hover: #fca5a5;
   --kakao-color-on-danger: #18181b;
+  --kakao-color-focus: #60a5fa;
+}
+
+/* @theme amoled */
+/* True black, for OLED screens: the page and surfaces are #000, so pixels stay
+   off; hairlines and subtle fills do the separating. Strong contrast by design. */
+[data-kakao-theme="amoled"] {
+  color-scheme: dark;
+  --kakao-color-primary: #818cf8;
+  --kakao-color-text: #ffffff;
+  --kakao-color-text-soft: #d4d4d8;
+  --kakao-color-muted: #a1a1aa;
+  --kakao-color-page: #000000;
+  --kakao-color-bg: #000000;
+  --kakao-color-raised: #2a2a2e;
+  --kakao-color-subtle: #141416;
+  --kakao-color-subtle-strong: #1e1e21;
+  --kakao-color-line: #1a1a1d;
+  --kakao-color-border: #6b6b73;
+  --kakao-color-ink: #ffffff;
+  --kakao-color-ink-hover: #d4d4d8;
+  --kakao-color-on-ink: #000000;
+  --kakao-color-danger: #f87171;
+  --kakao-color-danger-hover: #fca5a5;
+  --kakao-color-on-danger: #000000;
   --kakao-color-focus: #60a5fa;
 }
 
@@ -91,6 +166,31 @@
   --kakao-color-danger-hover: #f5a6bd;
   --kakao-color-on-danger: #11111b;
   --kakao-color-focus: #89b4fa;
+}
+
+/* @theme forest */
+/* A green-hued dark theme: the same roles as dark, tinted towards a pine green,
+   with an emerald accent. Every pair passes tools/check-themes.js. */
+[data-kakao-theme="forest"] {
+  color-scheme: dark;
+  --kakao-color-primary: #6ee7b7;
+  --kakao-color-text: #e8f4ed;
+  --kakao-color-text-soft: #c6dccf;
+  --kakao-color-muted: #9db3a6;
+  --kakao-color-page: #0b1512;
+  --kakao-color-bg: #13211b;
+  --kakao-color-raised: #3d5046;
+  --kakao-color-subtle: #1b2d25;
+  --kakao-color-subtle-strong: #263a30;
+  --kakao-color-line: #22342b;
+  --kakao-color-border: #74897d;
+  --kakao-color-ink: #e8f4ed;
+  --kakao-color-ink-hover: #c6dccf;
+  --kakao-color-on-ink: #0b1512;
+  --kakao-color-danger: #fca5a5;
+  --kakao-color-danger-hover: #fecaca;
+  --kakao-color-on-danger: #0b1512;
+  --kakao-color-focus: #7dd3fc;
 }
 
 /* @generated:start os-dark (copy of the dark theme, used when no theme is chosen) */
@@ -127,11 +227,31 @@
     --kakao-color-border: #52525b;
     --kakao-color-line: #a1a1aa;
   }
+  [data-kakao-theme="beige"] {
+    --kakao-color-muted: #453a27;
+    --kakao-color-border: #4f4229;
+    --kakao-color-line: #a2957a;
+  }
+  [data-kakao-theme="amoled"] {
+    --kakao-color-muted: #d4d4d8;
+    --kakao-color-border: #a1a1aa;
+    --kakao-color-line: #3f3f46;
+  }
+  [data-kakao-theme="umber"] {
+    --kakao-color-muted: #e0d6c6;
+    --kakao-color-border: #bdb2a0;
+    --kakao-color-line: #6a5f4e;
+  }
   [data-kakao-theme="dark"],
   [data-bs-theme="dark"]:not([data-kakao-theme]) {
     --kakao-color-muted: #d4d4d8;
     --kakao-color-border: #a1a1aa;
     --kakao-color-line: #52525b;
+  }
+  [data-kakao-theme="forest"] {
+    --kakao-color-muted: #c6dccf;
+    --kakao-color-border: #9db3a6;
+    --kakao-color-line: #455c50;
   }
 }
 @media (prefers-contrast: more) {

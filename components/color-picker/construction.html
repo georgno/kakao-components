@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-color-picker — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="color-picker.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>.construction-preview figure { min-height: 0; } #openPicker { margin-bottom: 21rem; }</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="color-picker" data-source="color-picker.js" data-title="Colour picker">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Field</figcaption>
+      <kakao-color-picker label="Brand colour" value="#4f46e5"></kakao-color-picker>
+    </figure>
+    <figure>
+      <figcaption>Open · alpha · presets (tune the popover here)</figcaption>
+      <div id="openPicker">
+        <kakao-color-picker id="openOne" label="Overlay" alpha value="#0d9488cc"
+          list-data='["#4f46e5","#0d9488","#7c3aed","#db2777","#d97706","#dc2626","#18181b","#ffffff"]'></kakao-color-picker>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-color-picker-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-picker-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-picker-muted", "label": "Muted text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-picker-border", "label": "Field border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-picker-line", "label": "Popover border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-picker-hover-bg", "label": "Button fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-picker-focus", "label": "Focus", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-picker-height", "label": "Field height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-picker-swatch-size", "label": "Swatch size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-picker-popup-width", "label": "Popover width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-picker-popup-padding", "label": "Popover padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-picker-area-height", "label": "Area height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-picker-slider-height", "label": "Slider height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-picker-thumb-size", "label": "Thumb size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-picker-preset-size", "label": "Preset size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-picker-radius", "label": "Field radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-color-picker-swatch-radius", "label": "Swatch radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-color-picker-popup-radius", "label": "Popover radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-color-picker-area-radius", "label": "Area radius", "group": "Shape", "type": "radius", "hint": "popover radius − padding" },
+    { "property": "--kakao-color-picker-popup-shadow", "label": "Popover shadow", "group": "Effects", "type": "shadow" },
+    { "property": "--kakao-color-picker-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-color-picker-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 }
+  ]
+  </script>
+</main>
+<script>
+  // Keep one picker open so the popover can be tuned
+  customElements.whenDefined('kakao-color-picker').then(() => {
+    const one = document.getElementById('openOne');
+    setTimeout(() => one.open(), 300);
+  });
+</script>
+</body>
+</html>

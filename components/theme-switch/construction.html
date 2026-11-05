@@ -7,10 +7,12 @@
 <link rel="stylesheet" href="../../shared/tokens.css" />
 <link rel="stylesheet" href="../../shared/font.css" />
 <link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/construction.css" />
 <link rel="stylesheet" href="../button/button.css" />
 <script src="../button/button.js" defer></script>
+<script src="../step-switch/step-switch.js" defer></script>
 <script src="../../shared/construction.js" defer></script>
 </head>
 <body>
@@ -28,6 +30,12 @@
     <figure>
       <figcaption>Disabled</figcaption>
       <kakao-theme-switch disabled></kakao-theme-switch>
+    </figure>
+    <figure>
+      <figcaption>Step switch · <code>theme-picker</code></figcaption>
+      <kakao-step-switch theme-picker label="Theme" list-data='[
+        {"value":"light","label":"Light"}, {"value":"dark","label":"Dark"},
+        {"value":"catppuccin","label":"Catppuccin"}, {"value":"forest","label":"Forest"}]'></kakao-step-switch>
     </figure>
   </div>
 
@@ -49,7 +57,10 @@
     { "property": "--kakao-theme-switch-icon-duration", "label": "Icon morph", "group": "Motion", "type": "duration" },
     { "property": "--kakao-theme-switch-icon-easing", "label": "Icon easing", "group": "Motion", "type": "easing" },
     { "property": "--kakao-theme-switch-ripple-duration", "label": "Page ripple", "group": "Motion", "type": "duration" },
-    { "property": "--kakao-theme-switch-ripple-easing", "label": "Ripple easing", "group": "Motion", "type": "easing" }
+    { "property": "--kakao-theme-switch-ripple-easing", "label": "Ripple easing", "group": "Motion", "type": "easing" },
+    { "property": "--kakao-theme-switch-ripple-feather", "label": "Ripple feather", "group": "Motion", "type": "length" },
+    { "property": "--kakao-theme-switch-fade-duration", "label": "Picker fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-theme-switch-fade-easing", "label": "Picker fade easing", "group": "Motion", "type": "easing" }
   ]
   </script>
 </main>

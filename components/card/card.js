@@ -29,6 +29,21 @@
  *  no-animate   Don't animate height changes.
  *
  * ----------------------------------------------------------------------------
+ * THEME TRIGGER GLOW
+ * ----------------------------------------------------------------------------
+ *  A card with no footer button can take its glow colour from the theme. When
+ *  a <kakao-theme-switch> reports a new theme through the trigger API
+ *  (shared/component-api.js), the card reacts to "theme-change" and uses the
+ *  colour it carries (--kakao-color-primary of the new theme) for the glow.
+ *
+ *    <script src="shared/component-api.js"><\/script>
+ *    KakaoComponents.on('theme-change', (detail) => console.log(detail.color));
+ *
+ *  The card only glows this way after a theme change; a card without a footer
+ *  button stays quiet on load. no-glow still wins, and a footer button still
+ *  decides the colour through the CSS below.
+ *
+ * ----------------------------------------------------------------------------
  * HEIGHT CHANGES
  * ----------------------------------------------------------------------------
  *  When content is removed or added, the card glides to its new height
@@ -126,7 +141,7 @@
         --_gap: var(--kakao-card-gap, 0.75rem);
         --_footer-gap: var(--kakao-card-footer-gap, 0.5rem);
         --_footer-spacing: var(--kakao-card-footer-spacing, 1.25rem);
-        --_glow-strength: var(--kakao-card-glow-strength, 14%);
+        --_glow-strength: var(--kakao-card-glow-strength, 8%);
         --_glow-size: var(--kakao-card-glow-size, 320px);
         --_glow-blur: var(--kakao-card-glow-blur, 28px);
         --_glow-x: var(--kakao-card-glow-x, calc(var(--_padding) + 3rem));
@@ -215,6 +230,16 @@
       this._resizeObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(this._onContentResize) : null;
       this._last = null; // { height, width } of the previous layout
       this._anim = null;
+      this._themeColor = null;
+      this._updateGlowColor = this._updateGlowColor.bind(this);
+    }
+
+    static get observedAttributes() {
+      return ['no-glow'];
+    }
+
+    attributeChangedCallback() {
+      this._updateGlowColor();
     }
 
     connectedCallback() {
@@ -225,6 +250,12 @@
       if (this._resizeObserver) {
         [this._headerBox, this._body, this._footerBox, this._card].forEach((el) => this._resizeObserver.observe(el));
       }
+      if (typeof KakaoComponents !== 'undefined') {
+        this._offThemeTrigger = KakaoComponents.on('theme-change', (detail) => {
+          this._themeColor = detail.color || null;
+          this._updateGlowColor();
+        });
+      }
     }
 
     disconnectedCallback() {
@@ -233,6 +264,7 @@
       if (this._resizeObserver) this._resizeObserver.disconnect();
       if (this._anim) this._anim.cancel();
       this._last = null;
+      if (this._offThemeTrigger) { this._offThemeTrigger(); this._offThemeTrigger = null; }
     }
 
     /* -------------------------- Height animation -------------------------- */
@@ -276,7 +308,33 @@
     _onSlotChange() {
       this._headerBox.hidden = this._headerSlot.assignedElements().length === 0;
       this._footerBox.hidden = this._footerSlot.assignedElements().length === 0;
+      this._updateGlowColor();
     }
+
+    /**
+     * Glow colour for a card without a footer button: the colour of the last
+     * theme change. A footer button keeps deciding through the page CSS, and
+     * no-glow wins over both.
+     */
+    _updateGlowColor() {
+      if (this.hasAttribute('no-glow')) {
+        this.style.removeProperty('--kakao-card-glow-color');
+        return;
+      }
+      const hasButton = this.querySelector('kakao-button[slot="footer"], [slot="footer"] > kakao-button:first-child');
+      if (!hasButton && this._themeColor) {
+        this.style.setProperty('--kakao-card-glow-color', this._themeColor);
+      } else {
+        this.style.removeProperty('--kakao-card-glow-color');
+      }
+    }
+  }
+
+  if (typeof KakaoComponents !== 'undefined') {
+    KakaoComponents.register('kakao-card', {
+      triggers: [],
+      reactions: { 'theme-change': 'glow color' },
+    });
   }
 
   customElements.define(TAG_NAME, KakaoCard);

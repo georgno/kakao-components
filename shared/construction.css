@@ -226,7 +226,12 @@ code {
 .construction-number-wrap input { width: 100%; }
 .construction-unit { flex: none; }
 .construction-range { flex: 1; padding: 0 !important; border: 0 !important; }
-.construction-swatch { width: 2.2rem; flex: none; padding: 2px !important; cursor: pointer; }
+/* Colour rows: the component's compact swatch, sized for the dense table */
+.construction-control kakao-color-picker {
+  flex: none;
+  --kakao-color-picker-swatch-size: 26px;
+  --kakao-color-picker-swatch-radius: 6px;
+}
 .construction-suffix { font-size: 0.8rem; color: var(--kakao-color-muted, #6b7280); }
 
 .construction-row.is-invalid .construction-control input { border-color: #dc2626; background: #fef2f2; }

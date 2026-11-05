@@ -53,6 +53,11 @@
         src: new URL('../components/number-input/number-input.js', ENGINE_URL).href,
       }));
     }
+    if (!customElements.get('kakao-color-picker') && !document.querySelector('script[src*="color-picker.js"]')) {
+      head.append(Object.assign(document.createElement('script'), {
+        src: new URL('../components/color-picker/color-picker.js', ENGINE_URL).href,
+      }));
+    }
   }
   ensureDependencies();
   const START_RE = /\/\* @kakao-settings:start prefix=(--kakao-[a-z0-9-]*)[^*]*\*\//;
@@ -303,7 +308,10 @@
         showSelected: true,
         listData: [
           { value: 'light', label: 'Light' },
+          { value: 'beige', label: 'Beige' },
+          { value: 'umber', label: 'Umber' },
           { value: 'dark', label: 'Dark' },
+          { value: 'amoled', label: 'AMOLED' },
           { value: 'checker', label: 'Checkered' },
         ],
         onSelect: (name) => this.setCanvas(name),
@@ -338,16 +346,16 @@
 
       let canvasName = 'light';
       try { canvasName = localStorage.getItem(STORAGE_CANVAS) || 'light'; } catch { /* storage blocked */ }
-      if (!['light', 'dark', 'checker'].includes(canvasName)) canvasName = 'light';
+      if (!['light', 'beige', 'umber', 'dark', 'amoled', 'checker'].includes(canvasName)) canvasName = 'light';
       this.setCanvas(canvasName);
       canvasPicker.setAttribute('selected', canvasName);
     }
 
     setCanvas(name) {
       this.canvas.dataset.canvas = name;
-      // Light and Dark preview the components in that theme (shared/themes.css);
-      // Checkered follows the page.
-      if (name === 'light' || name === 'dark') this.canvas.setAttribute('data-kakao-theme', name);
+      // Every stored theme previews the components in that theme
+      // (shared/themes.css); Checkered follows the page.
+      if (['light', 'beige', 'umber', 'dark', 'amoled'].includes(name)) this.canvas.setAttribute('data-kakao-theme', name);
       else this.canvas.removeAttribute('data-kakao-theme');
       try { localStorage.setItem(STORAGE_CANVAS, name); } catch { /* storage blocked */ }
     }
@@ -427,16 +435,28 @@
       row.setText = (v) => { if (document.activeElement !== text) text.value = v; };
 
       if (type === 'color') {
-        const swatch = el('input', {
-          type: 'color', class: 'construction-swatch', 'aria-label': `${entry.label || prop} colour picker`,
-          oninput: () => { text.value = swatch.value; this.edit(prop, swatch.value); },
+        // kakao-color-picker, compact: the swatch opens the picker, the text
+        // field next to it holds the literal (or the expression).
+        const picker = el('kakao-color-picker', {
+          compact: true,
+          'aria-label': `${entry.label || prop} colour`,
         });
-        editor.append(swatch, text);
+        let shown = null; // the hex last written to the picker
+        picker.addEventListener('input', () => {
+          shown = toHex(picker.value);
+          text.value = picker.value;
+          this.edit(prop, picker.value);
+        });
+        editor.append(picker, text);
         row.show = (v) => {
           row.setText(v);
           // Expressions (color-mix, var) are shown with the colour they resolve to
           const hex = toHex(v) || (this.prefix && toHex(this.resolvedAlias(`var(--_${prop.slice(this.prefix.length)})`)));
-          if (hex) swatch.value = hex;
+          // Never write back what the pointer is producing: it would fight the pick
+          if (hex && hex !== shown) {
+            shown = hex;
+            picker.setAttribute('value', hex);
+          }
         };
       } else if (type === 'length' || type === 'radius') {
         const units = entry.units || ['px', 'rem', 'em', '%'];
@@ -778,6 +798,7 @@
       // defaults and the toolbar buttons are real.
       const tags = new Set([...root.querySelectorAll('*')].map((n) => n.localName).filter((n) => n.includes('-')));
       tags.add('kakao-button');
+      tags.add('kakao-color-picker'); // the colour rows are built from it
       const ready = Promise.all([...tags].map((t) => customElements.whenDefined(t)));
       const timeout = new Promise((resolve) => setTimeout(resolve, 3000));
       Promise.race([ready, timeout]).then(() => c.init());

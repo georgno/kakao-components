@@ -35,6 +35,23 @@
  * closing script tag; this file is checked for that.
  *
  * ----------------------------------------------------------------------------
+ * THEME SWITCHER
+ * ----------------------------------------------------------------------------
+ *  With theme-picker the steps become the page's colour themes: the theme
+ *  follows the thumb, so every step it crosses changes the page — while being
+ *  dragged, and while it springs across the ones in between. The thumb follows
+ *  when the theme changes elsewhere. theme-switch.js owns that wiring (it must
+ *  be on the page too, it listens to step-cross); this component stays generic
+ *  — the attribute has no effect on its own.
+ *
+ *    <kakao-step-switch theme-picker label="Theme" list-data='[
+ *      {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"},
+ *      {"value":"umber","label":"Umber"}, {"value":"dark","label":"Dark"},
+ *      {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
+ *      {"value":"forest","label":"Forest"}
+ *    ]'></kakao-step-switch>
+ *
+ * ----------------------------------------------------------------------------
  * ATTRIBUTES (all observed)
  * ----------------------------------------------------------------------------
  *  label        Accessible name of the radiogroup. Default "Step switch".
@@ -86,6 +103,16 @@
  *                                "attribute"
  *  step-focus       { value, index }
  *  step-drag-start  { value, index }
+ *  step-cross       { value, label, index, previousValue, previousIndex,
+ *                     source }   the step the thumb is *visually* over, reported
+ *                                whenever it moves into a different one: while
+ *                                dragging, and while the thumb springs to a new
+ *                                step (a tap two steps away crosses the step in
+ *                                between). source is the same vocabulary as
+ *                                step-change: "pointer" / "keyboard" / "click"
+ *                                for a pick, "api" / "attribute" when a
+ *                                setValue() or the value attribute started the
+ *                                flight. Disabled steps are never reported.
  *  step-drag        { progress, overdrag, nearestIndex, nearestValue }
  *                     progress 0..1 across the whole track, overdrag is the
  *                     signed rubber-band amount (-1..1) past either end.
@@ -518,6 +545,8 @@
       this._readyFired = false;
       this._reflecting = false; // true while we write the value attribute ourselves
       this._raf = 0; // pending requestAnimationFrame for the label loop
+      this._crossing = -1; // step the thumb is visually over (for step-cross)
+      this._lastSource = 'pointer'; // source of the last selection, used by step-cross
       this._drag = null; // active pointer gesture, or null
       this._swallow = null; // { track, until }: ignore the click trailing a pointer gesture
 
@@ -643,6 +672,7 @@
       // steps; aria-busy stays up until the end of the microtask for async UIs to observe.
       this.setAttribute('aria-busy', 'true');
       this._steps = this._normalizeSteps(steps);
+      this._crossing = -1;
       this._resolveIndex();
       this._render();
       Promise.resolve().then(() => this.removeAttribute('aria-busy'));
@@ -780,6 +810,7 @@
         console.error(`<${TAG_NAME}> failed to parse list-data attribute as JSON:`, err);
         this._steps = [];
       }
+      this._crossing = -1; // other steps now: the next sample only records where the thumb is
     }
 
     _normalizeSteps(steps) {
@@ -960,12 +991,46 @@
         this._raf = 0;
         const p = this._updateLabels();
         if (p === -1) return;
+        this._reportCrossing(p);
         still = !this._drag && last !== null && Math.abs(p - last) < 1e-4 ? still + 1 : 0;
         last = p;
         if (still > 6) return; // settled
         this._raf = requestAnimationFrame(tick);
       };
       this._raf = requestAnimationFrame(tick);
+    }
+
+    /**
+     * Announces the step the thumb is over, live, while it moves: dragged, or
+     * springing to a new step. A tap two steps away flies the thumb across the
+     * step in between, so a listener (the theme switch) sees every step the
+     * thumb crosses, not just the one that ends up selected.
+     *
+     * @param {number} p the thumb's 0..1 position
+     */
+    _reportCrossing(p) {
+      const n = this._steps.length;
+      if (n < 2) return;
+      const index = Math.min(n - 1, Math.max(0, Math.round(p * (n - 1))));
+      if (index === this._crossing) return;
+      const previousIndex = this._crossing;
+      this._crossing = index;
+      // The first sample only records where the thumb rests: nothing was crossed.
+      if (previousIndex === -1) return;
+      const step = this._steps[index];
+      const previous = this._steps[previousIndex];
+      if (!step || step.disabled) return;
+      this._dispatch('step-cross', {
+        value: step.value,
+        label: step.label,
+        index,
+        previousValue: previous ? previous.value : null,
+        previousIndex,
+        // A drag is always the user; otherwise the source of the selection that
+        // started the flight ("api" / "attribute" for setValue and the value
+        // attribute, so a listener can tell a reflection from a pick).
+        source: this._drag ? 'pointer' : this._lastSource,
+      });
     }
 
     /** Writes the inline progress that matches the selected step. */
@@ -1053,6 +1118,7 @@
       }
       const previousIndex = this._index;
       const previous = this._steps[previousIndex];
+      this._lastSource = source;
       this._index = index;
       this._reflectValue(step.value);
       this._updateSelectionUi();
@@ -1290,6 +1356,7 @@
 
       const cur = this._steps[this._index];
       if (cancelled) {
+        this._lastSource = 'pointer'; // the thumb springs back: report it as the gesture it was
         this._applyProgress(); // back to the selected step
         if (d.moved) {
           this._dispatch('step-drag-end', {
@@ -1329,6 +1396,7 @@
       }
       d.track.classList.remove('is-pressed', 'is-dragging');
       this._clearDragStyle(d.track);
+      this._lastSource = 'pointer'; // the thumb springs back: report it as the gesture it was
       this._applyProgress();
     }
 
