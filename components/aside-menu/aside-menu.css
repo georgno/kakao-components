@@ -1,0 +1,304 @@
+/**
+ * kakao-aside-menu web component styles
+ * Light-DOM custom element: a hidden slide-in menu whose open button pushes
+ * the whole <body> aside and slides the panel into the freed space.
+ *
+ * Theming: every --kakao-aside-* property in the settings block below can be
+ * set on the element or any ancestor. The defaults live in that block:
+ * change them on construction.html.
+ *
+ * The component is light DOM (like <kakao-button>): this file must be loaded,
+ * because the push effect styles the page <body> itself. While a menu is open
+ * the component sets data-kakao-aside-open="left|right" on <html> and the
+ * --kakao-aside-push custom property with the panel width.
+ */
+
+kakao-aside-menu {
+  /* @kakao-settings:start prefix=--kakao-aside- (written by construction.html, edit there) */
+  --kakao-aside-width: 280px;
+  --kakao-aside-bg: var(--kakao-color-bg, #ffffff);
+  --kakao-aside-color: var(--kakao-color-text, #18181b);
+  --kakao-aside-muted: var(--kakao-color-muted, #71717a);
+  --kakao-aside-border: var(--kakao-color-border, #dee2e6);
+  --kakao-aside-line: var(--kakao-color-line, #e5e7eb);
+  --kakao-aside-subtle: var(--kakao-color-subtle, #f0f0f1);
+  --kakao-aside-subtle-strong: var(--kakao-color-subtle-strong, #e6e6e8);
+  --kakao-aside-focus: var(--kakao-color-focus, #2563eb);
+  --kakao-aside-radius: var(--kakao-radius, 8px);
+  --kakao-aside-duration: var(--kakao-motion-duration, 320ms);
+  --kakao-aside-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --kakao-aside-z-index: 40;
+  --kakao-aside-open-size: 40px;
+  --kakao-aside-open-icon: 20px;
+  --kakao-aside-open-bg: transparent;
+  --kakao-aside-open-color: var(--kakao-color-text, #18181b);
+  --kakao-aside-open-hover-bg: var(--kakao-color-subtle, #f0f0f1);
+  --kakao-aside-open-active-bg: var(--kakao-color-subtle-strong, #e6e6e8);
+  --kakao-aside-head-padding: 0.875rem 1rem;
+  --kakao-aside-title-size: 1rem;
+  --kakao-aside-title-weight: 600;
+  --kakao-aside-close-size: 34px;
+  --kakao-aside-close-icon: 16px;
+  --kakao-aside-content-padding: 0.5rem 0.75rem 1.25rem;
+  /* @kakao-settings:end */
+  display: inline-block;
+}
+
+/* ---------------------------------------------------------------------------
+ * The page push: while a menu is open the body slides away by the panel
+ * width. The transition makes the push follow the panel, not snap. While
+ * a menu is open html clips horizontal overflow, so the document cannot be
+ * scrolled sideways and the viewport keeps its exact size (the fixed panel
+ * is unaffected by the push).
+ * ------------------------------------------------------------------------- */
+
+html[data-kakao-aside-open] {
+  overflow-x: hidden;
+}
+
+/* width: 100% keeps the body exactly one viewport wide while it slides:
+   with the default auto width a margin would make the body narrower and
+   its content reflow (squash). This way the content only moves. */
+html[data-kakao-aside-open] body {
+  width: 100%;
+  margin-left: var(--kakao-aside-push, 280px);
+  transition: margin-left var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+html[data-kakao-aside-open='right'] body {
+  width: 100%;
+  margin-left: calc(-1 * var(--kakao-aside-push, 280px));
+  transition: margin-left var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+/* Pages can override the push timing by setting --kakao-aside-duration. */
+
+/* ---------------------------------------------------------------------------
+ * Open (hamburger) button. Stays visible where the element is placed.
+ * ------------------------------------------------------------------------- */
+
+.kakao-aside-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--kakao-aside-open-size, 40px);
+  height: var(--kakao-aside-open-size, 40px);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--kakao-aside-radius, 8px);
+  background: var(--kakao-aside-open-bg, transparent);
+  color: var(--kakao-aside-open-color, inherit);
+  cursor: pointer;
+}
+
+.kakao-aside-open[hidden] {
+  display: none;
+}
+
+.kakao-aside-open svg {
+  width: var(--kakao-aside-open-icon, 20px);
+  height: var(--kakao-aside-open-icon, 20px);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  transition: transform var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.kakao-aside-open:hover {
+  background: var(--kakao-aside-open-hover-bg, #f0f0f1);
+}
+
+.kakao-aside-open:active {
+  background: var(--kakao-aside-open-active-bg, #e6e6e8);
+}
+
+.kakao-aside-open:focus-visible {
+  outline: 2px solid var(--kakao-aside-focus, #2563eb);
+  outline-offset: 2px;
+}
+
+kakao-aside-menu[open] .kakao-aside-open svg {
+  transform: rotate(180deg);
+}
+
+/* ---------------------------------------------------------------------------
+ * Panel: fixed to one side, slides in over the freed space. Hidden means
+ * hidden: no box, no events, no tab stops.
+ * ------------------------------------------------------------------------- */
+
+.kakao-aside-panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--kakao-aside-width, 280px);
+  max-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: var(--kakao-aside-bg, #fff);
+  color: var(--kakao-aside-color, inherit);
+  /* one pure colour, no borders inside or outside */
+  transform: translateX(-100%);
+  visibility: hidden;
+  z-index: var(--kakao-aside-z-index, 40);
+  transition:
+    transform var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    visibility 0s linear var(--kakao-aside-duration, 320ms);
+}
+
+.kakao-aside-panel[data-position='right'] {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+}
+
+kakao-aside-menu[open] .kakao-aside-panel {
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+/* ---------------------------------------------------------------------------
+ * Header: title on the left, close button on the right.
+ * ------------------------------------------------------------------------- */
+
+.kakao-aside-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: var(--kakao-aside-head-padding, 0.875rem 1rem);
+}
+
+/* Menu on the left: the close button sits in the top-left corner (the title
+   moves right); on the right side of the screen it stays in the top-right. */
+.kakao-aside-panel[data-position='left'] .kakao-aside-head {
+  flex-direction: row-reverse;
+}
+
+.kakao-aside-title {
+  font-size: var(--kakao-aside-title-size, 1rem);
+  font-weight: var(--kakao-aside-title-weight, 600);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kakao-aside-close {
+  flex: 0 0 auto;
+}
+
+/* The close control is a <kakao-button variant="ghost" size="sm">
+   (button.js + button.css must be loaded): shaped into a perfect circle
+   here. */
+.kakao-aside-close .kakao-button-inner {
+  width: var(--kakao-aside-close-size, 34px);
+  height: var(--kakao-aside-close-size, 34px);
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: var(--kakao-aside-close-icon, 16px);
+}
+
+/* ---------------------------------------------------------------------------
+ * Content area. Whatever the page puts inside the element lands here via
+ * the slot; it scrolls when taller than the viewport.
+ * ------------------------------------------------------------------------- */
+
+.kakao-aside-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--kakao-aside-content-padding, 0.5rem 0.75rem 1.25rem);
+}
+
+/* Opinionated link styling inside the menu; override via the slot markup. */
+.kakao-aside-content nav a {
+  display: block;
+  padding: 0.5rem 0.625rem;
+  border-radius: var(--kakao-aside-radius, 8px);
+  color: var(--kakao-aside-color, inherit);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.kakao-aside-content nav a:hover,
+.kakao-aside-content nav a:focus-visible {
+  background: var(--kakao-aside-subtle, #f0f0f1);
+}
+
+.kakao-aside-content nav a:focus-visible {
+  outline: 2px solid var(--kakao-aside-focus, #2563eb);
+  outline-offset: -2px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Built-in nav list (list-data): a vertical list of full-width buttons above
+ * the slotted content.
+ * ------------------------------------------------------------------------- */
+
+.kakao-aside-navlist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 0 0.75rem;
+}
+
+.kakao-aside-navlist[hidden] {
+  display: none;
+}
+
+.kakao-aside-navitem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 0;
+  border-radius: var(--kakao-aside-radius, 8px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.kakao-aside-navitem:hover {
+  background: var(--kakao-aside-subtle, #f0f0f1);
+}
+
+.kakao-aside-navitem:focus-visible {
+  outline: 2px solid var(--kakao-aside-focus, #2563eb);
+  outline-offset: -2px;
+}
+
+.kakao-aside-navitem[aria-current='true'] {
+  background: color-mix(in srgb, var(--kakao-aside-accent, var(--kakao-color-primary, #4f46e5)) 12%, transparent);
+  color: var(--kakao-aside-accent, var(--kakao-color-primary, #4f46e5));
+  font-weight: 600;
+}
+
+.kakao-aside-navitem:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: none;
+}
+
+/* Reduced motion: everything snaps into place. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-kakao-aside-open] body,
+  html[data-kakao-aside-open='right'] body {
+    transition: none;
+  }
+  .kakao-aside-panel,
+  kakao-aside-menu[open] .kakao-aside-panel {
+    transition: none;
+  }
+  .kakao-aside-open svg {
+    transition: none;
+  }
+}
