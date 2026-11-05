@@ -28,6 +28,7 @@
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/aside-menu/aside-menu.js" defer></script>
+<script src="components/dialog/dialog.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -77,7 +78,6 @@
   .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
   .danger-zone { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
-  .popover-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
 </style>
 </head>
 <body>
@@ -271,16 +271,14 @@
         </div>
         <div class="field-control danger-zone">
           <kakao-button id="delete" label="Delete account" icon="fas fa-trash" variant="danger" size="sm"></kakao-button>
-          <kakao-popover id="delete-confirm" for="delete" trigger="click" placement="top">
-            <span slot="header">Are you sure?</span>
-            <div slot="content">
-              Your watch history and profiles will be gone.
-              <div class="popover-actions">
-                <kakao-button id="delete-yes" label="Yes, delete" variant="danger" size="sm"></kakao-button>
-                <kakao-button id="delete-no" label="Keep it" variant="secondary" size="sm"></kakao-button>
-              </div>
+          <kakao-dialog id="delete-confirm" size="sm" label="Delete account">
+            <h2 slot="header">Delete account?</h2>
+            <p>Your watch history and profiles will be gone. This cannot be undone.</p>
+            <div slot="footer">
+              <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+              <kakao-button label="Yes, delete" variant="danger" data-close="delete"></kakao-button>
             </div>
-          </kakao-popover>
+          </kakao-dialog>
         </div>
       </div>
     </div>
@@ -350,9 +348,9 @@
 
   // ---- delete confirmation ----
   const deleteConfirm = $('delete-confirm');
-  $('delete-no').addEventListener('click', () => deleteConfirm.close());
-  $('delete-yes').addEventListener('click', () => {
-    deleteConfirm.close();
+  $('delete').addEventListener('kakao-button-action', () => deleteConfirm.open());
+  deleteConfirm.addEventListener('dialog-close', (e) => {
+    if (e.detail.returnValue !== 'delete') return;
     logLine(log, 'delete', 'Pretend the account is gone.');
   });
 

@@ -27,6 +27,7 @@
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/aside-menu/aside-menu.js" defer></script>
+<script src="components/dialog/dialog.js" defer></script>
 <script src="components/card/card.js" defer></script>
 <script src="components/color-picker/color-picker.js" defer></script>
 <script src="components/text-input/text-input.js" defer></script>
@@ -134,6 +135,43 @@
           </div>
         </div>
       </div>
+    </article>
+
+    <!-- ============================== Dialog ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Dialog</h2>
+        <code>&lt;kakao-dialog&gt;</code>
+        <a href="components/dialog/construction.html">Construction</a>
+        <a href="components/dialog/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Modal that covers the page and keeps focus inside. A plain fixed overlay rather than <code>&lt;dialog&gt;</code> + <code>showModal()</code>, so it behaves the same on phones, tablets and desktops.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Default · header, body, footer</h3>
+          <div class="row"><kakao-button id="ov-dialog-open" label="Open dialog" size="sm"></kakao-button></div>
+        </div>
+        <div class="example">
+          <h3>Confirm · <code>size="sm"</code> + <code>data-close</code></h3>
+          <div class="row"><kakao-button id="ov-dialog-danger" label="Delete project" variant="danger" size="sm"></kakao-button></div>
+        </div>
+      </div>
+      <kakao-dialog id="ov-dialog" label="Example dialog">
+        <h2 slot="header">Example dialog</h2>
+        <p>A modal dialog. Escape, a click on the covered page or a button with <code>data-close</code> ends it.</p>
+        <div slot="footer">
+          <kakao-button label="Cancel" variant="secondary" data-close="cancel"></kakao-button>
+          <kakao-button label="Save" data-close="save"></kakao-button>
+        </div>
+      </kakao-dialog>
+      <kakao-dialog id="ov-dialog-danger-dialog" size="sm" label="Delete project">
+        <h2 slot="header">Delete project?</h2>
+        <p>This cannot be undone.</p>
+        <div slot="footer">
+          <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+          <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
+        </div>
+      </kakao-dialog>
     </article>
 
     <!-- ============================== Aside menu ============================== -->
@@ -790,20 +828,6 @@
     </article>
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Dialog / modal</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;dialog&gt;</code> with <code>showModal()</code></p>
-      <div class="native">
-        <kakao-button id="ov-dialog-open" label="Open dialog" variant="secondary" size="sm"></kakao-button>
-        <dialog id="ov-dialog">
-          <form method="dialog">
-            <p>A native modal dialog. Esc or the button closes it.</p>
-            <button>Close</button>
-          </form>
-        </dialog>
-      </div>
-    </article>
-
-    <article class="card placeholder">
       <div class="component-head"><h2>Toast / alert</h2><span class="badge">Missing</span></div>
       <p class="placeholder-native">No native element: a <code>role="status"</code> / <code>role="alert"</code> region. A non-component version exists as the yii2-base Toast widget.</p>
       <div class="native">
@@ -837,7 +861,8 @@
   });
 
   // The placeholder dialog opens with showModal()
-  document.getElementById('ov-dialog-open').addEventListener('click', () => document.getElementById('ov-dialog').showModal());
+  document.getElementById('ov-dialog-open').addEventListener('kakao-button-action', () => document.getElementById('ov-dialog').open());
+  document.getElementById('ov-dialog-danger').addEventListener('kakao-button-action', () => document.getElementById('ov-dialog-danger-dialog').open());
 
   // Segment buttons are exclusive: pressing one releases the others
   const segment = document.getElementById('ov-segment');
