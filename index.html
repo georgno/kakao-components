@@ -22,6 +22,7 @@
 <script src="components/animated-number/animated-number.js" defer></script>
 <script src="components/text-input/text-input.js" defer></script>
 <script src="components/checkbox/checkbox.js" defer></script>
+<script src="components/radio-group/radio-group.js" defer></script>
 <style>
   /* ---- this page only ---- */
   main { max-width: 1300px; padding: 4.5rem 1.25rem 5rem; }
@@ -79,65 +80,65 @@
     background: radial-gradient(52% 52% at 62% 44%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 72%);
     filter: blur(18px);
   }
-  .portal-link {
-    display: block;
-    border-radius: var(--kakao-radius, 14px);
-    color: inherit;
-    text-decoration: none;
-    outline: none;
-  }
-  /* The card is the frame. Inside it, a wall of imagined forms is laid out
-     wider than the card and clipped by it, fading out at the sides: you are
-     looking through a window at more of the product than fits. */
-  .portal kakao-card { --kakao-card-padding: 0; --kakao-card-gap: 0; }
-  .portal-link:focus-visible kakao-card {
-    outline: 2px solid var(--kakao-color-focus, #2563eb);
-    outline-offset: 2px;
-    border-radius: 14px;
+  /* The card is nothing but a mask: transparent, no border, clipping the wall
+     of forms that is wider and taller than it on every side. */
+  .portal kakao-card {
+    --kakao-card-bg: transparent;
+    --kakao-card-border: transparent;
+    --kakao-card-padding: 0;
+    --kakao-card-gap: 0;
   }
 
-  /* The window shows the app's page, not more card: the panels are cards on it,
-     exactly like a .card on a kitchen-sink page. */
   .window {
     position: relative;
-    height: 21rem;
+    height: 23rem;
     overflow: hidden;
-    padding: 1.5rem 0;
-    background: var(--kakao-color-page, #f6f7f9);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    background: transparent;
+    /* fade on all four sides, so the wall dissolves instead of being cut */
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent),
+      linear-gradient(180deg, transparent, #000 9%, #000 91%, transparent);
+    mask-image:
+      linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent),
+      linear-gradient(180deg, transparent, #000 9%, #000 91%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
-  /* the wall is cut by the frame; the last strip fades so it reads as "more",
-     not as a broken layout */
-  .window::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 -1px;
-    height: 4rem;
-    background: linear-gradient(transparent, var(--kakao-color-page, #f6f7f9));
-  }
+  /* Centred by hand: `place-items: center` falls back to start alignment once
+     the item is bigger than the box, which would overflow to one side only. */
   .wall {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: grid;
-    grid-template-columns: repeat(3, 18rem);
-    align-content: start;
     gap: 1rem;
     width: max-content;
-    margin: 0 auto;
-    padding: 0 1rem;
   }
+  .wall-row { display: flex; align-items: stretch; justify-content: center; gap: 1rem; }
+
+  /* A .card from the kitchen sink, in miniature: same surface, radius, padding
+     and caption. */
   .panel {
     display: grid;
     align-content: start;
     gap: 0.75rem;
-    padding: 1rem;
-    /* the same surface as a .card in the kitchen sink */
+    padding: 1.1rem 1.25rem 1.25rem;
     background: var(--kakao-color-bg, #fff);
     border: 1px solid var(--kakao-color-line, #e5e7eb);
-    border-radius: 10px;
+    border-radius: 14px;
   }
+  /* each card is as wide as its content needs */
+  .panel { width: 18rem; }
+  .p-screens, .p-playback { width: 14.5rem; }
+  .p-subs { width: 16rem; }
+  .p-theme { width: max-content; }
+  .p-buffer, .p-coupon { width: 15rem; }
+  .p-alerts { width: 18rem; }
+  .p-account, .p-downloads { width: 17rem; }
   .panel-title {
     margin: 0;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--muted);
   }
@@ -157,6 +158,25 @@
   .mini-field > span { font-size: 0.75rem; color: var(--muted); }
   .mini-field > kakao-step-switch,
   .mini-field > kakao-number-input { width: 100%; }
+  /* Below this the wall fits: two columns, no bleed, no mask, no fixed height.
+     A fade over a 16rem band would eat the panels' own edges. */
+  /* Narrow screens: nothing to bleed. The wall fits and the mask goes away,
+     because a fade over a 16rem band eats the panels' own edges. */
+  @media (max-width: 940px) {
+    .window {
+      height: auto;
+      padding: 1.25rem;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .wall { position: static; transform: none; width: auto; }
+    .wall-row { flex-wrap: wrap; }
+    .panel { width: auto; flex: 1 1 14rem; }
+  }
+  @media (max-width: 620px) {
+    .panel { flex: 1 1 100%; }
+  }
+
   .mini-price {
     display: flex;
     align-items: baseline;
@@ -178,7 +198,7 @@
     font-weight: 600;
     color: var(--accent);
   }
-  .portal-link:hover .portal-open { text-decoration: underline; }
+  .portal-open:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -207,45 +227,114 @@
     <section class="portal">
       <!-- The whole card is the link: the form inside is a picture, so it is
            inert and kept out of the accessibility tree. -->
-      <a class="portal-link" href="components.html" aria-label="Browse the components">
-        <kakao-card>
-          <div class="window" aria-hidden="true" inert>
+      <kakao-card>
+          <div class="window">
             <div class="wall">
-              <div class="panel">
-                <p class="panel-title">Plan</p>
-                <kakao-step-switch label="Streaming quality" value="hd"
-                  list-data='[{"value":"sd","label":"SD"},{"value":"hd","label":"HD"},{"value":"uhd","label":"Ultra"}]'></kakao-step-switch>
-                <div class="mini-price"><span>€</span><kakao-animated-number value="13.49" decimals="2"></kakao-animated-number><small>/ month</small></div>
+              <!-- row 1 -->
+              <div class="wall-row">
+                <div class="panel p-plan">
+                  <p class="panel-title">Plan</p>
+                  <kakao-radio-group label="Seats" name="seats" value="team"
+                    list-data='[{"value":"solo","label":"Solo"},{"value":"team","label":"Team"},{"value":"max","label":"Max"}]'></kakao-radio-group>
+                  <div class="mini-price"><span>€</span><kakao-animated-number value="13.49" decimals="2"></kakao-animated-number><small>/ month</small></div>
+                </div>
+                <div class="panel p-screens">
+                  <p class="panel-title">Screens</p>
+                  <kakao-number-input>
+                    <input type="number" min="1" max="6" step="1" value="2" aria-label="Screens" />
+                  </kakao-number-input>
+                  <kakao-slider min="0" max="20" step="1" value="5" unit="GB" label="Data cap"></kakao-slider>
+                </div>
+                <div class="panel p-playback">
+                  <p class="panel-title">Playback</p>
+                  <kakao-switch-group label="Playback" orientation="vertical"
+                    list-data='[{"name":"next","label":"Play next","checked":true},{"name":"skip","label":"Skip intros","checked":true},{"name":"previews","label":"Previews"}]'></kakao-switch-group>
+                </div>
+                <div class="panel p-subs">
+                  <p class="panel-title">Subtitles</p>
+                  <kakao-step-switch label="Subtitle size" value="m"
+                    list-data='[{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}]'></kakao-step-switch>
+                  <kakao-checkbox checked label="Bold outline"></kakao-checkbox>
+                </div>
               </div>
-              <div class="panel">
-                <p class="panel-title">Screens</p>
-                <kakao-number-input>
-                  <input type="number" min="1" max="6" step="1" value="2" aria-label="Screens" />
-                </kakao-number-input>
-                <kakao-slider min="0" max="20" step="1" value="5" unit="GB" label="Data cap"></kakao-slider>
+              <!-- row 2: the one the frame centres on -->
+              <div class="wall-row">
+                <div class="panel p-account">
+                  <p class="panel-title">Account</p>
+                  <kakao-text-input label="Display name" value="Kakao Fan"></kakao-text-input>
+                  <kakao-checkbox checked label="Show my list publicly"></kakao-checkbox>
+                </div>
+                <div class="panel p-theme">
+                  <p class="panel-title">Theme</p>
+                  <kakao-step-switch theme-picker storage-key="" label="Theme" list-data='[
+                    {"value":"light","label":"Light"},{"value":"umber","label":"Umber"},
+                    {"value":"dark","label":"Dark"},{"value":"forest","label":"Forest"}]'></kakao-step-switch>
+                </div>
+                <div class="panel p-downloads">
+                  <p class="panel-title">Downloads</p>
+                  <kakao-switch-group label="Downloads" orientation="vertical"
+                    list-data='[{"name":"wifi","label":"Only on Wi-Fi","checked":true},{"name":"auto","label":"Auto-delete"}]'></kakao-switch-group>
+                </div>
               </div>
-              <div class="panel">
-                <p class="panel-title">Playback</p>
-                <kakao-switch-group label="Playback" orientation="vertical"
-                  list-data='[{"name":"next","label":"Play next","checked":true},{"name":"skip","label":"Skip intros","checked":true},{"name":"previews","label":"Previews"}]'></kakao-switch-group>
-              </div>
-              <div class="panel">
-                <p class="panel-title">Account</p>
-                <kakao-text-input label="Display name" value="Kakao Fan"></kakao-text-input>
-                <kakao-checkbox checked label="Show my list publicly"></kakao-checkbox>
-              </div>
-              <div class="panel panel-full">
-                <p class="panel-title">Alerts</p>
-                <kakao-switch-group label="Alerts" color-labels
-                  list-data='[{"name":"email","label":"New episodes","checked":true},{"name":"push","label":"Recommendations"}]'></kakao-switch-group>
+              <!-- row 3 -->
+              <div class="wall-row">
+                <div class="panel p-buffer">
+                  <p class="panel-title">Buffer</p>
+                  <kakao-slider min="0" max="60" step="5" value="20" unit="s" label="Buffer"></kakao-slider>
+                </div>
+                <div class="panel p-coupon">
+                  <p class="panel-title">Coupon</p>
+                  <kakao-text-input label="Code" placeholder="NIGHT-2026"></kakao-text-input>
+                </div>
+                <div class="panel p-alerts">
+                  <p class="panel-title">Alerts</p>
+                  <kakao-switch-group label="Alerts" color-labels
+                    list-data='[{"name":"email","label":"New episodes","checked":true},{"name":"push","label":"Recommendations"}]'></kakao-switch-group>
+                </div>
               </div>
             </div>
           </div>
-        </kakao-card>
-        <span class="portal-open">Open the component list <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
-      </a>
+      </kakao-card>
+      <a class="portal-open" href="components.html">Open the component list <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
     </section>
   </div>
 </main>
+<script>
+  // The theme picker walks the page through four themes, so the wall shows what
+  // the system does without anyone clicking. It drives the page-level theme API,
+  // and the picker follows through the theme-change report. `storageKey: ''`
+  // keeps the walk out of localStorage: it is a demo, not a preference.
+  customElements.whenDefined('kakao-theme-switch').then(() => {
+    const Theme = customElements.get('kakao-theme-switch');
+    const picker = document.querySelector('.p-theme kakao-step-switch');
+    if (!picker) return;
+
+    const themes = JSON.parse(picker.getAttribute('list-data')).map((theme) => theme.value);
+    const INTERVAL = 3600;
+    let index = Math.max(0, themes.indexOf(Theme.current()));
+    let timer = null;
+
+    const step = () => {
+      index = (index + 1) % themes.length;
+      Theme.setTheme(themes[index], { fade: true, storageKey: '', source: 'demo' });
+    };
+    const start = () => {
+      clearInterval(timer);
+      timer = setInterval(step, INTERVAL);
+    };
+
+    // A real pick restarts the walk from where the visitor left it.
+    document.addEventListener('step-change', (event) => {
+      const detail = event.detail || {};
+      if (detail.source === 'api' || detail.source === 'attribute') return;
+      const picked = themes.indexOf(detail.value);
+      if (picked < 0) return;
+      index = picked;
+      start();
+    });
+
+    start();
+  });
+</script>
 </body>
 </html>
