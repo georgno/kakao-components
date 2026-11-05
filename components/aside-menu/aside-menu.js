@@ -80,6 +80,7 @@
       super();
       this._built = false;
       this._returnFocus = null;
+      this._closeTimer = null;
       this._onKeydown = this._onKeydown.bind(this);
     }
 
@@ -96,10 +97,9 @@
 
     disconnectedCallback() {
       document.removeEventListener('keydown', this._onKeydown);
-      if (this._isOpenOnHtml()) {
-        document.documentElement.removeAttribute('data-kakao-aside-open');
-        document.documentElement.style.removeProperty('--kakao-aside-push');
-      }
+      clearTimeout(this._closeTimer);
+      document.documentElement.removeAttribute('data-kakao-aside-open');
+      document.documentElement.style.removeProperty('--kakao-aside-push');
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -210,6 +210,7 @@
       const root = document.documentElement;
 
       if (on) {
+        clearTimeout(this._closeTimer);
         // Only one menu may own the push at a time.
         document.querySelectorAll(TAG_NAME + '[open]').forEach((other) => {
           if (other !== this) {
@@ -231,9 +232,18 @@
           this._closeBtn.focus();
         }
       } else {
-        if (this._isOpenOnHtml()) {
-          root.removeAttribute('data-kakao-aside-open');
-          root.style.removeProperty('--kakao-aside-push');
+        clearTimeout(this._closeTimer);
+        if (root.getAttribute('data-kakao-aside-open')) {
+          // Pull the body back to its origin: keep the html attribute so the
+          // pushed-body styles (and their transition) still apply, and animate
+          // the push to zero. Only when the slide is done remove everything.
+          root.style.setProperty('--kakao-aside-push', '0px');
+          const duration =
+            parseFloat(getComputedStyle(this).getPropertyValue('--kakao-aside-duration')) || 320;
+          this._closeTimer = setTimeout(() => {
+            root.removeAttribute('data-kakao-aside-open');
+            root.style.removeProperty('--kakao-aside-push');
+          }, duration + 50);
         }
         this._panel.setAttribute('aria-hidden', 'true');
         this._panel.setAttribute('inert', '');
