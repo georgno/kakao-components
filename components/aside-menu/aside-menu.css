@@ -91,6 +91,10 @@ html[data-kakao-aside-open='right'] body {
   cursor: pointer;
 }
 
+.kakao-aside-open[hidden] {
+  display: none;
+}
+
 .kakao-aside-open svg {
   width: var(--kakao-aside-open-icon, 20px);
   height: var(--kakao-aside-open-icon, 20px);

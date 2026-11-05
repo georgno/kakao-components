@@ -3,8 +3,10 @@
  * ============================================================================
  * A slide-in side menu that is completely hidden until opened. Its hamburger
  * button opens it; the panel then pushes the whole page (the <body>) to the
- * side to make room, slides in, and shows its content — a light-DOM slot with
- * arbitrary markup. A close button inside the panel header closes it again.
+ * side to make room, slides in, and shows its content — any markup placed
+ * inside the element, which the component moves into the panel (it is light
+ * DOM, so a <slot> would not work). A close button inside the panel header
+ * closes it again.
  * Vanilla JS, no dependencies.
  *
  * ----------------------------------------------------------------------------
@@ -107,6 +109,7 @@
 
     disconnectedCallback() {
       document.removeEventListener('keydown', this._onKeydown);
+      if (this._mo) this._mo.disconnect();
       clearTimeout(this._closeTimer);
       document.documentElement.removeAttribute('data-kakao-aside-open');
       document.documentElement.style.removeProperty('--kakao-aside-push');
@@ -160,7 +163,7 @@
         '</div>' +
         '<div class="kakao-aside-content">' +
         '<nav class="kakao-aside-navlist"></nav>' +
-        '<slot></slot></div>';
+        '</div>';
       this._panel = panel;
 
       this._closeBtn = panel.querySelector('.kakao-aside-close');
@@ -176,7 +179,14 @@
       });
 
       this.append(openBtn, panel);
-      // Allow the slot content to find its styles: keep the panel focusable.
+
+      // Light DOM: a <slot> only works inside a shadow root, so the user's
+      // markup is moved into the panel's content area — now and whenever
+      // more is added later.
+      this._mo = new MutationObserver(() => this._collectChildren());
+      this._mo.observe(this, { childList: true });
+      this._collectChildren();
+
       this._sync();
     }
 
@@ -201,6 +211,19 @@
       } else {
         this.style.removeProperty('--kakao-aside-width');
       }
+    }
+
+    /* ------------------------ Slotted content ---------------------------- */
+
+    /** Move the user's children into the panel's content area. */
+    _collectChildren() {
+      if (!this._built) return;
+      const content = this._panel.querySelector('.kakao-aside-content');
+      Array.from(this.childNodes).forEach((node) => {
+        if (node === this._openBtn || node === this._panel) return;
+        if (node.nodeType === 3 && !node.textContent.trim()) return; // whitespace
+        content.appendChild(node);
+      });
     }
 
     /* --------------------------- Nav list ------------------------------- */
