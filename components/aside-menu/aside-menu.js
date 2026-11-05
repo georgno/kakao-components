@@ -11,6 +11,8 @@
  * USAGE
  * ----------------------------------------------------------------------------
  *   <link rel="stylesheet" href="aside-menu.css">
+ *   <link rel="stylesheet" href="../button/button.css">
+ *   <script src="../button/button.js" defer><\/script>
  *   <script src="aside-menu.js" defer><\/script>
  *
  *   <kakao-aside-menu label="Site menu">
@@ -142,17 +144,16 @@
       panel.innerHTML =
         '<div class="kakao-aside-head">' +
         '<span class="kakao-aside-title"></span>' +
-        '<button type="button" class="kakao-aside-close" aria-label="Close menu">' +
-        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-        '<path d="M6 6l12 12M18 6L6 18"/></svg>' +
-        '</button>' +
+        // A round <kakao-button>; CSS puts it in the panel's inner corner.
+        '<kakao-button class="kakao-aside-close" variant="ghost" size="sm"' +
+        ' label="\u2715" aria-label="Close menu"></kakao-button>' +
         '</div>' +
         '<div class="kakao-aside-content"><slot></slot></div>';
       this._panel = panel;
 
       this._closeBtn = panel.querySelector('.kakao-aside-close');
       this._titleEl = panel.querySelector('.kakao-aside-title');
-      this._closeBtn.addEventListener('click', () => this.close());
+      this._closeBtn.addEventListener('kakao-button-action', () => this.close());
 
       this.append(openBtn, panel);
       // Allow the slot content to find its styles: keep the panel focusable.

@@ -135,7 +135,7 @@ kakao-aside-menu[open] .kakao-aside-open svg {
   box-sizing: border-box;
   background: var(--kakao-aside-bg, #fff);
   color: var(--kakao-aside-color, inherit);
-  border-right: 1px solid var(--kakao-aside-border, #dee2e6);
+  /* one pure colour, no borders inside or outside */
   transform: translateX(-100%);
   visibility: hidden;
   z-index: var(--kakao-aside-z-index, 40);
@@ -147,8 +147,6 @@ kakao-aside-menu[open] .kakao-aside-open svg {
 .kakao-aside-panel[data-position='right'] {
   left: auto;
   right: 0;
-  border-right: 0;
-  border-left: 1px solid var(--kakao-aside-border, #dee2e6);
   transform: translateX(100%);
 }
 
@@ -169,7 +167,12 @@ kakao-aside-menu[open] .kakao-aside-panel {
   justify-content: space-between;
   gap: 0.5rem;
   padding: var(--kakao-aside-head-padding, 0.875rem 1rem);
-  border-bottom: 1px solid var(--kakao-aside-line, #e5e7eb);
+}
+
+/* Menu on the left: the close button sits in the top-left corner (the title
+   moves right); on the right side of the screen it stays in the top-right. */
+.kakao-aside-panel[data-position='left'] .kakao-aside-head {
+  flex-direction: row-reverse;
 }
 
 .kakao-aside-title {
@@ -181,41 +184,19 @@ kakao-aside-menu[open] .kakao-aside-panel {
 }
 
 .kakao-aside-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   flex: 0 0 auto;
+}
+
+/* The close control is a <kakao-button variant="ghost" size="sm">
+   (button.js + button.css must be loaded): shaped into a perfect circle
+   here. */
+.kakao-aside-close .kakao-button-inner {
   width: var(--kakao-aside-close-size, 34px);
   height: var(--kakao-aside-close-size, 34px);
   padding: 0;
-  border: 1px solid transparent;
-  border-radius: var(--kakao-aside-radius, 8px);
-  background: transparent;
-  color: var(--kakao-aside-muted, #71717a);
-  cursor: pointer;
-}
-
-.kakao-aside-close svg {
-  width: var(--kakao-aside-close-icon, 16px);
-  height: var(--kakao-aside-close-icon, 16px);
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.4;
-  stroke-linecap: round;
-}
-
-.kakao-aside-close:hover {
-  background: var(--kakao-aside-subtle, #f0f0f1);
-  color: var(--kakao-aside-color, inherit);
-}
-
-.kakao-aside-close:active {
-  background: var(--kakao-aside-subtle-strong, #e6e6e8);
-}
-
-.kakao-aside-close:focus-visible {
-  outline: 2px solid var(--kakao-aside-focus, #2563eb);
-  outline-offset: 2px;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: var(--kakao-aside-close-icon, 16px);
 }
 
 /* ---------------------------------------------------------------------------
