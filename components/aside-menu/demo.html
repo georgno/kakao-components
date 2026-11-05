@@ -73,6 +73,13 @@
       </kakao-aside-menu>
     </div>
     <div class="card">
+      <h3>With nav list · <code>list-data</code></h3>
+      <kakao-aside-menu id="menu4" label="Main navigation"
+        list-data='[{"value":"home","label":"Home"},{"value":"browse","label":"Browse"},{"value":"lists","label":"My lists","disabled":true},{"value":"account","label":"Account"}]'
+        selected="home"></kakao-aside-menu>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Renders its own nav list above any slotted content; picks fire <code>aside-select</code> in the log below.</p>
+    </div>
+    <div class="card">
       <h3>No built-in button · <code>no-open-button</code></h3>
       <kakao-aside-menu no-open-button id="menu3" label="External trigger">
         <nav aria-label="External trigger menu">
@@ -95,7 +102,7 @@
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 
-  <footer>Attributes on the host: <code>label</code>, <code>position</code> (<code>left</code> · <code>right</code>), <code>width</code> (any CSS length), <code>open</code>, <code>no-open-button</code>. Methods: <code>open()</code>, <code>close()</code>, <code>toggle()</code>. Escape closes, focus is trapped inside the open panel and returned to the trigger. Full reference in the header of <code>aside-menu.js</code>.</footer>
+  <footer>Attributes on the host: <code>label</code>, <code>position</code> (<code>left</code> · <code>right</code>), <code>width</code> (any CSS length), <code>open</code>, <code>no-open-button</code>, <code>list-data</code>, <code>selected</code>. Methods: <code>open()</code>, <code>close()</code>, <code>toggle()</code>. Escape closes, focus is trapped inside the open panel and returned to the trigger. Full reference in the header of <code>aside-menu.js</code>.</footer>
 </main>
 
 <script>
@@ -103,6 +110,7 @@
   const menu3 = document.getElementById('menu3');
   const log = document.getElementById('log');
   logEvents(log, ['aside-change'], menu1);
+  logEvents(log, ['aside-select'], document.getElementById('menu4'));
 
   document.getElementById('toggleBtn').addEventListener('kakao-button-action', () => menu1.toggle());
   document.getElementById('openMenu3').addEventListener('kakao-button-action', () => menu3.open());

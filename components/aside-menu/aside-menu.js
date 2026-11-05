@@ -40,6 +40,12 @@
  *   no-open-button
  *                 Hide the built-in hamburger button (when the page provides
  *                 its own trigger and calls .open() / sets `open`).
+ *   list-data     Optional JSON array of nav items, e.g.
+ *                 [{"value":"home","label":"Home","disabled":false}, …]
+ *                 When present, the menu renders a vertical nav list above
+ *                 the slotted content and manages the current item itself.
+ *   selected      Value of the nav item marked as current (aria-current).
+ *                 Updated on pick.
  *
  * Methods:
  *   open()        Open the panel.
@@ -48,6 +54,7 @@
  *
  * Events (both bubble and are composed):
  *   aside-change  detail: { open: boolean }
+ *   aside-select  detail: { value, item } — a nav item was picked
  *
  * ----------------------------------------------------------------------------
  * THEMING
@@ -75,7 +82,7 @@
 
   class KakaoAsideMenu extends HTMLElement {
     static get observedAttributes() {
-      return ['open', 'label', 'position', 'width', 'no-open-button'];
+      return ['open', 'label', 'position', 'width', 'no-open-button', 'list-data', 'selected'];
     }
 
     constructor() {
@@ -91,6 +98,7 @@
     connectedCallback() {
       this._ensureDom();
       this._sync();
+      this._renderList();
       if (this.hasAttribute('open')) {
         // The attribute may already be set in the HTML: open without stealing focus.
         this._apply(true, { focus: false });
@@ -110,6 +118,8 @@
       }
       if (name === 'open') {
         this._apply(this.hasAttribute('open'), { focus: true });
+      } else if (name === 'list-data' || name === 'selected') {
+        this._renderList();
       } else {
         this._sync();
         if (this.hasAttribute('open')) {
@@ -148,12 +158,22 @@
         '<kakao-button class="kakao-aside-close" variant="ghost" size="sm"' +
         ' label="\u2715" aria-label="Close menu"></kakao-button>' +
         '</div>' +
-        '<div class="kakao-aside-content"><slot></slot></div>';
+        '<div class="kakao-aside-content">' +
+        '<nav class="kakao-aside-navlist"></nav>' +
+        '<slot></slot></div>';
       this._panel = panel;
 
       this._closeBtn = panel.querySelector('.kakao-aside-close');
       this._titleEl = panel.querySelector('.kakao-aside-title');
       this._closeBtn.addEventListener('kakao-button-action', () => this.close());
+
+      this._navList = panel.querySelector('.kakao-aside-navlist');
+      this._navList.addEventListener('click', (e) => {
+        const item = e.target.closest('.kakao-aside-navitem');
+        if (!item || item.disabled) return;
+        this.setAttribute('selected', item.dataset.value);
+        this._dispatch('aside-select', { value: item.dataset.value, item });
+      });
 
       this.append(openBtn, panel);
       // Allow the slot content to find its styles: keep the panel focusable.
@@ -181,6 +201,39 @@
       } else {
         this.style.removeProperty('--kakao-aside-width');
       }
+    }
+
+    /* --------------------------- Nav list ------------------------------- */
+
+    /** Render the built-in nav list from the list-data attribute. */
+    _renderList() {
+      if (!this._built) return;
+      const nav = this._navList;
+      let rows = [];
+      const raw = this.getAttribute('list-data');
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) rows = parsed;
+        } catch (err) {
+          console.warn('<kakao-aside-menu> failed to parse list-data as JSON:', err);
+        }
+      }
+      nav.toggleAttribute('hidden', rows.length === 0);
+      nav.setAttribute('aria-label', this.getAttribute('label') || 'Menu');
+      nav.textContent = '';
+      const selected = this.getAttribute('selected');
+      rows.forEach((it) => {
+        const value = String(it.value != null ? it.value : it.label);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'kakao-aside-navitem';
+        btn.dataset.value = value;
+        btn.textContent = it.label != null ? String(it.label) : value;
+        if (it.disabled) btn.disabled = true;
+        if (value === selected) btn.setAttribute('aria-current', 'true');
+        nav.appendChild(btn);
+      });
     }
 
     /* ---------------------------- Open state ---------------------------- */

@@ -231,6 +231,59 @@ kakao-aside-menu[open] .kakao-aside-panel {
   outline-offset: -2px;
 }
 
+/* ---------------------------------------------------------------------------
+ * Built-in nav list (list-data): a vertical list of full-width buttons above
+ * the slotted content.
+ * ------------------------------------------------------------------------- */
+
+.kakao-aside-navlist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 0 0.75rem;
+}
+
+.kakao-aside-navlist[hidden] {
+  display: none;
+}
+
+.kakao-aside-navitem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 0;
+  border-radius: var(--kakao-aside-radius, 8px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.kakao-aside-navitem:hover {
+  background: var(--kakao-aside-subtle, #f0f0f1);
+}
+
+.kakao-aside-navitem:focus-visible {
+  outline: 2px solid var(--kakao-aside-focus, #2563eb);
+  outline-offset: -2px;
+}
+
+.kakao-aside-navitem[aria-current='true'] {
+  background: color-mix(in srgb, var(--kakao-aside-accent, var(--kakao-color-primary, #4f46e5)) 12%, transparent);
+  color: var(--kakao-aside-accent, var(--kakao-color-primary, #4f46e5));
+  font-weight: 600;
+}
+
+.kakao-aside-navitem:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: none;
+}
+
 /* Reduced motion: everything snaps into place. */
 @media (prefers-reduced-motion: reduce) {
   html[data-kakao-aside-open] body,
