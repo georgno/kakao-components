@@ -158,11 +158,29 @@ kakao-number-input[data-touch] .kakao-number-input-arrows[data-align="left"] { j
 kakao-number-input[data-touch] .kakao-number-input-arrows[data-align="right"] { justify-content: flex-end; }
 kakao-number-input[data-touch] .kakao-number-input-arrows[data-align="split"] { justify-content: space-between; }
 
+/* Ungrouped buttons: they sit on the field's ends and draw no box of their own
+   — the input's border is the only outline. The strip keeps the 1px top/bottom
+   inset, so a divider stops at the field's border instead of notching through
+   it. */
+kakao-number-input[data-touch] .kakao-number-input-arrows:not([data-grouped]) {
+  left: 0;
+  right: 0;
+  top: 1px;
+  bottom: 1px;
+}
+kakao-number-input[data-touch] .kakao-number-input-arrows:not([data-grouped]) span {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
 kakao-number-input[data-touch] .kakao-number-input-arrows span {
   box-sizing: border-box;
   flex: none;
   width: var(--_touch-size);
-  height: var(--_touch-size);
+  /* Fill the strip, never the 44px touch size: a taller button spills over the
+     input's top and bottom border. */
+  height: 100%;
   font-size: 0;
   touch-action: manipulation;
   pointer-events: auto;
@@ -197,8 +215,14 @@ kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped] span {
   border-radius: 0;
   background: transparent;
 }
-kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped] span[data-edge="start"],
-kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped] span[data-edge="end"] {
-  border-left: 1px solid var(--_arrow-border);
+/* Divider between controls, grouped or not: always on a button's inner edge,
+   so the side decides which border carries it. Without it a pair on the left
+   has no line between itself and the value. It separates two controls, so it
+   takes the field's border colour (the 3:1 role), not the decorative line. */
+kakao-number-input[data-touch] .kakao-number-input-arrows span[data-side='left'] {
+  border-right: 1px solid var(--_input-border);
+}
+kakao-number-input[data-touch] .kakao-number-input-arrows span[data-side='right'] {
+  border-left: 1px solid var(--_input-border);
 }
 

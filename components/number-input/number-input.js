@@ -178,7 +178,6 @@ class KakaoNumberInput extends HTMLElement {
       btn.hidden = !side;
       if (!side) {
         btn.removeAttribute('data-side');
-        btn.removeAttribute('data-edge');
         btn.style.removeProperty('order');
         return;
       }
@@ -198,15 +197,7 @@ class KakaoNumberInput extends HTMLElement {
 
     arrows.dataset.align = plus && minus && plus !== minus ? 'split' : (left ? 'left' : 'right');
 
-    const joined = grouped && !!plus && plus === minus;
-    arrows.toggleAttribute('data-grouped', joined);
-    [up, dn].forEach((b) => b.removeAttribute('data-edge'));
-    if (joined) {
-      // The first of the pair keeps the outer left edge, the last the right one.
-      const first = (Number(dn.style.order) || 0) <= (Number(up.style.order) || 0) ? dn : up;
-      first.dataset.edge = 'start';
-      (first === dn ? up : dn).dataset.edge = 'end';
-    }
+    arrows.toggleAttribute('data-grouped', grouped && !!plus && plus === minus);
   }
 
   /* ------------------------ Stepping ------------------------ */
