@@ -22,12 +22,12 @@
 <script src="components/animated-number/animated-number.js" defer></script>
 <style>
   /* ---- this page only ---- */
-  main { max-width: 1140px; padding: 4.5rem 1.25rem 5rem; }
+  main { max-width: 1300px; padding: 4.5rem 1.25rem 5rem; }
 
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
-    gap: 4.5rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 44rem);
+    gap: 3.5rem;
     align-items: center;
   }
   @media (max-width: 980px) {
@@ -68,7 +68,7 @@
   .facts b { color: var(--ink); font-weight: 600; }
 
   /* ---- the portal: a card you can walk through ---- */
-  .portal { position: relative; display: grid; place-items: center; }
+  .portal { position: relative; display: grid; justify-items: stretch; }
   .portal::before {
     content: "";
     position: absolute;
@@ -84,32 +84,40 @@
     text-decoration: none;
     outline: none;
   }
-  /* The tilt is the whole point of the card: it is a doorway, not a screenshot.
-     It straightens when the card is hovered or focused, and the focus ring sits
-     on the tilted card instead of on a straight box around it. */
-  .tilt {
-    display: block;
-    border-radius: var(--kakao-radius, 14px);
-    transform: perspective(1500px) rotateX(7deg) rotateY(-16deg) rotate(-1.5deg);
-    transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
-  }
-  .portal-link:hover .tilt,
-  .portal-link:focus-visible .tilt {
-    transform: perspective(1500px) rotateX(1deg) rotateY(-2deg) rotate(0deg);
-  }
-  .portal-link:focus-visible .tilt {
+  /* The card is the frame, straight on. What is inside is a photograph of the
+     form lying on the desk: the sheet tilts away at the top, with its own
+     shadow underneath. Hovering the card lifts it a little. */
+  .portal kakao-card { --kakao-card-padding: 0; --kakao-card-gap: 0; }
+  .portal-link:focus-visible kakao-card {
     outline: 2px solid var(--kakao-color-focus, #2563eb);
     outline-offset: 4px;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tilt { transition: none; }
-  }
-  @media (max-width: 980px) {
-    .tilt { transform: none; }
+    border-radius: var(--kakao-radius, 14px);
   }
 
-  /* ---- the imaginary form inside it ---- */
-  .portal kakao-card { --kakao-card-padding: 1.125rem; --kakao-card-gap: 0.7rem; }
+  .shot {
+    perspective: 1400px;
+    perspective-origin: 50% 25%;
+    padding: 2.5rem 2.75rem 4.5rem;
+  }
+  .sheet {
+    display: grid;
+    gap: 0.95rem;
+    padding: 1.5rem;
+    background: var(--kakao-color-raised, #fff);
+    border: 1px solid var(--kakao-color-line, #e5e7eb);
+    border-radius: 10px;
+    transform: rotateX(30deg) rotateZ(-1.5deg);
+    transform-origin: 50% 100%;
+    box-shadow: 0 34px 30px -20px rgb(0 0 0 / 0.32);
+    transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .portal-link:hover .sheet,
+  .portal-link:focus-visible .sheet {
+    transform: rotateX(18deg) rotateZ(-0.75deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheet { transition: none; }
+  }
   .mini-head {
     display: flex;
     align-items: baseline;
@@ -135,6 +143,7 @@
   }
   .mini-price kakao-animated-number { --kakao-animated-number-font-size: 1.375rem; --kakao-animated-number-font-weight: 600; }
   .mini-price small { font-size: 0.8125rem; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+  .mini-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
   .portal-open {
     display: flex;
     align-items: center;
@@ -175,36 +184,38 @@
       <!-- The whole card is the link: the form inside is a picture, so it is
            inert and kept out of the accessibility tree. -->
       <a class="portal-link" href="components.html" aria-label="Browse the components">
-        <span class="tilt" aria-hidden="true" inert>
-          <kakao-card>
-            <div slot="header" class="mini-head">
-              <b>Nightowl</b>
-              <span>Plan settings</span>
+        <kakao-card>
+          <div class="shot" aria-hidden="true" inert>
+            <div class="sheet">
+              <div class="mini-head">
+                <b>Nightowl</b>
+                <span>Plan settings</span>
+              </div>
+              <div class="mini-field">
+                <span>Streaming quality</span>
+                <kakao-step-switch label="Streaming quality" value="hd"
+                  list-data='[{"value":"sd","label":"SD"},{"value":"hd","label":"HD"},{"value":"uhd","label":"Ultra"}]'></kakao-step-switch>
+              </div>
+              <div class="mini-field">
+                <span>Screens at once</span>
+                <kakao-number-input>
+                  <input type="number" min="1" max="6" step="1" value="2" aria-label="Screens" />
+                </kakao-number-input>
+              </div>
+              <kakao-switch-group label="Downloads" color-labels
+                list-data='[{"name":"offline","label":"Save for offline","checked":true}]'></kakao-switch-group>
+              <div class="mini-price">
+                <span>€</span>
+                <kakao-animated-number value="13.49" decimals="2"></kakao-animated-number>
+                <small>/ month</small>
+              </div>
+              <div class="mini-actions">
+                <kakao-button label="Save changes"></kakao-button>
+                <kakao-button label="Later" variant="ghost"></kakao-button>
+              </div>
             </div>
-            <div class="mini-field">
-              <span>Streaming quality</span>
-              <kakao-step-switch label="Streaming quality" value="hd"
-                list-data='[{"value":"sd","label":"SD"},{"value":"hd","label":"HD"},{"value":"uhd","label":"Ultra"}]'></kakao-step-switch>
-            </div>
-            <div class="mini-field">
-              <span>Screens at once</span>
-              <kakao-number-input>
-                <input type="number" min="1" max="6" step="1" value="2" aria-label="Screens" />
-              </kakao-number-input>
-            </div>
-            <kakao-switch-group label="Downloads" color-labels
-              list-data='[{"name":"offline","label":"Save for offline","checked":true}]'></kakao-switch-group>
-            <div class="mini-price">
-              <span>€</span>
-              <kakao-animated-number value="13.49" decimals="2"></kakao-animated-number>
-              <small>/ month</small>
-            </div>
-            <div slot="footer">
-              <kakao-button label="Save changes"></kakao-button>
-              <kakao-button label="Later" variant="ghost"></kakao-button>
-            </div>
-          </kakao-card>
-        </span>
+          </div>
+        </kakao-card>
         <span class="portal-open">Open the component list <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
       </a>
     </section>
