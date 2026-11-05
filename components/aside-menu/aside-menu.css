@@ -46,8 +46,15 @@ kakao-aside-menu {
 
 /* ---------------------------------------------------------------------------
  * The page push: while a menu is open the body slides away by the panel
- * width. The transition makes the push follow the panel, not snap.
+ * width. The transition makes the push follow the panel, not snap. While
+ * a menu is open html clips horizontal overflow, so the document cannot be
+ * scrolled sideways and the viewport keeps its exact size (the fixed panel
+ * is unaffected by the push).
  * ------------------------------------------------------------------------- */
+
+html[data-kakao-aside-open] {
+  overflow-x: hidden;
+}
 
 html[data-kakao-aside-open] body {
   margin-left: var(--kakao-aside-push, 280px);
