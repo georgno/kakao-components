@@ -118,13 +118,20 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, calc(-50% - 1.5rem));
     display: grid;
     gap: 1rem;
     width: max-content;
   }
   .wall-row { display: flex; align-items: stretch; justify-content: center; gap: 1rem; }
-  .wall-row:first-child { height: 13rem; margin-top: 10rem; }
+  /* 13rem is a floor, not a cap: row 1's own content (radio group + price) is
+     ~18rem, and a hard height let the price paint outside the Plan card and over
+     the next row. The offset belongs in the wall's transform, see below: as a
+     margin it inflated the box the wall is centred by and pushed row 3 out of
+     the frame entirely. Desktop only — below 940px the wall is static. */
+  @media (min-width: 941px) {
+    .wall-row:first-child { min-height: 13rem; }
+  }
 
   /* A .card from the kitchen sink, in miniature: same surface, radius, padding
      and caption. */
