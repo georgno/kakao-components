@@ -192,7 +192,7 @@
         /* @kakao-settings:start prefix=--kakao-file-upload- (written by construction.html, edit there) */
         --_accent: var(--kakao-file-upload-accent, var(--kakao-color-primary, #4f46e5));
         --_bg: var(--kakao-file-upload-bg, var(--kakao-color-bg, #ffffff));
-        --_border: var(--kakao-file-upload-border, var(--kakao-color-border, #d1d5db));
+        --_border: var(--kakao-file-upload-border, var(--kakao-color-field-border, #ececef));
         --_radius: var(--kakao-file-upload-radius, 14px);
         --_min-height: var(--kakao-file-upload-min-height, 9rem);
         --_dot-color: var(--kakao-file-upload-dot-color, color-mix(in srgb, var(--kakao-color-line, #e5e7eb) 53%, transparent));

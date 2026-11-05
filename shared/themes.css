@@ -30,6 +30,7 @@
   --kakao-color-page: #f6f7f9;
   --kakao-color-bg: #ffffff;
   --kakao-color-raised: #ffffff;
+  --kakao-color-field-border: #ececef;
   --kakao-color-subtle: #f0f0f1;
   --kakao-color-subtle-strong: #e6e6e8;
   --kakao-color-line: #e5e7eb;
@@ -56,6 +57,7 @@
   --kakao-color-page: #d6c8ad;
   --kakao-color-bg: #e9dfcb;
   --kakao-color-raised: #f6efe2;
+  --kakao-color-field-border: #d9cdb6;
   --kakao-color-subtle: #ded2ba;
   --kakao-color-subtle-strong: #d0c2a6;
   --kakao-color-line: #cdbfa4;
@@ -81,6 +83,7 @@
   --kakao-color-page: #332c23;
   --kakao-color-bg: #423a2f;
   --kakao-color-raised: #6b6151;
+  --kakao-color-field-border: #4d4438;
   --kakao-color-subtle: #4d4438;
   --kakao-color-subtle-strong: #5a5042;
   --kakao-color-line: #4a4136;
@@ -105,6 +108,7 @@
   --kakao-color-page: #0f0f11;
   --kakao-color-bg: #18181b;
   --kakao-color-raised: #45454c;
+  --kakao-color-field-border: #2b2b2f;
   --kakao-color-subtle: #27272a;
   --kakao-color-subtle-strong: #323238;
   --kakao-color-line: #2e2e33;
@@ -130,6 +134,7 @@
   --kakao-color-page: #000000;
   --kakao-color-bg: #000000;
   --kakao-color-raised: #2a2a2e;
+  --kakao-color-field-border: #1c1c1f;
   --kakao-color-subtle: #141416;
   --kakao-color-subtle-strong: #1e1e21;
   --kakao-color-line: #1a1a1d;
@@ -155,6 +160,7 @@
   --kakao-color-page: #11111b;
   --kakao-color-bg: #1e1e2e;
   --kakao-color-raised: #585b70;
+  --kakao-color-field-border: #313244;
   --kakao-color-subtle: #313244;
   --kakao-color-subtle-strong: #45475a;
   --kakao-color-line: #313244;
@@ -180,6 +186,7 @@
   --kakao-color-page: #0b1512;
   --kakao-color-bg: #13211b;
   --kakao-color-raised: #3d5046;
+  --kakao-color-field-border: #22342b;
   --kakao-color-subtle: #1b2d25;
   --kakao-color-subtle-strong: #263a30;
   --kakao-color-line: #22342b;
@@ -204,6 +211,7 @@
     --kakao-color-page: #0f0f11;
     --kakao-color-bg: #18181b;
     --kakao-color-raised: #45454c;
+    --kakao-color-field-border: #2b2b2f;
     --kakao-color-subtle: #27272a;
     --kakao-color-subtle-strong: #323238;
     --kakao-color-line: #2e2e33;

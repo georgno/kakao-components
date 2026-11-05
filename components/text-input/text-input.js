@@ -76,7 +76,7 @@
         --_bg: var(--kakao-text-input-bg, var(--kakao-color-bg, #ffffff));
         --_text: var(--kakao-text-input-text, var(--kakao-color-text, #18181b));
         --_muted: var(--kakao-text-input-muted, var(--kakao-color-muted, #62626c));
-        --_border: var(--kakao-text-input-border, var(--kakao-color-border, #82828b));
+        --_border: var(--kakao-text-input-border, var(--kakao-color-field-border, #ececef));
         --_line: var(--kakao-text-input-line, var(--kakao-color-line, #e5e7eb));
         --_hover-bg: var(--kakao-text-input-hover-bg, var(--kakao-color-subtle, #f0f0f1));
         --_focus: var(--kakao-text-input-focus, var(--kakao-color-focus, #2563eb));

@@ -154,7 +154,7 @@
         /* @kakao-settings:start prefix=--kakao-multi-dropdown- (written by construction.html, edit there) */
         --_accent: var(--kakao-multi-dropdown-accent, var(--kakao-color-primary, #4f46e5));
         --_bg: var(--kakao-multi-dropdown-bg, var(--kakao-color-bg, #ffffff));
-        --_border: var(--kakao-multi-dropdown-border, var(--kakao-color-border, #d1d5db));
+        --_border: var(--kakao-multi-dropdown-border, var(--kakao-color-field-border, #ececef));
         --_radius: var(--kakao-multi-dropdown-radius, 10px);
         --_text: var(--kakao-multi-dropdown-text, var(--kakao-color-text, #111827));
         --_muted: var(--kakao-multi-dropdown-muted, var(--kakao-color-muted, #9ca3af));

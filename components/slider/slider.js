@@ -197,7 +197,7 @@ class KakaoSlider extends HTMLElement {
           --_disabled-opacity: var(--kakao-slider-disabled-opacity, 0.4);
           --_label-color: var(--kakao-slider-label-color, var(--kakao-color-text, #111));
           --_input-bg: var(--kakao-slider-input-bg, var(--kakao-color-bg, #fff));
-          --_input-border: var(--kakao-slider-input-border, var(--kakao-color-border, #ccc));
+          --_input-border: var(--kakao-slider-input-border, var(--kakao-color-field-border, #ececef));
           --_unit-bg: var(--kakao-slider-unit-bg, var(--kakao-color-subtle, #f7f7f7));
           --_unit-color: var(--kakao-slider-unit-color, var(--kakao-color-text-soft, #555));
           --_range-color: var(--kakao-slider-range-color, var(--kakao-color-muted, #999));

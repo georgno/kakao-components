@@ -12,13 +12,14 @@ kakao-number-input {
   --_arrow-width: var(--kakao-number-input-arrow-width, 22px);
   --_input-padding-right: var(--kakao-number-input-input-padding-right, 26px);
   --_arrow-border: var(--kakao-number-input-arrow-border, var(--kakao-color-line, #dee2e6));
+  --_divider: var(--kakao-number-input-divider, var(--kakao-color-border, #dee2e6));
   --_arrow-color: var(--kakao-number-input-arrow-color, var(--kakao-color-muted, #6c757d));
   --_arrow-hover-bg: var(--kakao-number-input-arrow-hover-bg, var(--kakao-color-subtle, #e9ecef));
   --_arrow-hover-color: var(--kakao-number-input-arrow-hover-color, var(--kakao-color-text, #212529));
   --_arrow-active-bg: var(--kakao-number-input-arrow-active-bg, var(--kakao-color-subtle-strong, #ced4da));
   --_input-radius: var(--kakao-number-input-input-radius, var(--kakao-radius, 8px));
   --_font-size: var(--kakao-number-input-font-size, inherit);
-  --_input-border: var(--kakao-number-input-input-border, var(--kakao-color-border, #dee2e6));
+  --_input-border: var(--kakao-number-input-input-border, var(--kakao-color-field-border, #ececef));
   --_input-bg: var(--kakao-number-input-input-bg, var(--kakao-color-bg, #fff));
   --_input-color: var(--kakao-number-input-input-color, var(--kakao-color-text, inherit));
   --_input-padding: var(--kakao-number-input-input-padding, 0.375rem 0.75rem);
@@ -220,9 +221,9 @@ kakao-number-input[data-touch] .kakao-number-input-arrows[data-grouped] span {
    has no line between itself and the value. It separates two controls, so it
    takes the field's border colour (the 3:1 role), not the decorative line. */
 kakao-number-input[data-touch] .kakao-number-input-arrows span[data-side='left'] {
-  border-right: 1px solid var(--_input-border);
+  border-right: 1px solid var(--_divider);
 }
 kakao-number-input[data-touch] .kakao-number-input-arrows span[data-side='right'] {
-  border-left: 1px solid var(--_input-border);
+  border-left: 1px solid var(--_divider);
 }
 

@@ -41,6 +41,7 @@ const PAIRS = [
   ['on-danger', 'danger-hover', 4.5, 'danger button label, hover'],
   ['danger', 'bg', 4.5, 'error text'],
   ['primary', 'bg', 4.5, 'selected option text'],
+  ['field-border', 'bg', 1.1, 'field edge (decorative, see border)'],
   ['border', 'bg', 3, 'field border, off switch track'],
   ['border', 'page', 3, 'field border on the page'],
   ['primary', 'page', 3, 'on switch track, slider fill'],

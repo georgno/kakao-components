@@ -64,7 +64,7 @@
         --_bg: var(--kakao-textarea-bg, var(--kakao-color-bg, #ffffff));
         --_text: var(--kakao-textarea-text, var(--kakao-color-text, #18181b));
         --_muted: var(--kakao-textarea-muted, var(--kakao-color-muted, #62626c));
-        --_border: var(--kakao-textarea-border, var(--kakao-color-border, #82828b));
+        --_border: var(--kakao-textarea-border, var(--kakao-color-field-border, #ececef));
         --_line: var(--kakao-textarea-line, var(--kakao-color-line, #e5e7eb));
         --_focus: var(--kakao-textarea-focus, var(--kakao-color-focus, #2563eb));
         --_danger: var(--kakao-textarea-danger, var(--kakao-color-danger, #dc2626));

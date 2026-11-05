@@ -137,7 +137,7 @@
         --_bg: var(--kakao-color-picker-bg, var(--kakao-color-bg, #ffffff));
         --_text: var(--kakao-color-picker-text, var(--kakao-color-text, #18181b));
         --_muted: var(--kakao-color-picker-muted, var(--kakao-color-muted, #62626c));
-        --_border: var(--kakao-color-picker-border, var(--kakao-color-border, #82828b));
+        --_border: var(--kakao-color-picker-border, var(--kakao-color-field-border, #ececef));
         --_line: var(--kakao-color-picker-line, var(--kakao-color-line, #e5e7eb));
         --_hover-bg: var(--kakao-color-picker-hover-bg, var(--kakao-color-subtle, #f0f0f1));
         --_focus: var(--kakao-color-picker-focus, var(--kakao-color-focus, #2563eb));
