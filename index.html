@@ -160,7 +160,7 @@
         <h2 slot="header">Example dialog</h2>
         <p>A modal dialog. Escape, a click on the covered page or a button with <code>data-close</code> ends it.</p>
         <div slot="footer">
-          <kakao-button label="Cancel" variant="secondary" data-close="cancel"></kakao-button>
+          <kakao-button label="Cancel" variant="ghost" data-close="cancel"></kakao-button>
           <kakao-button label="Save" data-close="save"></kakao-button>
         </div>
       </kakao-dialog>
@@ -168,7 +168,7 @@
         <h2 slot="header">Delete project?</h2>
         <p>This cannot be undone.</p>
         <div slot="footer">
-          <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+          <kakao-button label="Keep it" variant="ghost" data-close="cancel"></kakao-button>
           <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
         </div>
       </kakao-dialog>
@@ -552,7 +552,7 @@
           <kakao-card>
             <strong slot="header">Delete project</strong>
             <span style="color:var(--muted)">This cannot be undone.</span>
-            <div slot="footer"><kakao-button label="Delete" variant="danger" size="sm"></kakao-button><kakao-button label="Cancel" variant="secondary" size="sm"></kakao-button></div>
+            <div slot="footer"><kakao-button label="Delete" variant="danger" size="sm"></kakao-button><kakao-button label="Cancel" variant="ghost" size="sm"></kakao-button></div>
           </kakao-card>
         </div>
         <div class="example">

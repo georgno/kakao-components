@@ -30,7 +30,7 @@
           <h2 slot="header">Example dialog</h2>
           <p>The panel, the covered page and the sizing all follow the settings in <code>dialog.js</code>.</p>
           <div slot="footer">
-            <kakao-button label="Cancel" variant="secondary" data-close="cancel"></kakao-button>
+            <kakao-button label="Cancel" variant="ghost" data-close="cancel"></kakao-button>
             <kakao-button label="Save" data-close="save"></kakao-button>
           </div>
         </kakao-dialog>
@@ -44,7 +44,7 @@
           <h2 slot="header">Delete project?</h2>
           <p>This cannot be undone.</p>
           <div slot="footer">
-            <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+            <kakao-button label="Keep it" variant="ghost" data-close="cancel"></kakao-button>
             <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
           </div>
         </kakao-dialog>
@@ -56,7 +56,7 @@
         <kakao-button id="open-3" label="Open bare" variant="secondary" size="sm"></kakao-button>
         <kakao-dialog id="d3" label="No header here">
           <p>Without a header element the <code>label</code> attribute is the accessible name.</p>
-          <div slot="footer"><kakao-button label="Got it" variant="secondary" data-close="ok"></kakao-button></div>
+          <div slot="footer"><kakao-button label="Got it" variant="ghost" data-close="ok"></kakao-button></div>
         </kakao-dialog>
       </div>
     </figure>

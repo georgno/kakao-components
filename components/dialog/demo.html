@@ -71,7 +71,7 @@
   <h2 slot="header">Streaming quality</h2>
   <p>SD is 480p, HD is 1080p, Ultra is 4K with HDR. Your plan price follows the choice.</p>
   <div slot="footer">
-    <kakao-button label="Cancel" variant="secondary" data-close="cancel"></kakao-button>
+    <kakao-button label="Cancel" variant="ghost" data-close="cancel"></kakao-button>
     <kakao-button label="Save" data-close="save"></kakao-button>
   </div>
 </kakao-dialog>
@@ -80,7 +80,7 @@
   <h2 slot="header">Delete account?</h2>
   <p>Your watch history and all profiles will be gone. This cannot be undone.</p>
   <div slot="footer">
-    <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+    <kakao-button label="Keep it" variant="ghost" data-close="cancel"></kakao-button>
     <kakao-button label="Delete account" variant="danger" data-close="delete"></kakao-button>
   </div>
 </kakao-dialog>
@@ -90,7 +90,7 @@
   <p>One paragraph, then a long one, so the body scrolls inside the panel while the header and footer stay where they are.</p>
   <div id="long-target"></div>
   <div slot="footer">
-    <kakao-button label="Close" variant="secondary" data-close="close"></kakao-button>
+    <kakao-button label="Close" variant="ghost" data-close="close"></kakao-button>
     <kakao-button label="Accept" data-close="accept"></kakao-button>
   </div>
 </kakao-dialog>
@@ -105,25 +105,25 @@
 
 <kakao-dialog id="bare" label="Renamed from the label attribute">
   <p>No header element, so <code>label</code> is the accessible name.</p>
-  <div slot="footer"><kakao-button label="Got it" variant="secondary" data-close="ok"></kakao-button></div>
+  <div slot="footer"><kakao-button label="Got it" variant="ghost" data-close="ok"></kakao-button></div>
 </kakao-dialog>
 
 <kakao-dialog id="sm" size="sm" label="Small">
   <h2 slot="header">Small</h2>
   <p>22rem wide.</p>
-  <div slot="footer"><kakao-button label="Close" variant="secondary" data-close="close"></kakao-button></div>
+  <div slot="footer"><kakao-button label="Close" variant="ghost" data-close="close"></kakao-button></div>
 </kakao-dialog>
 
 <kakao-dialog id="lg" size="lg" label="Large">
   <h2 slot="header">Large</h2>
   <p>42rem wide.</p>
-  <div slot="footer"><kakao-button label="Close" variant="secondary" data-close="close"></kakao-button></div>
+  <div slot="footer"><kakao-button label="Close" variant="ghost" data-close="close"></kakao-button></div>
 </kakao-dialog>
 
 <kakao-dialog id="tall" label="Tall body">
   <h2 slot="header">Tall body</h2>
   <div id="tall-target"></div>
-  <div slot="footer"><kakao-button label="Close" variant="secondary" data-close="close"></kakao-button></div>
+  <div slot="footer"><kakao-button label="Close" variant="ghost" data-close="close"></kakao-button></div>
 </kakao-dialog>
 
 <script>
