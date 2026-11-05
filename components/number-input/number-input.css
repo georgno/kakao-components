@@ -12,7 +12,7 @@ kakao-number-input {
   --_arrow-width: var(--kakao-number-input-arrow-width, 22px);
   --_input-padding-right: var(--kakao-number-input-input-padding-right, 26px);
   --_arrow-border: var(--kakao-number-input-arrow-border, var(--kakao-color-line, #dee2e6));
-  --_divider: var(--kakao-number-input-divider, var(--kakao-color-border, #dee2e6));
+  --_divider: var(--kakao-number-input-divider, var(--kakao-color-field-border, #ececef));
   --_arrow-color: var(--kakao-number-input-arrow-color, var(--kakao-color-muted, #6c757d));
   --_arrow-hover-bg: var(--kakao-number-input-arrow-hover-bg, var(--kakao-color-subtle, #e9ecef));
   --_arrow-hover-color: var(--kakao-number-input-arrow-hover-color, var(--kakao-color-text, #212529));
