@@ -35,12 +35,11 @@
     main { padding-top: 3rem; }
   }
 
+  /* The guide's No uppercase rule: weight and colour, never capitals. */
   .eyebrow {
     margin: 0 0 1rem;
     font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
     color: var(--muted);
   }
   .hero h1 {
@@ -80,24 +79,27 @@
   }
   .portal-link {
     display: block;
-    border-radius: 18px;
+    border-radius: var(--kakao-radius, 14px);
     color: inherit;
     text-decoration: none;
-  }
-  .portal-link:focus-visible {
-    outline: 2px solid var(--kakao-color-focus, #2563eb);
-    outline-offset: 8px;
+    outline: none;
   }
   /* The tilt is the whole point of the card: it is a doorway, not a screenshot.
-     It straightens when the card is hovered or focused. */
+     It straightens when the card is hovered or focused, and the focus ring sits
+     on the tilted card instead of on a straight box around it. */
   .tilt {
     display: block;
+    border-radius: var(--kakao-radius, 14px);
     transform: perspective(1500px) rotateX(7deg) rotateY(-16deg) rotate(-1.5deg);
     transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
   }
   .portal-link:hover .tilt,
   .portal-link:focus-visible .tilt {
     transform: perspective(1500px) rotateX(1deg) rotateY(-2deg) rotate(0deg);
+  }
+  .portal-link:focus-visible .tilt {
+    outline: 2px solid var(--kakao-color-focus, #2563eb);
+    outline-offset: 4px;
   }
   @media (prefers-reduced-motion: reduce) {
     .tilt { transition: none; }
@@ -143,6 +145,7 @@
     font-weight: 600;
     color: var(--accent);
   }
+  .portal-link:hover .portal-open { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -153,7 +156,7 @@
 <main>
   <div class="hero">
     <section>
-      <p class="eyebrow">Kakao Components</p>
+      <p class="eyebrow">A small library, taken seriously</p>
       <h1>The parts of the form people actually touch.</h1>
       <p class="lede">Twenty web components for settings screens, dialogs and menus. Plain JavaScript, no framework, no dependencies — and a theme system whose contrast is checked on every commit.</p>
       <div class="actions">
@@ -185,7 +188,7 @@
             </div>
             <div class="mini-field">
               <span>Screens at once</span>
-              <kakao-number-input size="sm">
+              <kakao-number-input>
                 <input type="number" min="1" max="6" step="1" value="2" aria-label="Screens" />
               </kakao-number-input>
             </div>
@@ -197,13 +200,13 @@
               <small>/ month</small>
             </div>
             <div slot="footer">
-              <kakao-button label="Save changes" size="sm"></kakao-button>
-              <kakao-button label="Later" variant="ghost" size="sm"></kakao-button>
+              <kakao-button label="Save changes"></kakao-button>
+              <kakao-button label="Later" variant="ghost"></kakao-button>
             </div>
           </kakao-card>
         </span>
+        <span class="portal-open">Open the component list <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
       </a>
-      <p class="portal-open" aria-hidden="true">Open the component list <i class="fas fa-arrow-right"></i></p>
     </section>
   </div>
 </main>
