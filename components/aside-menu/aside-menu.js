@@ -11,7 +11,7 @@
  * USAGE
  * ----------------------------------------------------------------------------
  *   <link rel="stylesheet" href="aside-menu.css">
- *   <script src="aside-menu.js" defer></script>
+ *   <script src="aside-menu.js" defer><\/script>
  *
  *   <kakao-aside-menu label="Site menu">
  *     <nav>
