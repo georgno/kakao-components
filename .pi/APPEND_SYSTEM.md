@@ -6,7 +6,8 @@ A design system: light-DOM components, and one living rulebook in
 ## Design review runs on its own after a change
 
 Whenever you have changed anything under `components/`, `shared/`, or one of
-`styleguide.html`, `kitchen-sink.html`, `index.html`, `tokens.html`, run the
+`styleguide.html`, `kitchen-sink.html`, `index.html`, `components.html`,
+`tokens.html`, run the
 design review **before you write the reply**. One review covers the whole turn:
 
 ```
@@ -32,4 +33,4 @@ subagent({ agent: "kakao.ux-ui-designer", task: "<files changed, one line each> 
 - Every colour defaults to a theme variable, and every theme in
   `shared/themes.css` has to pass `node tools/check-themes.js`.
 - A new component gets a `demo.html`, a `construction.html`, a card on
-  `index.html`, and lines in the styleguide's component audit.
+  `components.html`, and lines in the styleguide's component audit.

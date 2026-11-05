@@ -6,7 +6,7 @@ The demo pages that show what exists: an overview of all components, one demo pa
 ## Requirements
 
 ### Requirement: Overview page
-`index.html` SHALL show one full-width card per component with several examples and a link to its demo page, a link to the kitchen sink, and a "Not built yet" section with placeholder cards showing the native element for each component that does not exist yet.
+`components.html` SHALL show one full-width card per component with several examples and a link to its demo page, a link to the kitchen sink, and a "Not built yet" section with placeholder cards showing the native element for each component that does not exist yet.
 
 #### Scenario: New component built
 - **WHEN** a component from the "Not built yet" list is implemented

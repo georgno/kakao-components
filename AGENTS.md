@@ -13,7 +13,7 @@ a shadow root with slots.
   through its `construction.html`, not by hand.
 - Shared colours come from `shared/tokens.css`; every theme in `shared/themes.css`
   must keep passing `node tools/check-themes.js`.
-- A new component is added to `index.html` and, if it fits, to `kitchen-sink.html`.
+- A new component is added to `components.html` (the list page) and, if it fits, to `kitchen-sink.html`. `index.html` is the hero page.
 
 ## Brief design review
 

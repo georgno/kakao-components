@@ -10,36 +10,139 @@
 <script src="shared/component-api.js"></script>
 <script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
-<link rel="stylesheet" href="components/tabs/tabs.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/number-input/number-input.css" />
-<link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
-<script src="components/switch-group/switch-group.js" defer></script>
-<script src="components/step-switch/step-switch.js" defer></script>
-<script src="components/popover/popover.js" defer></script>
-<script src="components/tabs/tabs.js" defer></script>
-<script src="components/list/list.js" defer></script>
-<script src="components/button/button.js" defer></script>
-<script src="components/number-input/number-input.js" defer></script>
-<script src="components/slider/slider.js" defer></script>
-<script src="components/animated-number/animated-number.js" defer></script>
-<script src="components/file-upload/file-upload.js" defer></script>
-<script src="components/multi-dropdown/multi-dropdown.js" defer></script>
-<script src="components/aside-menu/aside-menu.js" defer></script>
-<script src="components/dialog/dialog.js" defer></script>
 <script src="components/card/card.js" defer></script>
-<script src="components/color-picker/color-picker.js" defer></script>
-<script src="components/text-input/text-input.js" defer></script>
-<script src="components/textarea/textarea.js" defer></script>
-<script src="components/checkbox/checkbox.js" defer></script>
-<script src="components/radio-group/radio-group.js" defer></script>
+<script src="components/button/button.js" defer></script>
+<script src="components/step-switch/step-switch.js" defer></script>
+<script src="components/switch-group/switch-group.js" defer></script>
+<script src="components/slider/slider.js" defer></script>
+<script src="components/number-input/number-input.js" defer></script>
+<script src="components/animated-number/animated-number.js" defer></script>
 <style>
-  .page-nav { margin-bottom: 0.5rem; }
-  article.card { scroll-margin-top: 1rem; }
-  dl { margin: 0; font-size: 14px; }
-  dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
-  dd { margin: 0 0 4px; }
+  /* ---- this page only ---- */
+  main { max-width: 1140px; padding: 4.5rem 1.25rem 5rem; }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
+    gap: 4.5rem;
+    align-items: center;
+  }
+  @media (max-width: 980px) {
+    .hero { grid-template-columns: minmax(0, 1fr); gap: 3.5rem; }
+    main { padding-top: 3rem; }
+  }
+
+  .eyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero h1 {
+    margin: 0 0 1rem;
+    font-size: clamp(2rem, 4.2vw, 3.1rem);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+  .lede {
+    margin: 0 0 2rem;
+    max-width: 46ch;
+    font-size: 1.0625rem;
+    color: var(--muted);
+  }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.625rem; }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 2.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .facts b { color: var(--ink); font-weight: 600; }
+
+  /* ---- the portal: a card you can walk through ---- */
+  .portal { position: relative; display: grid; place-items: center; }
+  .portal::before {
+    content: "";
+    position: absolute;
+    inset: -18% -12%;
+    z-index: -1;
+    background: radial-gradient(52% 52% at 62% 44%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 72%);
+    filter: blur(18px);
+  }
+  .portal-link {
+    display: block;
+    border-radius: 18px;
+    color: inherit;
+    text-decoration: none;
+  }
+  .portal-link:focus-visible {
+    outline: 2px solid var(--kakao-color-focus, #2563eb);
+    outline-offset: 8px;
+  }
+  /* The tilt is the whole point of the card: it is a doorway, not a screenshot.
+     It straightens when the card is hovered or focused. */
+  .tilt {
+    display: block;
+    transform: perspective(1500px) rotateX(7deg) rotateY(-16deg) rotate(-1.5deg);
+    transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .portal-link:hover .tilt,
+  .portal-link:focus-visible .tilt {
+    transform: perspective(1500px) rotateX(1deg) rotateY(-2deg) rotate(0deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tilt { transition: none; }
+  }
+  @media (max-width: 980px) {
+    .tilt { transform: none; }
+  }
+
+  /* ---- the imaginary form inside it ---- */
+  .portal kakao-card { --kakao-card-padding: 1.125rem; --kakao-card-gap: 0.7rem; }
+  .mini-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .mini-head b { font-size: 0.9375rem; font-weight: 600; color: var(--ink); }
+  /* Stacked fields, the way the kitchen sink lays them out. */
+  .mini-field { display: grid; gap: 0.35rem; }
+  .mini-field > span { font-size: 0.75rem; color: var(--muted); }
+  .mini-field > kakao-step-switch,
+  .mini-field > kakao-number-input { width: 100%; }
+  .mini-price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    margin-top: 0.15rem;
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .mini-price kakao-animated-number { --kakao-animated-number-font-size: 1.375rem; --kakao-animated-number-font-weight: 600; }
+  .mini-price small { font-size: 0.8125rem; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+  .portal-open {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
 </style>
 </head>
 <body>
@@ -48,845 +151,61 @@
   <a class="page-icon-link" href="settings.html" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></a>
 </div>
 <main>
-  <kakao-aside-menu id="siteNav" class="page-nav" label="Components" persistent="1440px">
-    <nav aria-label="Pages">
-      <a href="kitchen-sink.html">Kitchen sink</a>
-      <a href="styleguide.html">Style guide</a>
-      <a href="tokens.html">Main variables</a>
-      <a href="settings.html">Settings</a>
-    </nav>
-  </kakao-aside-menu>
+  <div class="hero">
+    <section>
+      <p class="eyebrow">Kakao Components</p>
+      <h1>The parts of the form people actually touch.</h1>
+      <p class="lede">Twenty web components for settings screens, dialogs and menus. Plain JavaScript, no framework, no dependencies — and a theme system whose contrast is checked on every commit.</p>
+      <div class="actions">
+        <kakao-button label="Browse the components" icon="fas fa-arrow-right" icon-position="right" href="components.html"></kakao-button>
+        <kakao-button label="Kitchen sink" variant="ghost" href="kitchen-sink.html"></kakao-button>
+        <kakao-button label="Style guide" variant="ghost" href="styleguide.html"></kakao-button>
+      </div>
+      <ul class="facts">
+        <li><b>20</b> components</li>
+        <li><b>7</b> themes</li>
+        <li><b>0</b> dependencies</li>
+      </ul>
+    </section>
 
-  <header>
-    <h1>Components</h1>
-    <p>Every component, live. Open a demo for the full API playground and an event log. Or see them all together in the <a href="kitchen-sink.html">kitchen sink</a> form. The <a href="styleguide.html">style guide</a> describes the visual rules they follow. Tune the look on each component’s construction page, and the shared <a href="tokens.html">main variables</a> on theirs. <a href="#missing">What’s not built yet</a>.</p>
-  </header>
-
-  <div class="overview">
-
-    <!-- ============================== Button ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Button</h2>
-        <code>&lt;kakao-button&gt;</code>
-        <a href="components/button/construction.html">Construction</a>
-        <a href="components/button/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Button with variants, sizes, icons, toggle state, a dropdown (menu) form and an async loading → success animation.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Variants</h3>
-          <div class="row">
-            <kakao-button label="Primary"></kakao-button>
-            <kakao-button label="Secondary" variant="secondary"></kakao-button>
-            <kakao-button label="Ghost" variant="ghost"></kakao-button>
-            <kakao-button label="Danger" variant="danger"></kakao-button>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Sizes</h3>
-          <div class="row">
-            <kakao-button label="Small" size="sm"></kakao-button>
-            <kakao-button label="Medium" size="md"></kakao-button>
-            <kakao-button label="Large" size="lg"></kakao-button>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Dropdown · <code>list-data</code></h3>
-          <div class="row">
-            <kakao-button label="Export" icon="fas fa-download"
-              list-data='[{"value":"csv","label":"CSV"},{"value":"xlsx","label":"Excel"},{"value":"pdf","label":"PDF"}]'></kakao-button>
-            <kakao-button label="Sort by" variant="secondary" show-selected selected="newest"
-              list-data='[{"value":"newest","label":"Newest first"},{"value":"oldest","label":"Oldest first"},{"value":"name","label":"Name"}]'></kakao-button>
-            <kakao-button icon="fas fa-ellipsis" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
-              list-data='[{"value":"edit","label":"Edit"},{"value":"duplicate","label":"Duplicate"},{"value":"delete","label":"Delete"}]'></kakao-button>
-            <kakao-button icon="fas fa-ellipsis-vertical" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
-              list-data='[{"value":"rename","label":"Rename"},{"value":"move","label":"Move"},{"value":"archive","label":"Archive"}]'></kakao-button>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Icons</h3>
-          <div class="row">
-            <kakao-button label="Save" icon="fas fa-floppy-disk" variant="secondary"></kakao-button>
-            <kakao-button label="Next" icon="fas fa-arrow-right" icon-position="right" variant="secondary"></kakao-button>
-            <kakao-button icon="fas fa-gear" aria-label="Settings" variant="secondary"></kakao-button>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Async run()</h3>
-          <div class="row">
-            <kakao-button id="ov-run-ok" label="Save" icon="fas fa-cloud-arrow-up"></kakao-button>
-            <kakao-button id="ov-run-fail" label="Fails" variant="danger"></kakao-button>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Toggle segment</h3>
-          <div class="kakao-button-segment" id="ov-segment">
-            <kakao-button icon="fas fa-align-left" aria-label="Left" toggle pressed></kakao-button>
-            <kakao-button icon="fas fa-align-center" aria-label="Center" toggle></kakao-button>
-            <kakao-button icon="fas fa-align-right" aria-label="Right" toggle></kakao-button>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <div class="row">
-            <kakao-button label="Primary" disabled></kakao-button>
-            <kakao-button label="Secondary" variant="secondary" disabled></kakao-button>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Dialog ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Dialog</h2>
-        <code>&lt;kakao-dialog&gt;</code>
-        <a href="components/dialog/construction.html">Construction</a>
-        <a href="components/dialog/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Modal that covers the page and keeps focus inside. A plain fixed overlay rather than <code>&lt;dialog&gt;</code> + <code>showModal()</code>, so it behaves the same on phones, tablets and desktops.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Default · header, body, footer</h3>
-          <div class="row"><kakao-button id="ov-dialog-open" label="Open dialog" size="sm"></kakao-button></div>
-        </div>
-        <div class="example">
-          <h3>Confirm · <code>size="sm"</code> + <code>data-close</code></h3>
-          <div class="row"><kakao-button id="ov-dialog-danger" label="Delete project" variant="danger" size="sm"></kakao-button></div>
-        </div>
-      </div>
-      <kakao-dialog id="ov-dialog" label="Example dialog">
-        <h2 slot="header">Example dialog</h2>
-        <p>A modal dialog. Escape, a click on the covered page or a button with <code>data-close</code> ends it.</p>
-        <div slot="footer">
-          <kakao-button label="Cancel" variant="ghost" data-close="cancel"></kakao-button>
-          <kakao-button label="Save" data-close="save"></kakao-button>
-        </div>
-      </kakao-dialog>
-      <kakao-dialog id="ov-dialog-danger-dialog" size="sm" label="Delete project">
-        <h2 slot="header">Delete project?</h2>
-        <p>This cannot be undone.</p>
-        <div slot="footer">
-          <kakao-button label="Keep it" variant="ghost" data-close="cancel"></kakao-button>
-          <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
-        </div>
-      </kakao-dialog>
-    </article>
-
-    <!-- ============================== Aside menu ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Aside menu</h2>
-        <code>&lt;kakao-aside-menu&gt;</code>
-        <a href="components/aside-menu/construction.html">Construction</a>
-        <a href="components/aside-menu/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">A hidden slide-in side menu that pushes the whole page aside. Built-in hamburger button, close control, optional nav list, and focus trapping.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Default · with nav list</h3>
-          <kakao-aside-menu label="Site navigation"
-            list-data='[{"value":"home","label":"Home"},{"value":"browse","label":"Browse"},{"value":"account","label":"Account"}]'
-            selected="home"></kakao-aside-menu>
-        </div>
-        <div class="example">
-          <h3>Right · slotted content</h3>
-          <kakao-aside-menu position="right" label="Filters">
-            <nav aria-label="Filters">
-              <a href="#" onclick="return false">Genre</a>
-              <a href="#" onclick="return false">Year</a>
-              <a href="#" onclick="return false">Rating</a>
-            </nav>
-          </kakao-aside-menu>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Switch group ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Switch group</h2>
-        <code>&lt;kakao-switch-group&gt;</code>
-        <a href="components/switch-group/construction.html">Construction</a>
-        <a href="components/switch-group/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">On/off switches. Drag the thumb past an end and it squashes into the wall.</p>
-      <div class="examples">
-        <div class="example full">
-          <h3>In a row · default <code>orientation="horizontal"</code> (stacks itself when narrower than 220px)</h3>
-          <kakao-switch-group label="Preferences"
-            list-data='[{"name":"dark","label":"Dark mode"},{"name":"sound","label":"Sound","checked":true},{"name":"haptics","label":"Haptics","checked":true},{"name":"wifi","label":"Wi-Fi"}]'></kakao-switch-group>
-        </div>
-        <div class="example">
-          <h3>Stacked · <code>orientation="vertical"</code></h3>
-          <kakao-switch-group label="Notifications" orientation="vertical"
-            list-data='[{"name":"email","label":"Email","checked":true},{"name":"sms","label":"SMS"},{"name":"push","label":"Push","checked":true},{"name":"digest","label":"Digest","disabled":true}]'></kakao-switch-group>
-        </div>
-        <div class="example">
-          <h3>Async · <code>async</code></h3>
-          <kakao-switch-group id="ov-async" label="Synced settings" orientation="vertical" async
-            list-data='[{"name":"ok","label":"Saves"},{"name":"fail","label":"Server refuses"}]'></kakao-switch-group>
-        </div>
-        <div class="example">
-          <h3>Themed · <code>color-labels</code></h3>
-          <kakao-switch-group label="Privacy" orientation="vertical" color-labels
-            style="--kakao-switch-track-bg-on:#16a34a;--kakao-switch-thumb-bg:#fefce8;--kakao-switch-anim-duration:450ms;--kakao-switch-anim-easing:cubic-bezier(.34,1.56,.64,1)"
-            list-data='[{"name":"analytics","label":"Analytics"},{"name":"location","label":"Location","checked":true}]'></kakao-switch-group>
-        </div>
-        <div class="example">
-          <h3>Disabled group</h3>
-          <kakao-switch-group label="Locked" orientation="vertical" disabled
-            list-data='[{"name":"a","label":"Locked on","checked":true},{"name":"b","label":"Locked off"}]'></kakao-switch-group>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Step switch ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Step switch</h2>
-        <code>&lt;kakao-step-switch&gt;</code>
-        <a href="components/step-switch/construction.html">Construction</a>
-        <a href="components/step-switch/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">One thumb, several snapping positions. Each step is a radio button for assistive technology.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Three steps</h3>
-          <kakao-step-switch label="Quality" value="med"
-            list-data='[{"value":"low","label":"Low"},{"value":"med","label":"Medium"},{"value":"high","label":"High"}]'></kakao-step-switch>
-        </div>
-        <div class="example">
-          <h3>Five steps · color-shift</h3>
-          <kakao-step-switch label="Playback speed" value="3" color-shift
-            style="--kakao-step-switch-track-bg-off:#fbbf24;--kakao-step-switch-track-bg-on:#dc2626"
-            list-data='[{"value":"1","label":"0.5×"},{"value":"2","label":"0.75×"},{"value":"3","label":"1×"},{"value":"4","label":"1.5×"},{"value":"5","label":"2×"}]'></kakao-step-switch>
-        </div>
-        <div class="example">
-          <h3>Disabled step</h3>
-          <kakao-step-switch label="Day of the week" value="d"
-            list-data='[{"value":"a","label":"Mon"},{"value":"b","label":"Tue"},{"value":"c","label":"Wed","disabled":true},{"value":"d","label":"Thu"},{"value":"e","label":"Fri"},{"value":"f","label":"Sat"},{"value":"g","label":"Sun"}]'></kakao-step-switch>
-        </div>
-        <div class="example">
-          <h3>Large · no ticks</h3>
-          <kakao-step-switch label="Size" value="m" show-ticks="false"
-            style="--kakao-step-switch-track-height:2.25rem;--kakao-step-switch-thumb-size:1.8rem;--kakao-step-switch-track-bg:#0f766e"
-            list-data='[{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}]'></kakao-step-switch>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Slider ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Slider</h2>
-        <code>&lt;kakao-slider&gt;</code>
-        <a href="components/slider/construction.html">Construction</a>
-        <a href="components/slider/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Value slider with animated friction points per step, a linked number field and a unit badge.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Pixels · step 10</h3>
-          <kakao-slider min="0" max="200" step="10" value="60" unit="px" label="Width"></kakao-slider>
-        </div>
-        <div class="example">
-          <h3>Percent · step 1</h3>
-          <kakao-slider min="0" max="100" step="1" value="35" unit="%" label="Opacity"></kakao-slider>
-        </div>
-        <div class="example">
-          <h3>Native number field</h3>
-          <kakao-slider min="0" max="10" step="1" value="4" label="Rating" scroll-input="false"></kakao-slider>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <kakao-slider min="0" max="100" step="5" value="50" unit="€" label="Budget" disabled></kakao-slider>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Number input ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Number input</h2>
-        <code>&lt;kakao-number-input&gt;</code>
-        <a href="components/number-input/construction.html">Construction</a>
-        <a href="components/number-input/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Wraps a native number input with custom stepper arrows; scroll the wheel over the arrows to step. On touch screens the arrows become 44px − / + buttons, and <code>plus</code> / <code>minus</code> / <code>grouped</code> / <code>group-position</code> decide where they sit.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Default</h3>
-          <kakao-number-input><input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity" /></kakao-number-input>
-        </div>
-        <div class="example">
-          <h3>Small · step 0.5</h3>
-          <kakao-number-input size="sm"><input type="number" min="0" max="10" step="0.5" value="2.5" aria-label="Hours" /></kakao-number-input>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <kakao-number-input><input type="number" value="42" disabled aria-label="Locked" /></kakao-number-input>
-        </div>
-        <div class="example">
-          <h3>Touch pair · <code>group-position</code> / <code>plus</code> / <code>minus</code></h3>
-          <kakao-number-input touch-steppers group-position="left"><input type="number" min="0" max="100" value="10" aria-label="Quantity, buttons on the left" /></kakao-number-input>
-        </div>
-        <div class="example">
-          <h3>Touch split · <code>grouped="false"</code></h3>
-          <kakao-number-input touch-steppers grouped="false" plus="left" minus="right"><input type="number" min="0" max="100" value="10" aria-label="Quantity, split buttons" /></kakao-number-input>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Multi dropdown ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Multi dropdown</h2>
-        <code>&lt;kakao-multi-dropdown&gt;</code>
-        <a href="components/multi-dropdown/construction.html">Construction</a>
-        <a href="components/multi-dropdown/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Separate dropdowns joined in an input group holding one value, e.g. Day · Month · Year. Segments can be “Unknown”: <code>00.00.1990</code> means sometime in 1990.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Date · unknown day &amp; month</h3>
-          <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
-        </div>
-        <div class="example">
-          <h3>Date · every part may be unknown</h3>
-          <kakao-multi-dropdown type="date" label="First visit" allow-unknown></kakao-multi-dropdown>
-        </div>
-        <div class="example">
-          <h3>Custom segments</h3>
-          <kakao-multi-dropdown label="Variant" separator=" / " allow-unknown="color"
-            list-data='[{"name":"size","label":"Size","options":["XS","S","M","L","XL"]},{"name":"color","label":"Colour","options":["black","white","sand"]}]'></kakao-multi-dropdown>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== File upload ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>File upload</h2>
-        <code>&lt;kakao-file-upload&gt;</code>
-        <a href="components/file-upload/construction.html">Construction</a>
-        <a href="components/file-upload/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Drop area with a dotted background that follows the pointer; picks and drops add to a list with thumbnails and remove buttons.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Any files · several at once</h3>
-          <kakao-file-upload label="Attachments"></kakao-file-upload>
-        </div>
-        <div class="example">
-          <h3>Images only · max 2 MB · max 4</h3>
-          <kakao-file-upload label="Photos" accept="image/*" max-size="2MB" max-files="4"></kakao-file-upload>
-        </div>
-        <div class="example full">
-          <h3>List beside the drop area · <code>horizontal</code></h3>
-          <kakao-file-upload label="Project files" horizontal></kakao-file-upload>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Animated number ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Animated number</h2>
-        <code>&lt;kakao-animated-number&gt;</code>
-        <a href="components/animated-number/construction.html">Construction</a>
-        <a href="components/animated-number/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Odometer-style rolling digits whenever the value changes, formatted with <code>Intl.NumberFormat</code>.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Integer</h3>
-          <kakao-animated-number class="ov-rnd" value="1280" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
-        </div>
-        <div class="example">
-          <h3>2 decimals · de-DE</h3>
-          <kakao-animated-number class="ov-rnd" value="1234.5" decimals="2" locale="de-DE" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
-        </div>
-        <div class="example">
-          <h3>Sign always · slow</h3>
-          <kakao-animated-number class="ov-rnd" value="12" sign-display="always" duration="1500" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
-        </div>
-        <div class="example">
-          <h3>Try it</h3>
-          <kakao-button id="ov-rnd-btn" label="Randomize" variant="secondary" size="sm"></kakao-button>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Popover ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Popover</h2>
-        <code>&lt;kakao-popover&gt;</code>
-        <a href="components/popover/construction.html">Construction</a>
-        <a href="components/popover/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Popover/tooltip anchored to any element via <code>for</code>. Four placements with auto-flip.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Click · slotted content</h3>
-          <kakao-button id="ov-pop-click" label="Account" variant="secondary" size="sm"></kakao-button>
-          <kakao-popover for="ov-pop-click" trigger="click" placement="bottom">
-            <span slot="header">Account</span>
-            <div slot="content">
-              <dl><dt>Plan</dt><dd>Pro</dd><dt>Renews</dt><dd>Aug 4, 2026</dd></dl>
+    <section class="portal">
+      <!-- The whole card is the link: the form inside is a picture, so it is
+           inert and kept out of the accessibility tree. -->
+      <a class="portal-link" href="components.html" aria-label="Browse the components">
+        <span class="tilt" aria-hidden="true" inert>
+          <kakao-card>
+            <div slot="header" class="mini-head">
+              <b>Nightowl</b>
+              <span>Plan settings</span>
             </div>
-          </kakao-popover>
-        </div>
-        <div class="example">
-          <h3>Hover · top</h3>
-          <kakao-button id="ov-pop-hover" label="Hover me" variant="secondary" size="sm"></kakao-button>
-          <kakao-popover for="ov-pop-hover" trigger="hover" placement="top">
-            <div slot="content">This action can’t be undone.</div>
-          </kakao-popover>
-        </div>
-        <div class="example">
-          <h3>list-data · right</h3>
-          <kakao-button id="ov-pop-list" label="Server status" variant="secondary" size="sm"></kakao-button>
-          <kakao-popover for="ov-pop-list" trigger="click" placement="right"
-            list-data='[{"label":"Region","value":"us-east-1"},{"label":"Status","value":"Operational"},{"label":"Latency","value":"42ms"}]'>
-            <span slot="header">Server status</span>
-          </kakao-popover>
-        </div>
-        <div class="example">
-          <h3>Themed (dark)</h3>
-          <kakao-button id="ov-pop-dark" label="Dark popover" variant="secondary" size="sm"></kakao-button>
-          <kakao-popover for="ov-pop-dark" trigger="click" placement="bottom"
-            style="--kakao-popover-bg:#111;--kakao-popover-text-color:#fff;--kakao-popover-border-color:#333;--kakao-popover-header-bg:#1c1c1c;--kakao-popover-label-color:#999;--kakao-popover-focus-ring-color:#fff">
-            <span slot="header">Theming</span>
-            <div slot="content">Colours from <code>--kakao-popover-*</code>.</div>
-          </kakao-popover>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Tabs ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Tabs</h2>
-        <code>&lt;kakao-tabs&gt;</code> + <code>&lt;kakao-tab&gt;</code>
-        <a href="components/tabs/construction.html">Construction</a>
-        <a href="components/tabs/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Segmented tabs with a bouncing thumb; each tab's <code>controls</code> shows its panel. Disabled tabs shake.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Four tabs · one disabled</h3>
-          <kakao-tabs role="tablist">
-            <kakao-tab controls="ov-tab-a1" selected>Tech</kakao-tab>
-            <kakao-tab controls="ov-tab-a2">Photos</kakao-tab>
-            <kakao-tab controls="ov-tab-a3" disabled>Travel</kakao-tab>
-            <kakao-tab controls="ov-tab-a4">Crafts</kakao-tab>
-          </kakao-tabs>
-          <p id="ov-tab-a1" role="tabpanel">Latest in Tech</p>
-          <p id="ov-tab-a2" role="tabpanel" hidden>Your Photos</p>
-          <p id="ov-tab-a3" role="tabpanel" hidden>Travel</p>
-          <p id="ov-tab-a4" role="tabpanel" hidden>Crafts &amp; DIY</p>
-        </div>
-        <div class="example">
-          <h3>Two tabs</h3>
-          <kakao-tabs role="tablist">
-            <kakao-tab controls="ov-tab-b1" selected>Monthly</kakao-tab>
-            <kakao-tab controls="ov-tab-b2">Yearly</kakao-tab>
-          </kakao-tabs>
-          <p id="ov-tab-b1" role="tabpanel">€9 / month</p>
-          <p id="ov-tab-b2" role="tabpanel" hidden>€90 / year</p>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== List ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>List</h2>
-        <code>&lt;kakao-list&gt;</code>
-        <a href="components/list/construction.html">Construction</a>
-        <a href="components/list/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Scroll list whose rows tilt in perspective at the edges and bounce at the ends.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Grouped</h3>
-          <kakao-list width="220" height="260"
-            list-data='[{"group":"Fruit","names":["Apple","Banana","Cherry","Date","Fig"]},{"group":"Herbs","names":["Basil","Dill","Mint","Thyme"]}]'></kakao-list>
-        </div>
-        <div class="example">
-          <h3>No groups · smaller tilt</h3>
-          <kakao-list width="220" height="260" groups="false" item-height="36" max-tilt="35"
-            list-data='[{"group":"","names":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]}]'></kakao-list>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <kakao-list width="220" height="260" disabled
-            list-data='[{"group":"Locked","names":["One","Two","Three","Four","Five"]}]'></kakao-list>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Card ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Card</h2>
-        <code>&lt;kakao-card&gt;</code>
-        <a href="components/card/construction.html">Construction</a>
-        <a href="components/card/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Content card with header, body and footer. When the footer starts with a button, a faint glow in the button's colour rises from behind it. Without a footer button it can take the glow colour from a theme change instead, through the trigger API.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Primary button first</h3>
-          <kakao-card>
-            <strong slot="header">Upgrade to Pro</strong>
-            <span style="color:var(--muted)">Unlimited projects and priority support.</span>
-            <div slot="footer"><kakao-button label="Upgrade" size="sm"></kakao-button><kakao-button label="Later" variant="ghost" size="sm"></kakao-button></div>
+            <div class="mini-field">
+              <span>Streaming quality</span>
+              <kakao-step-switch label="Streaming quality" value="hd"
+                list-data='[{"value":"sd","label":"SD"},{"value":"hd","label":"HD"},{"value":"uhd","label":"Ultra"}]'></kakao-step-switch>
+            </div>
+            <div class="mini-field">
+              <span>Screens at once</span>
+              <kakao-number-input size="sm">
+                <input type="number" min="1" max="6" step="1" value="2" aria-label="Screens" />
+              </kakao-number-input>
+            </div>
+            <kakao-switch-group label="Downloads" color-labels
+              list-data='[{"name":"offline","label":"Save for offline","checked":true}]'></kakao-switch-group>
+            <div class="mini-price">
+              <span>€</span>
+              <kakao-animated-number value="13.49" decimals="2"></kakao-animated-number>
+              <small>/ month</small>
+            </div>
+            <div slot="footer">
+              <kakao-button label="Save changes" size="sm"></kakao-button>
+              <kakao-button label="Later" variant="ghost" size="sm"></kakao-button>
+            </div>
           </kakao-card>
-        </div>
-        <div class="example">
-          <h3>Danger button first</h3>
-          <kakao-card>
-            <strong slot="header">Delete project</strong>
-            <span style="color:var(--muted)">This cannot be undone.</span>
-            <div slot="footer"><kakao-button label="Delete" variant="danger" size="sm"></kakao-button><kakao-button label="Cancel" variant="ghost" size="sm"></kakao-button></div>
-          </kakao-card>
-        </div>
-        <div class="example">
-          <h3>Glow from the theme trigger</h3>
-          <kakao-card>
-            <strong slot="header">No footer button</strong>
-            <span style="color:var(--muted)">Switch the page theme: the card picks up the new theme's primary colour.</span>
-          </kakao-card>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Text input ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Text input</h2>
-        <code>&lt;kakao-text-input&gt;</code>
-        <a href="components/text-input/construction.html">Construction</a>
-        <a href="components/text-input/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Single-line field with label, hint, error, optional icon and a clear button, in three sizes. Form-associated: <code>name</code>, <code>value</code> and <code>required</code> go with the form.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>With label and hint</h3>
-          <kakao-text-input label="Email" type="email" name="email" placeholder="you@example.com" hint="We only use it for receipts."></kakao-text-input>
-        </div>
-        <div class="example">
-          <h3>Icon · <code>clearable</code></h3>
-          <kakao-text-input type="search" label="Search" icon="fas fa-magnifying-glass" clearable value="kakao"></kakao-text-input>
-        </div>
-        <div class="example">
-          <h3>Error</h3>
-          <kakao-text-input label="Workspace" value="acme" error="That name is already taken."></kakao-text-input>
-        </div>
-        <div class="example">
-          <h3>Sizes</h3>
-          <div style="display:grid;gap:.5rem">
-            <kakao-text-input size="sm" value="Small"></kakao-text-input>
-            <kakao-text-input value="Medium"></kakao-text-input>
-            <kakao-text-input size="lg" value="Large"></kakao-text-input>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Textarea ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Textarea</h2>
-        <code>&lt;kakao-textarea&gt;</code>
-        <a href="components/textarea/construction.html">Construction</a>
-        <a href="components/textarea/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Multi-line field with label, hint, error, a character counter and optional auto-growing. Form-associated.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>With label</h3>
-          <kakao-textarea label="Message" rows="3" placeholder="Write a message…"></kakao-textarea>
-        </div>
-        <div class="example">
-          <h3>Counter · <code>maxlength</code> + <code>counter</code></h3>
-          <kakao-textarea label="Bio" maxlength="140" counter value="Design systems, mostly."></kakao-textarea>
-        </div>
-        <div class="example">
-          <h3>Auto-growing · <code>autosize</code></h3>
-          <kakao-textarea label="Notes" autosize rows="2" hint="Grows as you type."></kakao-textarea>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Checkbox ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Checkbox</h2>
-        <code>&lt;kakao-checkbox&gt;</code>
-        <a href="components/checkbox/construction.html">Construction</a>
-        <a href="components/checkbox/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Checkbox with label, hint, indeterminate state and three sizes. Form-associated: it submits its value while checked.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Unchecked · checked · indeterminate</h3>
-          <div style="display:grid;gap:.5rem">
-            <kakao-checkbox label="Send me the newsletter"></kakao-checkbox>
-            <kakao-checkbox checked label="Product updates" hint="About once a month."></kakao-checkbox>
-            <kakao-checkbox indeterminate label="Select all"></kakao-checkbox>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Sizes</h3>
-          <div style="display:grid;gap:.5rem">
-            <kakao-checkbox size="sm" checked label="Small"></kakao-checkbox>
-            <kakao-checkbox checked label="Medium"></kakao-checkbox>
-            <kakao-checkbox size="lg" checked label="Large"></kakao-checkbox>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Disabled · error</h3>
-          <div style="display:grid;gap:.5rem">
-            <kakao-checkbox disabled label="Disabled"></kakao-checkbox>
-            <kakao-checkbox error="You have to accept the terms." label="I accept the terms"></kakao-checkbox>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Radio group ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Radio group</h2>
-        <code>&lt;kakao-radio-group&gt;</code>
-        <a href="components/radio-group/construction.html">Construction</a>
-        <a href="components/radio-group/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Radio buttons from <code>list-data</code>: label, hint, error, vertical or horizontal. Form-associated: the picked value goes with the form under <code>name</code>.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Vertical</h3>
-          <kakao-radio-group label="Plan" name="plan" value="team"
-            list-data='[{"value":"solo","label":"Solo","hint":"one seat"},{"value":"team","label":"Team","hint":"up to ten people"},{"value":"enterprise","label":"Enterprise","disabled":true}]'></kakao-radio-group>
-        </div>
-        <div class="example">
-          <h3>Horizontal · <code>orientation</code></h3>
-          <kakao-radio-group label="Billing" orientation="horizontal" value="yearly"
-            list-data='[{"value":"monthly","label":"Monthly"},{"value":"yearly","label":"Yearly"}]'></kakao-radio-group>
-        </div>
-        <div class="example">
-          <h3>Error · sizes</h3>
-          <div style="display:grid;gap:.9rem">
-            <kakao-radio-group label="Required" error="Please pick one." list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
-            <kakao-radio-group size="sm" label="Small" value="b" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Color picker ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Color picker</h2>
-        <code>&lt;kakao-color-picker&gt;</code>
-        <a href="components/color-picker/construction.html">Construction</a>
-        <a href="components/color-picker/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Colour field with a popover picker. Live while picking: the field and the form value follow every step; <code>change</code> comes when the pick is done. Optional alpha slider, preset swatches and an eyedropper.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Live while picking</h3>
-          <kakao-color-picker label="Brand colour" value="#4f46e5"></kakao-color-picker>
-        </div>
-        <div class="example">
-          <h3>Opacity · <code>alpha</code></h3>
-          <kakao-color-picker label="Overlay" alpha value="#0d948880"></kakao-color-picker>
-        </div>
-        <div class="example">
-          <h3>Presets · <code>list-data</code></h3>
-          <kakao-color-picker label="Tag colour" value="#7c3aed"
-            list-data='[{"value":"#4f46e5","label":"Indigo"},{"value":"#0d9488","label":"Teal"},{"value":"#7c3aed","label":"Violet"},{"value":"#db2777","label":"Pink"},{"value":"#d97706","label":"Amber"},{"value":"#dc2626","label":"Red"},{"value":"#18181b","label":"Ink"},{"value":"#ffffff","label":"White"}]'></kakao-color-picker>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Theme switch ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Theme switch</h2>
-        <code>&lt;kakao-theme-switch&gt;</code>
-        <a href="components/theme-switch/construction.html">Construction</a>
-        <a href="components/theme-switch/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Switches the page between colour themes with a ripple from the button. The switch toggles light and dark and reveals the new theme with a ripple; the menu and the step switch pick any of the seven themes (Light, Beige, Umber, Dark, AMOLED, Catppuccin, Forest) and both follow the pointer, cross-fading as the pointer runs down the menu or the thumb crosses a step. Remembers the choice; follows the system until then. Themes live in <code>shared/themes.css</code> and must pass <code>tools/check-themes.js</code>.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Icon only</h3>
-          <kakao-theme-switch></kakao-theme-switch>
-        </div>
-        <div class="example">
-          <h3>With label</h3>
-          <kakao-theme-switch show-label></kakao-theme-switch>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <kakao-theme-switch disabled></kakao-theme-switch>
-        </div>
-        <div class="example">
-          <h3>Dropdown · <code>kakao-button</code> menu</h3>
-          <kakao-button class="theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
-            list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
-        </div>
-        <div class="example full">
-          <h3>Step switch · <code>theme-picker</code></h3>
-          <kakao-step-switch theme-picker label="Theme" list-data='[
-            {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
-            {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
-            {"value":"forest","label":"Forest"}]'></kakao-step-switch>
-        </div>
-      </div>
-    </article>
-
+        </span>
+      </a>
+      <p class="portal-open" aria-hidden="true">Open the component list <i class="fas fa-arrow-right"></i></p>
+    </section>
   </div>
-
-  <!-- ============================== Not built yet ============================== -->
-  <h2 id="missing">Not built yet</h2>
-  <p>Placeholders: what a kakao component would replace, shown as the plain native element.</p>
-  <div class="grid">
-
-
-
-
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Select</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;select&gt;</code>, <code>&lt;select multiple&gt;</code></p>
-      <div class="native">
-        <select>
-          <option>Germany</option><option>Austria</option><option>Switzerland</option>
-          <optgroup label="More"><option>France</option><option>Italy</option></optgroup>
-        </select>
-        <select multiple size="3">
-          <option selected>Action</option><option>Comedy</option><option selected>Drama</option><option>Horror</option>
-        </select>
-      </div>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Combobox</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;input list&gt;</code> + <code>&lt;datalist&gt;</code></p>
-      <div class="native">
-        <input list="ov-datalist" placeholder="Pick or type a city" />
-        <datalist id="ov-datalist">
-          <option value="Berlin"></option><option value="Hamburg"></option><option value="München"></option><option value="Köln"></option>
-        </datalist>
-      </div>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Date &amp; time picker</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;input type="date|time|datetime-local"&gt;</code></p>
-      <div class="native">
-        <input type="date" value="2026-10-30" />
-        <input type="time" value="09:30" />
-        <input type="datetime-local" value="2026-10-30T09:30" />
-      </div>
-    </article>
-
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Progress</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;progress&gt;</code> (determinate and indeterminate)</p>
-      <div class="native">
-        <progress value="62" max="100">62%</progress>
-        <progress>Loading…</progress>
-      </div>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Meter</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;meter&gt;</code> (low / high / optimum ranges)</p>
-      <div class="native">
-        <meter min="0" max="100" low="30" high="80" optimum="20" value="18">18 GB</meter>
-        <meter min="0" max="100" low="30" high="80" optimum="20" value="55">55 GB</meter>
-        <meter min="0" max="100" low="30" high="80" optimum="20" value="92">92 GB</meter>
-      </div>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Accordion</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">Native: <code>&lt;details&gt;</code> + <code>&lt;summary&gt;</code> (shared <code>name</code> = exclusive)</p>
-      <div class="native">
-        <details name="ov-acc" open><summary>Can I cancel anytime?</summary><p>Yes, at the end of the billing period.</p></details>
-        <details name="ov-acc"><summary>Do you offer refunds?</summary><p>Within 14 days of purchase.</p></details>
-      </div>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Toast / alert</h2><span class="badge">Missing</span></div>
-      <p class="placeholder-native">No native element: a <code>role="status"</code> / <code>role="alert"</code> region. A non-component version exists as the yii2-base Toast widget.</p>
-      <div class="native">
-        <div role="status" style="padding: 0.5rem 0.75rem; border: 1px solid var(--line); border-radius: 8px">Settings saved.</div>
-        <div role="alert" style="padding: 0.5rem 0.75rem; border: 1px solid #fca5a5; border-radius: 8px">Payment failed.</div>
-      </div>
-    </article>
-
-  </div>
-
-  <footer>Structure: <code>components/&lt;name&gt;/&lt;name&gt;.js</code> + <code>demo.html</code>, shared page styles in <code>shared/</code>.</footer>
 </main>
-
-<script>
-  const wait = (ms, fail) => new Promise((resolve, reject) => setTimeout(fail ? reject : resolve, ms));
-  document.getElementById('ov-run-ok').addEventListener('kakao-button-action', (e) => {
-    e.currentTarget.run(() => wait(1200));
-  });
-  document.getElementById('ov-run-fail').addEventListener('kakao-button-action', (e) => {
-    e.currentTarget.run(() => wait(1200, true)).catch(() => {});
-  });
-
-  document.getElementById('ov-rnd-btn').addEventListener('click', () => {
-    document.querySelectorAll('.ov-rnd').forEach((el) => el.update(Math.round(Math.random() * 40000) / 10 - 1000));
-  });
-
-  // Async switch: "fail" always rejects after the fake request
-  document.getElementById('ov-async').addEventListener('switch-request', (e) => {
-    const fail = e.detail.name === 'fail';
-    e.detail.waitUntil(wait(1200, fail));
-  });
-
-  // The placeholder dialog opens with showModal()
-  document.getElementById('ov-dialog-open').addEventListener('kakao-button-action', () => document.getElementById('ov-dialog').open());
-  document.getElementById('ov-dialog-danger').addEventListener('kakao-button-action', () => document.getElementById('ov-dialog-danger-dialog').open());
-
-  // Segment buttons are exclusive: pressing one releases the others
-  const segment = document.getElementById('ov-segment');
-  segment.addEventListener('kakao-button-action', (e) => {
-    segment.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b === e.target));
-  });
-
-</script>
-<script>
-  // The sidebar lists every component on this page; the list comes from the
-  // DOM, so a new component card shows up without touching this script.
-  const siteNav = document.getElementById('siteNav');
-  const cards = [...document.querySelectorAll('article.card:not(.placeholder)')];
-  siteNav.setAttribute('list-data', JSON.stringify(
-    cards.map((card) => {
-      const label = card.querySelector('h2').textContent.trim();
-      card.id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      return { value: card.id, label };
-    }).concat([{ value: 'missing', label: 'Not built yet' }])
-  ));
-  siteNav.addEventListener('aside-select', (e) => {
-    document.getElementById(e.detail.value).scrollIntoView({ behavior: 'smooth', block: 'start' });
-    siteNav.close(); // no-op while the sidebar is persistent
-  });
-</script>
 </body>
 </html>
