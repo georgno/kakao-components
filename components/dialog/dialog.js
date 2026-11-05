@@ -38,6 +38,11 @@
  *   size          "sm" | "md" (default) | "lg": the panel's max width.
  *   no-dismiss    Escape and a click on the covered page do nothing. Only a
  *                 button with data-close (or close()) ends the dialog.
+ *   contained     Render inside the nearest positioned ancestor instead of over
+ *                 the viewport, and drop the modal machinery: no page scroll
+ *                 lock, no focus move, no focus trap, no Escape. For previews
+ *                 and embedded shells that show a dialog as part of the page.
+ *                 Read when the dialog opens.
  *
  * ----------------------------------------------------------------------------
  * METHODS
@@ -156,6 +161,10 @@
         visibility: hidden;
         pointer-events: none;
         transition: visibility 0s linear var(--_duration);
+      }
+      :host([contained]) {
+        /* Scoped to a positioned ancestor: the page owns the size. */
+        position: absolute;
       }
       :host([open]) {
         visibility: visible;
@@ -337,25 +346,35 @@
       if (on === this._applied) return;
       this._applied = on;
 
+      // A contained dialog is part of the page, not on top of it: the visual
+      // state is all it owns, so the page stays scrollable and tabbable.
+      const modal = !this.hasAttribute('contained');
+      if (modal) this._panel.setAttribute('aria-modal', 'true');
+      else this._panel.removeAttribute('aria-modal'); // it is not on top of anything
+
       if (on) {
-        this._returnFocus = document.activeElement;
         this._returnValue = '';
-        lockScroll();
-        document.addEventListener('keydown', this._onKeydown);
-        // After the attribute lands, so the panel is visible and focusable.
-        requestAnimationFrame(() => {
-          if (this._applied) this._panel.focus({ preventScroll: true });
-        });
+        if (modal) {
+          this._returnFocus = document.activeElement;
+          lockScroll();
+          document.addEventListener('keydown', this._onKeydown);
+          // After the attribute lands, so the panel is visible and focusable.
+          requestAnimationFrame(() => {
+            if (this._applied) this._panel.focus({ preventScroll: true });
+          });
+        }
         this._dispatch('dialog-open', {});
         return;
       }
 
-      unlockScroll();
-      document.removeEventListener('keydown', this._onKeydown);
-      const target = this._returnFocus;
-      this._returnFocus = null;
-      if (target && target !== document.body && document.contains(target) && typeof target.focus === 'function') {
-        target.focus({ preventScroll: true });
+      if (modal) {
+        unlockScroll();
+        document.removeEventListener('keydown', this._onKeydown);
+        const target = this._returnFocus;
+        this._returnFocus = null;
+        if (target && target !== document.body && document.contains(target) && typeof target.focus === 'function') {
+          target.focus({ preventScroll: true });
+        }
       }
       this._dispatch('dialog-close', { returnValue: this._returnValue });
     }

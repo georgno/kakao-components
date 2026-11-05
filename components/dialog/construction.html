@@ -16,6 +16,18 @@
 <script src="../../shared/construction.js" defer></script>
 <style>
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
+  /* A dialog is fixed over the viewport. `contained` scopes it to the nearest
+     positioned ancestor instead, so each preview box holds one open dialog and
+     the construction page stays scrollable and tabbable. */
+  .dialog-stage {
+    position: relative;
+    height: 19rem;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--kakao-color-page);
+    /* the panel fits the stage instead of 85% of the window */
+    --kakao-dialog-max-height: 100%;
+  }
 </style>
 </head>
 <body>
@@ -23,10 +35,9 @@
 <main data-construction data-target="dialog" data-source="dialog.js" data-title="Dialog">
   <div class="construction-preview">
     <figure>
-      <figcaption>Header, body, footer — open it to tune the panel</figcaption>
-      <div class="row">
-        <kakao-button id="open-1" label="Open dialog" size="sm"></kakao-button>
-        <kakao-dialog id="d1" label="Example dialog">
+      <figcaption>Header, body, footer</figcaption>
+      <div class="dialog-stage">
+        <kakao-dialog open contained label="Example dialog">
           <h2 slot="header">Example dialog</h2>
           <p>The panel, the covered page and the sizing all follow the settings in <code>dialog.js</code>.</p>
           <div slot="footer">
@@ -37,10 +48,9 @@
       </div>
     </figure>
     <figure>
-      <figcaption>Danger · confirm pattern</figcaption>
-      <div class="row">
-        <kakao-button id="open-2" label="Delete" variant="danger" size="sm"></kakao-button>
-        <kakao-dialog id="d2" size="sm" label="Delete?">
+      <figcaption>Danger · confirm pattern · <code>size="sm"</code></figcaption>
+      <div class="dialog-stage">
+        <kakao-dialog open contained size="sm" label="Delete?">
           <h2 slot="header">Delete project?</h2>
           <p>This cannot be undone.</p>
           <div slot="footer">
@@ -51,12 +61,21 @@
       </div>
     </figure>
     <figure>
-      <figcaption>No header · label only</figcaption>
-      <div class="row">
-        <kakao-button id="open-3" label="Open bare" variant="secondary" size="sm"></kakao-button>
-        <kakao-dialog id="d3" label="No header here">
+      <figcaption>No header · <code>label</code> only</figcaption>
+      <div class="dialog-stage">
+        <kakao-dialog open contained label="No header here">
           <p>Without a header element the <code>label</code> attribute is the accessible name.</p>
           <div slot="footer"><kakao-button label="Got it" variant="ghost" data-close="ok"></kakao-button></div>
+        </kakao-dialog>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Large · <code>size="lg"</code></figcaption>
+      <div class="dialog-stage">
+        <kakao-dialog open contained size="lg" label="Large">
+          <h2 slot="header">Large panel</h2>
+          <p>42rem wide, or the width of the box it sits in, whichever is smaller.</p>
+          <div slot="footer"><kakao-button label="Close" variant="ghost" data-close="close"></kakao-button></div>
         </kakao-dialog>
       </div>
     </figure>
@@ -90,12 +109,5 @@
   ]
   </script>
 </main>
-<script>
-  ['1', '2', '3'].forEach((n) => {
-    document.getElementById(`open-${n}`).addEventListener('kakao-button-action', () => {
-      document.getElementById(`d${n}`).open();
-    });
-  });
-</script>
 </body>
 </html>
