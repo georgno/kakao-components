@@ -88,10 +88,12 @@
      form lying on the desk: the sheet tilts away at the top, with its own
      shadow underneath. Hovering the card lifts it a little. */
   .portal kakao-card { --kakao-card-padding: 0; --kakao-card-gap: 0; }
+  /* The ring has to sit on the card's own 14px, and 2px out like every other
+     component — not var(--kakao-radius), which is the 8px field radius. */
   .portal-link:focus-visible kakao-card {
     outline: 2px solid var(--kakao-color-focus, #2563eb);
-    outline-offset: 4px;
-    border-radius: var(--kakao-radius, 14px);
+    outline-offset: 2px;
+    border-radius: 14px;
   }
 
   .shot {
@@ -101,15 +103,19 @@
   }
   .sheet {
     display: grid;
-    gap: 0.95rem;
+    gap: 1rem;
     padding: 1.5rem;
     background: var(--kakao-color-raised, #fff);
     border: 1px solid var(--kakao-color-line, #e5e7eb);
     border-radius: 10px;
     transform: rotateX(30deg) rotateZ(-1.5deg);
     transform-origin: 50% 100%;
-    box-shadow: 0 34px 30px -20px rgb(0 0 0 / 0.32);
-    transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+    /* Cast in the text colour, so the sheet separates from the card on dark
+       surfaces too; black would vanish on dark and amoled. */
+    box-shadow:
+      0 2px 6px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent),
+      0 20px 32px -18px color-mix(in srgb, var(--kakao-color-text, #18181b) 22%, transparent);
+    transition: transform var(--kakao-motion-duration, 320ms) cubic-bezier(0.2, 0, 0, 1);
   }
   .portal-link:hover .sheet,
   .portal-link:focus-visible .sheet {
@@ -117,6 +123,17 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .sheet { transition: none; }
+  }
+  /* A full-width sheet on a phone is where foreshortening hurts most: gentler
+     tilt, then none at all. */
+  @media (max-width: 980px) {
+    .sheet { transform: rotateX(16deg); }
+    .portal-link:hover .sheet,
+    .portal-link:focus-visible .sheet { transform: rotateX(10deg); }
+  }
+  @media (max-width: 620px) {
+    .shot { padding: 1.5rem 1.25rem 1.75rem; perspective: none; }
+    .sheet, .portal-link:hover .sheet, .portal-link:focus-visible .sheet { transform: none; }
   }
   .mini-head {
     display: flex;
@@ -143,7 +160,7 @@
   }
   .mini-price kakao-animated-number { --kakao-animated-number-font-size: 1.375rem; --kakao-animated-number-font-weight: 600; }
   .mini-price small { font-size: 0.8125rem; font-weight: 400; color: var(--muted); letter-spacing: 0; }
-  .mini-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .mini-actions { padding: 0 2.75rem 1.75rem; }
   .portal-open {
     display: flex;
     align-items: center;
@@ -209,11 +226,11 @@
                 <kakao-animated-number value="13.49" decimals="2"></kakao-animated-number>
                 <small>/ month</small>
               </div>
-              <div class="mini-actions">
-                <kakao-button label="Save changes"></kakao-button>
-                <kakao-button label="Later" variant="ghost"></kakao-button>
-              </div>
             </div>
+          </div>
+          <div slot="footer" class="mini-actions" aria-hidden="true" inert>
+            <kakao-button label="Save changes"></kakao-button>
+            <kakao-button label="Later" variant="ghost"></kakao-button>
           </div>
         </kakao-card>
         <span class="portal-open">Open the component list <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
