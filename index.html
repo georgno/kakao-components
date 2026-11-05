@@ -104,8 +104,16 @@
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
   }
+  /* Tab into the wall and the fade lifts, so a focused control and its outline
+     are always visible; the frame's hard edge is the price of that. */
+  .window:focus-within {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
   /* Centred by hand: `place-items: center` falls back to start alignment once
-     the item is bigger than the box, which would overflow to one side only. */
+     the item is bigger than the box, which would overflow to one side only.
+     This centres the wall's box; the rows differ in height, so the middle row
+     lands near the middle rather than exactly on it. */
   .wall {
     position: absolute;
     top: 50%;
@@ -225,9 +233,9 @@
     </section>
 
     <section class="portal">
-      <!-- The whole card is the link: the form inside is a picture, so it is
-           inert and kept out of the accessibility tree. -->
-      <kakao-card>
+      <!-- The card is only the frame: transparent, borderless, no glow. The
+           cards inside are real controls and stay operable. -->
+      <kakao-card no-glow>
           <div class="window">
             <div class="wall">
               <!-- row 1 -->
@@ -300,40 +308,66 @@
   </div>
 </main>
 <script>
-  // The theme picker walks the page through four themes, so the wall shows what
-  // the system does without anyone clicking. It drives the page-level theme API,
-  // and the picker follows through the theme-change report. `storageKey: ''`
-  // keeps the walk out of localStorage: it is a demo, not a preference.
+  // The wall's theme picker walks Light, Umber, Dark and Forest so the page
+  // shows what the system does without anyone clicking. It is a demo, so it is
+  // careful: one pass and it stops, it holds still while the pointer or focus is
+  // in the portal or the tab is in the background, it never runs for someone who
+  // asked for reduced motion, and it never touches a theme the visitor chose.
   customElements.whenDefined('kakao-theme-switch').then(() => {
     const Theme = customElements.get('kakao-theme-switch');
     const picker = document.querySelector('.p-theme kakao-step-switch');
-    if (!picker) return;
+    const portal = document.querySelector('.portal');
+    if (!picker || !portal) return;
+
+    const stored = (() => {
+      try { return localStorage.getItem('kakao-theme'); } catch { return null; }
+    })();
+    if (stored) return; // they picked a theme: leave it alone
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const themes = JSON.parse(picker.getAttribute('list-data')).map((theme) => theme.value);
     const INTERVAL = 3600;
     let index = Math.max(0, themes.indexOf(Theme.current()));
     let timer = null;
+    let held = false;
 
+    const stop = () => {
+      clearInterval(timer);
+      timer = null;
+    };
     const step = () => {
-      index = (index + 1) % themes.length;
+      index += 1;
+      if (index >= themes.length) {
+        stop(); // one pass, then the visitor decides
+        return;
+      }
       Theme.setTheme(themes[index], { fade: true, storageKey: '', source: 'demo' });
     };
-    const start = () => {
-      clearInterval(timer);
+    const play = () => {
+      if (timer || held || index >= themes.length - 1) return;
       timer = setInterval(step, INTERVAL);
     };
 
-    // A real pick restarts the walk from where the visitor left it.
+    // Hover or focus anywhere in the portal holds the walk still.
+    const hold = () => { held = true; stop(); };
+    const release = () => { held = false; play(); };
+    portal.addEventListener('pointerenter', hold);
+    portal.addEventListener('pointerleave', release);
+    portal.addEventListener('focusin', hold);
+    portal.addEventListener('focusout', release);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
+
+    // A real pick ends the demo: the visitor is driving now.
     document.addEventListener('step-change', (event) => {
       const detail = event.detail || {};
       if (detail.source === 'api' || detail.source === 'attribute') return;
       const picked = themes.indexOf(detail.value);
       if (picked < 0) return;
       index = picked;
-      start();
+      stop();
     });
 
-    start();
+    play();
   });
 </script>
 </body>

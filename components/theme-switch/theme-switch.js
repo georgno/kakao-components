@@ -45,9 +45,14 @@
  *  theme                       Get / set the current theme by value (no ripple).
  *  themes                      The normalized theme list (read only).
  *  setTheme(value, options?)   options: { animate?: boolean, fade?: boolean,
- *                              x?, y? } — x / y (viewport px) is where the
- *                              ripple starts; fade: true cross-fades the colours
- *                              instead of revealing a snapshot (see FADE).
+ *                              x?, y?, storageKey?, source? } — x / y (viewport
+ *                              px) is where the ripple starts; fade: true
+ *                              cross-fades the colours instead of revealing a
+ *                              snapshot (see FADE). storageKey overrides where
+ *                              the choice is remembered, and "" remembers
+ *                              nothing — for a page that changes the theme for
+ *                              show, not as the visitor's preference. source is
+ *                              reported on theme-change (see EVENTS).
  *  next(options?)              Switch to the following theme.
  *
  *  Page-level, for other controls (e.g. a <kakao-button> menu of themes):
@@ -92,7 +97,8 @@
  * ----------------------------------------------------------------------------
  * EVENTS (bubble, composed)
  * ----------------------------------------------------------------------------
- *  theme-change   { theme, previous, scheme, source: "user" | "api" | "storage",
+ *  theme-change   { theme, previous, scheme,
+ *                   source: "user" | "api" | "storage" | "demo",
  *                   color }
  *                 after the theme on <html> changed: on the switch, or on
  *                 document for the page-level setTheme(). color is the new
