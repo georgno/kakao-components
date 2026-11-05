@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/number-input/number-input.css" />
+<link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
 <script src="shared/demo.js"></script>
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
@@ -26,6 +27,7 @@
 <script src="components/animated-number/animated-number.js" defer></script>
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
+<script src="components/aside-menu/aside-menu.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -82,7 +84,12 @@
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="index.html">← All components</a>
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
+      <kakao-aside-menu id="pageNav" label="Settings sections" persistent="1440px"
+        list-data='[{"value":"plan","label":"Plan"},{"value":"playback","label":"Playback"},{"value":"alerts","label":"Alerts"},{"value":"account","label":"Account"}]'
+        selected="plan"></kakao-aside-menu>
+      <a class="back" href="index.html">← All components</a>
+    </div>
     <h1>Kitchen sink</h1>
     <p>Every component inside one realistic form: the settings page of a made-up streaming subscription. The price updates live.</p>
   </header>
@@ -410,6 +417,12 @@
     // setData() on the switch groups applies in a microtask
     Promise.resolve().then(() => Promise.resolve()).then(updatePrice);
     logLine(log, 'reset');
+  });
+
+  // ---- aside-menu nav jumps to tabs ----
+  document.getElementById('pageNav').addEventListener('aside-select', (e) => {
+    document.querySelector('kakao-tabs').select('tab-' + e.detail.value);
+    e.target.close();
   });
 </script>
 </body>

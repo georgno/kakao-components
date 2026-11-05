@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/number-input/number-input.css" />
+<link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
 <script src="components/popover/popover.js" defer></script>
@@ -25,6 +26,7 @@
 <script src="components/animated-number/animated-number.js" defer></script>
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
+<script src="components/aside-menu/aside-menu.js" defer></script>
 <script src="components/card/card.js" defer></script>
 <script src="components/color-picker/color-picker.js" defer></script>
 <script src="components/text-input/text-input.js" defer></script>
@@ -32,6 +34,8 @@
 <script src="components/checkbox/checkbox.js" defer></script>
 <script src="components/radio-group/radio-group.js" defer></script>
 <style>
+  .page-nav { margin-bottom: 0.5rem; }
+  article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
   dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
   dd { margin: 0 0 4px; }
@@ -43,6 +47,15 @@
   <a class="page-icon-link" href="settings.html" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></a>
 </div>
 <main>
+  <kakao-aside-menu id="siteNav" class="page-nav" label="Components" persistent="1440px">
+    <nav aria-label="Pages">
+      <a href="kitchen-sink.html">Kitchen sink</a>
+      <a href="styleguide.html">Style guide</a>
+      <a href="tokens.html">Main variables</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+  </kakao-aside-menu>
+
   <header>
     <h1>Components</h1>
     <p>Every component, live. Open a demo for the full API playground and an event log. Or see them all together in the <a href="kitchen-sink.html">kitchen sink</a> form. The <a href="styleguide.html">style guide</a> describes the visual rules they follow. Tune the look on each component’s construction page, and the shared <a href="tokens.html">main variables</a> on theirs. <a href="#missing">What’s not built yet</a>.</p>
@@ -119,6 +132,35 @@
             <kakao-button label="Primary" disabled></kakao-button>
             <kakao-button label="Secondary" variant="secondary" disabled></kakao-button>
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Aside menu ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Aside menu</h2>
+        <code>&lt;kakao-aside-menu&gt;</code>
+        <a href="components/aside-menu/construction.html">Construction</a>
+        <a href="components/aside-menu/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A hidden slide-in side menu that pushes the whole page aside. Built-in hamburger button, close control, optional nav list, and focus trapping.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Default · with nav list</h3>
+          <kakao-aside-menu label="Site navigation"
+            list-data='[{"value":"home","label":"Home"},{"value":"browse","label":"Browse"},{"value":"account","label":"Account"}]'
+            selected="home"></kakao-aside-menu>
+        </div>
+        <div class="example">
+          <h3>Right · slotted content</h3>
+          <kakao-aside-menu position="right" label="Filters">
+            <nav aria-label="Filters">
+              <a href="#" onclick="return false">Genre</a>
+              <a href="#" onclick="return false">Year</a>
+              <a href="#" onclick="return false">Rating</a>
+            </nav>
+          </kakao-aside-menu>
         </div>
       </div>
     </article>
@@ -802,8 +844,24 @@
   segment.addEventListener('kakao-button-action', (e) => {
     segment.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b === e.target));
   });
+
 </script>
 <script>
+  // The sidebar lists every component on this page; the list comes from the
+  // DOM, so a new component card shows up without touching this script.
+  const siteNav = document.getElementById('siteNav');
+  const cards = [...document.querySelectorAll('article.card:not(.placeholder)')];
+  siteNav.setAttribute('list-data', JSON.stringify(
+    cards.map((card) => {
+      const label = card.querySelector('h2').textContent.trim();
+      card.id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return { value: card.id, label };
+    }).concat([{ value: 'missing', label: 'Not built yet' }])
+  ));
+  siteNav.addEventListener('aside-select', (e) => {
+    document.getElementById(e.detail.value).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    siteNav.close(); // no-op while the sidebar is persistent
+  });
 </script>
 </body>
 </html>
