@@ -20,10 +20,37 @@
   main { min-height: 160vh; }
   .demo-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
   .menu-demo nav a { margin-bottom: 2px; }
+
+  /* A fixed button in the viewport's top-left corner: it ducks below the
+     panel's close button while a left menu is open (the theme switch does
+     the same for right menus). The menu announces itself via the
+     KakaoComponents trigger API. */
+  .corner-btn {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 50;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    background: var(--kakao-color-subtle, #f0f0f1);
+    color: var(--kakao-color-text, #18181b);
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: top var(--kakao-motion-duration, 320ms) cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .page-theme-switch {
+    transition: top var(--kakao-motion-duration, 320ms) cubic-bezier(0.22, 1, 0.36, 1);
+  }
 </style>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<button id="cornerBtn" class="corner-btn" type="button" aria-label="Corner button" title="A fixed button in the corner — ducks below the menu's close button">★</button>
 <main>
   <header>
     <a class="back" href="../../index.html">← All components</a>
@@ -33,7 +60,7 @@
   </header>
 
   <h2>Try it</h2>
-  <p>The menu below is a normal site menu. Open it and watch the page — including this text and the theme switch — slide to the right.</p>
+  <p>The menu below is a normal site menu. Open it and watch the page — including this text and the theme switch — slide to the right. The fixed ★ button in the corner (and the theme switch for right menus) ducks below the menu's close button.</p>
   <div class="card demo-row">
     <kakao-aside-menu id="menu1" label="Site menu" class="menu-demo">
       <nav aria-label="Site menu">
@@ -111,6 +138,21 @@
   const log = document.getElementById('log');
   logEvents(log, ['aside-change'], menu1);
   logEvents(log, ['aside-select'], document.getElementById('menu4'));
+
+  // Fixed corner buttons duck below the panel's close button while a menu
+  // is open: the menu announces itself with the KakaoComponents triggers.
+  const cornerBtn = document.getElementById('cornerBtn');
+  const themeSwitch = document.querySelector('.page-theme-switch');
+  const duck = (el, open, clearance) => {
+    if (!el) return;
+    el.style.top = open ? clearance + 'px' : '1rem';
+  };
+  KakaoComponents.on('aside-open', (d) => {
+    duck(d.position === 'left' ? cornerBtn : themeSwitch, true, d.clearance);
+  });
+  KakaoComponents.on('aside-close', (d) => {
+    duck(d.position === 'left' ? cornerBtn : themeSwitch, false);
+  });
 
   document.getElementById('toggleBtn').addEventListener('kakao-button-action', () => menu1.toggle());
   document.getElementById('openMenu3').addEventListener('kakao-button-action', () => menu3.open());

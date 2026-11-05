@@ -58,6 +58,14 @@
  *   aside-change  detail: { open: boolean }
  *   aside-select  detail: { value, item } — a nav item was picked
  *
+ * Triggers (KakaoComponents, see shared/component-api.js):
+ *   aside-open    detail: { position, width, clearance } — fired when the
+ *                 menu opens. clearance is how far a fixed element in the
+ *                 same viewport corner should move down so it does not
+ *                 block the panel's close button.
+ *   aside-close   detail: { position } — fired when it starts sliding back.
+ *   aside-select  detail: { value } — a nav item was picked.
+ *
  * ----------------------------------------------------------------------------
  * THEMING
  * ----------------------------------------------------------------------------
@@ -176,6 +184,7 @@
         if (!item || item.disabled) return;
         this.setAttribute('selected', item.dataset.value);
         this._dispatch('aside-select', { value: item.dataset.value, item });
+        this._emitTrigger('aside-select', { value: item.dataset.value });
       });
 
       this.append(openBtn, panel);
@@ -300,6 +309,11 @@
           .trim() || '280px';
         root.style.setProperty('--kakao-aside-push', width);
         root.setAttribute('data-kakao-aside-open', position);
+        this._emitTrigger('aside-open', {
+          position,
+          width,
+          clearance: this._cornerClearance(),
+        });
         this._panel.removeAttribute('aria-hidden');
         this._panel.removeAttribute('inert');
         document.addEventListener('keydown', this._onKeydown);
@@ -311,6 +325,7 @@
       } else {
         clearTimeout(this._closeTimer);
         if (root.getAttribute('data-kakao-aside-open')) {
+          this._emitTrigger('aside-close', { position });
           // Pull the body back to its origin: keep the html attribute so the
           // pushed-body styles (and their transition) still apply, and animate
           // the push to zero. Only when the slide is done remove everything.
@@ -388,10 +403,31 @@
 
     /* ----------------------------- Events ------------------------------ */
 
+    /** Announce via the KakaoComponents trigger API, if it is loaded. */
+    _emitTrigger(name, detail) {
+      if (typeof KakaoComponents !== 'undefined') {
+        KakaoComponents.emit(this, name, detail);
+      }
+    }
+
+    /** How far a fixed corner element should sit below the close button. */
+    _cornerClearance() {
+      const head = this._panel.querySelector('.kakao-aside-head');
+      const pad = parseFloat(getComputedStyle(head).paddingTop) || 0;
+      const h = this._closeBtn ? this._closeBtn.getBoundingClientRect().height : 34;
+      return Math.ceil(pad + h + 8);
+    }
+
     _dispatch(name, detail) {
       this.dispatchEvent(new CustomEvent(name, { detail, bubbles: true, composed: true }));
     }
   }
 
   customElements.define(TAG_NAME, KakaoAsideMenu);
+
+  if (typeof KakaoComponents !== 'undefined') {
+    KakaoComponents.register('kakao-aside-menu', {
+      triggers: ['aside-open', 'aside-close', 'aside-select'],
+    });
+  }
 })();
