@@ -406,44 +406,95 @@
   })();
 
   // The Downloads switches are async — a real toggle waits for a request — so
-  // they can show the loader and the checkmark. One flips every few seconds,
-  // under the same manners as the theme walk: it holds still while the pointer or
-  // focus is in the portal, and it does not start for reduced motion.
+  // they can show their loader, their checkmark and what a failure looks like.
+  // The demo drives itself for a few flips and then stops; it never fabricates
+  // latency for a visitor's own tap, never runs for reduced motion, holds still
+  // while the pointer or focus is in the portal, and stops for good as soon as
+  // the visitor touches the switches themselves.
   customElements.whenDefined('kakao-switch-group').then(() => {
     const group = document.getElementById('dl');
     const portal = document.querySelector('.portal');
     if (!group || !portal) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    group.addEventListener('switch-request', (event) => {
-      event.detail.waitUntil(new Promise((resolve) => setTimeout(resolve, 900)));
-    });
-
     const INTERVAL = 3200;
-    let index = 0;
+    const FLIPS = [1, 0, 1, 0]; // auto (fails), wifi, auto (fails), wifi
+    let step = 0;
     let timer = null;
+    let demoClick = false;
+    let expected = 0; // demo toggles started and not yet finished
+    let over = false;
 
-    const step = () => {
-      const tracks = group.shadowRoot ? [...group.shadowRoot.querySelectorAll('.track')] : [];
-      if (!tracks.length) return;
-      const track = tracks[index % tracks.length];
-      index += 1;
-      track.click(); // the same path a real tap takes, request included
+    group.addEventListener('switch-request', (event) => {
+      if (!demoClick) {
+        over = true; // their tap: stop driving it, and apply at once
+        stopDemo();
+        return;
+      }
+      const { name, waitUntil } = event.detail;
+      // "Auto-delete" is the one that fails: loader, then the red X and the
+      // spring back. The setting is local, so only the demo waits at all.
+      waitUntil(new Promise((resolve, reject) => {
+        setTimeout(name === 'auto' ? () => reject(new Error('Storage is full')) : resolve, 900);
+      }));
+    });
+    group.addEventListener('switch-change', settle);
+    group.addEventListener('switch-error', settle);
+
+    function settle() {
+      if (over) return;
+      if (expected > 0) {
+        expected -= 1;
+        return;
+      }
+      over = true; // a change we did not start: the visitor is driving
+      stopTimer();
+    }
+
+    function stopTimer() {
+      clearInterval(timer);
+      timer = null;
+    }
+    function stopDemo() {
+      over = true;
+      stopTimer();
+    }
+
+    const tracks = () => (group.shadowRoot ? [...group.shadowRoot.querySelectorAll('.track')] : []);
+
+    const tick = () => {
+      if (over || step >= FLIPS.length) return stopDemo();
+      const panel = group.closest('.panel');
+      if (!panel || panel.hasAttribute('inert')) return; // not on screen yet: wait
+      const track = tracks()[FLIPS[step]];
+      step += 1;
+      if (!track) return stopDemo();
+
+      // The component moves focus to the track it toggles; a demo must not take
+      // focus away from whatever the visitor is doing.
+      const before = document.activeElement;
+      demoClick = true;
+      track.click();
+      demoClick = false;
+      expected += 1;
+      const inner = group.shadowRoot && group.shadowRoot.activeElement;
+      if (before && before !== document.body && typeof before.focus === 'function') {
+        before.focus({ preventScroll: true });
+      } else if (inner) {
+        inner.blur();
+      }
+      if (step >= FLIPS.length) stopTimer();
     };
 
     const play = () => {
-      if (timer) return;
-      timer = setInterval(step, INTERVAL);
+      if (timer || over) return;
+      timer = setInterval(tick, INTERVAL);
     };
-    const stop = () => {
-      clearInterval(timer);
-      timer = null;
-    };
-    portal.addEventListener('pointerenter', stop);
+    portal.addEventListener('pointerenter', stopTimer);
     portal.addEventListener('pointerleave', play);
-    portal.addEventListener('focusin', stop);
+    portal.addEventListener('focusin', stopTimer);
     portal.addEventListener('focusout', play);
-    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
+    document.addEventListener('visibilitychange', () => (document.hidden ? stopTimer() : play()));
 
     play();
   });
