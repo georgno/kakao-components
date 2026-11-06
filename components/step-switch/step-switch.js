@@ -129,17 +129,17 @@
  *  --kakao-step-switch-track-width          min(100%, 18rem)   (a minimum is enforced so all labels fit)
  *  --kakao-step-switch-track-height         1.75rem
  *  --kakao-step-switch-track-radius         999px
- *  --kakao-step-switch-track-bg             #6b7280   the track colour (default behaviour)
+ *  --kakao-step-switch-track-bg             var(--kakao-color-border)   the track colour (default behaviour)
  *  --kakao-step-switch-track-bg-off         #d1d5db   with color-shift: colour at the first step
  *  --kakao-step-switch-track-bg-on          #4f46e5   with color-shift: colour at the last step
  *  --kakao-step-switch-track-bg-disabled    #e5e7eb
- *  --kakao-step-switch-thumb-bg             #ffffff
+ *  --kakao-step-switch-thumb-bg             var(--kakao-color-bg)
  *  --kakao-step-switch-thumb-size           1.35rem
  *  --kakao-step-switch-thumb-shadow         0 1px 3px rgba(0,0,0,.3)
  *  --kakao-step-switch-thumb-inset          0.2rem    padding between thumb and track edge
  *  --kakao-step-switch-tick-size            0.28rem
- *  --kakao-step-switch-tick-color           rgba(255,255,255,.8)
- *  --kakao-step-switch-tick-disabled-color  rgba(255,255,255,.3)  dot of a disabled step
+ *  --kakao-step-switch-tick-color           var(--kakao-color-on-ink)
+ *  --kakao-step-switch-tick-disabled-color  var(--kakao-color-muted)  dot of a disabled step
  *  --kakao-step-switch-label-color          #4b5563
  *  --kakao-step-switch-label-active-color   #111827
  *  --kakao-step-switch-label-font           0.85rem/1.3 --kakao-font-family (else system-ui)
@@ -220,17 +220,17 @@
         --_track-width: var(--kakao-step-switch-track-width, min(100%, 18rem));
         --_track-height: var(--kakao-step-switch-track-height, 1.75rem);
         --_track-radius: var(--kakao-step-switch-track-radius, 999px);
-        --_track-bg: var(--kakao-step-switch-track-bg, #6b7280);
+        --_track-bg: var(--kakao-step-switch-track-bg, var(--kakao-color-border, #6b7280));
         --_track-bg-off: var(--kakao-step-switch-track-bg-off, var(--kakao-color-border, #d1d5db));
         --_track-bg-on: var(--kakao-step-switch-track-bg-on, var(--kakao-color-primary, #4f46e5));
         --_track-bg-disabled: var(--kakao-step-switch-track-bg-disabled, var(--kakao-color-subtle, #e5e7eb));
-        --_thumb-bg: var(--kakao-step-switch-thumb-bg, #ffffff);
+        --_thumb-bg: var(--kakao-step-switch-thumb-bg, var(--kakao-color-bg, #ffffff));
         --_thumb-size: var(--kakao-step-switch-thumb-size, 1.35rem);
         --_thumb-shadow: var(--kakao-step-switch-thumb-shadow, 0 1px 3px rgba(0, 0, 0, 0.3));
         --_thumb-inset: var(--kakao-step-switch-thumb-inset, 0.2rem);
         --_tick-size: var(--kakao-step-switch-tick-size, 0.28rem);
-        --_tick-color: var(--kakao-step-switch-tick-color, rgba(255, 255, 255, 0.8));
-        --_tick-disabled-color: var(--kakao-step-switch-tick-disabled-color, rgba(255, 255, 255, 0.3));
+        --_tick-color: var(--kakao-step-switch-tick-color, var(--kakao-color-on-ink, rgba(255, 255, 255, 0.8)));
+        --_tick-disabled-color: var(--kakao-step-switch-tick-disabled-color, var(--kakao-color-muted, rgba(255, 255, 255, 0.3)));
         --_label-color: var(--kakao-step-switch-label-color, var(--kakao-color-text-soft, #4b5563));
         --_label-active-color: var(--kakao-step-switch-label-active-color, var(--kakao-color-text, #111827));
         --_label-font: var(--kakao-step-switch-label-font, 0.85rem/1.3 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
