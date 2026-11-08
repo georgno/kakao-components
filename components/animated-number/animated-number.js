@@ -17,6 +17,8 @@
  *   --kakao-animated-number-font-family, --kakao-animated-number-font-size, --kakao-animated-number-font-weight, --kakao-animated-number-color, --kakao-animated-number-duration
  */
 
+const BLANK = 10; // strip slot after the last digit: rolls a digit out of view
+
 class KakaoAnimatedNumber extends HTMLElement {
   static get observedAttributes() {
     return ['value', 'locale', 'decimals', 'duration', 'sign-display'];
@@ -28,7 +30,6 @@ class KakaoAnimatedNumber extends HTMLElement {
     this._displayValue = 0;
     this._targetValue = 0;
     this._animating = false;
-    this._columns = [];
     this._pending = null;
   }
 
@@ -38,7 +39,7 @@ class KakaoAnimatedNumber extends HTMLElement {
     this._pending = null;
     this._displayValue = v;
     this._targetValue = v;
-    this._buildColumns(v, false);
+    this._buildColumns(v);
   }
 
   disconnectedCallback() {
@@ -71,13 +72,13 @@ class KakaoAnimatedNumber extends HTMLElement {
     const from = this._displayValue;
     this._targetValue = next;
     if (from === next && !this._animating) {
-      this._buildColumns(next, false);
+      this._buildColumns(next);
       return;
     }
 
     if (this._prefersReducedMotion()) {
       this._displayValue = next;
-      this._buildColumns(next, false);
+      this._buildColumns(next);
       this._emitChange();
       return;
     }
@@ -94,12 +95,9 @@ class KakaoAnimatedNumber extends HTMLElement {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
-  _formatParts(num) {
-    const locale = this.getAttribute('locale') || 'en-US';
+  _formatOptions() {
+    const opts = { signDisplay: this._intlSignDisplay() };
     const decAttr = this.getAttribute('decimals');
-    const signDisplay = this._intlSignDisplay();
-
-    const opts = { signDisplay };
     if (decAttr != null && decAttr !== '') {
       const d = parseInt(decAttr, 10);
       if (!isNaN(d)) {
@@ -107,8 +105,19 @@ class KakaoAnimatedNumber extends HTMLElement {
         opts.maximumFractionDigits = d;
       }
     }
+    return opts;
+  }
 
-    return new Intl.NumberFormat(locale, opts).formatToParts(num);
+  _formatParts(num) {
+    const locale = this.getAttribute('locale') || 'en-US';
+    return new Intl.NumberFormat(locale, this._formatOptions()).formatToParts(num);
+  }
+
+  _announce(num) {
+    const locale = this.getAttribute('locale') || 'en-US';
+    const formatted = new Intl.NumberFormat(locale, this._formatOptions()).format(num);
+    this._sr.textContent = formatted;
+    this.setAttribute('aria-label', formatted);
   }
 
   _intlSignDisplay() {
@@ -201,141 +210,163 @@ class KakaoAnimatedNumber extends HTMLElement {
     this._sr = this._shadow.querySelector('.sr');
   }
 
-  _buildColumns(num, animateStrip) {
-    const parts = this._formatParts(num);
-    const row = this._row;
-    if (!row) return;
+  /** One rolling digit column; slot BLANK after the last digit is empty. */
+  _makeColumn(digit) {
+    const wrap = document.createElement('span');
+    wrap.className = 'char digit-col';
+    const strip = document.createElement('span');
+    strip.className = 'strip';
+    for (let d = 0; d <= BLANK; d++) {
+      const s = document.createElement('span');
+      s.textContent = d < BLANK ? String(d) : '';
+      strip.appendChild(s);
+    }
+    strip.style.transform = `translateY(${-digit * 1.1}em)`;
+    wrap.appendChild(strip);
+    return wrap;
+  }
 
-    row.innerHTML = '';
-    this._columns = [];
+  _makeSep(text) {
+    const el = document.createElement('span');
+    el.className = 'char sep';
+    el.textContent = text;
+    return el;
+  }
 
-    parts.forEach((part) => {
-      if (part.type === 'minusSign') {
-        const el = document.createElement('span');
-        el.className = 'char sep';
-        el.textContent = part.value;
-        row.appendChild(el);
-        return;
-      }
-      if (part.type === 'plusSign') {
-        const el = document.createElement('span');
-        el.className = 'char sep';
-        el.textContent = part.value;
-        row.appendChild(el);
-        return;
-      }
-      if (part.type === 'group' || part.type === 'decimal' || part.type === 'literal') {
-        const el = document.createElement('span');
-        el.className = 'char sep';
-        el.textContent = part.value;
-        row.appendChild(el);
-        return;
-      }
+  /** Formatted number as a flat list of digits and separators. Digits keep their
+   *  section so the integer part aligns from the right and the fraction from the left. */
+  _items(num) {
+    const items = [];
+    this._formatParts(num).forEach((part) => {
       if (part.type === 'integer' || part.type === 'fraction') {
         for (const ch of part.value) {
-          if (!/\d/.test(ch)) {
-            const el = document.createElement('span');
-            el.className = 'char sep';
-            el.textContent = ch;
-            row.appendChild(el);
-            continue;
-          }
-          const wrap = document.createElement('span');
-          wrap.className = 'char digit-col';
-          const strip = document.createElement('span');
-          strip.className = 'strip';
-          for (let d = 0; d <= 9; d++) {
-            const s = document.createElement('span');
-            s.textContent = String(d);
-            strip.appendChild(s);
-          }
-          const digit = parseInt(ch, 10);
-          strip.style.transform = `translateY(${-digit * 1.1}em)`;
-          if (animateStrip) {
-            strip.style.transition = `transform ${this._duration()}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-          }
-          wrap.appendChild(strip);
-          row.appendChild(wrap);
-          this._columns.push({ strip, digit });
+          items.push(/\d/.test(ch) ? { digit: parseInt(ch, 10), section: part.type } : { text: ch });
         }
+        return;
       }
+      items.push({ text: part.value, sign: part.type === 'minusSign' || part.type === 'plusSign' });
     });
+    return items;
+  }
 
-    const formatted = new Intl.NumberFormat(
-      this.getAttribute('locale') || 'en-US',
-      {
-        signDisplay: this._intlSignDisplay(),
-        ...(this.getAttribute('decimals') != null && this.getAttribute('decimals') !== ''
-          ? {
-              minimumFractionDigits: parseInt(this.getAttribute('decimals'), 10),
-              maximumFractionDigits: parseInt(this.getAttribute('decimals'), 10),
-            }
-          : {}),
-      }
-    ).format(num);
-    this._sr.textContent = formatted;
-    this.setAttribute('aria-label', formatted);
+  _elements(items) {
+    return items.map((it) => (it.section ? this._makeColumn(it.digit) : this._makeSep(it.text)));
+  }
+
+  _buildColumns(num) {
+    if (!this._row) return [];
+    this._row.innerHTML = '';
+    const els = this._elements(this._items(num));
+    els.forEach((el) => this._row.appendChild(el));
+    this._announce(num);
+    return els;
+  }
+
+  _roll(col, digit, duration, ease) {
+    const strip = col.firstElementChild;
+    strip.style.transition = duration ? `transform ${duration}ms ${ease}` : 'none';
+    strip.style.transform = `translateY(${-digit * 1.1}em)`;
   }
 
   _runTransition(from, to) {
     const duration = this._duration();
-    const fromParts = this._formatParts(from);
-    const toParts = this._formatParts(to);
+    const ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
+    const fromItems = this._items(from);
+    const toItems = this._items(to);
 
-    const fromDigits = this._extractDigits(fromParts);
-    const toDigits = this._extractDigits(toParts);
-
-    if (fromDigits.length !== toDigits.length) {
-      this._displayValue = to;
-      this._buildColumns(to, true);
-      this._animating = true;
-      clearTimeout(this._finishTimer);
-      this._finishTimer = setTimeout(() => {
-        this._animating = false;
-        this._emitChange();
-      }, duration);
-      return;
-    }
-
-    this._buildColumns(from, false);
+    this._displayValue = to;
     this._animating = true;
+    this._announce(to);
+    const els = this._buildColumns(to); // final layout: from here only digits and widths move
+
+    const sectionOf = (items, section) =>
+      items.reduce((acc, it, i) => (it.section === section ? acc.concat(i) : acc), []);
+    const fromInt = sectionOf(fromItems, 'integer');
+    const toInt = sectionOf(toItems, 'integer');
+    const fromFrac = sectionOf(fromItems, 'fraction');
+    const toFrac = sectionOf(toItems, 'fraction');
+    const offset = toInt.length - fromInt.length; // > 0: columns appeared on the left
+
+    // A column that has a digit in the old number rolls from it; one without just
+    // opens up. Kept item indices bound the parts that exist on one side only.
+    const rolls = []; // [column, old digit, new digit]
+    const keptFrom = [];
+    const keptTo = [];
+    toInt.forEach((ti, k) => {
+      const fi = k - offset;
+      if (fi < 0) return;
+      keptFrom.push(fromInt[fi]);
+      keptTo.push(ti);
+      rolls.push([els[ti], fromItems[fromInt[fi]].digit, toItems[ti].digit]);
+    });
+    toFrac.forEach((ti, k) => {
+      if (k >= fromFrac.length) return;
+      keptFrom.push(fromFrac[k]);
+      keptTo.push(ti);
+      rolls.push([els[ti], fromItems[fromFrac[k]].digit, toItems[ti].digit]);
+    });
+
+    // Digits left of the first kept one (sign, leading digits and their separators)
+    // or right of the last kept one have no place in the new number: they roll on
+    // into BLANK and their space closes. Parts of the new number that did not exist
+    // before do the opposite, so the row never snaps to a new width.
+    const fromSign = fromItems.find((it) => it.sign)?.text || '';
+    const keepSign = fromSign && fromSign === (toItems.find((it) => it.sign)?.text || '');
+    const firstKept = keptFrom.length ? Math.min(...keptFrom) : fromItems.length;
+    const lastKept = keptFrom.length ? Math.max(...keptFrom) : -1;
+    const firstKeptTo = keptTo.length ? Math.min(...keptTo) : toItems.length;
+    const lastKeptTo = keptTo.length ? Math.max(...keptTo) : -1;
+
+    const signAt = toItems.findIndex((it) => it.sign);
+    const entering = [];
+    for (let i = 0; i < firstKeptTo; i++) entering.push(i);
+    for (let i = lastKeptTo + 1; i < toItems.length; i++) entering.push(i);
+    const enteringEls = entering.filter((i) => !(keepSign && i === signAt)).map((i) => els[i]);
+
+    const leaving = this._elements([
+      ...fromItems.slice(0, firstKept),
+      ...fromItems.slice(lastKept + 1),
+    ]).filter((el) => !(keepSign && el.textContent === fromSign && el.classList.contains('sep')));
+
+    // Outgoing parts go in as elements at their natural width, then collapse.
+    const lead = leaving.slice(0, leaving.length - fromItems.slice(lastKept + 1).length);
+    const tail = leaving.slice(lead.length);
+    const before = this._row.querySelector('.digit-col'); // keep a surviving sign in front
+    lead.forEach((el) => this._row.insertBefore(el, before));
+    tail.forEach((el) => this._row.appendChild(el));
+
+    const resized = []; // [element, width to animate to]
+    enteringEls.forEach((el) => {
+      const width = el.getBoundingClientRect().width;
+      el.style.width = '0px';
+      el.style.minWidth = '0';
+      resized.push([el, `${width}px`]);
+    });
+    leaving.forEach((el) => {
+      const width = el.getBoundingClientRect().width;
+      el.style.width = `${width}px`;
+      el.style.minWidth = '0';
+      resized.push([el, '0px']);
+    });
+    rolls.forEach(([el, oldDigit]) => this._roll(el, oldDigit, 0, ease));
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        const strips = this._row.querySelectorAll('.strip');
-        strips.forEach((strip, i) => {
-          const digit = toDigits[i] ?? 0;
-          strip.style.transition = `transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-          strip.style.transform = `translateY(${-digit * 1.1}em)`;
+        rolls.forEach(([el, , newDigit]) => this._roll(el, newDigit, duration, ease));
+        leaving.filter((el) => el.classList.contains('digit-col')).forEach((el) => this._roll(el, BLANK, duration, ease));
+        resized.forEach(([el, width]) => {
+          el.style.transition = `width ${duration}ms ${ease}`;
+          el.style.width = width;
         });
-        this._displayValue = to;
-        const formatted = new Intl.NumberFormat(
-          this.getAttribute('locale') || 'en-US',
-          { signDisplay: this._intlSignDisplay() }
-        ).format(to);
-        this._sr.textContent = formatted;
-        this.setAttribute('aria-label', formatted);
       });
     });
 
     clearTimeout(this._finishTimer);
     this._finishTimer = setTimeout(() => {
       this._animating = false;
-      this._buildColumns(to, false);
+      this._buildColumns(to);
       this._emitChange();
     }, duration + 50);
-  }
-
-  _extractDigits(parts) {
-    const out = [];
-    parts.forEach((p) => {
-      if (p.type === 'integer' || p.type === 'fraction') {
-        for (const ch of p.value) {
-          if (/\d/.test(ch)) out.push(parseInt(ch, 10));
-        }
-      }
-    });
-    return out;
   }
 
   _emitChange() {
