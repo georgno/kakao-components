@@ -47,3 +47,28 @@ With `toggle` the button SHALL flip its `pressed` attribute on click and expose 
 #### Scenario: Rejected promise
 - **WHEN** the promise passed to `run()` rejects
 - **THEN** the failure state is shown before the button returns to idle
+
+### Requirement: Menu form
+With `list-data` (`[{ value, label?, disabled? }]`), any button variant and size SHALL become a menu button: a trailing chevron, `aria-haspopup="menu"` and `aria-expanded`, and a menu of `menuitemradio` items below the button (above it when there is no room). `selected` SHALL mark the checked item and SHALL update on pick. With `show-selected`, the button SHALL show the selected item's label, and its accessible name SHALL be "<label>: <item>". Picking SHALL fire `kakao-button-select` `{ value, label, previous, x, y }`. Opening and closing SHALL fire `kakao-button-menu` `{ open }`. A menu button SHALL NOT fire `kakao-button-action`.
+
+#### Scenario: Picking with the keyboard
+- **WHEN** the user focuses a menu button, presses Down, moves with the arrow keys and presses Enter
+- **THEN** the menu opens on the checked item, disabled items are skipped, the picked item becomes `selected`, the menu closes and focus returns to the button
+
+#### Scenario: Closing
+- **WHEN** the menu is open and the user presses Escape, presses Tab or clicks outside
+- **THEN** the menu closes (Escape returns focus to the button)
+
+### Requirement: Optional chevron
+A dropdown button SHALL show a chevron unless it has `no-chevron`. An icon-only dropdown SHALL stay a circle with `no-chevron` and SHALL become a pill that shows the chevron without it.
+
+#### Scenario: Actions menu
+- **WHEN** an icon-only ghost button with a ⋯ icon has `list-data` and `no-chevron`
+- **THEN** it is a round icon button that opens its menu
+
+### Requirement: Settling shadow in segments
+In a `.kakao-button-segment`, a pressed item SHALL have no shadow at rest. When an item becomes pressed, its shadow SHALL fade in and out once. With reduced motion there SHALL be no shadow.
+
+#### Scenario: Pressing a segment item
+- **WHEN** the user presses another item of a segmented toggle
+- **THEN** that item's shadow appears briefly and is gone once it has settled

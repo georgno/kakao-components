@@ -13,23 +13,33 @@ a shadow root with slots.
   through its `construction.html`, not by hand.
 - Shared colours come from `shared/tokens.css`; every theme in `shared/themes.css`
   must keep passing `node tools/check-themes.js`.
-- A new component is added to `components.html` (the list page) and, if it fits, to `kitchen-sink.html`. `index.html` is the hero page.
+- A new component is added to `components.html` (the list page), to the styleguide's
+  component audit and, if it fits, to `kitchen-sink.html`. `index.html` is the hero page.
+- Planning goes through OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
+  Project rules for it are in `openspec/config.yaml`. Archive a change once its tasks are done.
 
 ## Brief design review
 
-`.pi/APPEND_SYSTEM.md` makes this automatic: after any change under `components/`,
-`shared/`, or to a page, the assistant runs
+After any change under `components/`, `shared/`, or to a page (`styleguide.html`,
+`kitchen-sink.html`, `index.html`, `components.html`, `tokens.html`), the
+assistant runs the designer review before replying, without being asked. One
+review per turn, once the edits are done. Each tool has its own copy of the
+designer:
 
-```
-subagent({ agent: "kakao.ux-ui-designer", task: "<files changed> — brief review" })
-```
+- **pi:** `subagent({ agent: "kakao.ux-ui-designer", task: "<files changed> — brief review" })`
+  (defined in `.pi/agents/kakao.ux-ui-designer.md`; `.pi/APPEND_SYSTEM.md` adds the trigger).
+- **Claude Code:** the Agent tool with `subagent_type: "ux-ui-designer"` and the
+  same task text (defined in `.claude/agents/ux-ui-designer.md`).
 
-before replying, without being asked. One review per turn.
+Skip it only when the change cannot reach the visual system: comments, prose,
+commit messages, `tools/`, `openspec/`, `.pi/`, `.claude/`, `AGENTS.md`. If the review
+cannot be launched, say so in one line; never skip it silently.
 
 It is read-only. It reports **Blocking** (breaks a decided styleguide rule or is
 visibly wrong), **Inconsistency** (differs from sibling components) and
 **Question** (a pattern worth promoting into the styleguide). Blocking findings
 are fixed in the same turn; the rest are the user's decisions.
 
-The designer's brief lives in `.pi/agents/kakao.ux-ui-designer.md` — cheapest
-model tier, read-only tools, the styleguide as its reference.
+The designer's brief lives in `.pi/agents/kakao.ux-ui-designer.md` and
+`.claude/agents/ux-ui-designer.md`. Both use the cheapest model tier, read-only
+tools and the styleguide as their reference. When you change one brief, change the other too.

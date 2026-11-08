@@ -22,7 +22,7 @@ subagent({ agent: "kakao.ux-ui-designer", task: "<files changed, one line each> 
 - Fix Blocking findings in the same turn. Report Inconsistencies and Questions
   to the user in one or two lines each; they are the user's decisions.
 - Skip it only where the change cannot reach the visual system: comments, prose,
-  commit messages, `tools/`, `.pi/`, `AGENTS.md`.
+  commit messages, `tools/`, `openspec/`, `.pi/`, `.claude/`, `AGENTS.md`.
 - If the review cannot be launched, say so in one line. Never skip it silently.
 
 ## House rules the reviewer will hold you to
