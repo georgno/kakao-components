@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/number-input/number-input.css" />
 <link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
+<link rel="stylesheet" href="components/chip-list/chip-list.css" />
 <script src="shared/demo.js"></script>
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
@@ -29,6 +30,15 @@
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/aside-menu/aside-menu.js" defer></script>
 <script src="components/dialog/dialog.js" defer></script>
+<script src="components/text-input/text-input.js" defer></script>
+<script src="components/textarea/textarea.js" defer></script>
+<script src="components/checkbox/checkbox.js" defer></script>
+<script src="components/radio-group/radio-group.js" defer></script>
+<script src="components/color-picker/color-picker.js" defer></script>
+<script src="components/card/card.js" defer></script>
+<script src="components/badge/badge.js" defer></script>
+<script src="components/chip/chip.js" defer></script>
+<script src="components/chip-list/chip-list.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -50,32 +60,13 @@
     .field { grid-template-columns: 1fr; }
   }
 
-  input[type="text"], input[type="email"] {
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    font: inherit;
-    line-height: 1.5;
-    color: inherit;
-    background: var(--kakao-color-bg, #fff);
-    border: 1px solid var(--kakao-color-border, #dee2e6);
-    border-radius: 6px;
-    outline: none;
-  }
-  input[type="text"]:focus-visible, input[type="email"]:focus-visible {
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--kakao-color-ink, #18181b) 14%, transparent);
-  }
-
-  .summary {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
+  .summary { margin-top: 1rem; }
+  .summary h2 { margin: 0; font-size: 0.95rem; font-weight: 600; }
   .price { display: flex; align-items: baseline; gap: 0.35rem; }
   .price small { color: var(--muted); }
   kakao-animated-number { --kakao-animated-number-font-size: 2rem; --kakao-animated-number-font-weight: 700; }
-  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .more-genres-label { margin-top: 0.9rem; margin-bottom: 0.4rem; }
+  .summary [slot="footer"] { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
   .danger-zone { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
 </style>
@@ -143,6 +134,17 @@
             list-data='[{"name":"yearly","label":"Pay yearly (−15%)"}]'></kakao-switch-group>
         </div>
       </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Payment method</div>
+          <p class="field-hint">Charged on the first of each period.</p>
+        </div>
+        <div class="field-control">
+          <kakao-radio-group id="payment" name="payment" value="card" aria-label="Payment method"
+            list-data='[{"value":"card","label":"Credit card","hint":"Visa ending in 4242"},{"value":"paypal","label":"PayPal"},{"value":"debit","label":"Direct debit","hint":"SEPA, takes 3 days to start"}]'></kakao-radio-group>
+        </div>
+      </div>
     </div>
 
     <!-- ============================== Playback ============================== -->
@@ -171,6 +173,17 @@
             <kakao-button icon="fas fa-align-center" aria-label="Align center" value="center" toggle pressed></kakao-button>
             <kakao-button icon="fas fa-align-right" aria-label="Align right" value="right" toggle></kakao-button>
           </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Subtitle colour <kakao-badge tone="primary">New</kakao-badge></div>
+          <p class="field-hint">Lower the opacity for a softer look.</p>
+        </div>
+        <div class="field-control">
+          <kakao-color-picker id="subtitle-color" name="subtitleColor" value="#ffffff" alpha aria-label="Subtitle colour"
+            list-data='[{"value":"#ffffff","label":"White"},{"value":"#ffe14d","label":"Yellow"},{"value":"#7dd3fc","label":"Light blue"},{"value":"#86efac","label":"Light green"}]'></kakao-color-picker>
         </div>
       </div>
 
@@ -235,13 +248,24 @@
     <!-- ============================== Account ============================== -->
     <div id="tab-account" role="tabpanel" hidden>
       <div class="field">
-        <div><label class="field-label" for="name">Display name</label></div>
-        <div class="field-control"><input id="name" name="name" type="text" value="Kakao Fan" autocomplete="nickname" /></div>
+        <div><div class="field-label">Display name</div></div>
+        <div class="field-control"><kakao-text-input id="name" name="name" value="Kakao Fan" autocomplete="nickname" aria-label="Display name" required clearable></kakao-text-input></div>
       </div>
 
       <div class="field">
-        <div><label class="field-label" for="email">Email</label></div>
-        <div class="field-control"><input id="email" name="email" type="email" value="fan@example.com" autocomplete="email" /></div>
+        <div><div class="field-label">Email</div></div>
+        <div class="field-control"><kakao-text-input id="email" name="email" type="email" value="fan@example.com" autocomplete="email" icon="fas fa-envelope" aria-label="Email" required></kakao-text-input></div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Profile bio</div>
+          <p class="field-hint">Shown on your profile to people you share a household with.</p>
+        </div>
+        <div class="field-control">
+          <kakao-textarea id="bio" name="bio" rows="2" maxlength="160" counter autosize max-height="10rem" aria-label="Profile bio"
+            placeholder="Sci-fi, slow cooking shows, anything with dogs…"></kakao-textarea>
+        </div>
       </div>
 
       <div class="field">
@@ -251,6 +275,29 @@
         </div>
         <div class="field-control">
           <kakao-multi-dropdown id="dob" type="date" name="dob" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Favourite genres</div>
+          <p class="field-hint">Shapes your recommendations. Tap a genre to browse it, × to drop it, + to add one.</p>
+        </div>
+        <div class="field-control">
+          <kakao-chip-list id="genres" label="Favourite genres">
+            <kakao-chip removable value="sci-fi" href="#genre-sci-fi">Sci-fi</kakao-chip>
+            <kakao-chip removable value="documentary" href="#genre-documentary">Documentary</kakao-chip>
+            <kakao-chip removable value="cooking" href="#genre-cooking">Cooking</kakao-chip>
+            <kakao-chip removable value="anime" href="#genre-anime">Anime</kakao-chip>
+          </kakao-chip-list>
+          <p class="field-hint more-genres-label">More genres</p>
+          <kakao-chip-list id="more-genres" label="More genres, tap to add">
+            <kakao-chip action value="comedy"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Comedy</kakao-chip>
+            <kakao-chip action value="drama"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Drama</kakao-chip>
+            <kakao-chip action value="thriller"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Thriller</kakao-chip>
+            <kakao-chip action value="romance"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Romance</kakao-chip>
+            <kakao-chip action value="kids"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Kids</kakao-chip>
+          </kakao-chip-list>
         </div>
       </div>
 
@@ -274,6 +321,7 @@
           <kakao-dialog id="delete-confirm" size="sm" label="Delete account">
             <h2 slot="header">Delete account?</h2>
             <p>Your watch history and profiles will be gone. This cannot be undone.</p>
+            <kakao-checkbox id="delete-downloads" label="Also remove downloads from my devices" hint="Otherwise they stay playable until they expire."></kakao-checkbox>
             <div slot="footer">
               <kakao-button label="Keep it" variant="ghost" data-close="cancel"></kakao-button>
               <kakao-button label="Yes, delete" variant="danger" data-close="delete"></kakao-button>
@@ -285,17 +333,18 @@
   </form>
 
   <!-- ============================== Summary ============================== -->
-  <div class="card summary" style="margin-top: 1rem">
+  <kakao-card class="summary">
+    <h2 slot="header">Your plan</h2>
     <div class="price">
       <span>€</span>
       <kakao-animated-number id="price" value="13.49" decimals="2"></kakao-animated-number>
       <small id="price-period">/ month</small>
     </div>
-    <div class="actions">
-      <kakao-button id="reset" label="Reset" variant="ghost"></kakao-button>
+    <div slot="footer">
       <kakao-button id="save" label="Save changes" icon="fas fa-check" type="submit" form="settings"></kakao-button>
+      <kakao-button id="reset" label="Reset" variant="ghost"></kakao-button>
     </div>
-  </div>
+  </kakao-card>
 
   <h2>Submitted values</h2>
   <p>What a save would send, collected from the component APIs.</p>
@@ -346,12 +395,60 @@
   });
   $('notify-push').addEventListener('switch-error', (e) => logLine(log, 'push sync failed', { name: e.detail.name, reason: e.detail.error.message }));
 
+  // ---- favourite genres: × moves a genre to "More genres", + moves it back ----
+  const GENRE_ORDER = ['sci-fi', 'documentary', 'cooking', 'anime', 'comedy', 'drama', 'thriller', 'romance', 'kids'];
+  const favourites = $('genres');
+  const moreGenres = $('more-genres');
+
+  function genreChip(value, label, kind) {
+    const chip = document.createElement('kakao-chip');
+    chip.setAttribute('value', value);
+    if (kind === 'favourite') {
+      chip.setAttribute('removable', '');
+      chip.setAttribute('href', `#genre-${value}`);
+      chip.textContent = label;
+    } else {
+      chip.setAttribute('action', '');
+      chip.innerHTML = '<i slot="icon" class="fas fa-plus" aria-hidden="true"></i>';
+      chip.append(label);
+    }
+    return chip;
+  }
+
+  // Keep both lists in one fixed order, so a genre returns to the same place.
+  function insertInOrder(list, chip) {
+    const rank = (c) => GENRE_ORDER.indexOf(c.getAttribute('value'));
+    const after = [...list.querySelectorAll('kakao-chip')].find((c) => rank(c) > rank(chip));
+    list.insertBefore(chip, after || null);
+  }
+
+  favourites.addEventListener('chip-remove', (e) => {
+    const { value, label } = e.detail;
+    const lastOne = favourites.querySelectorAll('kakao-chip').length === 1;
+    const chip = genreChip(value, label, 'more');
+    insertInOrder(moreGenres, chip);
+    // The chip hands focus to its neighbour; with no neighbour left, follow the genre.
+    if (lastOne) queueMicrotask(() => chip.focus());
+  });
+
+  moreGenres.addEventListener('chip-action', (e) => {
+    const picked = e.target;
+    const { value, label } = e.detail;
+    const rest = [...moreGenres.querySelectorAll('kakao-chip')];
+    const i = rest.indexOf(picked);
+    const nextFocus = rest[i + 1] || rest[i - 1] || null;
+    picked.remove();
+    const chip = genreChip(value, label, 'favourite');
+    insertInOrder(favourites, chip);
+    (nextFocus || chip).focus();
+  });
+
   // ---- delete confirmation ----
   const deleteConfirm = $('delete-confirm');
   $('delete').addEventListener('kakao-button-action', () => deleteConfirm.open());
   deleteConfirm.addEventListener('dialog-close', (e) => {
     if (e.detail.returnValue !== 'delete') return;
-    logLine(log, 'delete', 'Pretend the account is gone.');
+    logLine(log, 'delete', { removeDownloads: $('delete-downloads').checked, note: 'Pretend the account is gone.' });
   });
 
   // ---- collect, save, reset ----
@@ -363,10 +460,12 @@
         quality: $('quality').getAttribute('value'),
         screens: Number($('screens').value),
         yearly: isChecked($('billing'), 'yearly'),
+        payment: $('payment').value,
       },
       playback: {
         autoplay: checkedNames($('autoplay')),
         subtitleSize: $('subtitle-size').getAttribute('value'),
+        subtitleColor: $('subtitle-color').value,
         subtitleAlign: (align.querySelector('kakao-button[pressed]') || {}).getAttribute?.('value'),
         dataLimitGB: $('data-limit').getValue(),
         language,
@@ -379,6 +478,8 @@
       account: {
         name: $('name').value,
         email: $('email').value,
+        bio: $('bio').value,
+        genres: [...$('genres').querySelectorAll('kakao-chip')].map((c) => c.getAttribute('value')),
         dateOfBirth: $('dob').value,
         documents: $('documents').files.map((f) => f.name),
       },
@@ -398,6 +499,10 @@
       switches: ['billing', 'autoplay', 'notify-email', 'notify-push'].map((id) => [id, $(id).getData()]),
       steps: ['quality', 'subtitle-size', 'frequency'].map((id) => [id, $(id).getAttribute('value')]),
       dataLimit: $('data-limit').getValue(),
+      // form.reset() does not reach these: they have no formResetCallback
+      values: ['payment', 'name', 'email', 'bio'].map((id) => [id, $(id).value]),
+      genres: $('genres').innerHTML,
+      moreGenres: $('more-genres').innerHTML,
     };
     updatePrice();
   }));
@@ -408,6 +513,9 @@
       initial.switches.forEach(([id, data]) => $(id).setData(data));
       initial.steps.forEach(([id, value]) => $(id).setValue(value));
       $('data-limit').setValue(initial.dataLimit);
+      initial.values.forEach(([id, value]) => { $(id).value = value; });
+      $('genres').innerHTML = initial.genres;
+      $('more-genres').innerHTML = initial.moreGenres;
     }
     align.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b.getAttribute('value') === 'center'));
     language = 'English';
