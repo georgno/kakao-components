@@ -7,6 +7,28 @@ change a component's API.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-09
+
+### Added
+
+- Breadcrumb component: title/url pairs or objects, a house icon (or start
+  text from a constant) first, the current page last, cancelable
+  `breadcrumb-navigate` for single-page apps.
+- Demo pages and the component list start with a breadcrumb back to the list.
+- `shared/page-cloak.js`: pages appear once their components and fonts are
+  ready, instead of flickering in on reload.
+- The landing page shows the version and links to this changelog.
+
+### Changed
+
+- The site menu's open button sits fixed in the top-left corner, so every
+  page's header lines up; it hides while the menu is open.
+
+### Fixed
+
+- The aside menu no longer flashes its raw links before it has loaded.
+- The landing page's component count (24, not 20).
+
 ## [0.1.0] - 2026-11-09
 
 The first tagged version: everything built so far.
@@ -45,5 +67,6 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/georgno/kakao-components/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/georgno/kakao-components/releases/tag/v0.1.0
