@@ -19,6 +19,7 @@
  * ATTRIBUTES (all observed)
  * ----------------------------------------------------------------------------
  *  label         Visible label above the field.
+ *  aria-label    Used when there is no visible label (e.g. the label sits beside the field).
  *  hint          Helper text below the field (hidden while there is an error).
  *  error         Error text: red field and message; aria-invalid, describedby.
  *  placeholder   Placeholder text.
@@ -195,7 +196,7 @@
     static get observedAttributes() {
       return ['label', 'hint', 'error', 'placeholder', 'value', 'rows', 'maxlength',
         'counter', 'autosize', 'max-height', 'resize', 'name', 'required',
-        'disabled', 'readonly', 'size'];
+        'disabled', 'readonly', 'size', 'aria-label'];
     }
 
     constructor() {
@@ -328,7 +329,7 @@
 
       const label = this.getAttribute('label') || '';
       this._labelEl.textContent = label;
-      this._area.setAttribute('aria-label', label || this.getAttribute('placeholder') || 'Text');
+      this._area.setAttribute('aria-label', label || this.getAttribute('aria-label') || this.getAttribute('placeholder') || 'Text');
 
       const hint = this.getAttribute('hint') || '';
       const error = this.getAttribute('error') || '';

@@ -21,6 +21,7 @@
  * ----------------------------------------------------------------------------
  *  type          text (default), email, password, search, url, tel, number…
  *  label         Visible label above the field.
+ *  aria-label    Used when there is no visible label (e.g. the label sits beside the field).
  *  hint          Helper text below the field (hidden while there is an error).
  *  error         Error text: red field and message; the field gets
  *                aria-invalid and the message aria-describedby.
@@ -219,7 +220,7 @@
     static get observedAttributes() {
       return ['type', 'label', 'hint', 'error', 'placeholder', 'value', 'name',
         'required', 'disabled', 'readonly', 'size', 'icon', 'clearable',
-        'maxlength', 'minlength', 'pattern', 'autocomplete', 'inputmode', 'spellcheck'];
+        'maxlength', 'minlength', 'pattern', 'autocomplete', 'inputmode', 'spellcheck', 'aria-label'];
     }
 
     constructor() {
@@ -356,7 +357,7 @@
 
       const label = this.getAttribute('label') || '';
       this._labelEl.textContent = label;
-      this._input.setAttribute('aria-label', label || this.getAttribute('placeholder') || 'Text');
+      this._input.setAttribute('aria-label', label || this.getAttribute('aria-label') || this.getAttribute('placeholder') || 'Text');
 
       const icon = this.getAttribute('icon') || '';
       this._iconEl.className = icon ? `icon ${icon}` : 'icon';
