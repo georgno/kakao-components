@@ -32,9 +32,12 @@
   .with-text input { flex: 1; min-width: 0; height: 36px; padding: 0 0.6rem; border: 1px solid var(--kakao-color-border); border-radius: 8px; background: var(--card); color: inherit; font: 0.85rem ui-monospace, monospace; }
 </style>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main>
   <header>
     <div class="demo-nav">

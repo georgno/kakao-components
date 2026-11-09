@@ -16,7 +16,7 @@ body {
 [data-construction] {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 3rem;
+  padding: 0.25rem 1.25rem 3rem; /* the page bar above it is 4rem tall */
 }
 
 a { color: var(--kakao-color-primary, #4f46e5); }
@@ -86,7 +86,7 @@ code {
 
 .construction-canvas {
   position: sticky;
-  top: 1rem;
+  top: calc(var(--page-bar-height) + 1rem); /* below the sticky page bar */
   min-width: 0;
   border: 1px solid var(--kakao-color-line, #e5e7eb);
   border-radius: 14px;
@@ -264,8 +264,24 @@ code {
 .construction-chip.is-follow { --kakao-chip-bg: var(--kakao-color-subtle, #f3f4f6); --kakao-chip-text: var(--kakao-color-text-soft, #374151); }
 .construction-chip::part(meta) { font-size: 0.72rem; }
 
-/* ---- theme switch, top right on every page ------------------------------ */
-.page-theme-switch { position: fixed; top: 1rem; right: 1rem; z-index: 50; }
+/* ---- the page bar: <kakao-header-bar>, first in <body> ------------------- */
+:root { --page-bar-height: 4rem; } /* the bar's default height (--kakao-header-bar-height) */
+html { scroll-padding-top: var(--page-bar-height); }
+
+/* An open aside menu pushes <body> aside; the page bar stays put, so its
+   tools stay on screen (the open panel covers its own side of the bar). */
+html[data-kakao-aside-open] kakao-header-bar {
+  margin-left: calc(-1 * var(--kakao-aside-push, 280px));
+  margin-right: var(--kakao-aside-push, 280px);
+  transition: margin var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
+}
+html[data-kakao-aside-open='right'] kakao-header-bar {
+  margin-left: var(--kakao-aside-push, 280px);
+  margin-right: calc(-1 * var(--kakao-aside-push, 280px));
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-kakao-aside-open] kakao-header-bar { transition: none; }
+}
 
 /* Until breadcrumb.js has drawn it, a breadcrumb keeps its row height (as in demo.css). */
 kakao-breadcrumb:not(:defined) { display: block; min-height: 1.75rem; }

@@ -30,6 +30,7 @@
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/aside-menu/aside-menu.js" defer></script>
 <script src="components/dialog/dialog.js" defer></script>
+<script src="components/header-bar/header-bar.js" defer></script>
 <script src="shared/settings-dialog.js" defer></script>
 <script src="components/card/card.js" defer></script>
 <script src="components/color-picker/color-picker.js" defer></script>
@@ -46,25 +47,34 @@
   dl { margin: 0; font-size: 14px; }
   dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
   dd { margin: 0 0 4px; }
+  /* Header bar examples: in a frame, not sticky, their state set by hand. */
+  .ov-bar-frame { overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+  .ov-bar-frame kakao-header-bar { position: relative; z-index: auto; }
+  .ov-bar-busy {
+    background:
+      repeating-linear-gradient(115deg, color-mix(in srgb, var(--accent) 55%, transparent) 0 14px, transparent 14px 34px),
+      var(--card);
+  }
+  .ov-bar-frame [slot="nav"] { color: var(--ink); text-decoration: none; font-size: 0.92rem; }
 </style>
 </head>
 <body>
-<!-- First in the DOM: the menu button is top left, so Tab reaches it before the top-right tools. -->
-<kakao-aside-menu id="siteNav" class="page-nav" label="Components" persistent="1440px">
-  <nav aria-label="Pages">
-    <a href="index.html">Home</a>
-    <a href="kitchen-sink.html">Kitchen sink</a>
-    <a href="styleguide.html">Style guide</a>
-    <a href="tokens.html">Main variables</a>
-    <a href="changelog.html">Changelog</a>
-    <a href="#settings">Settings</a>
-  </nav>
-</kakao-aside-menu>
-<div class="page-tools">
-  <kakao-button class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+<kakao-header-bar>
+  <!-- The site menu: its hamburger shows in the bar's start; the panel is fixed to the left edge. -->
+  <kakao-aside-menu slot="start" id="siteNav" class="page-nav" label="Components" persistent="1440px">
+    <nav aria-label="Pages">
+      <a href="index.html">Home</a>
+      <a href="kitchen-sink.html">Kitchen sink</a>
+      <a href="styleguide.html">Style guide</a>
+      <a href="tokens.html">Main variables</a>
+      <a href="changelog.html">Changelog</a>
+      <a href="#settings">Settings</a>
+    </nav>
+  </kakao-aside-menu>
+  <kakao-button slot="end" class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
     list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
-  <button type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
-</div>
+  <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
+</kakao-header-bar>
 <main>
   <header>
     <div class="demo-nav">
@@ -211,6 +221,39 @@
               <a href="#" onclick="return false">Rating</a>
             </nav>
           </kakao-aside-menu>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Header bar ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Header bar</h2>
+        <code>&lt;kakao-header-bar&gt;</code>
+        <a href="components/header-bar/construction.html">Construction</a>
+        <a href="components/header-bar/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The page's sticky top bar: a <code>&lt;header&gt;</code> with start, title, navigation and end slots. Transparent at the top; once the page scrolls, translucent with a blur behind it (solid under reduced transparency). This page's own bar is one.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Title and tools</h3>
+          <div class="ov-bar-frame">
+            <kakao-header-bar no-scroll-watch>
+              <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
+              <span>Library</span>
+              <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
+            </kakao-header-bar>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Scrolled · <code>scrolled</code></h3>
+          <div class="ov-bar-frame ov-bar-busy">
+            <kakao-header-bar no-scroll-watch scrolled nav-label="Library sections">
+              <a slot="nav" href="components/header-bar/demo.html">Films</a>
+              <a slot="nav" href="components/header-bar/demo.html">Series</a>
+              <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
+            </kakao-header-bar>
+          </div>
         </div>
       </div>
     </article>

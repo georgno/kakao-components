@@ -181,9 +181,12 @@
     .lane .dot { transition: none !important; }
   }
 </style>
+<script src="components/header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main>
   <header>
     <a class="back" href="components.html">← All components</a>
@@ -751,6 +754,7 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>Chip</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Chip list</td><td>-</td><td>n/a</td><td>n/a</td><td class="num">-</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Breadcrumb</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>✓</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Header bar</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">-</td><td>n/a (slotted controls)</td><td class="num">-</td><td>None</td></tr>
 </tbody>
       </table>
     </div>

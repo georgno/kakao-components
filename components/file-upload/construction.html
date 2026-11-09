@@ -15,9 +15,12 @@
 <script src="../button/button.js" defer></script>
 <script src="file-upload.js" defer></script>
 <script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="file-upload" data-source="file-upload.js" data-title="File upload">
   <div class="construction-preview">
     <figure>

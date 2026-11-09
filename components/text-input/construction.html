@@ -16,9 +16,12 @@
 <script src="../button/button.js" defer></script>
     <script src="text-input.js" defer></script>
 <script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="text-input" data-source="text-input.js" data-title="Text input">
   <div class="construction-preview">
     <figure>

@@ -19,9 +19,12 @@
 <style>
   .dark-sample { padding: 1rem; border-radius: 12px; background: var(--kakao-color-page); color: var(--kakao-color-text); }
 </style>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="tabs" data-source="tabs.css" data-title="Tabs">
   <div class="construction-preview">
     <figure>

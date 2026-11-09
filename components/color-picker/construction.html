@@ -16,9 +16,12 @@
 <script src="color-picker.js" defer></script>
 <script src="../../shared/construction.js" defer></script>
 <style>.construction-preview figure { min-height: 0; } #openPicker { margin-bottom: 21rem; }</style>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="color-picker" data-source="color-picker.js" data-title="Color picker">
   <div class="construction-preview">
     <figure>

@@ -31,10 +31,11 @@
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/dialog/dialog.js" defer></script>
+<script src="components/header-bar/header-bar.js" defer></script>
 <script src="shared/settings-dialog.js" defer></script>
 <style>
   /* ---- this page only ---- */
-  main { max-width: 1300px; padding: 4.5rem 1.25rem 5rem; }
+  main { max-width: 1300px; padding: 0.5rem 1.25rem 5rem; } /* below the 4rem page bar */
   /* The glow behind the wall (.portal::before) reaches past the right edge
      at most widths: no sideways scrolling for it. */
   html { overflow-x: hidden; }
@@ -47,14 +48,14 @@
   }
   @media (max-width: 980px) {
     .hero { grid-template-columns: minmax(0, 1fr); gap: 3.5rem; }
-    main { padding-top: 3rem; }
-    /* Stacked, the corner tools keep the page's own 1.25rem gutter, so they
+    main { padding-top: 0; }
+    /* Stacked, the page bar keeps the page's own 1.25rem gutter, so its tools
        line up with the heading and the cards below them. On desktop they stay
        at 1rem, like on every other page. */
-    .page-tools { right: 1.25rem; }
+    kakao-header-bar { --kakao-header-bar-padding-x: 1.25rem; }
     /* Stacked, the glow behind the wall (.portal::before) reaches past the
-       screen edge, and a phone widens its layout to fit it - taking the fixed
-       corner tools off the grid. main spans the screen here, so it clips the
+       screen edge, and a phone widens its layout to fit it - taking the page
+       bar's tools off the grid. main spans the screen here, so it clips the
        glow at the edge. clip, not hidden: no scroll box. (On body this would
        be handed to the viewport and not count.) */
     main { overflow-x: clip; }
@@ -258,11 +259,11 @@
 </style>
 </head>
 <body>
-<div class="page-tools">
-  <kakao-button class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+<kakao-header-bar>
+  <kakao-button slot="end" class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
     list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
-  <button type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
-</div>
+  <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
+</kakao-header-bar>
 <main>
   <div class="hero">
     <section>
@@ -417,7 +418,7 @@
     portal.addEventListener('focusout', release);
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
 
-    // Opening the theme menu in the corner ends the demo too: its items switch
+    // Opening the theme menu in the page bar ends the demo too: its items switch
     // the theme as the pointer passes them.
     document.addEventListener('kakao-button-menu', (event) => {
       if (event.target.closest('[theme-picker]') && event.detail && event.detail.open) {

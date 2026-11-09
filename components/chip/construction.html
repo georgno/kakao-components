@@ -19,9 +19,12 @@
 <style>
   .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
 </style>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="chip" data-source="chip.js" data-title="Chip">
   <div class="construction-preview">
     <figure>

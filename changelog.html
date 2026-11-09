@@ -26,9 +26,12 @@
   .release li strong { color: var(--kakao-color-text, #18181b); }
   .changelog-error { margin-top: 2rem; }
 </style>
+<script src="components/header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main>
   <header>
     <div class="demo-nav">

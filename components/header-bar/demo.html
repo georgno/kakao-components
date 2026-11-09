@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-header-bar - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="header-bar.js" defer></script>
+<style>
+  /* The examples sit in cards: they don't stick, and their scrolled state is
+     set by hand (no-scroll-watch). */
+  .card kakao-header-bar { position: relative; z-index: auto; }
+  .frame {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+  }
+  /* Something busy under the bar, so the frosted look shows. */
+  .busy {
+    background:
+      repeating-linear-gradient(115deg, color-mix(in srgb, var(--accent) 55%, transparent) 0 14px, transparent 14px 34px),
+      var(--card);
+  }
+  .busy kakao-header-bar { margin-bottom: -2.5rem; }
+  .busy .under { padding: 2.75rem 1rem 1rem; font-weight: 600; }
+  .bar-title { font-weight: 600; }
+  [slot="nav"] { color: var(--ink); text-decoration: none; padding: 0.35rem 0.5rem; border-radius: 6px; font-size: 0.92rem; }
+  [slot="nav"]:hover { background: var(--code-bg); }
+  [slot="nav"][aria-current="page"] { color: var(--accent); font-weight: 600; }
+  [slot="nav"]:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+  .tall { min-height: 120vh; }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Header bar"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Header bar</h1>
+    <p><code>&lt;kakao-header-bar&gt;</code> - the page's sticky top bar, a <code>&lt;header&gt;</code> with start, title, navigation and end slots. This page's own bar is one: scroll down and its background turns translucent with a blur behind it.</p>
+  </header>
+
+  <h2>Slots</h2>
+  <p>Start and end hug the edges; the title stays centred while there is room. Empty regions take no space.</p>
+  <div class="grid">
+    <div class="card full">
+      <h3>Tools only · <code>slot="end"</code></h3>
+      <div class="frame">
+        <kakao-header-bar no-scroll-watch>
+          <kakao-button slot="end" label="Theme" variant="secondary" size="sm"></kakao-button>
+          <kakao-button slot="end" icon="fas fa-gear" icon-position="only" aria-label="Settings" variant="ghost" size="sm"></kakao-button>
+        </kakao-header-bar>
+      </div>
+    </div>
+    <div class="card full">
+      <h3>Menu, title and tools · <code>start</code>, default, <code>end</code></h3>
+      <div class="frame">
+        <kakao-header-bar no-scroll-watch>
+          <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
+          <span class="bar-title">Library</span>
+          <kakao-button slot="end" icon="fas fa-magnifying-glass" icon-position="only" aria-label="Search" variant="ghost" size="sm"></kakao-button>
+        </kakao-header-bar>
+      </div>
+    </div>
+    <div class="card full">
+      <h3>Navigation · <code>slot="nav"</code> + <code>nav-label</code></h3>
+      <div class="frame">
+        <kakao-header-bar no-scroll-watch nav-label="Library sections">
+          <span slot="start" class="bar-title">Library</span>
+          <a slot="nav" href="#films" aria-current="page">Films</a>
+          <a slot="nav" href="#series">Series</a>
+          <a slot="nav" href="#docs">Documentaries</a>
+          <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
+        </kakao-header-bar>
+      </div>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The links are wrapped in a <code>&lt;nav&gt;</code> named by <code>nav-label</code>. Without <code>nav</code> children there is no navigation landmark.</p>
+    </div>
+  </div>
+
+  <h2>Scrolled</h2>
+  <p>The bar sets <code>scrolled</code> itself while the window is scrolled down. With <code>no-scroll-watch</code> the page sets it (for previews, or pages that scroll inside a container). Under reduced transparency the background is solid.</p>
+  <div class="grid">
+    <div class="card full">
+      <h3>Over content · <code>scrolled</code></h3>
+      <div class="frame busy">
+        <kakao-header-bar id="manual" no-scroll-watch scrolled>
+          <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
+          <span class="bar-title">Library</span>
+          <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
+        </kakao-header-bar>
+        <div class="under">Content under the bar</div>
+      </div>
+      <div class="toolbar">
+        <kakao-button id="toggleScrolled" variant="secondary" size="sm" pressed></kakao-button>
+      </div>
+    </div>
+  </div>
+  <div class="tall" aria-hidden="true"></div>
+</main>
+<script>
+  customElements.whenDefined('kakao-button').then(() => {
+    const manual = document.getElementById('manual');
+    toggleButton(document.getElementById('toggleScrolled'), 'scrolled', (on) => manual.toggleAttribute('scrolled', on));
+  });
+</script>
+</body>
+</html>

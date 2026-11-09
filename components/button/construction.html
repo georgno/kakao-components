@@ -18,9 +18,12 @@
 <style>
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
 </style>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="button" data-source="button.css" data-title="Button">
   <div class="construction-preview">
     <figure>

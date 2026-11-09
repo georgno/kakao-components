@@ -30,9 +30,12 @@
     --kakao-dialog-max-height: 100%;
   }
 </style>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="dialog" data-source="dialog.js" data-title="Dialog">
   <div class="construction-preview">
     <figure>

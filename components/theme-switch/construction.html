@@ -15,9 +15,12 @@
 <script src="../button/button.js" defer></script>
 <script src="../step-switch/step-switch.js" defer></script>
 <script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="theme-switch" data-source="theme-switch.js" data-title="Theme switch">
   <div class="construction-preview">
     <figure>

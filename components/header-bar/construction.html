@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-header-bar - Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="header-bar.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  /* Previews don't stick; their state is set by hand. */
+  .construction-preview kakao-header-bar { position: relative; z-index: auto; }
+  .hb-frame {
+    overflow: hidden;
+    border: 1px solid var(--kakao-color-line, #e5e7eb);
+    border-radius: 10px;
+    background: var(--kakao-color-page, #f6f7f9);
+  }
+  .hb-busy {
+    background:
+      repeating-linear-gradient(115deg, color-mix(in srgb, var(--kakao-color-primary, #4f46e5) 55%, transparent) 0 14px, transparent 14px 34px),
+      var(--kakao-color-bg, #fff);
+  }
+  .hb-busy kakao-header-bar { margin-bottom: -2.5rem; }
+  .hb-under { padding: 2.75rem 1rem 1rem; font-weight: 600; }
+  .hb-title { font-weight: 600; }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="header-bar" data-source="header-bar.js" data-title="Header bar">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Top of the page</figcaption>
+      <div class="hb-frame">
+        <kakao-header-bar no-scroll-watch>
+          <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
+          <span class="hb-title">Library</span>
+          <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
+        </kakao-header-bar>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Scrolled, over content · <code>scrolled</code></figcaption>
+      <div class="hb-frame hb-busy">
+        <kakao-header-bar no-scroll-watch scrolled>
+          <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
+          <span class="hb-title">Library</span>
+          <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
+        </kakao-header-bar>
+        <div class="hb-under">Content under the bar</div>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-header-bar-bg", "label": "Background at the top", "group": "Colour", "type": "color" },
+    { "property": "--kakao-header-bar-line", "label": "Line at the top", "group": "Colour", "type": "color" },
+    { "property": "--kakao-header-bar-scrolled-bg", "label": "Scrolled background", "group": "Colour", "type": "color", "hint": "solid under reduced transparency" },
+    { "property": "--kakao-header-bar-scrolled-opacity", "label": "Scrolled opacity", "group": "Colour", "type": "percent", "hint": "how much of the background colour" },
+    { "property": "--kakao-header-bar-scrolled-line", "label": "Scrolled line", "group": "Colour", "type": "color" },
+    { "property": "--kakao-header-bar-color", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-header-bar-blur", "label": "Blur", "group": "Effect", "type": "length", "units": ["px"] },
+    { "property": "--kakao-header-bar-saturate", "label": "Saturation", "group": "Effect", "type": "number", "min": 0, "max": 3, "step": 0.05 },
+    { "property": "--kakao-header-bar-duration", "label": "Transition", "group": "Effect", "type": "duration" },
+    { "property": "--kakao-header-bar-height", "label": "Min height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-header-bar-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-header-bar-padding-y", "label": "Padding y", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-header-bar-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-header-bar-z-index", "label": "Layer", "group": "Size & spacing", "type": "number", "min": 0, "max": 100, "step": 1 },
+    { "property": "--kakao-header-bar-title-size", "label": "Title size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-header-bar-title-weight", "label": "Title weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 }
+  ]
+  </script>
+</main>
+</body>
+</html>

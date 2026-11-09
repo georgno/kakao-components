@@ -27,7 +27,7 @@ body {
 main {
   max-width: 880px;
   margin: 0 auto;
-  padding: 3.5rem 1.25rem 4rem;
+  padding: 0.5rem 1.25rem 4rem; /* the page bar above it is 4rem tall */
 }
 
 header { margin-bottom: 2.5rem; }
@@ -209,27 +209,32 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 .placeholder .native > * { max-width: 100%; }
 .component-head kakao-badge { margin-left: auto; }
 
-/* ---- Theme switch, top right on every page ---- */
-.page-theme-switch { position: fixed; top: 1rem; right: 1rem; z-index: 50; }
+/* ---- The page bar: <kakao-header-bar>, first in <body> on every page ----
+   It is sticky and takes its own room at the top, so main starts just below
+   it, and anchor jumps stop below it instead of under it. */
+html { scroll-padding-top: var(--page-bar-height); }
+:root { --page-bar-height: 4rem; } /* the bar's default height (--kakao-header-bar-height) */
 
-/* The site menu's open button sits fixed top left, mirroring the theme switch
-   top right, so it takes no room in the header and every page's breadcrumb
-   starts at the same place. */
-.page-nav .kakao-aside-open { position: fixed; top: 1rem; left: 1rem; z-index: 50; }
+/* The site menu (an aside menu) sits in the bar's start slot: only its open
+   button shows there; the panel is fixed to the viewport edge. */
 .page-nav[open] .kakao-aside-open { visibility: hidden; } /* the open panel has its own close button in that corner */
-.page-nav { display: block; height: 0; } /* button and panel are fixed: no line box left in the flow */
 
-/* The overview puts a settings link beside the switch, in one fixed row. */
-.page-tools {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+/* An open aside menu pushes <body> aside; the page bar stays put, so its
+   tools stay on screen (the open panel covers its own side of the bar). */
+html[data-kakao-aside-open] kakao-header-bar {
+  margin-left: calc(-1 * var(--kakao-aside-push, 280px));
+  margin-right: var(--kakao-aside-push, 280px);
+  transition: margin var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
 }
-.page-tools .page-theme-switch { position: static; }
+html[data-kakao-aside-open='right'] kakao-header-bar {
+  margin-left: var(--kakao-aside-push, 280px);
+  margin-right: calc(-1 * var(--kakao-aside-push, 280px));
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-kakao-aside-open] kakao-header-bar { transition: none; }
+}
+
+/* The tools in the bar's end slot: theme switch or menu, settings gear. */
 .page-icon-link {
   box-sizing: border-box;
   display: inline-flex;

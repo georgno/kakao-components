@@ -8,6 +8,18 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Added
+
+- `kakao-header-bar`: the page's sticky top bar, a `<header>` (banner
+  landmark) with `start`, title (default), `nav` and `end` slots; the `nav`
+  slot is wrapped in a `<nav>` named by `nav-label`. Transparent at the top of
+  the page; once the window is scrolled it sets `scrolled` and turns
+  translucent in the page colour with a backdrop blur and a hairline. Solid
+  under `prefers-reduced-transparency` and without backdrop-filter support,
+  no transition under reduced motion. `no-scroll-watch` lets the page set
+  `scrolled` itself. Settings `--kakao-header-bar-*`, construction page and
+  demo.
+
 ### Changed
 
 - `kakao-checkbox` and `kakao-radio-group`: the box and the dot sit centred on
@@ -16,6 +28,14 @@ pages (landing page, settings, demos), not the components.
   adds no gap under it). Radio options are closer together (8px between
   rows, as between stacked checkboxes): `--kakao-radio-group-option-gap` is
   now 4px and `--kakao-radio-group-option-padding` 2px 8px.
+
+### Site only
+
+- Every page's top controls live in a `kakao-header-bar` instead of fixed
+  corners: theme menu and settings gear (landing page, components), the theme
+  switch (style guide, kitchen sink, main variables, changelog, every demo and
+  construction page). On the components page and the kitchen sink the side
+  menu's hamburger sits at the bar's left. Anchor jumps stop below the bar.
 
 ## [0.2.2] - 2026-11-09
 

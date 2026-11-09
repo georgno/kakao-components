@@ -4,13 +4,14 @@
  * For this project's top-level pages only, like page-cloak.js; not part of any
  * component. It builds one <kakao-dialog> with the theme setting and the links
  * to the construction pages, and opens it from:
- *   - any element with data-settings-open (the gear in the page tools), and
+ *   - any element with data-settings-open (the gear in the page bar,
+ *     <kakao-header-bar>), and
  *   - a link to #settings (a menu entry, or a URL someone shared).
  *
  * The page must load what the dialog uses: button.css, button.js,
  * switch-group.js, multi-dropdown.js and dialog.js.
  *
- *   <button type="button" class="page-icon-link" data-settings-open
+ *   <button slot="end" type="button" class="page-icon-link" data-settings-open
  *     aria-label="Settings" title="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
  *   <script src="shared/settings-dialog.js" defer></script>
  * ============================================================================
@@ -116,7 +117,7 @@
       <h2 slot="header">Settings</h2>
       <div class="site-settings">
         <h3>Themes</h3>
-        <p>The same components in every theme. Pick one with the theme menu in the corner; it is stored in this browser and used on every page.</p>
+        <p>The same components in every theme. Pick one with the theme menu in the page bar; it is stored in this browser and used on every page.</p>
         <div class="site-settings-themes">
           ${THEMES.map(themePanel).join('')}
         </div>

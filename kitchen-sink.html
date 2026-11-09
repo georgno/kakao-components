@@ -30,6 +30,7 @@
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/aside-menu/aside-menu.js" defer></script>
+<script src="components/header-bar/header-bar.js" defer></script>
 <script src="components/dialog/dialog.js" defer></script>
 <script src="components/text-input/text-input.js" defer></script>
 <script src="components/textarea/textarea.js" defer></script>
@@ -74,11 +75,13 @@
 </style>
 </head>
 <body>
-<!-- First in the DOM: the menu button is top left, so Tab reaches it first. -->
-<kakao-aside-menu id="pageNav" class="page-nav" label="Settings sections" persistent="1440px"
-  list-data='[{"value":"plan","label":"Plan"},{"value":"playback","label":"Playback"},{"value":"alerts","label":"Alerts"},{"value":"account","label":"Account"}]'
-  selected="plan"></kakao-aside-menu>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <!-- The section menu: its hamburger shows in the bar's start; the panel is fixed to the left edge. -->
+  <kakao-aside-menu slot="start" id="pageNav" class="page-nav" label="Settings sections" persistent="1440px"
+    list-data='[{"value":"plan","label":"Plan"},{"value":"playback","label":"Playback"},{"value":"alerts","label":"Alerts"},{"value":"account","label":"Account"}]'
+    selected="plan"></kakao-aside-menu>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main>
   <header>
     <div class="demo-nav">

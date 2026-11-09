@@ -23,9 +23,12 @@
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="shared/construction.js" defer></script>
+<script src="components/header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="tokens" data-source="shared/tokens.css" data-title="Main variables">
   <div class="construction-preview">
     <figure>

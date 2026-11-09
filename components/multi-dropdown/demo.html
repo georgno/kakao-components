@@ -22,9 +22,12 @@
   .grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
 </style>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main>
   <header>
     <div class="demo-nav">

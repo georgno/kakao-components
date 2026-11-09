@@ -20,9 +20,12 @@
   kakao-card h3[slot="header"] { font-size: 1.05rem; }
   kakao-card p { margin: 0; opacity: .75; }
 </style>
+<script src="../header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
 <main data-construction data-target="card" data-source="card.js" data-title="Card">
   <div class="construction-preview">
     <figure>
