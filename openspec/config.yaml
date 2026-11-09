@@ -28,7 +28,8 @@ context: |
   on / register, events named kakao-trigger:<name>, declared through register()
   so the wiring is discoverable). Load component-api.js before the components.
   Themes live in shared/themes.css and must pass `node tools/check-themes.js`
-  (WCAG AA). Every page loads tokens.css, themes.css and the theme switch.
+  (WCAG AA). Every page loads tokens.css, themes.css, the theme switch, and
+  shared/page-cloak.js (sync, right after component-api.js) so reloads don't flicker.
   Design rules live in styleguide.html. Never style text in capitals: no
   text-transform: uppercase or small-caps anywhere; labels use sentence case,
   emphasis comes from weight and colour. Acronyms (PDF, URL) are written in

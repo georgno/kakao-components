@@ -39,6 +39,7 @@
 <script src="components/badge/badge.js" defer></script>
 <script src="components/chip/chip.js" defer></script>
 <script src="components/chip-list/chip-list.js" defer></script>
+<script src="components/breadcrumb/breadcrumb.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -81,6 +82,7 @@
         selected="plan"></kakao-aside-menu>
       <a class="back" href="components.html">← All components</a>
     </div>
+    <kakao-breadcrumb id="crumbs" list-data='[["Account", "#account"], ["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
     <h1>Kitchen sink</h1>
     <p>Every component inside one realistic form: the settings page of a made-up streaming subscription. The price updates live.</p>
   </header>
@@ -523,6 +525,12 @@
     // setData() on the switch groups applies in a microtask
     Promise.resolve().then(() => Promise.resolve()).then(updatePrice);
     logLine(log, 'reset');
+  });
+
+  // ---- breadcrumb: the last step follows the selected tab ----
+  document.querySelector('kakao-tabs').addEventListener('tab-change', (e) => {
+    const tab = document.querySelector(`kakao-tab[controls="${e.detail.controls}"]`);
+    if (tab) $('crumbs').items = [['Account', '#account'], ['Settings', '#settings'], [tab.textContent.trim()]];
   });
 
   // ---- aside-menu nav jumps to tabs ----

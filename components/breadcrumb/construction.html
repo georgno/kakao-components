@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-breadcrumb — Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="breadcrumb.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="breadcrumb" data-source="breadcrumb.js" data-title="Breadcrumb">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>House icon (default)</figcaption>
+      <kakao-breadcrumb list-data='[["Library", "#"], ["Sci-fi", "#"], ["Arrival"]]'></kakao-breadcrumb>
+    </figure>
+    <figure>
+      <figcaption>Start text · <code>start="text"</code></figcaption>
+      <kakao-breadcrumb start="text" list-data='[["Settings", "#"], ["Plan"]]'></kakao-breadcrumb>
+    </figure>
+    <figure>
+      <figcaption>Long title, narrow box</figcaption>
+      <div style="max-width:16rem">
+        <kakao-breadcrumb list-data='[["Documentaries about the deep sea and its strangest creatures", "#"], ["Episodes", "#"], ["The Abyss"]]'></kakao-breadcrumb>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-breadcrumb-text", "label": "Link text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-breadcrumb-current", "label": "Current page", "group": "Colour", "type": "color" },
+    { "property": "--kakao-breadcrumb-hover", "label": "Hover text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-breadcrumb-hover-bg", "label": "Hover fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-breadcrumb-separator", "label": "Separator", "group": "Colour", "type": "color" },
+    { "property": "--kakao-breadcrumb-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-breadcrumb-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-breadcrumb-padding-x", "label": "Item padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-breadcrumb-icon-size", "label": "House icon size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-breadcrumb-max-item-width", "label": "Max item width", "group": "Size & spacing", "type": "length", "hint": "longer titles get an ellipsis" },
+    { "property": "--kakao-breadcrumb-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-breadcrumb-current-weight", "label": "Current page weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-breadcrumb-radius", "label": "Hover radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+</main>
+</body>
+</html>

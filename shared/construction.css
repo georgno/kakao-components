@@ -266,3 +266,6 @@ code {
 
 /* ---- theme switch, top right on every page ------------------------------ */
 .page-theme-switch { position: fixed; top: 1rem; right: 1rem; z-index: 50; }
+
+/* Until breadcrumb.js has drawn it, a breadcrumb keeps its row height (as in demo.css). */
+kakao-breadcrumb:not(:defined) { display: block; min-height: 1.75rem; }
