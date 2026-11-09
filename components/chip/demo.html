@@ -22,13 +22,16 @@
   .narrow { width: 12rem; }
   .narrow kakao-chip { width: 100%; }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Chip"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Chip</h1>
     <p><code>&lt;kakao-chip&gt;</code> — a compact label for file types, tokens, tags or filters. Optional swatch, icon and muted secondary text. It can be a link, removable, or both.</p>
   </header>

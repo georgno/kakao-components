@@ -47,14 +47,17 @@
     transition: top var(--kakao-motion-duration, 320ms) cubic-bezier(0.22, 1, 0.36, 1);
   }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <button id="cornerBtn" class="corner-btn" type="button" aria-label="Corner button" title="A fixed button in the corner — ducks below the menu's close button">★</button>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Aside menu"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Aside menu</h1>
     <p><code>&lt;kakao-aside-menu&gt;</code> — a completely hidden slide-in menu. The built-in hamburger button pushes the whole page aside and slides the panel into the freed space; a close button in the panel header closes it again. Light DOM: load <code>aside-menu.css</code> next to the script.</p>
   </header>

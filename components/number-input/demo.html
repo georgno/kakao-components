@@ -15,13 +15,16 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="number-input.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Number input"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Number input</h1>
     <p><code>&lt;kakao-number-input&gt;</code> — wraps a native <code>&lt;input type="number"&gt;</code> with custom stepper arrows; scroll the wheel over the arrows to step. Light DOM: load <code>number-input.css</code> next to the script.</p>
   </header>

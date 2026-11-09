@@ -15,13 +15,16 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="tabs.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Tabs"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Tabs</h1>
     <p><code>&lt;kakao-tabs&gt;</code> + <code>&lt;kakao-tab&gt;</code> — segmented tabs with a bouncing thumb. Each item's <code>controls</code> points at the panel it shows. Press and hold for the glow; disabled tabs shake.</p>
   </header>

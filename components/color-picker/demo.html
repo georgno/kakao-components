@@ -30,13 +30,16 @@
   .with-text { display: flex; align-items: center; gap: 0.5rem; }
   .with-text input { flex: 1; min-width: 0; height: 36px; padding: 0 0.6rem; border: 1px solid var(--kakao-color-border); border-radius: 8px; background: var(--card); color: inherit; font: 0.85rem ui-monospace, monospace; }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Colour picker"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Colour picker</h1>
     <p><code>&lt;kakao-color-picker&gt;</code> — a colour field with a picker. The value is set live while you drag: the field, the form value and <code>input</code> follow every step; <code>change</code> comes when the pick is done. Escape reverts.</p>
   </header>

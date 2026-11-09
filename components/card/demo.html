@@ -19,13 +19,16 @@
   kakao-card h3[slot="header"] { font-size: 1.05rem; letter-spacing: -0.01em; }
   kakao-card p { color: var(--muted); }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Card"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Card</h1>
     <p><code>&lt;kakao-card&gt;</code> — a content card with header, body and footer. When the footer starts with a <code>&lt;kakao-button&gt;</code>, a faint glow in the button's colour rises from behind it.</p>
   </header>

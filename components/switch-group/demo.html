@@ -22,13 +22,16 @@
     --kakao-switch-anim-easing: cubic-bezier(.34, 1.56, .64, 1);
   }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Switch group"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Switch group</h1>
     <p><code>&lt;kakao-switch-group&gt;</code> — on/off switches. Drag the thumb past an end and it squashes into the wall. Tap, drag or use the keyboard.</p>
   </header>

@@ -20,13 +20,16 @@
   .narrow { max-width: 17rem; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Chip list"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Chip list</h1>
     <p><code>&lt;kakao-chip-list&gt;</code> — a wrapping row of chips. When one leaves, it fades out where it was and the others glide to their new places, across row breaks too. The list's height follows instead of jumping.</p>
   </header>

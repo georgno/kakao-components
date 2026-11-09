@@ -22,13 +22,16 @@
   /* the dialog is fixed, so these only keep the demo page tall enough to scroll */
   main { min-height: 130vh; }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Dialog"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Dialog</h1>
     <p><code>&lt;kakao-dialog&gt;</code> — a modal that covers the page and keeps focus inside. Built on a plain fixed overlay rather than <code>&lt;dialog&gt;</code> and <code>showModal()</code>, so it looks and behaves the same on phones, tablets and desktops. Shadow DOM, slots for header, body and footer.</p>
   </header>

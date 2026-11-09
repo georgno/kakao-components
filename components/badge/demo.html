@@ -16,13 +16,16 @@
   .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
   .in-text h3 { margin: 0; font-size: 1rem; }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Badge"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Badge</h1>
     <p><code>&lt;kakao-badge&gt;</code> — a small pill-shaped status label. Not interactive; its colours follow the theme. Try the theme switch.</p>
   </header>

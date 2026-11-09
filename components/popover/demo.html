@@ -30,13 +30,16 @@
     --kakao-popover-focus-ring-color: #fff;
   }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Popover"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Popover</h1>
     <p><code>&lt;kakao-popover&gt;</code> — anchored to any element via <code>for</code>. Click, hover and manual trigger modes, four placements with auto-flip.</p>
   </header>

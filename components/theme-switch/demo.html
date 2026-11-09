@@ -16,13 +16,16 @@
 <script src="../switch-group/switch-group.js" defer></script>
 <script src="../step-switch/step-switch.js" defer></script>
 <script src="../slider/slider.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Theme switch"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Theme switch</h1>
     <p><code>&lt;kakao-theme-switch&gt;</code> — switches the page between colour themes: light, beige, umber, dark, AMOLED, Catppuccin and Forest. The button spreads the new theme as a ripple; the two <code>theme-picker</code> controls cross-fade instead. The choice is remembered; until then the page follows the operating system. Any control can pick a theme, and the two <code>theme-picker</code> forms follow the pointer: a <code>&lt;kakao-button&gt;</code> menu and a <code>&lt;kakao-step-switch&gt;</code>.</p>
   </header>

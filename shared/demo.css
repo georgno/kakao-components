@@ -34,6 +34,13 @@ header { margin-bottom: 2.5rem; }
 h1 { margin: 0 0 0.35rem; font-size: 1.75rem; letter-spacing: -0.02em; }
 header p { margin: 0; color: var(--muted); max-width: 52ch; }
 header .back { display: inline-block; margin-bottom: 1rem; font-size: 0.85rem; }
+/* Demo pages: breadcrumb back to the list, construction link on the right */
+.demo-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; margin-bottom: 1rem; }
+.demo-nav .back { margin-bottom: 0; }
+/* Until breadcrumb.js has drawn it, a breadcrumb is an empty element: keep its
+   row height (one 1.75rem item) so the title below doesn't jump on load. */
+kakao-breadcrumb:not(:defined) { display: block; min-height: 1.75rem; }
+.demo-nav kakao-breadcrumb { margin-left: -0.375rem; } /* house padding (0.28rem) + its inset in the icon (~0.1rem): the stroke lines up with the title */
 
 a { color: var(--accent); }
 
@@ -151,6 +158,13 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 
 /* ---- Theme switch, top right on every page ---- */
 .page-theme-switch { position: fixed; top: 1rem; right: 1rem; z-index: 50; }
+
+/* The site menu's open button sits fixed top left, mirroring the theme switch
+   top right, so it takes no room in the header and every page's breadcrumb
+   starts at the same place. */
+.page-nav .kakao-aside-open { position: fixed; top: 1rem; left: 1rem; z-index: 50; }
+.page-nav[open] .kakao-aside-open { visibility: hidden; } /* the open panel has its own close button in that corner */
+.page-nav { display: block; height: 0; } /* button and panel are fixed: no line box left in the flow */
 
 /* The overview puts a settings link beside the switch, in one fixed row. */
 .page-tools {

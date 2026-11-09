@@ -20,13 +20,16 @@
   /* Three dropdowns side by side need wider columns than the default grid */
   .grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Multi dropdown"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Multi dropdown</h1>
     <p><code>&lt;kakao-multi-dropdown&gt;</code> — separate dropdowns joined in an input group that hold one value, e.g. a date <code>dd.mm.yyyy</code> as Day · Month · Year. Segments can be “Unknown”, so <code>00.00.1990</code> means “sometime in 1990”.</p>
   </header>

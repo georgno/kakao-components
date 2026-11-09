@@ -15,13 +15,16 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
     <script src="textarea.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Textarea"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Textarea</h1>
     <p><code>&lt;kakao-textarea&gt;</code> — A multi-line field with label, hint, error, a character counter and optional auto-growing. Form-associated.</p>
   </header>

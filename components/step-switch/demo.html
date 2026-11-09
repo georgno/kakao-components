@@ -30,13 +30,16 @@
     --kakao-step-switch-tick-color: rgba(255, 255, 255, 0.9);
   }
 </style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Step switch"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Step switch</h1>
     <p><code>&lt;kakao-step-switch&gt;</code> — one thumb, several positions. It snaps to the nearest step; arrow keys move one step, Home and End jump to the ends.</p>
   </header>

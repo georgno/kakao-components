@@ -38,8 +38,8 @@
 <script src="components/badge/badge.js" defer></script>
 <script src="components/chip/chip.js" defer></script>
 <script src="components/chip-list/chip-list.js" defer></script>
+<script src="components/breadcrumb/breadcrumb.js" defer></script>
 <style>
-  .page-nav { margin-bottom: 0.5rem; }
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
   dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
@@ -47,23 +47,25 @@
 </style>
 </head>
 <body>
+<!-- First in the DOM: the menu button is top left, so Tab reaches it before the top-right tools. -->
+<kakao-aside-menu id="siteNav" class="page-nav" label="Components" persistent="1440px">
+  <nav aria-label="Pages">
+    <a href="index.html">Home</a>
+    <a href="kitchen-sink.html">Kitchen sink</a>
+    <a href="styleguide.html">Style guide</a>
+    <a href="tokens.html">Main variables</a>
+    <a href="settings.html">Settings</a>
+  </nav>
+</kakao-aside-menu>
 <div class="page-tools">
   <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
   <a class="page-icon-link" href="settings.html" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></a>
 </div>
 <main>
-  <kakao-aside-menu id="siteNav" class="page-nav" label="Components" persistent="1440px">
-    <nav aria-label="Pages">
-      <a href="index.html">Home</a>
-      <a href="kitchen-sink.html">Kitchen sink</a>
-      <a href="styleguide.html">Style guide</a>
-      <a href="tokens.html">Main variables</a>
-      <a href="settings.html">Settings</a>
-    </nav>
-  </kakao-aside-menu>
-
   <header>
-    <a class="back" href="index.html">← Home</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="index.html" list-data='[["Components"]]'></kakao-breadcrumb>
+    </div>
     <h1>Components</h1>
     <p>Every component, live. Open a demo for the full API playground and an event log. Or see them all together in the <a href="kitchen-sink.html">kitchen sink</a> form. The <a href="styleguide.html">style guide</a> describes the visual rules they follow. Tune the look on each component’s construction page, and the shared <a href="tokens.html">main variables</a> on theirs. <a href="#missing">What’s not built yet</a>.</p>
   </header>
@@ -647,6 +649,27 @@
               <kakao-chip removable>Family friendly</kakao-chip>
             </kakao-chip-list>
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Breadcrumb ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Breadcrumb</h2>
+        <code>&lt;kakao-breadcrumb&gt;</code>
+        <a href="components/breadcrumb/construction.html">Construction</a>
+        <a href="components/breadcrumb/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Where the current page sits, from title/url pairs (<code>["Title", "/url"]</code> or <code>{ title, url }</code>). Starts with a house icon or the start text, which comes from a constant; ends with the current page. Cancelable <code>breadcrumb-navigate</code> for single-page apps.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>House icon</h3>
+          <kakao-breadcrumb list-data='[["Library", "components/breadcrumb/demo.html"], ["Sci-fi", "components/breadcrumb/demo.html"], ["Arrival"]]'></kakao-breadcrumb>
+        </div>
+        <div class="example">
+          <h3>Start text · <code>start="text"</code></h3>
+          <kakao-breadcrumb start="text" list-data='[["Settings", "components/breadcrumb/demo.html"], ["Plan"]]'></kakao-breadcrumb>
         </div>
       </div>
     </article>

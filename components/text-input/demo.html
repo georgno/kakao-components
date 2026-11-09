@@ -15,13 +15,16 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
     <script src="text-input.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Text input"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Text input</h1>
     <p><code>&lt;kakao-text-input&gt;</code> — A single-line field with label, hint, error, optional icon and clear button, three sizes. Form-associated: name, value and required go with the form.</p>
   </header>

@@ -17,13 +17,16 @@
 <!-- optional: when kakao-number-input is loaded first, the slider's number field gets stepper arrows -->
 <script src="../number-input/number-input.js" defer></script>
 <script src="slider.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
 </head>
 <body>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <a class="back" href="../../components.html">← All components</a>
-    <a class="back" href="construction.html">Construction page →</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Slider"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
     <h1>Slider</h1>
     <p><code>&lt;kakao-slider&gt;</code> — value slider with animated friction points per step, a linked number field and a unit badge.</p>
   </header>
