@@ -242,7 +242,7 @@
         --_focus-width: var(--kakao-step-switch-focus-width, 2px);
         --_focus-offset: var(--kakao-step-switch-focus-offset, 2px);
         --_anim-duration: var(--kakao-step-switch-anim-duration, var(--kakao-motion-duration, 320ms));
-        --_anim-easing: var(--kakao-step-switch-anim-easing, cubic-bezier(.5, 1.8, .4, 1));
+        --_anim-easing: var(--kakao-step-switch-anim-easing, var(--kakao-ease-spring, cubic-bezier(.5, 1.8, .4, 1)));
         --_disabled-opacity: var(--kakao-step-switch-disabled-opacity, 0.55);
         --_drag-scale-x: var(--kakao-step-switch-drag-scale-x, 1.2);
         --_drag-scale-y: var(--kakao-step-switch-drag-scale-y, 0.88);

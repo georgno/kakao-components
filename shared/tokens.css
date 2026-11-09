@@ -41,6 +41,8 @@
   --kakao-font-family: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kakao-font-size: 0.95rem;
   --kakao-motion-duration: 320ms;
+  --kakao-ease-standard: cubic-bezier(.2, 0, 0, 1);
+  --kakao-ease-spring: cubic-bezier(.5, 1.8, .4, 1);
   /* @kakao-settings:end */
   color-scheme: light;
 }

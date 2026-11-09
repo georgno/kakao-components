@@ -592,7 +592,7 @@
         --_focus-offset: var(--kakao-theme-switch-focus-offset, 2px);
         --_disabled-opacity: var(--kakao-theme-switch-disabled-opacity, 0.45);
         --_icon-duration: var(--kakao-theme-switch-icon-duration, 500ms);
-        --_icon-easing: var(--kakao-theme-switch-icon-easing, cubic-bezier(.5, 1.8, .4, 1));
+        --_icon-easing: var(--kakao-theme-switch-icon-easing, var(--kakao-ease-spring, cubic-bezier(.5, 1.8, .4, 1)));
         --_ripple-duration: var(--kakao-theme-switch-ripple-duration, 700ms);
         --_ripple-easing: var(--kakao-theme-switch-ripple-easing, cubic-bezier(.4, 0, .2, 1));
         --_ripple-feather: var(--kakao-theme-switch-ripple-feather, 48px);

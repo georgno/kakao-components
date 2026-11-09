@@ -267,7 +267,7 @@
         --_label-font: var(--kakao-switch-label-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_focus-color: var(--kakao-switch-focus-color, var(--kakao-color-focus, #2563eb));
         --_anim-duration: var(--kakao-switch-anim-duration, var(--kakao-motion-duration, 320ms));
-        --_anim-easing: var(--kakao-switch-anim-easing, cubic-bezier(.5, 1.8, .4, 1));
+        --_anim-easing: var(--kakao-switch-anim-easing, var(--kakao-ease-spring, cubic-bezier(.5, 1.8, .4, 1)));
         --_thumb-inset: var(--kakao-switch-thumb-inset, 0.2rem);
         --_item-gap: var(--kakao-switch-item-gap, 0.6rem);
         --_group-padding: var(--kakao-switch-group-padding, 0.25rem);
