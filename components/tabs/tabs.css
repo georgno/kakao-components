@@ -27,6 +27,7 @@ kakao-tabs {
   --_focus-color: var(--kakao-tabs-focus-color, var(--kakao-color-focus, #888));
   --_hold-glow: var(--kakao-tabs-hold-glow, color-mix(in srgb, var(--kakao-color-text, #000000) 12%, transparent));
   --_transition: var(--kakao-tabs-transition, 0.2s);
+  --_scroll-fade: var(--kakao-tabs-scroll-fade, var(--kakao-scroll-fade, 1.5rem));
   /* @kakao-settings:end */
   display: flex;
   position: relative;
@@ -50,6 +51,20 @@ kakao-tabs {
 
 kakao-tabs::-webkit-scrollbar {
   display: none;
+}
+
+/* Edge fade where there is more to scroll (set by syncEdgeFade). */
+kakao-tabs[data-more-left] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade));
+  mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade));
+}
+kakao-tabs[data-more-right] {
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--_scroll-fade));
+  mask-image: linear-gradient(to left, transparent, #000 var(--_scroll-fade));
+}
+kakao-tabs[data-more-left][data-more-right] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade), #000 calc(100% - var(--_scroll-fade)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade), #000 calc(100% - var(--_scroll-fade)), transparent);
 }
 
 kakao-tabs .thumb {

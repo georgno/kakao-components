@@ -65,3 +65,17 @@ Every theme SHALL pass `node tools/check-themes.js`: text pairs at least 4.5:1, 
 #### Scenario: Selecting Catppuccin
 - **WHEN** `<html>` has `data-kakao-theme="catppuccin"`
 - **THEN** components use the Mocha colours and `color-scheme` is dark
+
+### Requirement: Gap below the page bar
+The shared tokens file SHALL define `--kakao-space-below-bar` (default 8px), the space between the page bar's lower edge and the first line of page content, editable on the main-variables page. The project's pages SHALL use it for that gap instead of a literal value.
+
+#### Scenario: Changing the gap
+- **WHEN** `--kakao-space-below-bar` is changed and saved on the main-variables page
+- **THEN** demo, construction and list pages start their content that far below the bar
+
+### Requirement: Scroll edge fade width
+The shared tokens file SHALL define `--kakao-scroll-fade` (default 1.5rem), the width of the edge fade on components that scroll sideways, editable on the main-variables page. Every component with such a fade SHALL default its fade width to it.
+
+#### Scenario: Changing the fade width
+- **WHEN** `--kakao-scroll-fade` is changed on the main-variables page
+- **THEN** the edge fades of the header bar's links, tabs, step switch and switch group all take the new width

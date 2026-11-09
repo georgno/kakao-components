@@ -27,7 +27,7 @@ body {
 main {
   max-width: 880px;
   margin: 0 auto;
-  padding: 0.5rem 1.25rem 4rem; /* the page bar above it is 4rem tall */
+  padding: var(--kakao-space-below-bar, 8px) 1.25rem 4rem; /* starts just below the page bar */
 }
 
 header { margin-bottom: 2.5rem; }
@@ -212,8 +212,10 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 /* ---- The page bar: <kakao-header-bar>, first in <body> on every page ----
    It is sticky and takes its own room at the top, so main starts just below
    it, and anchor jumps stop below it instead of under it. */
+/* The page bar publishes its rendered height (see header-bar.js), so this
+   follows its height setting. */
+:root { --page-bar-height: var(--kakao-header-bar-rendered-height, 0px); }
 html { scroll-padding-top: var(--page-bar-height); }
-:root { --page-bar-height: 4rem; } /* the bar's default height (--kakao-header-bar-height) */
 
 /* The site menu (an aside menu) sits in the bar's start slot: only its open
    button shows there; the panel is fixed to the viewport edge. */

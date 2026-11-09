@@ -149,6 +149,7 @@
  *                                                       fonts without variable weights step
  *                                                       through their available weights)
  *  --kakao-step-switch-label-gap            0.5rem    space between track and labels
+ *  --kakao-step-switch-scroll-fade          1.5rem    edge fade when the switch scrolls sideways
  *  --kakao-step-switch-label-overhang       1.5rem    room for the end labels to centre under the end steps
  *  --kakao-step-switch-focus-color          #2563eb
  *  --kakao-step-switch-focus-width          2px
@@ -205,6 +206,23 @@
   const clamp01 = (n) => Math.min(1, Math.max(0, n));
   const FALSEY = ['false', 'off', '0', 'no'];
 
+  /* Edge fade (styleguide rule: overflowing horizontal scrollers get an edge
+     fade). Marks the physical side(s) with more to scroll as data-more-left /
+     data-more-right; attributes change only when the state does. */
+  function syncEdgeFade(el, enabled = true) {
+    const max = el.scrollWidth - el.clientWidth;
+    let left = false;
+    let right = false;
+    if (enabled && max > 1) {
+      // From the left edge, 0..max: right-to-left scrollLeft runs from 0 down to -max.
+      const x = getComputedStyle(el).direction === 'rtl' ? max + el.scrollLeft : el.scrollLeft;
+      left = x > 1;
+      right = x < max - 1;
+    }
+    if (left !== el.hasAttribute('data-more-left')) el.toggleAttribute('data-more-left', left);
+    if (right !== el.hasAttribute('data-more-right')) el.toggleAttribute('data-more-right', right);
+  }
+
   const TEMPLATE = document.createElement('template');
   TEMPLATE.innerHTML = `
     <style>
@@ -250,6 +268,7 @@
         --_overdrag-scale-x: var(--kakao-step-switch-overdrag-scale-x, 1.5);
         --_overdrag-scale-y: var(--kakao-step-switch-overdrag-scale-y, 1.12);
         --_overdrag-squircle-radius: var(--kakao-step-switch-overdrag-squircle-radius, 28%);
+        --_scroll-fade: var(--kakao-step-switch-scroll-fade, var(--kakao-scroll-fade, 1.5rem));
         /* @kakao-settings:end */
         display: block;
         font: var(--_label-font);
@@ -278,6 +297,19 @@
 
       .root {
         overflow-x: auto;
+      }
+      /* Edge fade where there is more to scroll (set by syncEdgeFade). */
+      .root[data-more-left] {
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade));
+        mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade));
+      }
+      .root[data-more-right] {
+        -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--_scroll-fade));
+        mask-image: linear-gradient(to left, transparent, #000 var(--_scroll-fade));
+      }
+      .root[data-more-left][data-more-right] {
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade), #000 calc(100% - var(--_scroll-fade)), transparent);
+        mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade), #000 calc(100% - var(--_scroll-fade)), transparent);
       }
 
       .track {
@@ -538,6 +570,15 @@
       shadow.appendChild(TEMPLATE.content.cloneNode(true));
 
       this._rootEl = shadow.querySelector('.root');
+      this._fadeFrame = 0;
+      this._queueFade = () => {
+        if (this._fadeFrame) return;
+        this._fadeFrame = requestAnimationFrame(() => {
+          this._fadeFrame = 0;
+          syncEdgeFade(this._rootEl);
+        });
+      };
+      this._rootEl.addEventListener('scroll', this._queueFade, { passive: true });
       this._steps = []; // [{value,label,disabled}]
       this._index = -1; // selected step
       this._connected = false;
@@ -583,6 +624,7 @@
       this._resizeObserver = new ResizeObserver(() => {
         this._updateMinWidth();
         this._updateLabels();
+        this._queueFade();
       });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this._connected && this._updateMinWidth());
       this._resizeObserver.observe(this);
@@ -620,6 +662,8 @@
       r.removeEventListener('lostpointercapture', this._onLostPointerCapture);
       this._abortDrag();
       this._swallow = null;
+      cancelAnimationFrame(this._fadeFrame);
+      this._fadeFrame = 0;
       if (this._raf) {
         cancelAnimationFrame(this._raf);
         this._raf = 0;
@@ -1051,6 +1095,7 @@
      * (The selected label is bold, so the widest width is padded for that.)
      */
     _updateMinWidth() {
+      if (this._queueFade) this._queueFade(); // the scroll width may change
       const body = this._rootEl.querySelector('.body');
       const n = this._steps.length;
       if (!body) return;

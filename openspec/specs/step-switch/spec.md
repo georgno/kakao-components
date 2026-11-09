@@ -43,3 +43,18 @@ A step switch that is created while hidden (for example in an inactive tab) SHAL
 #### Scenario: Revealed tab
 - **WHEN** the tab containing the switch is shown
 - **THEN** the thumb is fully visible and the label of the selected step is highlighted
+
+### Requirement: Edge fade when scrolling sideways
+When the switch does not fit its space and scrolls sideways, it SHALL fade out its edge on each side where more is hidden, SHALL NOT fade a side scrolled to its end, and SHALL show no fade when nothing overflows. The fade SHALL follow scrolling and size changes. Its width SHALL be the `--kakao-step-switch-scroll-fade` setting, which defaults to the main variable `--kakao-scroll-fade`.
+
+#### Scenario: Overflowing, scrolled to the start
+- **WHEN** the switch overflows and is scrolled to its start
+- **THEN** only its end edge is faded
+
+#### Scenario: Scrolled partway
+- **WHEN** it is scrolled partway
+- **THEN** both edges are faded
+
+#### Scenario: Everything fits
+- **WHEN** the switch fits its space
+- **THEN** neither edge is faded

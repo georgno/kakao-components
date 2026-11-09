@@ -5,6 +5,23 @@
 (function () {
   'use strict';
 
+  /* Edge fade (styleguide rule: overflowing horizontal scrollers get an edge
+     fade). Marks the physical side(s) with more to scroll as data-more-left /
+     data-more-right; attributes change only when the state does. */
+  function syncEdgeFade(el, enabled = true) {
+    const max = el.scrollWidth - el.clientWidth;
+    let left = false;
+    let right = false;
+    if (enabled && max > 1) {
+      // From the left edge, 0..max: right-to-left scrollLeft runs from 0 down to -max.
+      const x = getComputedStyle(el).direction === 'rtl' ? max + el.scrollLeft : el.scrollLeft;
+      left = x > 1;
+      right = x < max - 1;
+    }
+    if (left !== el.hasAttribute('data-more-left')) el.toggleAttribute('data-more-left', left);
+    if (right !== el.hasAttribute('data-more-right')) el.toggleAttribute('data-more-right', right);
+  }
+
   if (customElements.get('kakao-tab')) {
     return;
   }
@@ -106,8 +123,19 @@
       this._ro = null;
       this._mo = null;
 
+      this._fadeFrame = 0;
+      this._queueFade = () => {
+        if (this._fadeFrame) return;
+        this._fadeFrame = requestAnimationFrame(() => {
+          this._fadeFrame = 0;
+          syncEdgeFade(this);
+        });
+      };
+      this.addEventListener('scroll', this._queueFade, { passive: true });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this._queueFade());
+
       customElements.whenDefined('kakao-tab').then(() => {
-        this._ro = new ResizeObserver(() => this._repositionThumb());
+        this._ro = new ResizeObserver(() => { this._repositionThumb(); this._queueFade(); });
         this._ro.observe(this);
         this._setupItems();
         this._observeMutations();
@@ -348,6 +376,7 @@
     }
 
     _setupItems() {
+      this._queueFade(); // the tabs may have changed: re-check the overflow
       this._items().forEach(item => this._addListeners(item));
       this._setupKeyboard();
 
@@ -374,6 +403,7 @@
 
     _observeMutations() {
       this._mo = new MutationObserver((mutations) => {
+        this._queueFade();
         mutations.forEach(m => {
           m.addedNodes.forEach(node => {
             if (node instanceof KakaoTab || (node.tagName && node.tagName.toLowerCase() === 'kakao-tab')) {

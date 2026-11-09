@@ -18,7 +18,19 @@ pages (landing page, settings, demos), not the components.
   under `prefers-reduced-transparency` and without backdrop-filter support,
   no transition under reduced motion. `no-scroll-watch` lets the page set
   `scrolled` itself. Settings `--kakao-header-bar-*`, construction page and
-  demo.
+  demo. Links that don't fit scroll sideways and fade out at each edge with
+  more to scroll (`--kakao-header-bar-nav-fade`). A bar that is a direct
+  child of `<body>` publishes its rendered height as
+  `--kakao-header-bar-rendered-height` on the root element. Side padding
+  1.25rem, the page content's gutter.
+- Main variable `--kakao-space-below-bar` (8px): the gap between the page
+  bar and the first line of content.
+- Main variable `--kakao-scroll-fade` (1.5rem): the width of the edge fade
+  on sideways scrollers. `kakao-tabs`, `kakao-step-switch` and
+  `kakao-switch-group` now fade out at each edge where there is more to
+  scroll, none when everything fits (`--kakao-tabs-scroll-fade`,
+  `--kakao-step-switch-scroll-fade`, `--kakao-switch-scroll-fade`; the
+  header bar's `--kakao-header-bar-nav-fade` follows the same variable).
 - `kakao-alert`: an inline message with an icon, an optional title
   (`heading` or `slot="title"`) and the message. `tone` is `info` (default),
   `success`, `warning` or `danger` (alias `error`) and can change at runtime;

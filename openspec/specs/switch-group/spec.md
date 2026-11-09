@@ -54,3 +54,18 @@ An async toggle SHALL show a spinning loader in the thumb only after `loading-de
 #### Scenario: Slow success
 - **WHEN** the promise resolves after the loader appeared
 - **THEN** the loader fades into a checkmark, `switch-change` fires and the thumb settles
+
+### Requirement: Edge fade when scrolling sideways
+When the horizontal row of switches does not fit its space and scrolls sideways, it SHALL fade out its edge on each side where more is hidden, SHALL NOT fade a side scrolled to its end, and SHALL show no fade when nothing overflows. The fade SHALL follow scrolling and size changes. Its width SHALL be the `--kakao-switch-scroll-fade` setting, which defaults to the main variable `--kakao-scroll-fade`.
+
+#### Scenario: Overflowing, scrolled to the start
+- **WHEN** the horizontal row of switches overflows and is scrolled to its start
+- **THEN** only its end edge is faded
+
+#### Scenario: Scrolled partway
+- **WHEN** it is scrolled partway
+- **THEN** both edges are faded
+
+#### Scenario: Everything fits
+- **WHEN** the horizontal row of switches fits its space
+- **THEN** neither edge is faded

@@ -16,7 +16,7 @@ body {
 [data-construction] {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0.25rem 1.25rem 3rem; /* the page bar above it is 4rem tall */
+  padding: var(--kakao-space-below-bar, 8px) 1.25rem 3rem; /* starts just below the page bar */
 }
 
 a { color: var(--kakao-color-primary, #4f46e5); }
@@ -265,7 +265,9 @@ code {
 .construction-chip::part(meta) { font-size: 0.72rem; }
 
 /* ---- the page bar: <kakao-header-bar>, first in <body> ------------------- */
-:root { --page-bar-height: 4rem; } /* the bar's default height (--kakao-header-bar-height) */
+/* The page bar publishes its rendered height (see header-bar.js), so this
+   follows its height setting. */
+:root { --page-bar-height: var(--kakao-header-bar-rendered-height, 0px); }
 html { scroll-padding-top: var(--page-bar-height); }
 
 /* An open aside menu pushes <body> aside; the page bar stays put, so its

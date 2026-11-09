@@ -49,6 +49,15 @@
  * The scroll watch is one passive window scroll listener, coalesced to one
  * check per frame; the attribute only changes when the state does.
  *
+ * Links that don't fit scroll sideways; the nav's edge fades on each side
+ * where there is more to scroll (none when everything fits).
+ *
+ * The page bar (a bar that is a direct child of <body>) publishes its
+ * rendered height as --kakao-header-bar-rendered-height (px) on the root
+ * element, so page CSS can offset anchors and sticky content below it:
+ *   html { scroll-padding-top: var(--kakao-header-bar-rendered-height, 0px); }
+ * It is kept current while the bar resizes and removed with the bar.
+ *
  * ----------------------------------------------------------------------------
  * CSS CUSTOM PROPERTIES (defaults in the settings block; edit on construction.html)
  * ----------------------------------------------------------------------------
@@ -57,6 +66,7 @@
  *  --kakao-header-bar-blur / -saturate                 the frosted look
  *  --kakao-header-bar-color / -height / -padding-x / -padding-y / -gap
  *  --kakao-header-bar-title-size / -title-weight / -z-index / -duration
+ *  --kakao-header-bar-nav-fade                         edge fade of overflowing links
  *
  * Solid instead of translucent under prefers-reduced-transparency and where
  * backdrop-filter is not supported; no transition under reduced motion.
@@ -84,13 +94,14 @@
         --_saturate: var(--kakao-header-bar-saturate, 1.5);
         --_color: var(--kakao-header-bar-color, var(--kakao-color-text, #18181b));
         --_height: var(--kakao-header-bar-height, 4rem);
-        --_padding-x: var(--kakao-header-bar-padding-x, 1rem);
+        --_padding-x: var(--kakao-header-bar-padding-x, 1.25rem);
         --_padding-y: var(--kakao-header-bar-padding-y, 0.5rem);
         --_gap: var(--kakao-header-bar-gap, 0.5rem);
         --_title-size: var(--kakao-header-bar-title-size, 1rem);
         --_title-weight: var(--kakao-header-bar-title-weight, 600);
         --_z-index: var(--kakao-header-bar-z-index, 30);
         --_duration: var(--kakao-header-bar-duration, 200ms);
+        --_nav-fade: var(--kakao-header-bar-nav-fade, var(--kakao-scroll-fade, 1.5rem));
         /* @kakao-settings:end */
         /* Only position and layer here: a filter, transform or backdrop-filter
            on the host or the <header> would make them the containing block of
@@ -165,6 +176,20 @@
         font-weight: 400;
       }
       nav::-webkit-scrollbar { display: none; }
+      /* More links past an edge: that edge fades out (set by the script, in
+         physical sides, so it holds in right-to-left too). */
+      nav[data-more-left] {
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_nav-fade));
+        mask-image: linear-gradient(to right, transparent, #000 var(--_nav-fade));
+      }
+      nav[data-more-right] {
+        -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--_nav-fade));
+        mask-image: linear-gradient(to left, transparent, #000 var(--_nav-fade));
+      }
+      nav[data-more-left][data-more-right] {
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_nav-fade), #000 calc(100% - var(--_nav-fade)), transparent);
+        mask-image: linear-gradient(to right, transparent, #000 var(--_nav-fade), #000 calc(100% - var(--_nav-fade)), transparent);
+      }
       nav[hidden] { display: none; }
 
       /* Solid where translucency is unwanted or the blur is unavailable. */
@@ -210,8 +235,23 @@
       this._navSlot = shadow.querySelector('slot[name="nav"]');
       this._title = shadow.querySelector('.title');
       this._titleSlot = this._title.querySelector('slot');
-      this._navSlot.addEventListener('slotchange', () => this._syncNav());
+      this._navSlot.addEventListener('slotchange', () => { this._syncNav(); this._queueFade(); });
       this._titleSlot.addEventListener('slotchange', () => this._syncNav());
+      this._fadeFrame = 0;
+      this._queueFade = () => {
+        if (this._fadeFrame) return;
+        this._fadeFrame = requestAnimationFrame(() => {
+          this._fadeFrame = 0;
+          this._syncFade();
+        });
+      };
+      this._nav.addEventListener('scroll', this._queueFade, { passive: true });
+      this._sizes = typeof ResizeObserver === 'function' ? new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.target === this._nav) this._syncFade();
+          else this._publishHeight();
+        }
+      }) : null;
       this._frame = 0;
       this._onScroll = () => {
         if (this._frame) return;
@@ -225,10 +265,21 @@
     connectedCallback() {
       this._syncNav();
       this._watch();
+      // The page bar (a direct child of <body>) tells the page its height.
+      this._isPageBar = this.parentElement === document.body;
+      if (this._sizes) {
+        this._sizes.observe(this._nav);
+        if (this._isPageBar) this._sizes.observe(this);
+      }
     }
 
     disconnectedCallback() {
       this._unwatch();
+      if (this._sizes) this._sizes.disconnect();
+      cancelAnimationFrame(this._fadeFrame);
+      this._fadeFrame = 0;
+      if (this._isPageBar) document.documentElement.style.removeProperty('--kakao-header-bar-rendered-height');
+      this._isPageBar = false;
     }
 
     attributeChangedCallback(name) {
@@ -242,6 +293,28 @@
       this._title.hidden = !filled(this._titleSlot);
       this._nav.hidden = !filled(this._navSlot);
       this._nav.setAttribute('aria-label', this.getAttribute('nav-label') || 'Main');
+    }
+
+    /** Fade the nav's edge on each side with more to scroll; attributes change only when the state does. */
+    _syncFade() {
+      const nav = this._nav;
+      const max = nav.scrollWidth - nav.clientWidth;
+      let left = false;
+      let right = false;
+      if (!nav.hidden && max > 1) {
+        // From the left edge, 0..max: right-to-left scrollLeft runs from 0 down to -max.
+        const x = getComputedStyle(nav).direction === 'rtl' ? max + nav.scrollLeft : nav.scrollLeft;
+        left = x > 1;
+        right = x < max - 1;
+      }
+      if (left !== nav.hasAttribute('data-more-left')) nav.toggleAttribute('data-more-left', left);
+      if (right !== nav.hasAttribute('data-more-right')) nav.toggleAttribute('data-more-right', right);
+    }
+
+    _publishHeight() {
+      if (!this._isPageBar) return;
+      const height = this.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--kakao-header-bar-rendered-height', `${Math.round(height * 100) / 100}px`);
     }
 
     _watch() {

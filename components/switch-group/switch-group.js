@@ -96,6 +96,8 @@
  *  --kakao-switch-thumb-shadow       Thumb box-shadow.
  *                                      Default: 0 1px 3px rgba(0,0,0,0.3)
  *  --kakao-switch-gap                Gap between switches.    Default: 1rem
+ *  --kakao-switch-scroll-fade        Edge fade when the row scrolls sideways.
+ *                                    Default: var(--kakao-scroll-fade, 1.5rem)
  *  --kakao-switch-label-color        Label text color.        Default: #111827
  *  --kakao-switch-label-color-on     Label color of a checked switch with color-labels.
  *                                      Default: var(--kakao-switch-track-bg-on)
@@ -237,6 +239,23 @@
   const OVERDRAG_RESISTANCE = 0.75;
   const clamp01 = (n) => Math.min(1, Math.max(0, n));
 
+  /* Edge fade (styleguide rule: overflowing horizontal scrollers get an edge
+     fade). Marks the physical side(s) with more to scroll as data-more-left /
+     data-more-right; attributes change only when the state does. */
+  function syncEdgeFade(el, enabled = true) {
+    const max = el.scrollWidth - el.clientWidth;
+    let left = false;
+    let right = false;
+    if (enabled && max > 1) {
+      // From the left edge, 0..max: right-to-left scrollLeft runs from 0 down to -max.
+      const x = getComputedStyle(el).direction === 'rtl' ? max + el.scrollLeft : el.scrollLeft;
+      left = x > 1;
+      right = x < max - 1;
+    }
+    if (left !== el.hasAttribute('data-more-left')) el.toggleAttribute('data-more-left', left);
+    if (right !== el.hasAttribute('data-more-right')) el.toggleAttribute('data-more-right', right);
+  }
+
   const TEMPLATE = document.createElement('template');
   TEMPLATE.innerHTML = `
     <style>
@@ -280,6 +299,7 @@
         --_overdrag-scale-x: var(--kakao-switch-overdrag-scale-x, 1.5);
         --_overdrag-scale-y: var(--kakao-switch-overdrag-scale-y, 1.12);
         --_overdrag-squircle-radius: var(--kakao-switch-overdrag-squircle-radius, 20%);
+        --_scroll-fade: var(--kakao-switch-scroll-fade, var(--kakao-scroll-fade, 1.5rem));
         /* @kakao-settings:end */
         display: block;
         font: var(--_label-font);
@@ -305,6 +325,19 @@
         flex-direction: column;
         overflow-x: hidden;
         overflow-y: auto;
+      }
+      /* Edge fade where there is more to scroll (set by syncEdgeFade). */
+      .group[data-more-left] {
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade));
+        mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade));
+      }
+      .group[data-more-right] {
+        -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--_scroll-fade));
+        mask-image: linear-gradient(to left, transparent, #000 var(--_scroll-fade));
+      }
+      .group[data-more-left][data-more-right] {
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade), #000 calc(100% - var(--_scroll-fade)), transparent);
+        mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade), #000 calc(100% - var(--_scroll-fade)), transparent);
       }
 
       .item {
@@ -594,6 +627,15 @@
       shadow.appendChild(TEMPLATE.content.cloneNode(true));
 
       this._groupEl = shadow.querySelector('.group');
+      this._fadeFrame = 0;
+      this._queueFade = () => {
+        if (this._fadeFrame) return;
+        this._fadeFrame = requestAnimationFrame(() => {
+          this._fadeFrame = 0;
+          syncEdgeFade(this._groupEl, this._groupEl.getAttribute('data-orientation') !== 'vertical');
+        });
+      };
+      this._groupEl.addEventListener('scroll', this._queueFade, { passive: true });
       this._items = []; // [{name,label,checked,disabled}]
       this._connected = false;
       this._pending = []; // queued public-method calls before connectedCallback
@@ -632,6 +674,7 @@
 
       this._resizeObserver = new ResizeObserver((entries) => {
         this._handleResize(entries);
+        this._queueFade();
       });
       this._resizeObserver.observe(this);
 
@@ -673,6 +716,8 @@
         this._resizeObserver.disconnect();
         this._resizeObserver = null;
       }
+      cancelAnimationFrame(this._fadeFrame);
+      this._fadeFrame = 0;
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -839,6 +884,7 @@
       const raw = this.getAttribute('orientation');
       this._orientation = raw === 'vertical' ? 'vertical' : 'horizontal';
       this._groupEl.setAttribute('data-orientation', this._orientation);
+      this._queueFade();
     }
 
     _syncThumbDrag() {
@@ -887,6 +933,7 @@
 
     _render() {
       this._abortDrag(); // the tracks are about to be replaced
+      this._queueFade(); // runs after the new items are laid out
       const emptyMsg = this._groupEl.querySelector('[data-empty-msg]');
       this._groupEl.innerHTML = '';
 
