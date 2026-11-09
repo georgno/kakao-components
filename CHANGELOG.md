@@ -7,6 +7,8 @@ change a component's API.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-09
+
 ### Added
 
 - `changelog.html`: this file, read and rendered as a page (the landing page
@@ -23,6 +25,9 @@ change a component's API.
 - Page breadcrumbs call the house "Home"; the colour picker is "Color picker".
 - The published site is minified on deploy (`tools/minify-site.mjs`): no
   comments or extra whitespace, about 30% smaller. The repo stays readable.
+- Dialogs: with more than one footer button, the main button always sits in
+  the corner (first when the buttons sit left). The styleguide says so, and
+  the left-aligned demo follows it.
 
 ### Fixed
 
@@ -90,6 +95,7 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/georgno/kakao-components/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/georgno/kakao-components/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/georgno/kakao-components/releases/tag/v0.1.0
