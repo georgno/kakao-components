@@ -394,7 +394,13 @@
       }
       this._mq = window.matchMedia('(min-width: ' + (raw.trim() || '1024px') + ')');
       this._mq.addEventListener('change', this._onMqChange);
+      // Setting up the breakpoint (on load, reconnect or a new persistent
+      // value) is not a change the visitor made: the panel is simply there
+      // (or not), without sliding. A safety net: on a normal load the panel
+      // is usually built and placed before its first style pass anyway.
+      this.setAttribute('data-instant', '');
       this._onMqChange();
+      requestAnimationFrame(() => requestAnimationFrame(() => this.removeAttribute('data-instant')));
     }
 
     _onMqChange() {

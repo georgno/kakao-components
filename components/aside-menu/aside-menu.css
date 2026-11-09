@@ -43,6 +43,17 @@ kakao-aside-menu {
   display: inline-block;
 }
 
+/* Until the script has built the panel, the raw content (e.g. a <nav> of plain
+   links) would show inline in the page: keep it out of sight and out of the flow. */
+kakao-aside-menu:not(:defined) > * {
+  display: none;
+}
+
+/* Setting up the persistent breakpoint (load, reconnect, new value): no slide. */
+kakao-aside-menu[data-instant] .kakao-aside-panel {
+  transition: none;
+}
+
 /* ---------------------------------------------------------------------------
  * The page push: while a menu is open the body slides away by the panel
  * width. The transition makes the push follow the panel, not snap. While
