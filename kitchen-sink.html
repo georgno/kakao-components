@@ -74,21 +74,23 @@
 </style>
 </head>
 <body>
+<!-- First in the DOM: the menu button is top left, so Tab reaches it first. -->
+<kakao-aside-menu id="pageNav" class="page-nav" label="Settings sections" persistent="1440px"
+  list-data='[{"value":"plan","label":"Plan"},{"value":"playback","label":"Playback"},{"value":"alerts","label":"Alerts"},{"value":"account","label":"Account"}]'
+  selected="plan"></kakao-aside-menu>
 <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
 <main>
   <header>
-    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
-      <kakao-aside-menu id="pageNav" label="Settings sections" persistent="1440px"
-        list-data='[{"value":"plan","label":"Plan"},{"value":"playback","label":"Playback"},{"value":"alerts","label":"Alerts"},{"value":"account","label":"Account"}]'
-        selected="plan"></kakao-aside-menu>
-      <a class="back" href="components.html">← All components</a>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="index.html" list-data='[["Kitchen sink"]]'></kakao-breadcrumb>
     </div>
-    <kakao-breadcrumb id="crumbs" list-data='[["Account", "#account"], ["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
     <h1>Kitchen sink</h1>
     <p>Every component inside one realistic form: the settings page of a made-up streaming subscription. The price updates live.</p>
   </header>
 
   <form id="settings" class="card" novalidate>
+    <!-- The made-up app's own breadcrumb; its last step follows the selected tab. -->
+    <kakao-breadcrumb id="crumbs" start="none" label="Settings path" list-data='[["Account", "#account"], ["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
     <kakao-tabs role="tablist">
       <kakao-tab controls="tab-plan" selected>Plan</kakao-tab>
       <kakao-tab controls="tab-playback">Playback</kakao-tab>

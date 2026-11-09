@@ -397,7 +397,7 @@
       <button type="button" class="swatch-btn" part="swatch" aria-haspopup="dialog" aria-expanded="false"></button>
       <input class="hex" part="input" type="text" spellcheck="false" autocomplete="off" />
     </div>
-    <div class="popup" part="popup" role="dialog" aria-label="Colour picker" hidden>
+    <div class="popup" part="popup" role="dialog" aria-label="Color picker" hidden>
       <div class="area" role="slider" tabindex="0" aria-label="Saturation and brightness"
         aria-valuemin="0" aria-valuemax="100"><div class="thumb"></div></div>
       <div class="track hue" role="slider" tabindex="0" aria-label="Hue"
