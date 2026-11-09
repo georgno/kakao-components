@@ -1,5 +1,5 @@
 /*
- * list.js — Web Component
+ * list.js - Web Component
  * ==========================================================
  *
  * USAGE
@@ -16,13 +16,13 @@
  *
  * ATTRIBUTES
  * ----------
- *   width        — Component width in px (default: 260)
- *   height       — Component height in px (default: 360)
- *   item-height  — Row height in px (default: 44)
- *   max-tilt     — Max perspective tilt in degrees (default: 65)
- *   groups       — Show group headings: "true" | "false" (default: true)
- *   list-data    — JSON string: [{group, names[]}]
- *   disabled     — Disables interaction when present
+ *   width        - Component width in px (default: 260)
+ *   height       - Component height in px (default: 360)
+ *   item-height  - Row height in px (default: 44)
+ *   max-tilt     - Max perspective tilt in degrees (default: 65)
+ *   groups       - Show group headings: "true" | "false" (default: true)
+ *   list-data    - JSON string: [{group, names[]}]
+ *   disabled     - Disables interaction when present
  *
  * CSS CUSTOM PROPERTIES
  * ----------------------
@@ -45,14 +45,14 @@
  *
  * METHODS
  * -------
- *   setData(data, withGroups) — Load data programmatically
- *   scrollBy(delta)           — Scroll by delta pixels
+ *   setData(data, withGroups) - Load data programmatically
+ *   scrollBy(delta)           - Scroll by delta pixels
  *
  * EVENTS
  * ------
- *   item-select  — { detail: { name, index } }
- *   item-action  — { detail: { name, index } } (chevron button)
- *   scroll-end   — Fired when scroll reaches top or bottom
+ *   item-select  - { detail: { name, index } }
+ *   item-action  - { detail: { name, index } } (chevron button)
+ *   scroll-end   - Fired when scroll reaches top or bottom
  */
 
 class KakaoList extends HTMLElement {
@@ -92,7 +92,7 @@ class KakaoList extends HTMLElement {
       this._applyAttributes();
     }
 
-    // ResizeObserver — recalculate if component is resized
+    // ResizeObserver - recalculate if component is resized
     if (window.ResizeObserver) {
       this._resizeObserver = new ResizeObserver(this._onResize.bind(this));
       this._resizeObserver.observe(this);
@@ -149,7 +149,7 @@ class KakaoList extends HTMLElement {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         .wrap { position: relative; width: ${w + sb}px; height: ${h}px; }
 
-        /* Clip — visual boundary, hides tilt overflow */
+        /* Clip - visual boundary, hides tilt overflow */
         .clip {
           position: absolute; top: 0; left: 0;
           width: ${w}px; height: ${h}px;
@@ -175,7 +175,7 @@ class KakaoList extends HTMLElement {
         .clip.can-scroll-up::before  { opacity: 1; }
         .clip.can-scroll-down::after { opacity: 1; }
 
-        /* Scroll box — wider than clip so scrollbar renders in the gap */
+        /* Scroll box - wider than clip so scrollbar renders in the gap */
         .scroll-box {
           position: absolute; top: 0; left: 0;
           width: ${w + sb}px; height: ${h}px;

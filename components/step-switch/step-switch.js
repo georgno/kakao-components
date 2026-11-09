@@ -38,11 +38,11 @@
  * THEME SWITCHER
  * ----------------------------------------------------------------------------
  *  With theme-picker the steps become the page's colour themes: the theme
- *  follows the thumb, so every step it crosses changes the page — while being
+ *  follows the thumb, so every step it crosses changes the page - while being
  *  dragged, and while it springs across the ones in between. The thumb follows
  *  when the theme changes elsewhere. theme-switch.js owns that wiring (it must
  *  be on the page too, it listens to step-cross); this component stays generic
- *  — the attribute has no effect on its own.
+ *  - the attribute has no effect on its own.
  *
  *    <kakao-step-switch theme-picker label="Theme" list-data='[
  *      {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"},

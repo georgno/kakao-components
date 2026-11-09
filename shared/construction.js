@@ -1,5 +1,5 @@
 /*
- * construction.js — engine behind every construction page
+ * construction.js - engine behind every construction page
  * ============================================================================
  * A construction page shows a live preview of one component and a settings
  * table for all of its visual custom properties. Values can be literals or

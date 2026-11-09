@@ -9,7 +9,7 @@
  *   size (sm|md|lg), disabled, toggle, pressed, type (button|submit), name, value, form,
  *   href, aria-label
  *
- * Menu (dropdown) form — works with every variant and size:
+ * Menu (dropdown) form - works with every variant and size:
  *   list-data       JSON array of items (never "data"):
  *                     [{ "value": "light", "label": "Light", "disabled"?: true }, …]
  *                   Turns the button into a menu button: a trailing chevron, and a
@@ -26,12 +26,12 @@
  * (data-confirm / data-method) and any custom data-* hooks keep working.
  *
  * Events:
- *   kakao-button-action — bubbles on click (not while loading; not for menu buttons)
- *   kakao-button-select — bubbles when a menu item is picked:
+ *   kakao-button-action - bubbles on click (not while loading; not for menu buttons)
+ *   kakao-button-select - bubbles when a menu item is picked:
  *                         { value, label, previous, x, y } (x / y: viewport point
  *                         of the pick, for effects that start there)
- *   kakao-button-menu   — bubbles when the menu opens or closes: { open }
- *   kakao-button-menu-hover — bubbles when the pointer moves onto a different
+ *   kakao-button-menu   - bubbles when the menu opens or closes: { open }
+ *   kakao-button-menu-hover - bubbles when the pointer moves onto a different
  *                         menu item: { value, label, index }. Mouse only (keys
  *                         and taps don't fire it), so a listener can follow the
  *                         pointer, e.g. a theme menu switching the page as the
@@ -39,8 +39,8 @@
  *                         the menu or the menu was reopened.
  *
  * Public methods:
- *   run(promiseOrFactory, { successHold? }) — loading → success/fail animation
- *   openMenu(), closeMenu()                 — menu buttons only
+ *   run(promiseOrFactory, { successHold? }) - loading → success/fail animation
+ *   openMenu(), closeMenu()                 - menu buttons only
  */
 (function () {
   'use strict';

@@ -1,5 +1,5 @@
 /*
- * themes.css — colour themes for kakao components. Load after tokens.css.
+ * themes.css - colour themes for kakao components. Load after tokens.css.
  *
  * The light theme is the colour variables in tokens.css. Every other theme
  * is a block below, marked with an @theme comment, that overrides them.

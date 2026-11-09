@@ -303,7 +303,7 @@
     <h3 class="sub">Roles <kakao-badge>Now</kakao-badge></h3>
     <div class="roles">
       <div class="card">
-        <h4>Ink — actions</h4>
+        <h4>Ink - actions</h4>
         <p class="small muted">Primary buttons, selected segments, text: <code>--kakao-color-ink</code>. <code>#18181b</code> on <code>#fafafa</code> is 17:1. In dark, ink turns light and its label dark.</p>
         <div class="role-demo">
           <kakao-button label="Save"></kakao-button>
@@ -311,21 +311,21 @@
         </div>
       </div>
       <div class="card">
-        <h4>Accent — state</h4>
+        <h4>Accent - state</h4>
         <p class="small muted">On, selected, filled, in progress: <code>--kakao-color-primary</code>. <code>#4f46e5</code> is 6.3:1 on white; dark uses <code>#818cf8</code>. The slider fill still follows ink, a later decision.</p>
         <div class="role-demo">
           <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
         </div>
       </div>
       <div class="card">
-        <h4>Danger — destruction &amp; errors</h4>
+        <h4>Danger - destruction &amp; errors</h4>
         <p class="small muted">Destructive buttons, invalid fields, failed uploads: <code>--kakao-color-danger</code>, one red for all components. <code>#dc2626</code> is 4.8:1 both ways with white; dark uses <code>#f87171</code> with a dark label.</p>
         <div class="role-demo">
           <kakao-button label="Delete" variant="danger"></kakao-button>
         </div>
       </div>
       <div class="card">
-        <h4>Success — done &amp; confirmed</h4>
+        <h4>Success - done &amp; confirmed</h4>
         <p class="small muted">Passed checks, paid, confirmed: <code>--kakao-color-success</code>. <code>#15803d</code> is 5.0:1 on white; dark uses <code>#4ade80</code>. For status labels, not for "on" (that's the accent).</p>
         <div class="role-demo">
           <kakao-badge tone="success">Yes</kakao-badge> <kakao-chip tone="success">Paid</kakao-chip>
@@ -736,21 +736,21 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>File upload</td><td>B</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14/10/7</td><td>✓</td><td class="num">0.55</td><td>Thumb radius 7 → 6 (nesting rule)</td></tr>
           <tr><td>Multi dropdown</td><td>B</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/6</td><td>Halo ✗</td><td class="num">0.55</td><td>Outline; 44px</td></tr>
           <tr><td>List</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4/6</td><td>✓</td><td class="num">0.5</td><td>Reduced motion</td></tr>
-          <tr><td>Popover</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">—</td><td>Radius 10; overlay shadow instead of none</td></tr>
+          <tr><td>Popover</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">-</td><td>Radius 10; overlay shadow instead of none</td></tr>
           <tr><td>Slider</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">3</td><td>✓</td><td class="num">0.4</td><td>Reduced motion; accent follows ink, not primary</td></tr>
-          <tr><td>Dialog</td><td>—</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14; button corner 33 (13 + 20)</td><td>✓</td><td class="num">—</td><td>None</td></tr>
-          <tr><td>Card</td><td>—</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14</td><td>n/a</td><td class="num">—</td><td>None</td></tr>
-          <tr><td>Theme switch</td><td>—</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
-          <tr><td>Color picker</td><td>—</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/7/14</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
-          <tr><td>Text input</td><td>—</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
-          <tr><td>Textarea</td><td>—</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
-          <tr><td>Checkbox</td><td>—</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6/5/7</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
-          <tr><td>Radio group</td><td>—</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/pill</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
-          <tr><td>Animated number</td><td>—</td><td>Mono by design</td><td>currentColor</td><td class="num">—</td><td>n/a</td><td class="num">—</td><td>None</td></tr>
-                  <tr><td>Badge</td><td>—</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">999</td><td>n/a</td><td class="num">—</td><td>None</td></tr>
-          <tr><td>Chip</td><td>—</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">—</td><td>None</td></tr>
-          <tr><td>Chip list</td><td>—</td><td>n/a</td><td>n/a</td><td class="num">—</td><td>n/a</td><td class="num">—</td><td>None</td></tr>
-          <tr><td>Breadcrumb</td><td>—</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>✓</td><td class="num">—</td><td>None</td></tr>
+          <tr><td>Dialog</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14; button corner 33 (13 + 20)</td><td>✓</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Card</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Theme switch</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
+          <tr><td>Color picker</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/7/14</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
+          <tr><td>Text input</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
+          <tr><td>Textarea</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
+          <tr><td>Checkbox</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6/5/7</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
+          <tr><td>Radio group</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/pill</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
+          <tr><td>Animated number</td><td>-</td><td>Mono by design</td><td>currentColor</td><td class="num">-</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
+                  <tr><td>Badge</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">999</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Chip</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Chip list</td><td>-</td><td>n/a</td><td>n/a</td><td class="num">-</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Breadcrumb</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>✓</td><td class="num">-</td><td>None</td></tr>
 </tbody>
       </table>
     </div>

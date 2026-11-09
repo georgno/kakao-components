@@ -3,7 +3,7 @@
  * ============================================================================
  * A slide-in side menu that is completely hidden until opened. Its hamburger
  * button opens it; the panel then pushes the whole page (the <body>) to the
- * side to make room, slides in, and shows its content — any markup placed
+ * side to make room, slides in, and shows its content - any markup placed
  * inside the element, which the component moves into the panel (it is light
  * DOM, so a <slot> would not work). A close button inside the panel header
  * closes it again.
@@ -44,7 +44,7 @@
  *                 its own trigger and calls .open() / sets `open`).
  *   persistent    Show the panel above a viewport width, as a normal sidebar:
  *                 no hamburger, no close button, no Escape, no focus trap.
- *                 The page is NOT pushed — it stays exactly where it is, so
+ *                 The page is NOT pushed - it stays exactly where it is, so
  *                 pick a width at least (content width + 2 × panel width) or
  *                 the panel covers the left edge. The value is the min width,
  *                 e.g. persistent="1440px" (default 1024px when empty). Below
@@ -63,15 +63,15 @@
  *
  * Events (both bubble and are composed):
  *   aside-change  detail: { open: boolean }
- *   aside-select  detail: { value, item } — a nav item was picked
+ *   aside-select  detail: { value, item } - a nav item was picked
  *
  * Triggers (KakaoComponents, see shared/component-api.js):
- *   aside-open    detail: { position, width, clearance } — fired when the
+ *   aside-open    detail: { position, width, clearance } - fired when the
  *                 menu opens. clearance is how far a fixed element in the
  *                 same viewport corner should move down so it does not
  *                 block the panel's close button.
- *   aside-close   detail: { position } — fired when it starts sliding back.
- *   aside-select  detail: { value } — a nav item was picked.
+ *   aside-close   detail: { position } - fired when it starts sliding back.
+ *   aside-select  detail: { value } - a nav item was picked.
  *
  * ----------------------------------------------------------------------------
  * THEMING
@@ -204,7 +204,7 @@
       this.append(openBtn, panel);
 
       // Light DOM: a <slot> only works inside a shadow root, so the user's
-      // markup is moved into the panel's content area — now and whenever
+      // markup is moved into the panel's content area - now and whenever
       // more is added later.
       this._mo = new MutationObserver(() => this._collectChildren());
       this._mo.observe(this, { childList: true });
@@ -410,7 +410,7 @@
     /**
      * Wide enough: show the panel as a plain sidebar. This deliberately does
      * NOT touch the `open` attribute, so the page is never pushed and nothing
-     * moves — the panel just appears beside the unchanged layout.
+     * moves - the panel just appears beside the unchanged layout.
      */
     _applyPersistent(on) {
       this.toggleAttribute('data-persistent', on);

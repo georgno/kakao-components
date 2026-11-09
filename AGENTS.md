@@ -37,7 +37,7 @@ assistant runs the designer review before replying, without being asked. One
 review per turn, once the edits are done. Each tool has its own copy of the
 designer:
 
-- **pi:** `subagent({ agent: "kakao.ux-ui-designer", task: "<files changed> — brief review" })`
+- **pi:** `subagent({ agent: "kakao.ux-ui-designer", task: "<files changed> - brief review" })`
   (defined in `.pi/agents/kakao.ux-ui-designer.md`; `.pi/APPEND_SYSTEM.md` adds the trigger).
 - **Claude Code:** the Agent tool with `subagent_type: "ux-ui-designer"` and the
   same task text (defined in `.claude/agents/ux-ui-designer.md`).

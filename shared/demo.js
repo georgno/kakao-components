@@ -1,5 +1,5 @@
 /*
- * demo.js — tiny helpers shared by the demo pages.
+ * demo.js - tiny helpers shared by the demo pages.
  */
 
 /**

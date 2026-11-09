@@ -1,5 +1,5 @@
 /*
- * tokens.css — main variables shared by all kakao components.
+ * tokens.css - main variables shared by all kakao components.
  *
  * Components refer to these as var(--kakao-<token>, <fallback>), so they also
  * work on pages that don't load this file. Edit the values on tokens.html

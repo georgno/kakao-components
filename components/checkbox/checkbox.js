@@ -23,7 +23,7 @@
  *  indeterminate Partial state (a dash); cleared as soon as the user clicks.
  *  disabled · required · name · value   Form participation.
  *  size          "sm" | "md" (default) | "lg".
- *  error         Error text under the box (red) — also the validation message.
+ *  error         Error text under the box (red) - also the validation message.
  *
  *  data-* attributes on the host are mirrored onto the inner checkbox.
  *

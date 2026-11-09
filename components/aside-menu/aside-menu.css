@@ -107,7 +107,7 @@ html[data-kakao-aside-open='right'] body {
   display: none;
 }
 
-/* Persistent (wide viewport): a normal sidebar — nothing to open or close.
+/* Persistent (wide viewport): a normal sidebar - nothing to open or close.
    The page is not pushed, so the panel just sits beside the unchanged
    layout: no html data-kakao-aside-open, no body margin. */
 kakao-aside-menu[data-persistent] .kakao-aside-open,

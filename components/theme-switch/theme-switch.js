@@ -45,12 +45,12 @@
  *  theme                       Get / set the current theme by value (no ripple).
  *  themes                      The normalized theme list (read only).
  *  setTheme(value, options?)   options: { animate?: boolean, fade?: boolean,
- *                              x?, y?, storageKey?, source? } — x / y (viewport
+ *                              x?, y?, storageKey?, source? } - x / y (viewport
  *                              px) is where the ripple starts; fade: true
  *                              cross-fades the colours instead of revealing a
  *                              snapshot (see FADE). storageKey overrides where
  *                              the choice is remembered, and "" remembers
- *                              nothing — for a page that changes the theme for
+ *                              nothing - for a page that changes the theme for
  *                              show, not as the visitor's preference. source is
  *                              reported on theme-change (see EVENTS).
  *  next(options?)              Switch to the following theme.
@@ -87,7 +87,7 @@
  *  step the thumb crosses, so dragging through the track steps through the
  *  themes and a pick two steps away flies the thumb through the theme in
  *  between; the menu reports every item the pointer moves onto, so running down
- *  the list previews the themes. All of it — following and picking — uses the
+ *  the list previews the themes. All of it - following and picking - uses the
  *  colour cross-fade (see FADE), never the ripple: a ripple would replace the
  *  live page with snapshots for its whole duration, freezing the very thumb or
  *  item the pointer is on. Values are theme names from shared/themes.css; a
@@ -947,8 +947,8 @@
    * Enter still picks, and a pick that is not a pointer hover (keyboard) keeps
    * the ripple.
    *
-   * Reflections — a step-cross from setValue(), the value attribute, or a theme
-   * change made elsewhere — are ignored (source "api" / "attribute"), so the
+   * Reflections - a step-cross from setValue(), the value attribute, or a theme
+   * change made elsewhere - are ignored (source "api" / "attribute"), so the
    * two directions never fight.
    */
   const PICKER_ATTR = 'theme-picker';

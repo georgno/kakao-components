@@ -1,5 +1,5 @@
 /**
- * Kakao Components — Trigger / Reaction API
+ * Kakao Components - Trigger / Reaction API
  * ============================================================================
  * A tiny pub/sub layer so kakao components can announce what happened and
  * react to each other without knowing each other.

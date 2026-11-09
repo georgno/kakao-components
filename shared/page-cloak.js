@@ -1,5 +1,5 @@
 /**
- * page-cloak.js — show a page only once its components have drawn themselves.
+ * page-cloak.js - show a page only once its components have drawn themselves.
  *
  * Load it synchronously in <head> (not defer), before the component scripts:
  *

@@ -3,14 +3,14 @@
  * Odometer-style rolling digits when the value changes (vanilla, no external deps).
  *
  * Attributes:
- *   value          — initial number (also observed)
- *   locale         — BCP 47 locale for Intl (default: en-US)
- *   decimals       — fixed fraction digits (optional)
- *   duration       — transition ms (default: 600)
- *   sign-display   — auto | always | except-zero | negative (maps to Intl signDisplay)
+ *   value          - initial number (also observed)
+ *   locale         - BCP 47 locale for Intl (default: en-US)
+ *   decimals       - fixed fraction digits (optional)
+ *   duration       - transition ms (default: 600)
+ *   sign-display   - auto | always | except-zero | negative (maps to Intl signDisplay)
  *
  * Methods:
- *   update(n)      — animate to number n (same as setting value)
+ *   update(n)      - animate to number n (same as setting value)
  *
  * CSS custom properties (on the element or any ancestor; defaults live in the
  * settings block of this file, change them on construction.html):

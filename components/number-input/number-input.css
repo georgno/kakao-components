@@ -160,7 +160,7 @@ kakao-number-input[data-touch] .kakao-number-input-arrows[data-align="right"] { 
 kakao-number-input[data-touch] .kakao-number-input-arrows[data-align="split"] { justify-content: space-between; }
 
 /* Ungrouped buttons: they sit on the field's ends and draw no box of their own
-   — the input's border is the only outline. The strip keeps the 1px top/bottom
+   - the input's border is the only outline. The strip keeps the 1px top/bottom
    inset, so a divider stops at the field's border instead of notching through
    it. */
 kakao-number-input[data-touch] .kakao-number-input-arrows:not([data-grouped]) {

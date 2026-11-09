@@ -903,7 +903,7 @@
       const lines = rejected.map((r) => `${r.name}: ${REASON_TEXT[r.reason]}`);
       const shown = lines.slice(0, 3);
       if (lines.length > 3) shown.push(`and ${lines.length - 3} more`);
-      this._messageEl.textContent = `Not added — ${shown.join('; ')}.`;
+      this._messageEl.textContent = `Not added - ${shown.join('; ')}.`;
     }
 
     /* -------------------------- Rendering -------------------------- */

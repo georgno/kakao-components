@@ -3,7 +3,7 @@
  * ============================================================================
  * A modal dialog: covered page, centred panel, focus kept inside. Built from a
  * plain fixed overlay, not from <dialog> + showModal(), so it behaves the same
- * on phone, tablet and desktop — one implementation, no mobile fallback.
+ * on phone, tablet and desktop - one implementation, no mobile fallback.
  * Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
@@ -60,12 +60,12 @@
  * EVENTS
  * ----------------------------------------------------------------------------
  *   dialog-open    detail: {}
- *   dialog-close   detail: { returnValue } — what data-close carried, or what
+ *   dialog-close   detail: { returnValue } - what data-close carried, or what
  *                  close() was given ("cancel" / "dismiss" for Escape and the
  *                  scrim).
  *
  * Triggers (KakaoComponents, see shared/component-api.js):
- *   dialog-open, dialog-close — same details.
+ *   dialog-open, dialog-close - same details.
  *
  * ----------------------------------------------------------------------------
  * ANY ELEMENT WITH data-close CLOSES IT
@@ -83,7 +83,7 @@
  * change them on construction.html.
  *
  * shortcut: the covered page is 45% black, so on amoled (a pure #000 page) it
- * dims nothing — there the raised panel and its edge carry the separation.
+ * dims nothing - there the raised panel and its edge carry the separation.
  * Upgrade to a per-theme scrim if amoled needs the page to recede.
  * ============================================================================
  */

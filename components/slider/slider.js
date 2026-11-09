@@ -4,7 +4,7 @@
  *
  * A production-ready, accessible value slider Web Component with animated
  * friction points, a numeric input, and a unit append.
- * Visual design: system-native, plain — no gradients on interactive elements,
+ * Visual design: system-native, plain - no gradients on interactive elements,
  * no drop shadows, borders for separation.
  *
  * ---
@@ -460,7 +460,7 @@ class KakaoSlider extends HTMLElement {
           pointer-events: none;
         }
 
-        /* Filled portion — flat colour, no gradient */
+        /* Filled portion - flat colour, no gradient */
         .track-fill {
           position: absolute;
           inset: 0 auto 0 0;
@@ -501,12 +501,12 @@ class KakaoSlider extends HTMLElement {
           transition: background var(--_transition-speed) linear, height var(--_transition-speed) linear;
         }
 
-        /* Ticks the fill has passed — slightly darker */
+        /* Ticks the fill has passed - slightly darker */
         .tick.active {
           background: var(--_tick-active-color);
         }
 
-        /* Tick at the exact current value — full height, accent colour */
+        /* Tick at the exact current value - full height, accent colour */
         .tick.at-value {
           height: 6px;
           top: 1px;
@@ -528,7 +528,7 @@ class KakaoSlider extends HTMLElement {
           outline: none;
           left: 0%;
           z-index: 2;
-          /* only transition position & border — no scale, no shadow */
+          /* only transition position & border - no scale, no shadow */
           transition:
             left         var(--_transition-speed) linear,
             border-color var(--_transition-speed) linear;
@@ -543,7 +543,7 @@ class KakaoSlider extends HTMLElement {
           border-width: 2px;
         }
 
-        /* Keyboard focus ring — plain 2px outline offset */
+        /* Keyboard focus ring - plain 2px outline offset */
         .thumb:focus-visible {
           outline: 2px solid var(--_accent);
           outline-offset: 2px;

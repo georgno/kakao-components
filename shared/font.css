@@ -1,5 +1,5 @@
 /*
- * font.css — loads Inter Tight, the project font.
+ * font.css - loads Inter Tight, the project font.
  *
  * Optional. The components never require it: they read the main variable
  * --kakao-font-family (shared/tokens.css), whose stack starts with

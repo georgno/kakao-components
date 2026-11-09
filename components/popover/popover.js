@@ -134,7 +134,7 @@
  * and flushed automatically once connectedCallback runs.
  *
  * ---------------------------------------------------------------------
- * EVENTS (all bubble, all composed — they cross the Shadow DOM
+ * EVENTS (all bubble, all composed - they cross the Shadow DOM
  * boundary so ordinary addEventListener on an ancestor works)
  * ---------------------------------------------------------------------
  *   kakao-popover-open     Fired after the popover opens.
@@ -158,7 +158,7 @@
  *     pattern, with aria-hidden toggled alongside the open state.
  *   - The anchor element receives aria-describedby (hover/tooltip
  *     pattern) or aria-expanded + aria-haspopup="dialog" (click
- *     pattern) automatically — nothing to wire up by hand.
+ *     pattern) automatically - nothing to wire up by hand.
  *   - List rows use role="list"/"listbox" + role="option" with
  *     roving tabindex: only the active row has tabindex="0", everything
  *     else is -1, and ArrowUp/ArrowDown move focus and update
@@ -227,7 +227,7 @@
 
       .surface {
         /* Position (left/top, written directly as px by JS on every
-           scroll/resize/reposition tick) is NEVER transitioned — only
+           scroll/resize/reposition tick) is NEVER transitioned - only
            opacity is. This keeps tracking instant during scroll while
            still allowing a fade-in on open. */
         position: fixed;
@@ -762,7 +762,7 @@
       left = Math.min(Math.max(left, VIEWPORT_PADDING), vw - surfaceRect.width - VIEWPORT_PADDING);
       top = Math.min(Math.max(top, VIEWPORT_PADDING), vh - surfaceRect.height - VIEWPORT_PADDING);
 
-      // Plain left/top, not transform — this property is never subject to
+      // Plain left/top, not transform - this property is never subject to
       // the CSS transition (only opacity is), so position tracking during
       // scroll/resize is instant with zero lag, and the very first
       // position write (in _open, before opacity flips) is correct before
@@ -797,13 +797,13 @@
       if (this._isDisabled()) return;
       if (this._isOpen()) return;
 
-      // Make the surface measurable (but still invisible — opacity is
+      // Make the surface measurable (but still invisible - opacity is
       // still 0 from the base .surface rule) so getBoundingClientRect in
       // reposition() returns real dimensions, then position it correctly
       // BEFORE flipping to data-state="open". Only the opacity transition
       // is animated, and position is plain left/top (never transitioned),
       // so by the time it fades in it is already sitting in its final
-      // spot — no fly-in from (0,0) or from a stale position.
+      // spot - no fly-in from (0,0) or from a stale position.
       this._surfaceEl.dataset.state = 'measuring';
       this._surfaceEl.style.visibility = 'hidden';
       this.reposition();
