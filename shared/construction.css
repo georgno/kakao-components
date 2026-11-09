@@ -251,30 +251,18 @@ code {
 
 .construction-bound { display: flex; align-items: center; gap: 0.25rem; min-width: 0; }
 .construction-bound[hidden] { display: none; }
+/* Token chips are <kakao-chip removable>; the × detaches. Sized to the editor row. */
 .construction-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-width: 0;
   flex: 1;
-  height: 30px;
-  padding: 0 0.55rem;
-  border-radius: 8px;
-  background: #eef2ff;
-  color: #3730a3;
-  font-size: 0.82rem;
+  --kakao-chip-height: 30px;
+  --kakao-chip-radius: 8px;
+  --kakao-chip-font-size: 0.82rem;
+  --kakao-chip-font-weight: 500;
+  --kakao-chip-swatch-size: 0.85rem;
+  --kakao-chip-swatch-radius: 3px;
 }
-.construction-chip > span:not(.construction-chip-swatch) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.construction-chip.is-follow { background: var(--kakao-color-subtle, #f3f4f6); color: var(--kakao-color-text-soft, #374151); }
-.construction-chip.is-follow small { color: var(--kakao-color-muted, #6b7280); }
-.construction-chip small { margin-left: auto; color: #6366f1; font-size: 0.72rem; white-space: nowrap; }
-.construction-chip-swatch {
-  width: 0.85rem;
-  height: 0.85rem;
-  flex: none;
-  border-radius: 3px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
-}
+.construction-chip.is-follow { --kakao-chip-bg: var(--kakao-color-subtle, #f3f4f6); --kakao-chip-text: var(--kakao-color-text-soft, #374151); }
+.construction-chip::part(meta) { font-size: 0.72rem; }
 
 /* ---- theme switch, top right on every page ------------------------------ */
 .page-theme-switch { position: fixed; top: 1rem; right: 1rem; z-index: 50; }

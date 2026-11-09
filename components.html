@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="shared/demo.css" />
 <link rel="stylesheet" href="components/tabs/tabs.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="components/chip-list/chip-list.css" />
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/number-input/number-input.css" />
 <link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
@@ -34,6 +35,9 @@
 <script src="components/textarea/textarea.js" defer></script>
 <script src="components/checkbox/checkbox.js" defer></script>
 <script src="components/radio-group/radio-group.js" defer></script>
+<script src="components/badge/badge.js" defer></script>
+<script src="components/chip/chip.js" defer></script>
+<script src="components/chip-list/chip-list.js" defer></script>
 <style>
   .page-nav { margin-bottom: 0.5rem; }
   article.card { scroll-margin-top: 1rem; }
@@ -567,6 +571,86 @@
       </div>
     </article>
 
+    <!-- ============================== Badge ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Badge</h2>
+        <code>&lt;kakao-badge&gt;</code>
+        <a href="components/badge/construction.html">Construction</a>
+        <a href="components/badge/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Small pill-shaped status label. Tones neutral, primary, success, danger and ink, plus an outline style. Not interactive; follows the theme.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Tones</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
+            <kakao-badge>Draft</kakao-badge>
+            <kakao-badge tone="primary">Proposed</kakao-badge>
+            <kakao-badge tone="success">Yes</kakao-badge>
+            <kakao-badge tone="danger">Issue</kakao-badge>
+            <kakao-badge tone="ink">Rule</kakao-badge>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Outline</h3>
+          <kakao-badge outline>Missing</kakao-badge>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Chip ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Chip</h2>
+        <code>&lt;kakao-chip&gt;</code>
+        <a href="components/chip/construction.html">Construction</a>
+        <a href="components/chip/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Compact label for file types, tokens, tags or filters, with an optional swatch, icon and muted secondary text. It can be a link (<code>href</code>), removable (<code>removable</code>, cancelable <code>chip-remove</code>), or both.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Labels</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
+            <kakao-chip>PDF</kakao-chip>
+            <kakao-chip swatch="#4f46e5">Primary <span slot="meta">#4f46e5</span></kakao-chip>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Link and removable</h3>
+          <kakao-chip-list label="Example chips">
+            <kakao-chip href="components/chip/demo.html"><i slot="icon" class="fas fa-hashtag"></i>Sci-fi</kakao-chip>
+            <kakao-chip removable>HD only</kakao-chip>
+            <kakao-chip removable>Deutsch</kakao-chip>
+          </kakao-chip-list>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Chip list ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Chip list</h2>
+        <code>&lt;kakao-chip-list&gt;</code>
+        <a href="components/chip-list/construction.html">Construction</a>
+        <a href="components/chip-list/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Wrapping row of chips. When one is removed it fades out in place and the others glide to their new positions, across row breaks; the height follows. New chips fade in.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Remove one</h3>
+          <div style="max-width:15rem">
+            <kakao-chip-list label="Example filters">
+              <kakao-chip removable>HD only</kakao-chip>
+              <kakao-chip removable>Deutsch</kakao-chip>
+              <kakao-chip removable tone="primary">New this week</kakao-chip>
+              <kakao-chip removable>Under 30 minutes</kakao-chip>
+              <kakao-chip removable>Family friendly</kakao-chip>
+            </kakao-chip-list>
+          </div>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Text input ============================== -->
     <article class="card">
       <div class="component-head">
@@ -766,7 +850,7 @@
 
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Select</h2><span class="badge">Missing</span></div>
+      <div class="component-head"><h2>Select</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: <code>&lt;select&gt;</code>, <code>&lt;select multiple&gt;</code></p>
       <div class="native">
         <select>
@@ -780,7 +864,7 @@
     </article>
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Combobox</h2><span class="badge">Missing</span></div>
+      <div class="component-head"><h2>Combobox</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: <code>&lt;input list&gt;</code> + <code>&lt;datalist&gt;</code></p>
       <div class="native">
         <input list="ov-datalist" placeholder="Pick or type a city" />
@@ -791,7 +875,7 @@
     </article>
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Date &amp; time picker</h2><span class="badge">Missing</span></div>
+      <div class="component-head"><h2>Date &amp; time picker</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: <code>&lt;input type="date|time|datetime-local"&gt;</code></p>
       <div class="native">
         <input type="date" value="2026-10-30" />
@@ -802,7 +886,7 @@
 
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Progress</h2><span class="badge">Missing</span></div>
+      <div class="component-head"><h2>Progress</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: <code>&lt;progress&gt;</code> (determinate and indeterminate)</p>
       <div class="native">
         <progress value="62" max="100">62%</progress>
@@ -811,7 +895,7 @@
     </article>
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Meter</h2><span class="badge">Missing</span></div>
+      <div class="component-head"><h2>Meter</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: <code>&lt;meter&gt;</code> (low / high / optimum ranges)</p>
       <div class="native">
         <meter min="0" max="100" low="30" high="80" optimum="20" value="18">18 GB</meter>
@@ -821,7 +905,7 @@
     </article>
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Accordion</h2><span class="badge">Missing</span></div>
+      <div class="component-head"><h2>Accordion</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: <code>&lt;details&gt;</code> + <code>&lt;summary&gt;</code> (shared <code>name</code> = exclusive)</p>
       <div class="native">
         <details name="ov-acc" open><summary>Can I cancel anytime?</summary><p>Yes, at the end of the billing period.</p></details>
@@ -830,7 +914,7 @@
     </article>
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Toast / alert</h2><span class="badge">Missing</span></div>
+      <div class="component-head"><h2>Toast / alert</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">No native element: a <code>role="status"</code> / <code>role="alert"</code> region. A non-component version exists as the yii2-base Toast widget.</p>
       <div class="native">
         <div role="status" style="padding: 0.5rem 0.75rem; border: 1px solid var(--line); border-radius: 8px">Settings saved.</div>

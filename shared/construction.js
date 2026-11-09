@@ -58,6 +58,11 @@
         src: new URL('../components/color-picker/color-picker.js', ENGINE_URL).href,
       }));
     }
+    if (!customElements.get('kakao-chip') && !document.querySelector('script[src*="chip.js"]')) {
+      head.append(Object.assign(document.createElement('script'), {
+        src: new URL('../components/chip/chip.js', ENGINE_URL).href,
+      }));
+    }
   }
   ensureDependencies();
   const START_RE = /\/\* @kakao-settings:start prefix=(--kakao-[a-z0-9-]*)[^*]*\*\//;
@@ -294,7 +299,7 @@
 
     buildLayout() {
       const demoHref = this.isTokens ? null : 'demo.html';
-      const overview = this.isTokens ? 'index.html' : '../../index.html';
+      const overview = this.isTokens ? 'components.html' : '../../components.html';
 
       this.saveBtn = button('Save', { variant: 'primary', onClick: () => this.save() });
       this.resetAllBtn = button('Reset all', { onClick: () => this.resetAll() });
@@ -561,32 +566,36 @@
         if (token) tokenBtn.setAttribute('selected', token);
         else tokenBtn.removeAttribute('selected');
         if (!isBound) return;
+        // A removable <kakao-chip>: its × detaches. chip-remove is cancelled, so the
+        // engine re-renders the row instead of the chip removing itself.
+        const chip = (label, value, opts) => el('kakao-chip', {
+          class: opts.className,
+          title: opts.title,
+          tone: opts.tone,
+          swatch: type === 'color' ? value : null,
+          removable: true,
+          'remove-label': opts.removeLabel,
+          'onchip-remove': (e) => { e.preventDefault(); opts.onRemove(); },
+        }, label, el('span', { slot: 'meta', text: value }));
         if (follows) {
           const value = this.resolvedAlias(literal);
-          bound.replaceChildren(
-            el('span', { class: 'construction-chip is-follow', title: literal },
-              type === 'color' ? el('span', { class: 'construction-chip-swatch', style: `background:${value}` }) : null,
-              el('span', { text: `Follows ${follows.label || follows.property}` }),
-              el('small', { text: value })),
-            iconButton('fas fa-xmark', `Give ${entry.label || prop} its own value`, {
-              title: 'Use its own value',
-              onClick: () => this.update(prop, { value: value || literal, token: null }),
-            }),
-          );
+          bound.replaceChildren(chip(`Follows ${follows.label || follows.property}`, value, {
+            className: 'construction-chip is-follow',
+            title: literal,
+            removeLabel: `Give ${entry.label || prop} its own value`,
+            onRemove: () => this.update(prop, { value: value || literal, token: null }),
+          }));
           return;
         }
         const meta = this.tokens.find((t) => t.property === token);
         const value = this.tokenValue(token);
-        const swatch = type === 'color' ? el('span', { class: 'construction-chip-swatch', style: `background:${value}` }) : null;
-        bound.replaceChildren(
-          el('span', { class: 'construction-chip', title: token }, swatch,
-            el('span', { text: meta ? meta.label : token }),
-            el('small', { text: value })),
-          iconButton('fas fa-xmark', `Detach ${entry.label || prop} from ${meta ? meta.label : token}`, {
-            title: 'Detach from main variable',
-            onClick: () => this.unbind(prop),
-          }),
-        );
+        bound.replaceChildren(chip(meta ? meta.label : token, value, {
+          className: 'construction-chip',
+          tone: 'primary',
+          title: token,
+          removeLabel: `Detach ${entry.label || prop} from ${meta ? meta.label : token}`,
+          onRemove: () => this.unbind(prop),
+        }));
       };
       row.markInvalid = (invalid) => row.el.classList.toggle('is-invalid', invalid);
       row.markChanged = (changed) => {

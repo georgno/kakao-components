@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-badge — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<script src="../../shared/demo.js"></script>
+<script src="badge.js" defer></script>
+<style>
+  .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .in-text h3 { margin: 0; font-size: 1rem; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../components.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Badge</h1>
+    <p><code>&lt;kakao-badge&gt;</code> — a small pill-shaped status label. Not interactive; its colours follow the theme. Try the theme switch.</p>
+  </header>
+
+  <h2>Tones</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Soft and solid</h3>
+      <div class="badges">
+        <kakao-badge>Draft</kakao-badge>
+        <kakao-badge tone="primary">Proposed</kakao-badge>
+        <kakao-badge tone="success">Yes</kakao-badge>
+        <kakao-badge tone="danger">Issue</kakao-badge>
+        <kakao-badge tone="ink">Rule</kakao-badge>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Outline · <code>outline</code></h3>
+      <div class="badges">
+        <kakao-badge outline>Missing</kakao-badge>
+        <kakao-badge outline>Draft 0.1 · November 2026</kakao-badge>
+      </div>
+    </div>
+  </div>
+
+  <h2>In context</h2>
+  <div class="grid in-text">
+    <div class="card"><h3>Step switch <kakao-badge tone="primary">New</kakao-badge></h3><p class="muted">Next to a heading, the badge sits on the text's baseline.</p></div>
+    <div class="card"><h3>Combobox <kakao-badge outline>Missing</kakao-badge></h3><p class="muted">Outline for something that's absent or informational.</p></div>
+  </div>
+</main>
+</body>
+</html>

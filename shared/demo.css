@@ -147,15 +147,7 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 .placeholder-native { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.82rem; }
 .placeholder .native { display: grid; gap: 0.5rem; margin-top: 1rem; }
 .placeholder .native > * { max-width: 100%; }
-.badge {
-  margin-left: auto;
-  padding: 0.1rem 0.5rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
+.component-head kakao-badge { margin-left: auto; }
 
 /* ---- Theme switch, top right on every page ---- */
 .page-theme-switch { position: fixed; top: 1rem; right: 1rem; z-index: 50; }

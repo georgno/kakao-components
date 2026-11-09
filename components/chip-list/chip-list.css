@@ -1,0 +1,38 @@
+/*
+ * <kakao-chip-list> styles
+ *
+ * A wrapping row of chips. Light DOM: the chips are its real children, so the
+ * list can read their layout positions and animate them when one leaves.
+ *
+ * Theming: every --kakao-chip-list-* property in the settings block below can be
+ * set on <kakao-chip-list> or any ancestor. The defaults live in that block:
+ * change them on construction.html, not by hand.
+ */
+kakao-chip-list {
+  /* @kakao-settings:start prefix=--kakao-chip-list- (written by construction.html, edit there) */
+  --_gap: var(--kakao-chip-list-gap, 0.4rem);
+  --_row-gap: var(--kakao-chip-list-row-gap, 0.4rem);
+  --_duration: var(--kakao-chip-list-duration, var(--kakao-motion-duration, 320ms));
+  --_easing: var(--kakao-chip-list-easing, var(--kakao-ease-spring, cubic-bezier(.5, 1.8, .4, 1)));
+  --_wrap-easing: var(--kakao-chip-list-wrap-easing, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
+  --_fade-easing: var(--kakao-chip-list-fade-easing, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
+  --_exit-duration: var(--kakao-chip-list-exit-duration, 150ms);
+  --_exit-scale: var(--kakao-chip-list-exit-scale, 0.85);
+  /* @kakao-settings:end */
+  position: relative; /* the chips' offsetParent, so their positions are list-relative */
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--_gap);
+  row-gap: var(--_row-gap);
+  min-width: 0;
+}
+kakao-chip-list[hidden] { display: none; }
+
+/* A copy of a removed chip that fades out where it was, outside the flow. */
+kakao-chip-list > [data-chip-list-ghost] {
+  position: absolute;
+  margin: 0;
+  pointer-events: none;
+}

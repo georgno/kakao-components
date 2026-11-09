@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-badge — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="badge.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="badge" data-source="badge.js" data-title="Badge">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Tones</figcaption>
+      <div class="badges">
+        <kakao-badge>Draft</kakao-badge>
+        <kakao-badge tone="primary">Proposed</kakao-badge>
+        <kakao-badge tone="success">Yes</kakao-badge>
+        <kakao-badge tone="danger">Issue</kakao-badge>
+        <kakao-badge tone="ink">Rule</kakao-badge>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Outline</figcaption>
+      <div class="badges"><kakao-badge outline>Missing</kakao-badge></div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-badge-neutral-bg", "label": "Neutral fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-neutral-text", "label": "Neutral text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-surface", "label": "Surface (tint base)", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-text", "label": "Text (tint base)", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-primary", "label": "Primary", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-success", "label": "Success", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-ink", "label": "Ink", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-on-ink", "label": "Text on ink", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-outline-border", "label": "Outline border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-outline-text", "label": "Outline text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-badge-tint", "label": "Tint", "group": "Colour", "type": "percent", "hint": "tone colour in the fill" },
+    { "property": "--kakao-badge-text-mix", "label": "Text mix", "group": "Colour", "type": "percent", "hint": "tone colour in the text" },
+    { "property": "--kakao-badge-padding-y", "label": "Padding y", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-badge-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-badge-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-badge-font-weight", "label": "Font weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-badge-radius", "label": "Radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+</main>
+</body>
+</html>

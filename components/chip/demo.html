@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-chip — Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<link rel="stylesheet" href="../chip-list/chip-list.css" />
+<script src="chip.js" defer></script>
+<script src="../chip-list/chip-list.js" defer></script>
+<style>
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+  .narrow { width: 12rem; }
+  .narrow kakao-chip { width: 100%; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../components.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Chip</h1>
+    <p><code>&lt;kakao-chip&gt;</code> — a compact label for file types, tokens, tags or filters. Optional swatch, icon and muted secondary text. It can be a link, removable, or both.</p>
+  </header>
+
+  <h2>Labels</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Tones</h3>
+      <div class="chips">
+        <kakao-chip>PDF</kakao-chip>
+        <kakao-chip tone="primary">Primary</kakao-chip>
+        <kakao-chip tone="success">Paid</kakao-chip>
+        <kakao-chip tone="danger">Overdue</kakao-chip>
+        <kakao-chip tone="ink">Pinned</kakao-chip>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Swatch, icon, meta</h3>
+      <div class="chips">
+        <kakao-chip swatch="#4f46e5">Primary <span slot="meta">#4f46e5</span></kakao-chip>
+        <kakao-chip><i slot="icon" class="fas fa-file-pdf"></i>contract.pdf <span slot="meta">2.1 MB</span></kakao-chip>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Long label · ellipsis</h3>
+      <div class="narrow"><kakao-chip swatch="#0d9488">A very long token name that does not fit <span slot="meta">14px</span></kakao-chip></div>
+    </div>
+  </div>
+
+  <h2>Links · <code>href</code></h2>
+  <div class="card">
+    <div class="chips">
+      <kakao-chip href="#sci-fi"><i slot="icon" class="fas fa-hashtag"></i>Sci-fi</kakao-chip>
+      <kakao-chip href="#cooking"><i slot="icon" class="fas fa-hashtag"></i>Cooking</kakao-chip>
+      <kakao-chip href="https://developer.mozilla.org/" target="_blank" rel="noopener">MDN <i slot="meta" class="fas fa-arrow-up-right-from-square"></i></kakao-chip>
+    </div>
+  </div>
+
+  <h2>Removable · <code>removable</code></h2>
+  <p>The × fires a cancelable <code>chip-remove</code>. Unless a listener cancels it, the chip removes itself and focus moves to the next chip's ×. Try it with Tab and Enter. Inside a <a href="../chip-list/demo.html"><code>&lt;kakao-chip-list&gt;</code></a> the other chips glide into place.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Filters</h3>
+      <kakao-chip-list id="filters" label="Active filters">
+        <kakao-chip removable value="hd">HD only</kakao-chip>
+        <kakao-chip removable value="de">Deutsch</kakao-chip>
+        <kakao-chip removable value="new" tone="primary">New this week</kakao-chip>
+        <kakao-chip removable value="tag" href="#documentary">Documentary</kakao-chip>
+      </kakao-chip-list>
+      <kakao-button id="refill" label="Add them back" variant="ghost" size="sm" style="margin-top:.75rem"></kakao-button>
+    </div>
+    <div class="card">
+      <h3>Cancelled · the page decides</h3>
+      <kakao-chip-list id="locked" label="Locked filters">
+        <kakao-chip removable value="billing">Billing receipts</kakao-chip>
+      </kakao-chip-list>
+      <p class="muted" id="locked-out" style="font-size:.85rem">This one cancels the event: billing receipts can't be turned off.</p>
+    </div>
+  </div>
+</main>
+<script>
+  const filters = document.getElementById('filters');
+  const initial = filters.innerHTML;
+  document.getElementById('refill').addEventListener('kakao-button-action', () => { filters.innerHTML = initial; });
+  document.getElementById('locked').addEventListener('chip-remove', (e) => {
+    e.preventDefault();
+    document.getElementById('locked-out').textContent = `Cancelled: "${e.detail.label}" stays.`;
+  });
+</script>
+</body>
+</html>

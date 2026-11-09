@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-chip — Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<script src="chip.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="chip" data-source="chip.js" data-title="Chip">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Tones</figcaption>
+      <div class="chips">
+        <kakao-chip>PDF</kakao-chip>
+        <kakao-chip tone="primary">Primary</kakao-chip>
+        <kakao-chip tone="success">Paid</kakao-chip>
+        <kakao-chip tone="danger">Overdue</kakao-chip>
+        <kakao-chip tone="ink">Pinned</kakao-chip>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Swatch, icon, meta, link</figcaption>
+      <div class="chips">
+        <kakao-chip swatch="#4f46e5">Primary <span slot="meta">#4f46e5</span></kakao-chip>
+        <kakao-chip><i slot="icon" class="fas fa-file-pdf"></i>contract.pdf <span slot="meta">2.1 MB</span></kakao-chip>
+        <kakao-chip href="#"><i slot="icon" class="fas fa-hashtag"></i>Sci-fi</kakao-chip>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Removable</figcaption>
+      <div class="chips" id="preview-removable">
+        <kakao-chip removable>HD only</kakao-chip>
+        <kakao-chip removable tone="primary">New this week</kakao-chip>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-chip-bg", "label": "Fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-meta-text", "label": "Meta text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-surface", "label": "Surface (tint base)", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-primary", "label": "Primary", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-success", "label": "Success", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-ink", "label": "Ink", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-on-ink", "label": "Text on ink", "group": "Colour", "type": "color" },
+    { "property": "--kakao-chip-tint", "label": "Tint", "group": "Colour", "type": "percent", "hint": "tone colour in the fill" },
+    { "property": "--kakao-chip-text-mix", "label": "Text mix", "group": "Colour", "type": "percent", "hint": "tone colour in the text" },
+    { "property": "--kakao-chip-height", "label": "Height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-chip-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-chip-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-chip-swatch-size", "label": "Swatch size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-chip-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-chip-font-weight", "label": "Font weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-chip-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-chip-swatch-radius", "label": "Swatch radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+  <script>
+    // Preview chips stay put: removing them here would empty the preview.
+    document.getElementById('preview-removable').addEventListener('chip-remove', (e) => e.preventDefault());
+  </script>
+</main>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-chip-list — Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="chip-list.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../chip/chip.js" defer></script>
+<script src="chip-list.js" defer></script>
+<style>
+  .narrow { max-width: 17rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <a class="back" href="../../components.html">← All components</a>
+    <a class="back" href="construction.html">Construction page →</a>
+    <h1>Chip list</h1>
+    <p><code>&lt;kakao-chip-list&gt;</code> — a wrapping row of chips. When one leaves, it fades out where it was and the others glide to their new places, across row breaks too. The list's height follows instead of jumping.</p>
+  </header>
+
+  <h2>Removing</h2>
+  <p>Remove chips with the × (mouse, or Tab and Enter). Chips at the start of a row slide up to the end of the row above.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Wrapping into rows</h3>
+      <div class="narrow">
+        <kakao-chip-list id="filters" label="Active filters">
+        <kakao-chip removable value="hd">HD only</kakao-chip>
+        <kakao-chip removable value="de">Deutsch</kakao-chip>
+        <kakao-chip removable value="new" tone="primary">New this week</kakao-chip>
+        <kakao-chip removable value="doc" href="#documentary">Documentary</kakao-chip>
+        <kakao-chip removable value="short">Under 30 minutes</kakao-chip>
+        <kakao-chip removable value="family">Family friendly</kakao-chip>
+        <kakao-chip removable value="sub">With subtitles</kakao-chip>
+        <kakao-chip removable value="4k" tone="success">4K available</kakao-chip>
+        </kakao-chip-list>
+      </div>
+      <div class="actions">
+        <kakao-button id="refill" label="Add them back" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="add" label="Add a chip" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="drop-first" label="Remove the first by script" variant="ghost" size="sm"></kakao-button>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+  const list = document.getElementById('filters');
+  const initial = list.innerHTML;
+  const extras = ['Award winners', 'Live', 'Leaving soon', 'Dolby Atmos', 'Kids'];
+  let n = 0;
+  document.getElementById('refill').addEventListener('kakao-button-action', () => { list.innerHTML = initial; });
+  document.getElementById('add').addEventListener('kakao-button-action', () => {
+    const chip = document.createElement('kakao-chip');
+    chip.setAttribute('removable', '');
+    chip.textContent = extras[n++ % extras.length];
+    list.append(chip);
+  });
+  document.getElementById('drop-first').addEventListener('kakao-button-action', () => {
+    const first = list.querySelector('kakao-chip');
+    if (first) first.remove();
+  });
+</script>
+</body>
+</html>

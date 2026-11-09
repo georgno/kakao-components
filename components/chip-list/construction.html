@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-chip-list — Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="chip-list.css" />
+<script src="../button/button.js" defer></script>
+<script src="../chip/chip.js" defer></script>
+<script src="chip-list.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main data-construction data-target="chip-list" data-source="chip-list.css" data-title="Chip list">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Remove a chip to see the glide · refill below</figcaption>
+      <div style="max-width:17rem">
+        <kakao-chip-list id="preview" label="Preview filters">
+        <kakao-chip removable value="hd">HD only</kakao-chip>
+        <kakao-chip removable value="de">Deutsch</kakao-chip>
+        <kakao-chip removable value="new" tone="primary">New this week</kakao-chip>
+        <kakao-chip removable value="doc" href="#documentary">Documentary</kakao-chip>
+        <kakao-chip removable value="short">Under 30 minutes</kakao-chip>
+        <kakao-chip removable value="family">Family friendly</kakao-chip>
+        <kakao-chip removable value="sub">With subtitles</kakao-chip>
+        <kakao-chip removable value="4k" tone="success">4K available</kakao-chip>
+        </kakao-chip-list>
+      </div>
+      <kakao-button id="refill" label="Add them back" variant="ghost" size="sm" style="margin-top:.75rem"></kakao-button>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-chip-list-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-chip-list-row-gap", "label": "Row gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-chip-list-duration", "label": "Glide", "group": "Motion", "type": "duration", "hint": "chips moving and the height change" },
+    { "property": "--kakao-chip-list-easing", "label": "Glide easing (same row)", "group": "Motion", "type": "easing" },
+    { "property": "--kakao-chip-list-wrap-easing", "label": "Glide easing (row change)", "group": "Motion", "type": "easing", "hint": "no overshoot" },
+    { "property": "--kakao-chip-list-fade-easing", "label": "Fade & height easing", "group": "Motion", "type": "easing" },
+    { "property": "--kakao-chip-list-exit-duration", "label": "Fade out", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-chip-list-exit-scale", "label": "Fade-out scale", "group": "Motion", "type": "number" }
+  ]
+  </script>
+  <script>
+    const preview = document.getElementById('preview');
+    const initial = preview.innerHTML;
+    document.getElementById('refill').addEventListener('kakao-button-action', () => { preview.innerHTML = initial; });
+  </script>
+</main>
+</body>
+</html>
