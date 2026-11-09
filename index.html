@@ -29,6 +29,9 @@
 <script src="components/chip-list/chip-list.js" defer></script>
 <script src="components/badge/badge.js" defer></script>
 <script src="components/file-upload/file-upload.js" defer></script>
+<script src="components/multi-dropdown/multi-dropdown.js" defer></script>
+<script src="components/dialog/dialog.js" defer></script>
+<script src="shared/settings-dialog.js" defer></script>
 <style>
   /* ---- this page only ---- */
   main { max-width: 1300px; padding: 4.5rem 1.25rem 5rem; }
@@ -258,7 +261,7 @@
 <div class="page-tools">
   <kakao-button class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
     list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
-  <a class="page-icon-link" href="settings.html" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></a>
+  <button type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
 </div>
 <main>
   <div class="hero">

@@ -29,7 +29,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir _site
-          cp -r index.html components.html kitchen-sink.html tokens.html styleguide.html settings.html changelog.html CHANGELOG.md components shared _site/
+          cp -r index.html components.html kitchen-sink.html tokens.html styleguide.html changelog.html CHANGELOG.md components shared _site/
 
       # Minify the copy (never the repo): no comments or extra whitespace in
       # HTML, JS and CSS. The minifiers are installed for this run only; the

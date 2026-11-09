@@ -30,6 +30,7 @@
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/aside-menu/aside-menu.js" defer></script>
 <script src="components/dialog/dialog.js" defer></script>
+<script src="shared/settings-dialog.js" defer></script>
 <script src="components/card/card.js" defer></script>
 <script src="components/color-picker/color-picker.js" defer></script>
 <script src="components/text-input/text-input.js" defer></script>
@@ -56,12 +57,13 @@
     <a href="styleguide.html">Style guide</a>
     <a href="tokens.html">Main variables</a>
     <a href="changelog.html">Changelog</a>
-    <a href="settings.html">Settings</a>
+    <a href="#settings">Settings</a>
   </nav>
 </kakao-aside-menu>
 <div class="page-tools">
-  <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
-  <a class="page-icon-link" href="settings.html" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></a>
+  <kakao-button class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+    list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+  <button type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
 </div>
 <main>
   <header>

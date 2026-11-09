@@ -190,6 +190,11 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
   font-size: 1.05rem;
   text-decoration: none;
   transition: background-color 150ms ease;
+  /* also used on a <button> (the settings gear) */
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
 }
 .page-icon-link:hover { background: var(--kakao-color-subtle-strong, #e6e6e8); }
 .page-icon-link:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }

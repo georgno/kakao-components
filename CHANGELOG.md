@@ -16,7 +16,12 @@ pages (landing page, settings, demos), not the components.
 
 ### Site only
 
-- Landing page: a theme menu in the corner instead of the theme switch.
+- Settings are a dialog instead of a page: the gear (landing page and
+  component list) and any link to `#settings` open it
+  (`shared/settings-dialog.js`). It previews the seven themes, like the style
+  guide, and links to the construction pages. `settings.html` is gone.
+- Landing page and component list: a theme menu in the corner instead of the
+  theme switch.
 - Landing page wall: a file upload (Subtitles), a chip list with a count
   badge (Library), and async Playback switches whose demo starts on load and
   holds while a menu is open. The Plan card moved to the bottom row, a blank
