@@ -42,11 +42,16 @@
  *                 buttons sit.
  *   full-width    Footer buttons share the full width in equal parts (one
  *                 button covers it all). Overrides button-position.
+
  *   contained     Render inside the nearest positioned ancestor instead of over
  *                 the viewport, and drop the modal machinery: no page scroll
  *                 lock, no focus move, no focus trap, no Escape. For previews
  *                 and embedded shells that show a dialog as part of the page.
  *                 Read when the dialog opens.
+ *
+ * FOOTER RULE: with more than one footer button, the main (filled) button
+ * sits in the corner: last for right (default) and full-width, first for
+ * left; centred, it comes last. Its corner then rounds to match it.
  *
  * ----------------------------------------------------------------------------
  * METHODS

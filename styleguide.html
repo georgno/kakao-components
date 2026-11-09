@@ -707,11 +707,11 @@ KakaoComponents.meta('kakao-card');</pre>
       </div>
       <div class="card">
         <h3>Dialog footer <kakao-badge tone="ink">Rule</kakao-badge></h3>
-        <p class="small"><code>button-position</code> puts the footer buttons left, center or right (default); <code>full-width</code> splits the whole width equally between them. The main button comes last, on the right. A bottom corner rounds to button radius + padding only when a filled button sits in it; ghost buttons and button-free corners keep the dialog radius. The dialog is the only component that forces its own spacing on slotted content (header, body, footer margins are reset over page styles); the card doesn't.</p>
+        <p class="small"><code>button-position</code> puts the footer buttons left, center or right (default); <code>full-width</code> splits the whole width equally between them. With more than one button, the main (filled) button always sits in the corner: last when they sit right (the default) or fill the width, first when they sit left; centred buttons have no corner, so it comes last. A bottom corner rounds to button radius + padding only when a filled button sits in it; ghost buttons and button-free corners keep the dialog radius. The dialog is the only component that forces its own spacing on slotted content (header, body, footer margins are reset over page styles); the card doesn't.</p>
       </div>
       <div class="card">
         <h3>Button order <kakao-badge tone="ink">Rule</kakao-badge></h3>
-        <p class="small">Dialogs: main button last, on the right. Cards: main button first in the footer, which is also what gives the card its glow.</p>
+        <p class="small">Dialogs: the main button sits in the corner (last on the right, first on the left; see Dialog footer). Cards: main button first in the footer, which is also what gives the card its glow.</p>
       </div>
       <div class="card">
         <h3>Naming form fields <kakao-badge tone="ink">Rule</kakao-badge></h3>
