@@ -349,7 +349,8 @@
            the off end, +1 = past the on end), --_over-abs is its magnitude. */
         --_over: 0;
         --_over-abs: 0;
-        transition: background-color var(--_anim-duration) var(--_anim-easing);
+        /* Colour takes the standard curve; the spring is for the thumb's move. */
+        transition: background-color var(--_anim-duration) var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1));
       }
 
       .track[aria-checked="true"] {

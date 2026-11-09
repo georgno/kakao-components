@@ -295,7 +295,8 @@
         --_over: 0;
         --_over-abs: 0;
         background: var(--_track-bg);
-        transition: background-color var(--_anim-duration) var(--_anim-easing);
+        /* Colour takes the standard curve; the spring is for the thumb's move. */
+        transition: background-color var(--_anim-duration) var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1));
       }
 
       /* Opt-in (color-shift attribute): the track blends from the "off" to the "on"
