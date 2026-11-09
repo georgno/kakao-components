@@ -2,15 +2,20 @@
 
 Web components plus shared tokens and themes. No build step: open the HTML
 directly, or run `node tools/construct-server.js` (port 8790) to use the
-construction pages. Most components are light DOM (no shadow root) because they
-style page-level things; card, dialog, text input, textarea and the pickers use
-a shadow root with slots.
+construction pages. Four components are light DOM (no shadow root) because they
+style page-level things: aside-menu, button, number-input and tabs. All the
+others render into a shadow root (with slots where they take content).
 
 ## Rules that bite
 
-- One component per folder: `components/<name>/{<name>.js,<name>.css,demo.html,construction.html}`.
-- Component defaults live in the `@kakao-settings` block of its CSS and are edited
-  through its `construction.html`, not by hand.
+- One component per folder: `components/<name>/{<name>.js,demo.html,construction.html}`.
+  Light DOM components add `<name>.css`; shadow DOM components keep their CSS in a
+  `<style>` inside the shadow root, written in `<name>.js` (page CSS cannot reach in,
+  and the component stays one inlineable file). Theme and token values still reach
+  them, because `--kakao-*` custom properties inherit through the shadow boundary.
+- Component defaults live in the component's one `@kakao-settings` block (in
+  `<name>.css` for light DOM, in `<name>.js` for shadow DOM) and are edited through
+  its `construction.html`, not by hand.
 - Shared colours come from `shared/tokens.css`; every theme in `shared/themes.css`
   must keep passing `node tools/check-themes.js`.
 - A new component is added to `components.html` (the list page), to the styleguide's
