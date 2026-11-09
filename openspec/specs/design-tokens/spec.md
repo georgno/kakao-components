@@ -31,7 +31,7 @@ Components SHALL NOT require the tokens file: every default that refers to a mai
 - **THEN** it renders with its fallback values and no errors
 
 ### Requirement: Colour roles
-The main variables SHALL include the colour roles text, text-soft, muted, page, bg (surface), raised, subtle, subtle-strong, line, border, ink, ink-hover, on-ink, danger, danger-hover, on-danger, success, primary and focus. `shared/tokens.css` SHALL hold their light values. Success text SHALL meet 4.5:1 on the surface in every theme.
+The main variables SHALL include the colour roles text, text-soft, muted, page, bg (surface), raised, subtle, subtle-strong, line, border, ink, ink-hover, on-ink, danger, danger-hover, on-danger, success, warning, primary and focus. `shared/tokens.css` SHALL hold their light values. Success and warning text SHALL meet 4.5:1 on the surface in every theme.
 
 #### Scenario: Roles on the tokens page
 - **WHEN** the main-variables page is opened
@@ -40,6 +40,10 @@ The main variables SHALL include the colour roles text, text-soft, muted, page, 
 #### Scenario: Success contrast
 - **WHEN** `node tools/check-themes.js` runs
 - **THEN** success on bg passes 4.5:1 in every theme
+
+#### Scenario: Warning contrast
+- **WHEN** `node tools/check-themes.js` runs
+- **THEN** warning on bg passes 4.5:1 in every theme
 
 ### Requirement: Themes
 `shared/themes.css` SHALL define every theme other than light as a block that overrides the colour roles and sets `color-scheme`. `data-kakao-theme="<name>"` SHALL select a theme on `<html>` or on any element. Without the attribute, the page SHALL follow `prefers-color-scheme`. `data-bs-theme="dark"` SHALL select the dark theme when no kakao theme is set. `prefers-contrast: more` SHALL strengthen muted, border and line in every theme.

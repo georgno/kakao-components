@@ -42,6 +42,7 @@
 <script src="components/chip/chip.js" defer></script>
 <script src="components/chip-list/chip-list.js" defer></script>
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
+<script src="components/alert/alert.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -908,6 +909,38 @@
       </div>
     </article>
 
+    <!-- ============================== Alert ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Alert</h2>
+        <code>&lt;kakao-alert&gt;</code>
+        <a href="components/alert/construction.html">Construction</a>
+        <a href="components/alert/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">An inline message in the page: icon, optional title, message. Four tones with the matching role (<code>status</code> or <code>alert</code>), an optional close button, and info and success alerts fade out after 8 seconds unless the pointer or focus is on them.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Tones · <code>tone</code></h3>
+          <div style="display:grid;gap:.6rem">
+            <kakao-alert duration="0">A new version is available.</kakao-alert>
+            <kakao-alert tone="success" duration="0">Settings saved.</kakao-alert>
+            <kakao-alert tone="warning" heading="Your trial ends in 3 days">Add a payment method to keep your projects.</kakao-alert>
+            <kakao-alert tone="danger" heading="Payment failed">Your card was declined.</kakao-alert>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Closable · <code>dismissible</code></h3>
+          <kakao-alert id="ov-alert-close" tone="success" dismissible duration="0">Your profile is public now.</kakao-alert>
+          <kakao-button id="ov-alert-back" label="Show it again" variant="ghost" size="sm" style="margin-top:.5rem"></kakao-button>
+        </div>
+        <div class="example">
+          <h3>Fades out · <code>duration</code></h3>
+          <div id="ov-alert-stack" style="display:grid;gap:.5rem"></div>
+          <kakao-button id="ov-alert-add" label="Save (4s alert)" variant="secondary" size="sm" style="margin-top:.5rem"></kakao-button>
+        </div>
+      </div>
+    </article>
+
   </div>
 
   <!-- ============================== Not built yet ============================== -->
@@ -984,11 +1017,10 @@
     </article>
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Toast / alert</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">No native element: a <code>role="status"</code> / <code>role="alert"</code> region. A non-component version exists as the yii2-base Toast widget.</p>
+      <div class="component-head"><h2>Toast</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">No native element: a floating stack of <code>role="status"</code> messages in a corner of the viewport, built on <code>&lt;kakao-alert&gt;</code>. A non-component version exists as the yii2-base Toast widget.</p>
       <div class="native">
-        <div role="status" style="padding: 0.5rem 0.75rem; border: 1px solid var(--line); border-radius: 8px">Settings saved.</div>
-        <div role="alert" style="padding: 0.5rem 0.75rem; border: 1px solid #fca5a5; border-radius: 8px">Payment failed.</div>
+        <div role="status" style="padding: 0.5rem 0.75rem; border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 4px 12px rgb(0 0 0 / 0.12)">Settings saved.</div>
       </div>
     </article>
 
@@ -1030,6 +1062,21 @@
 <script>
   // The sidebar lists every component on this page; the list comes from the
   // DOM, so a new component card shows up without touching this script.
+  // Alert examples: show the closed one again; add a self-hiding one.
+  customElements.whenDefined('kakao-alert').then(() => {
+    const closed = document.getElementById('ov-alert-close');
+    document.getElementById('ov-alert-back').addEventListener('kakao-button-action', () => closed.show());
+    const stack = document.getElementById('ov-alert-stack');
+    document.getElementById('ov-alert-add').addEventListener('kakao-button-action', () => {
+      const alert = document.createElement('kakao-alert');
+      alert.setAttribute('tone', 'success');
+      alert.setAttribute('duration', '4000');
+      alert.textContent = 'Changes saved.';
+      alert.addEventListener('alert-hidden', () => alert.remove());
+      stack.append(alert);
+    });
+  });
+
   const siteNav = document.getElementById('siteNav');
   const cards = [...document.querySelectorAll('article.card:not(.placeholder)')];
   siteNav.setAttribute('list-data', JSON.stringify(

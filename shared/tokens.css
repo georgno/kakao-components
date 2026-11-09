@@ -43,6 +43,7 @@
   --kakao-motion-duration: 320ms;
   --kakao-ease-standard: cubic-bezier(.2, 0, 0, 1);
   --kakao-ease-spring: cubic-bezier(.5, 1.8, .4, 1);
+  --kakao-color-warning: #b45309;
   /* @kakao-settings:end */
   color-scheme: light;
 }

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-alert - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="alert.js" defer></script>
+<style>
+  .stack { display: grid; gap: 0.75rem; }
+  .card.stack > * + *, .stack > * + * { margin-top: 0; }
+  .stack:empty::before { content: "No alerts right now."; color: var(--muted); font-size: 0.85rem; }
+  .note { color: var(--muted); font-size: 0.85rem; }
+</style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Alert"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Alert</h1>
+    <p><code>&lt;kakao-alert&gt;</code> - an inline message in the page content: an icon, an optional title and the message, in one of four tones. It can be closed, and info and success alerts fade out by themselves after 8 seconds.</p>
+  </header>
+
+  <h2>Tones · <code>tone</code></h2>
+  <p>Info (default), success, warning and danger (<code>error</code> works too). Warning and danger get <code>role="alert"</code>, info and success <code>role="status"</code>. These examples have <code>duration="0"</code> so they stay.</p>
+  <div class="grid">
+    <div class="card full stack">
+      <kakao-alert duration="0">A new version is available. It installs the next time you open the app.</kakao-alert>
+      <kakao-alert tone="success" duration="0">Settings saved.</kakao-alert>
+      <kakao-alert tone="warning" heading="Your trial ends in 3 days">Add a payment method to keep your projects.</kakao-alert>
+      <kakao-alert tone="danger" heading="Payment failed" dismissible>Your card was declined. <a href="#billing">Update your card</a> and try again.</kakao-alert>
+    </div>
+  </div>
+
+  <h2>Title and icon</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Title slot · <code>slot="title"</code></h3>
+      <kakao-alert tone="success" duration="0"><strong slot="title">Upload complete</strong>3 files were added to <em>Invoices 2026</em>.</kakao-alert>
+    </div>
+    <div class="card">
+      <h3>Own icon · <code>slot="icon"</code></h3>
+      <kakao-alert duration="0"><i slot="icon" class="fas fa-wand-magic-sparkles"></i>Tip: press <kbd>/</kbd> to search.</kakao-alert>
+    </div>
+    <div class="card">
+      <h3>No icon · <code>no-icon</code></h3>
+      <kakao-alert tone="warning" no-icon duration="0">Maintenance tonight from 22:00 to 23:00.</kakao-alert>
+    </div>
+  </div>
+
+  <h2>Closing · <code>dismissible</code></h2>
+  <p>The × fires a cancelable <code>alert-hide</code>. Unless a listener cancels it, the alert fades out, gets <code>hidden</code> and fires <code>alert-hidden</code>. Focus goes back to where it came from.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Closes</h3>
+      <kakao-alert id="closes" tone="success" dismissible duration="0">Your profile is public now.</kakao-alert>
+      <kakao-button id="closes-back" label="Show it again" variant="ghost" size="sm"></kakao-button>
+    </div>
+    <div class="card">
+      <h3>Cancelled · the page decides</h3>
+      <kakao-alert id="locked" tone="warning" dismissible duration="0" close-label="Dismiss warning">This warning cancels its own close.</kakao-alert>
+      <p class="note" id="locked-out">Try the ×.</p>
+    </div>
+  </div>
+
+  <h2>Fading out · <code>duration</code></h2>
+  <p>Info and success alerts hide after <code>--kakao-alert-duration</code> (8 seconds), warning and danger stay. <code>duration</code> sets the time in ms for any tone; <code>duration="0"</code> turns it off. The timer pauses while the pointer is over the alert, while focus is inside it, and while the tab is hidden. With reduced motion there is no fade; the alert still goes.</p>
+  <p class="note">A message that disappears can be gone before someone using a screen reader or magnifier, or reading slowly, gets to it. Don't put the only copy of important information in an alert that hides itself.</p>
+  <div class="grid">
+    <div class="card full">
+      <div class="row">
+        <kakao-button id="add-success" label="Success (default 8s)" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="add-info" label="Info, 3s" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="add-danger" label="Error (stays)" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <div class="stack" id="stack"></div>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <p>One alert, driven by its attributes and methods. Every event lands in the log.</p>
+  <div class="grid">
+    <div class="card full">
+      <kakao-alert id="play" heading="Heads up" dismissible duration="0">Change the tone, the timer or close it.</kakao-alert>
+      <div class="row">
+        <kakao-button data-tone="info" label="Info" variant="secondary" size="sm"></kakao-button>
+        <kakao-button data-tone="success" label="Success" variant="secondary" size="sm"></kakao-button>
+        <kakao-button data-tone="warning" label="Warning" variant="secondary" size="sm"></kakao-button>
+        <kakao-button data-tone="danger" label="Danger" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <div class="row">
+        <kakao-button data-duration="" label="Default timer" variant="ghost" size="sm"></kakao-button>
+        <kakao-button data-duration="4000" label="duration 4000" variant="ghost" size="sm"></kakao-button>
+        <kakao-button data-duration="0" label="duration 0" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-dismiss" variant="ghost" size="sm"></kakao-button>
+      </div>
+      <div class="row">
+        <kakao-button id="play-show" label="show()" size="sm"></kakao-button>
+        <kakao-button id="play-hide" label="hide()" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <div class="log" id="log" role="log" aria-label="Event log"></div>
+    </div>
+  </div>
+
+  <footer>Attributes: <code>tone</code> (<code>info</code> · <code>success</code> · <code>warning</code> · <code>danger</code>, alias <code>error</code>), <code>heading</code>, <code>dismissible</code>, <code>close-label</code>, <code>duration</code>, <code>no-icon</code>, <code>hidden</code>. Methods: <code>show()</code>, <code>hide()</code>, <code>close()</code>. Events: <code>alert-show</code>, <code>alert-hide</code> (cancelable), <code>alert-hidden</code>. Slots: default (message), <code>title</code>, <code>icon</code>. Full reference in the header of <code>alert.js</code>.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-alert').then(() => {
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+
+    const closes = document.getElementById('closes');
+    on('closes-back', () => closes.show());
+
+    document.getElementById('locked').addEventListener('alert-hide', (e) => {
+      e.preventDefault();
+      document.getElementById('locked-out').textContent = `Cancelled (reason "${e.detail.reason}"): the warning stays.`;
+    });
+
+    const stack = document.getElementById('stack');
+    let n = 0;
+    const add = (tone, text, duration) => {
+      const alert = document.createElement('kakao-alert');
+      alert.setAttribute('tone', tone);
+      alert.setAttribute('dismissible', '');
+      if (duration != null) alert.setAttribute('duration', duration);
+      alert.textContent = `${text} (#${++n})`;
+      alert.addEventListener('alert-hidden', () => alert.remove());
+      stack.append(alert);
+    };
+    on('add-success', () => add('success', 'Changes saved'));
+    on('add-info', () => add('info', 'Copied to the clipboard', '3000'));
+    on('add-danger', () => add('danger', 'Could not reach the server'));
+
+    const play = document.getElementById('play');
+    const log = document.getElementById('log');
+    logEvents(log, ['alert-show', 'alert-hide', 'alert-hidden'], play);
+    document.querySelectorAll('[data-tone]').forEach((b) => b.addEventListener('kakao-button-action', () => {
+      play.setAttribute('tone', b.dataset.tone);
+      logLine(log, 'tone', { tone: play.tone, role: play.getAttribute('role') });
+    }));
+    document.querySelectorAll('[data-duration]').forEach((b) => b.addEventListener('kakao-button-action', () => {
+      if (b.dataset.duration === '') play.removeAttribute('duration');
+      else play.setAttribute('duration', b.dataset.duration);
+      logLine(log, 'duration', { duration: play.getAttribute('duration') });
+    }));
+    toggleButton(document.getElementById('play-dismiss'), 'dismissible', (v) => play.toggleAttribute('dismissible', v));
+    document.getElementById('play-dismiss').setAttribute('pressed', '');
+    document.getElementById('play-dismiss').setAttribute('label', 'dismissible: on');
+    on('play-show', () => play.show());
+    on('play-hide', () => play.hide());
+  });
+</script>
+</body>
+</html>

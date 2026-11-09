@@ -19,6 +19,20 @@ pages (landing page, settings, demos), not the components.
   no transition under reduced motion. `no-scroll-watch` lets the page set
   `scrolled` itself. Settings `--kakao-header-bar-*`, construction page and
   demo.
+- `kakao-alert`: an inline message with an icon, an optional title
+  (`heading` or `slot="title"`) and the message. `tone` is `info` (default),
+  `success`, `warning` or `danger` (alias `error`) and can change at runtime;
+  warning and danger get `role="alert"`, info and success `role="status"`,
+  unless the page set a role. `dismissible` adds a close button
+  (`close-label`). Info and success alerts fade out and hide after 8 seconds
+  (`--kakao-alert-duration`); warning and danger stay. `duration` sets the
+  time in ms for any tone, `duration="0"` turns it off. The timer pauses on
+  hover, while focus is inside and while the tab is hidden; reduced motion
+  hides without the fade. Methods `show()`, `hide()` / `close()`; events
+  `alert-show`, `alert-hide` (cancelable, with a reason) and `alert-hidden`.
+  Settings `--kakao-alert-*`, construction page and demo.
+- Main variable `--kakao-color-warning` (light `#b45309`), set in every theme
+  and checked by `tools/check-themes.js` for 4.5:1 on the surface.
 
 ### Changed
 
@@ -36,6 +50,9 @@ pages (landing page, settings, demos), not the components.
   switch (style guide, kitchen sink, main variables, changelog, every demo and
   construction page). On the components page and the kitchen sink the side
   menu's hamburger sits at the bar's left. Anchor jumps stop below the bar.
+- Components page: an Alert section replaces the "Toast / alert" placeholder;
+  a Toast placeholder stays. The kitchen sink shows a success alert after
+  saving; the style guide lists the warning role and audits the alert.
 
 ## [0.2.2] - 2026-11-09
 

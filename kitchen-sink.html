@@ -42,6 +42,7 @@
 <script src="components/chip/chip.js" defer></script>
 <script src="components/chip-list/chip-list.js" defer></script>
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
+<script src="components/alert/alert.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -348,6 +349,7 @@
       <kakao-animated-number id="price" value="13.49" decimals="2"></kakao-animated-number>
       <small id="price-period">/ month</small>
     </div>
+    <kakao-alert id="saved" tone="success" dismissible hidden style="margin-top:.75rem">Changes saved.</kakao-alert>
     <div slot="footer">
       <kakao-button id="save" label="Save changes" icon="fas fa-check" type="submit" form="settings"></kakao-button>
       <kakao-button id="reset" label="Reset" variant="ghost"></kakao-button>
@@ -497,7 +499,7 @@
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     $('save').run(() => new Promise((resolve) => setTimeout(resolve, 900)))
-      .then(() => logLine(log, 'saved', collect()));
+      .then(() => { logLine(log, 'saved', collect()); $('saved').show(); });
   });
 
   // Snapshot the initial state once everything is upgraded, so Reset can restore it

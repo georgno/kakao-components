@@ -28,6 +28,7 @@
 <script src="components/radio-group/radio-group.js" defer></script>
 <script src="components/badge/badge.js" defer></script>
 <script src="components/chip/chip.js" defer></script>
+<script src="components/alert/alert.js" defer></script>
 <style>
   /* ---- page-only styles; the guide itself, not the components ---- */
   main { max-width: 960px; }
@@ -332,6 +333,13 @@
         <p class="small muted">Passed checks, paid, confirmed: <code>--kakao-color-success</code>. <code>#15803d</code> is 5.0:1 on white; dark uses <code>#4ade80</code>. For status labels, not for "on" (that's the accent).</p>
         <div class="role-demo">
           <kakao-badge tone="success">Yes</kakao-badge> <kakao-chip tone="success">Paid</kakao-chip>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Warning - check before going on</h4>
+        <p class="small muted">Something needs attention but nothing failed yet: <code>--kakao-color-warning</code>. <code>#b45309</code> is 5.0:1 on white; dark uses <code>#fbbf24</code>. Used for icons, titles and tints, never as a fill under text.</p>
+        <div class="role-demo">
+          <kakao-alert tone="warning" duration="0">Your trial ends in 3 days.</kakao-alert>
         </div>
       </div>
     </div>
@@ -755,6 +763,7 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>Chip list</td><td>-</td><td>n/a</td><td>n/a</td><td class="num">-</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Breadcrumb</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>✓</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Header bar</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">-</td><td>n/a (slotted controls)</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Alert</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">-</td><td>None</td></tr>
 </tbody>
       </table>
     </div>
@@ -833,7 +842,7 @@ KakaoComponents.meta('kakao-card');</pre>
       muted: 'Placeholders, captions, icons', page: 'Page background', bg: 'Surface: fields, lists, popovers, cards',
       raised: 'Tab thumb, pressed segment', 'field-border': 'Field edges', subtle: 'Secondary button, hover, tracks', 'subtle-strong': 'Pressed, selected row, tab track',
       line: 'Decorative hairlines', border: 'Field edges, off switch track (3:1)', ink: 'Primary button', 'ink-hover': 'Primary button hover',
-      'on-ink': 'Text on ink', danger: 'Danger button, errors', 'danger-hover': 'Danger hover', 'on-danger': 'Text on danger', focus: 'Focus outline',
+      'on-ink': 'Text on ink', danger: 'Danger button, errors', 'danger-hover': 'Danger hover', 'on-danger': 'Text on danger', success: 'Success badges, done', warning: 'Warning alerts', focus: 'Focus outline',
     };
     const [light, beige, umber, dark, amoled, cat, forest] = document.querySelectorAll('.theme-panel');
     const L = getComputedStyle(light);
