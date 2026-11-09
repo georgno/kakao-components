@@ -26,6 +26,9 @@ pages (landing page, settings, demos), not the components.
   badge (Library), and async Playback switches whose demo starts on load and
   holds while a menu is open. The Plan card moved to the bottom row, a blank
   card runs into the fade, and the "Open the component list" link is gone.
+- Headings: a `<u>` is drawn as a highlighter stroke in the main colour (a
+  brush-like stroke that swings back at the end), used on the landing page's
+  "actually touch". Forced colours keep a plain underline.
 - Landing page on phones: one call to action, and the corner tools and cards
   sit on the page's gutter; the wall's glow no longer makes the page scroll
   sideways.
