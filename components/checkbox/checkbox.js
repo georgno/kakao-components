@@ -70,6 +70,7 @@
         --_focus-width: var(--kakao-checkbox-focus-width, 2px);
         --_focus-offset: var(--kakao-checkbox-focus-offset, 2px);
         --_disabled-opacity: var(--kakao-checkbox-disabled-opacity, 0.55);
+        --_box-lift: var(--kakao-checkbox-box-lift, 0.5cap);
         /* @kakao-settings:end */
         display: inline-block;
         font: var(--_font);
@@ -90,15 +91,16 @@
       }
       :host([disabled]) .wrap { cursor: not-allowed; }
 
-      /* One label line tall, box centred in it: the box sits on the first
-         line of the label whatever follows (hint, error, wrapped lines). */
+      /* One label line tall, on the same strut as the label's first line, so
+         it shares that line's baseline whatever follows (hint, error, wrapped
+         lines). The box is centred optically, on the middle of the capital
+         letters: its centre sits --_box-lift (0.5cap) above the baseline. The
+         box's baseline is its bottom margin edge (inline-block, overflow
+         hidden) and the negative block margins move that edge to the box's
+         centre and make its margin box zero tall, so it never stretches the line. */
       .control {
         position: relative;
-        display: inline-flex;
-        align-items: center;
         flex: none;
-        height: 1.4em;
-        height: 1lh;
       }
       input {
         position: absolute;
@@ -111,18 +113,19 @@
       }
       .box {
         box-sizing: border-box;
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: var(--_box-lift);
         width: var(--_box-size);
         height: var(--_box-size);
+        margin-block: calc(var(--_box-size) / -2);
         border: 1px solid var(--_box-border);
         border-radius: var(--_box-radius);
         background: var(--_box-bg);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
         color: var(--_mark);
         transition: background-color 120ms ease, border-color 120ms ease;
       }
-      .box svg { width: 72%; height: 72%; display: none; }
+      .box svg { width: 72%; height: 72%; margin: 14% auto 0; display: none; }
       input:checked + .box,
       input:indeterminate + .box {
         background: var(--_box-checked-bg);

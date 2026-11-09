@@ -80,6 +80,7 @@
         --_focus-width: var(--kakao-radio-group-focus-width, 2px);
         --_focus-offset: var(--kakao-radio-group-focus-offset, 2px);
         --_disabled-opacity: var(--kakao-radio-group-disabled-opacity, 0.55);
+        --_dot-lift: var(--kakao-radio-group-dot-lift, 0.5cap);
         /* @kakao-settings:end */
         display: block;
         font: var(--_font);
@@ -125,15 +126,16 @@
       :host([disabled]) .option,
       .option.is-disabled { cursor: not-allowed; opacity: var(--_disabled-opacity); background: none; }
 
-      /* One label line tall, dot centred in it: the dot sits on the first
-         line of the option label whatever follows (hint, wrapped lines). */
+      /* One label line tall, on the same strut as the label's first line, so
+         it shares that line's baseline whatever follows (hint, wrapped lines).
+         The dot is centred optically, on the middle of the capital letters:
+         its centre sits --_dot-lift (0.5cap) above the baseline. The dot's
+         baseline is its bottom margin edge (inline-block, overflow hidden) and
+         the negative block margins move that edge to the dot's centre and make
+         its margin box zero tall, so it never stretches the line. */
       .control {
         position: relative;
-        display: inline-flex;
-        align-items: center;
         flex: none;
-        height: 1.4em;
-        height: 1lh;
       }
       input {
         position: absolute;
@@ -146,20 +148,23 @@
       }
       .dot {
         box-sizing: border-box;
+        display: inline-block;
+        overflow: hidden;
+        vertical-align: var(--_dot-lift);
         width: var(--_dot-size);
         height: var(--_dot-size);
+        margin-block: calc(var(--_dot-size) / -2);
         border: 1px solid var(--_dot-border);
         border-radius: 50%;
         background: var(--_dot-bg);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
         transition: background-color 120ms ease, border-color 120ms ease;
       }
       .dot::after {
         content: "";
+        display: block;
         width: 44%;
         height: 44%;
+        margin: 28% auto 0;
         border-radius: 50%;
         background: var(--_mark);
         transform: scale(0);
