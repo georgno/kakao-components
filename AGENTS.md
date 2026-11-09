@@ -23,6 +23,8 @@ others render into a shadow root (with slots where they take content).
 - Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`:
   it keeps the page hidden until the deferred component scripts have drawn, so
   reloads don't flicker. It's for this project's pages only, not part of any component.
+- A new top-level page (or file a page loads, like `CHANGELOG.md`) must also be added to
+  the copy list in `.github/workflows/pages.yml`, or it is missing from the live site.
 - Releases: note changes in `CHANGELOG.md` under Unreleased; on a release, move them
   under the new version, bump the version and the component count on `index.html`
   (the hero facts and the written-out number in the lede), and tag `vX.Y.Z`.
