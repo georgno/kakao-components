@@ -43,6 +43,7 @@
 <script src="components/chip-list/chip-list.js" defer></script>
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
 <script src="components/alert/alert.js" defer></script>
+<script src="components/toast/toast.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -941,6 +942,35 @@
       </div>
     </article>
 
+    <!-- ============================== Toast ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Toast</h2>
+        <code>&lt;kakao-toast&gt;</code>
+        <a href="components/toast/construction.html">Construction</a>
+        <a href="components/toast/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Short messages in a corner of the viewport, stacked like cards: the newest in front, older ones behind it, fanned out while the pointer or focus is on the stack. Every toast is a <code>&lt;kakao-alert&gt;</code>; <code>KakaoToast.show()</code> adds one and returns a handle. Announced politely, never takes focus.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Tones · <code>tone</code></h3>
+          <div class="row">
+            <kakao-button data-ov-toast="success" label="Success" variant="secondary" size="sm"></kakao-button>
+            <kakao-button data-ov-toast="info" label="Info" variant="secondary" size="sm"></kakao-button>
+            <kakao-button data-ov-toast="warning" label="Warning" variant="secondary" size="sm"></kakao-button>
+            <kakao-button data-ov-toast="danger" label="Danger" variant="secondary" size="sm"></kakao-button>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Stack · <code>max</code></h3>
+          <div class="row">
+            <kakao-button id="ov-toast-burst" label="Show 4 at once" size="sm"></kakao-button>
+            <kakao-button id="ov-toast-undo" label="With an action" variant="ghost" size="sm"></kakao-button>
+          </div>
+        </div>
+      </div>
+    </article>
+
   </div>
 
   <!-- ============================== Not built yet ============================== -->
@@ -1016,13 +1046,6 @@
       </div>
     </article>
 
-    <article class="card placeholder">
-      <div class="component-head"><h2>Toast</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">No native element: a floating stack of <code>role="status"</code> messages in a corner of the viewport, built on <code>&lt;kakao-alert&gt;</code>. A non-component version exists as the yii2-base Toast widget.</p>
-      <div class="native">
-        <div role="status" style="padding: 0.5rem 0.75rem; border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 4px 12px rgb(0 0 0 / 0.12)">Settings saved.</div>
-      </div>
-    </article>
 
   </div>
 
@@ -1062,6 +1085,20 @@
 <script>
   // The sidebar lists every component on this page; the list comes from the
   // DOM, so a new component card shows up without touching this script.
+  // Toast examples.
+  customElements.whenDefined('kakao-toast').then(() => {
+    const text = { success: 'Settings saved.', info: 'A new version is available.', warning: 'Your trial ends in 3 days.', danger: 'Could not reach the server.' };
+    document.querySelectorAll('[data-ov-toast]').forEach((b) => b.addEventListener('kakao-button-action', () => {
+      KakaoToast.show({ tone: b.dataset.ovToast, message: text[b.dataset.ovToast] });
+    }));
+    document.getElementById('ov-toast-burst').addEventListener('kakao-button-action', () => {
+      ['info', 'success', 'warning', 'success'].forEach((tone, i) => KakaoToast.show({ tone, message: `Message ${i + 1} of 4: ${text[tone]}` }));
+    });
+    document.getElementById('ov-toast-undo').addEventListener('kakao-button-action', () => {
+      KakaoToast.show({ message: '3 photos moved to the bin.', action: { label: 'Undo', onClick: () => KakaoToast.show({ tone: 'success', message: 'Photos restored.' }) } });
+    });
+  });
+
   // Alert examples: show the closed one again; add a self-hiding one.
   customElements.whenDefined('kakao-alert').then(() => {
     const closed = document.getElementById('ov-alert-close');

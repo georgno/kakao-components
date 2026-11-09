@@ -45,6 +45,21 @@ pages (landing page, settings, demos), not the components.
   Settings `--kakao-alert-*`, construction page and demo.
 - Main variable `--kakao-color-warning` (light `#b45309`), set in every theme
   and checked by `tools/check-themes.js` for 4.5:1 on the surface.
+- `kakao-toast`: a notification region fixed to a corner of the viewport
+  (`position`: bottom-right by default, bottom-left, top-right, top-left).
+  Its toasts are `kakao-alert` cards, stacked like the yii2-base toast: the
+  newest in front, older ones behind it, smaller, paler and tilted back; the
+  stack fans out while the pointer or focus is on it (a tap on touch).
+  `max` (default 3) limits how many are visible; older ones wait hidden with
+  their timers stopped. Timers follow the alert's rule and pause for the
+  whole stack while it is fanned out or the tab is hidden. `KakaoToast.show({
+  tone, heading, message, duration, dismissible, action })` and the element's
+  `show()` return a handle with `close()` and a `closed` promise; written
+  `kakao-alert` children are adopted. Polite live region, never takes focus;
+  Escape closes the focused toast. Keeps the safe-area insets, sits below the
+  header bar in top corners, spans the screen below 30rem and moves beside an
+  aside menu opening on its side. Events `toast-show` and `toast-hidden`
+  (with a reason). Settings `--kakao-toast-*`, construction page and demo.
 
 ### Changed
 
@@ -65,6 +80,9 @@ pages (landing page, settings, demos), not the components.
 - Components page: an Alert section replaces the "Toast / alert" placeholder;
   a Toast placeholder stays. The kitchen sink shows a success alert after
   saving; the style guide lists the warning role and audits the alert.
+- Components page: a Toast section replaces the Toast placeholder. The kitchen
+  sink confirms a save with a success toast instead of the inline alert; the
+  style guide audits the toast.
 
 ## [0.2.2] - 2026-11-09
 

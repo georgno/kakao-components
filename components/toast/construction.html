@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-toast - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../alert/alert.js" defer></script>
+<script src="toast.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  /* The preview region sits in its frame instead of the viewport corner. */
+  .toast-stage { position: relative; height: 15rem; }
+  .toast-stage kakao-toast { position: absolute; right: 0; bottom: 0; z-index: auto; }
+  .toast-stage-note { margin: 0.5rem 0 0; color: var(--kakao-color-muted, #62626c); font-size: 0.85rem; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="toast" data-source="toast.js" data-title="Toast">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Stack (point at it to fan it out)</figcaption>
+      <div class="toast-stage">
+        <kakao-toast label="Preview notifications">
+          <kakao-alert tone="warning" duration="0" dismissible heading="Storage almost full">92% of 10 GB used.</kakao-alert>
+          <kakao-alert tone="danger" duration="0" dismissible heading="Upload failed">invoice-march.pdf is larger than 20 MB.</kakao-alert>
+          <kakao-alert tone="success" duration="0" dismissible>Settings saved.</kakao-alert>
+        </kakao-toast>
+      </div>
+      <p class="toast-stage-note">The cards are alerts: their colours, padding and radius are the <a href="../alert/construction.html">alert settings</a>.</p>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-toast-width", "label": "Width", "group": "Size & spacing", "type": "length", "hint": "full width below 30rem" },
+    { "property": "--kakao-toast-gutter", "label": "Gutter", "group": "Size & spacing", "type": "length", "hint": "distance from the viewport edges" },
+    { "property": "--kakao-toast-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "hint": "between cards when fanned out" },
+    { "property": "--kakao-toast-peek", "label": "Peek", "group": "Stack", "type": "length", "hint": "how far each card behind shows" },
+    { "property": "--kakao-toast-scale-step", "label": "Scale step", "group": "Stack", "type": "number", "hint": "smaller per card behind" },
+    { "property": "--kakao-toast-fade-step", "label": "Fade step", "group": "Stack", "type": "number", "hint": "less tone per card behind" },
+    { "property": "--kakao-toast-tilt", "label": "Tilt", "group": "Stack", "type": "text", "hint": "rotateX per card behind, e.g. 6deg" },
+    { "property": "--kakao-toast-perspective", "label": "Perspective", "group": "Stack", "type": "length" },
+    { "property": "--kakao-toast-shadow", "label": "Shadow", "group": "Effects", "type": "shadow" },
+    { "property": "--kakao-toast-z-index", "label": "Z-index", "group": "Effects", "type": "number" },
+    { "property": "--kakao-toast-motion-duration", "label": "Motion", "group": "Motion", "type": "duration", "hint": "stacking, fanning, sliding out" },
+    { "property": "--kakao-toast-ease", "label": "Easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+</body>
+</html>
