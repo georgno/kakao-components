@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Changelog</title>
+<link rel="stylesheet" href="shared/tokens.css" />
+<link rel="stylesheet" href="shared/font.css" />
+<link rel="stylesheet" href="shared/themes.css" />
+<script src="shared/component-api.js"></script>
+<script src="shared/page-cloak.js"></script>
+<script src="components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="shared/demo.css" />
+<script src="components/badge/badge.js" defer></script>
+<script src="components/breadcrumb/breadcrumb.js" defer></script>
+<style>
+  .releases { display: grid; gap: 1rem; margin-top: 2rem; }
+  .release h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; margin: 0; font-size: 1.25rem; }
+  .release h2 a { color: inherit; text-decoration: none; }
+  .release h2 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .release h2 a:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; border-radius: 4px; }
+  .release h3 { margin: 1.25rem 0 0.5rem; font-size: 0.9rem; }
+  .release p, .release li { color: var(--kakao-color-text-soft, #3f3f46); font-size: 0.92rem; line-height: 1.55; }
+  .release p { margin: 0.75rem 0 0; max-width: 68ch; }
+  .release ul { margin: 0; padding-left: 1.15rem; display: grid; gap: 0.35rem; max-width: 72ch; }
+  .release li strong { color: var(--kakao-color-text, #18181b); }
+  .changelog-error { margin-top: 2rem; }
+</style>
+</head>
+<body>
+<kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="index.html" list-data='[["Changelog"]]'></kakao-breadcrumb>
+      <a class="back" href="CHANGELOG.md">Plain text →</a>
+    </div>
+    <h1>Changelog</h1>
+    <p id="intro">Every release of kakao-components, newest first.</p>
+  </header>
+
+  <div class="releases" id="releases" aria-live="polite"></div>
+</main>
+
+<script>
+  /*
+   * Reads CHANGELOG.md and renders it. The file stays the single source; this
+   * page only understands the subset it uses (Keep a Changelog): "## [x.y.z] -
+   * date" releases, "### Added" groups, "- " list items with indented
+   * continuation lines, paragraphs, **bold**, `code`, [text](url) and
+   * [x.y.z]: url references for the release links.
+   */
+  (function () {
+    const TONES = { Added: 'success', Changed: 'primary', Deprecated: 'danger', Removed: 'danger', Fixed: '', Security: 'danger' };
+    const box = document.getElementById('releases');
+
+    const escapeHtml = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    // Only web and relative links: never javascript: or data:.
+    const safeUrl = (u) => (/^(https?:\/\/|[\w./#-])/i.test(u) && !/^(javascript|data|vbscript):/i.test(u) ? u : '#');
+
+    function inline(text) {
+      let s = escapeHtml(text);
+      s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, url) => `<a href="${escapeHtml(safeUrl(url))}">${label}</a>`);
+      return s;
+    }
+
+    function parse(md) {
+      const lines = md.replace(/\r\n?/g, '\n').split('\n');
+      const refs = {};
+      lines.forEach((l) => {
+        const m = l.match(/^\[([^\]]+)\]:\s*(\S+)\s*$/);
+        if (m) refs[m[1]] = m[2];
+      });
+
+      const intro = [];
+      const releases = [];
+      let release = null;
+      let group = null;
+      let para = [];
+      let item = null;
+
+      const flushPara = () => {
+        if (!para.length) return;
+        const text = para.join(' ');
+        if (group) group.blocks.push({ type: 'p', text });
+        else if (release) release.blocks.push({ type: 'p', text });
+        else intro.push(text);
+        para = [];
+      };
+      const flushItem = () => {
+        if (!item) return;
+        const target = group || release;
+        if (target) {
+          const last = target.blocks[target.blocks.length - 1];
+          if (last && last.type === 'ul') last.items.push(item);
+          else target.blocks.push({ type: 'ul', items: [item] });
+        }
+        item = null;
+      };
+
+      for (const line of lines) {
+        if (/^\[[^\]]+\]:\s*\S+/.test(line) || /^# /.test(line)) continue;
+        let m;
+        if ((m = line.match(/^## \[([^\]]+)\](?:\s*-\s*(.+))?\s*$/))) {
+          flushPara(); flushItem();
+          release = { version: m[1], date: m[2] || '', url: refs[m[1]] || '', blocks: [], groups: [] };
+          group = null;
+          releases.push(release);
+        } else if ((m = line.match(/^### (.+)$/))) {
+          flushPara(); flushItem();
+          group = { title: m[1].trim(), blocks: [] };
+          if (release) release.groups.push(group);
+        } else if ((m = line.match(/^- (.*)$/))) {
+          flushPara(); flushItem();
+          item = m[1];
+        } else if (item !== null && /^\s+\S/.test(line)) {
+          item += ' ' + line.trim();
+        } else if (!line.trim()) {
+          flushPara(); flushItem();
+        } else {
+          flushItem();
+          para.push(line.trim());
+        }
+      }
+      flushPara(); flushItem();
+      return { intro, releases };
+    }
+
+    function renderBlocks(blocks) {
+      return blocks.map((b) => (b.type === 'p'
+        ? `<p>${inline(b.text)}</p>`
+        : `<ul>${b.items.map((i) => `<li>${inline(i)}</li>`).join('')}</ul>`)).join('');
+    }
+
+    function render({ intro, releases }) {
+      if (intro.length) document.getElementById('intro').innerHTML = intro.map(inline).join(' ');
+      const shown = releases.filter((r) => r.blocks.length || r.groups.some((g) => g.blocks.length));
+      box.innerHTML = shown.map((r) => {
+        const title = r.version === 'Unreleased' ? 'Unreleased' : `v${escapeHtml(r.version)}`;
+        const heading = r.url ? `<a href="${escapeHtml(safeUrl(r.url))}">${title}</a>` : title;
+        const date = r.date ? ` <kakao-badge outline>${escapeHtml(r.date)}</kakao-badge>` : '';
+        const groups = r.groups.filter((g) => g.blocks.length).map((g) => {
+          const tone = TONES[g.title];
+          return `<h3><kakao-badge${tone ? ` tone="${tone}"` : ''}>${escapeHtml(g.title)}</kakao-badge></h3>${renderBlocks(g.blocks)}`;
+        }).join('');
+        return `<section class="card release" id="v${escapeHtml(r.version)}"><h2>${heading}${date}</h2>${renderBlocks(r.blocks)}${groups}</section>`;
+      }).join('');
+    }
+
+    function fail() {
+      box.innerHTML = '<div class="card changelog-error"><p>The changelog could not be loaded. Browsers don\'t let a page read files when it is opened straight from disk; run <code>node tools/construct-server.js</code> and open the page from there, or read <a href="CHANGELOG.md">CHANGELOG.md</a> directly.</p></div>';
+    }
+
+    const loading = fetch('CHANGELOG.md', { cache: 'no-cache' })
+      .then((res) => { if (!res.ok) throw new Error(res.status); return res.text(); })
+      .then((md) => render(parse(md)))
+      .catch(fail);
+    // Keep the page hidden until the releases are in, so nothing pops in.
+    if (window.kakaoCloak) window.kakaoCloak.wait(loading);
+  })();
+</script>
+</body>
+</html>

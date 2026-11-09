@@ -10,14 +10,19 @@
  * and has rendered: the page is revealed in one piece instead of components
  * popping in one by one (no flicker, no layout jumps on reload).
  *
- * It also waits for the web fonts (Inter Tight from Google Fonts, the Font
- * Awesome icons from a CDN): otherwise the text redraws in the new font and the
+ * It also waits for the web fonts (Inter Tight and the Font Awesome icons, both
+ * served from shared/): otherwise the text redraws in the new font and the
  * icons appear a moment after the reveal, which reads as popping too. That wait
  * is capped at 1.5 s, and never runs past the 2.5 s safety reveal below.
  *
  * Safety net: the page is revealed after 2.5 s whatever happens, so a slow or
  * failing script or font can never leave it blank. Hidden with opacity, so
  * assistive technology can still read the page. Without JavaScript nothing is hidden.
+ *
+ * A page that loads its own content (e.g. changelog.html fetching
+ * CHANGELOG.md) hands that work to the cloak, which then waits for it too:
+ *
+ *   kakaoCloak.wait(fetch('CHANGELOG.md').then(render));
  *
  * For this project's pages only. It is not part of any component, so pages
  * that embed kakao components elsewhere are not affected.
@@ -42,6 +47,13 @@
   }
 
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const pending = [];
+  window.kakaoCloak = {
+    /** Keep the page hidden until this promise settles (still capped by the safety reveal). */
+    wait(promise) {
+      pending.push(Promise.resolve(promise).catch(() => {}));
+    },
+  };
 
   // Deferred component scripts have run by DOMContentLoaded. Then wait for the
   // fonts (capped), and reveal on the next frame so anything set up in a
@@ -49,7 +61,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     if (document.hidden) return reveal();
     const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-    Promise.race([fonts, wait(1500)]).then(() => requestAnimationFrame(reveal));
+    Promise.all([Promise.race([fonts, wait(1500)]), ...pending]).then(() => requestAnimationFrame(reveal));
   }, { once: true });
   setTimeout(reveal, 2500);
 })();

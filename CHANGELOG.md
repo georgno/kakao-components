@@ -7,6 +7,21 @@ change a component's API.
 
 ## [Unreleased]
 
+### Added
+
+- `changelog.html`: this file, read and rendered as a page (the landing page
+  and the site menu link to it).
+- `kakaoCloak.wait(promise)`: a page can keep itself hidden until its own
+  content has loaded.
+
+### Changed
+
+- Inter Tight and the Font Awesome icons are served from the repo
+  (`shared/fonts/`, `shared/vendor/fontawesome/`): no font CDN, works offline.
+- The kitchen sink's header matches the other pages: the menu button top left
+  and a breadcrumb; the made-up app's own breadcrumb sits in the settings card.
+- Page breadcrumbs call the house "Home"; the colour picker is "Color picker".
+
 ## [0.2.0] - 2026-11-09
 
 ### Added
