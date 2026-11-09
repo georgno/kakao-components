@@ -21,6 +21,14 @@ change a component's API.
 - The kitchen sink's header matches the other pages: the menu button top left
   and a breadcrumb; the made-up app's own breadcrumb sits in the settings card.
 - Page breadcrumbs call the house "Home"; the colour picker is "Color picker".
+- The published site is minified on deploy (`tools/minify-site.mjs`): no
+  comments or extra whitespace, about 30% smaller. The repo stays readable.
+
+### Fixed
+
+- Animated number: no error when the page loads with a value already set
+  (it updated before it was built), and no roll from 0 on load.
+- The changelog page was missing from the published site.
 
 ## [0.2.0] - 2026-11-09
 

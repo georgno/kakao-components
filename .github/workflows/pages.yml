@@ -31,6 +31,17 @@ jobs:
           mkdir _site
           cp -r index.html components.html kitchen-sink.html tokens.html styleguide.html settings.html changelog.html CHANGELOG.md components shared _site/
 
+      # Minify the copy (never the repo): no comments or extra whitespace in
+      # HTML, JS and CSS. The minifiers are installed for this run only; the
+      # repo keeps no package.json. Settings blocks survive line for line.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Minify site
+        run: |
+          npm install --no-save --no-package-lock html-minifier-terser@7.2.0 terser@5.51.2 clean-css@5.3.3
+          node tools/minify-site.mjs _site
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
