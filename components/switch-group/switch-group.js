@@ -974,7 +974,9 @@
       const item = this._items[index];
       if (!item) return;
       this._requestToggle(index, !item.checked, /* animate */ true);
-      this._moveRovingFocus(index, false);
+      // A clicked switch is already where it is wanted; focusing it must not
+      // scroll the page (a scripted el.click() would otherwise jump to it).
+      this._moveRovingFocus(index, false, /* focusElement */ true, /* preventScroll */ true);
     }
 
     /* -------------------------- Thumb dragging -------------------------- */
@@ -1187,8 +1189,9 @@
      * @param {number} index
      * @param {boolean} fromKeyboard
      * @param {boolean} [focusElement=true] false = only update tabindex and fire the event
+     * @param {boolean} [preventScroll=false] true = focus without scrolling it into view
      */
-    _moveRovingFocus(index, fromKeyboard, focusElement = true) {
+    _moveRovingFocus(index, fromKeyboard, focusElement = true, preventScroll = false) {
       this._lastFocusedIndex = index;
       const tracks = this._groupEl.querySelectorAll('.track');
       tracks.forEach((t) => {
@@ -1196,7 +1199,7 @@
         t.tabIndex = i === index ? 0 : -1;
       });
       const target = this._groupEl.querySelector(`.track[data-index="${index}"]`);
-      if (target && focusElement) target.focus();
+      if (target && focusElement) target.focus({ preventScroll });
       const item = this._items[index];
       if (item) {
         this._dispatch('switch-focus', { name: item.name, index });
