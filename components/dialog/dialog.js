@@ -38,6 +38,10 @@
  *   size          "sm" | "md" (default) | "lg": the panel's max width.
  *   no-dismiss    Escape and a click on the covered page do nothing. Only a
  *                 button with data-close (or close()) ends the dialog.
+ *   button-position  "left" | "center" | "right" (default): where the footer
+ *                 buttons sit.
+ *   full-width    Footer buttons share the full width in equal parts (one
+ *                 button covers it all). Overrides button-position.
  *   contained     Render inside the nearest positioned ancestor instead of over
  *                 the viewport, and drop the modal machinery: no page scroll
  *                 lock, no focus move, no focus trap, no Escape. For previews
@@ -121,6 +125,24 @@
     html.style.paddingRight = savedPadding;
   }
 
+  /*
+   * Page-level rules for full-width: the buttons inside a footer wrapper and the
+   * buttons' own faces are light DOM that ::slotted can't reach. Added once,
+   * first in <head>, so page styles can still override them.
+   */
+  const PAGE_CSS = `
+    kakao-dialog[full-width] > [slot="footer"]:not(kakao-button) > kakao-button { flex: 1 1 0; min-width: 0; }
+    kakao-dialog[full-width] > kakao-button[slot="footer"] .kakao-button-inner,
+    kakao-dialog[full-width] > [slot="footer"] > kakao-button .kakao-button-inner { width: 100%; }
+  `;
+  function ensurePageStyles() {
+    if (document.getElementById('kakao-dialog-footer')) return;
+    const style = document.createElement('style');
+    style.id = 'kakao-dialog-footer';
+    style.textContent = PAGE_CSS;
+    document.head.prepend(style);
+  }
+
   const TEMPLATE = document.createElement('template');
   TEMPLATE.innerHTML = `
     <style>
@@ -144,7 +166,7 @@
         --_title-size: var(--kakao-dialog-title-size, 1.125rem);
         --_title-weight: var(--kakao-dialog-title-weight, 600);
         --_duration: var(--kakao-dialog-duration, 200ms);
-        --_easing: var(--kakao-dialog-easing, cubic-bezier(.2, 0, 0, 1));
+        --_easing: var(--kakao-dialog-easing, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
         /* @kakao-settings:end */
 
         /* The host is the covered page: fixed, so it takes no room in the flow
@@ -194,7 +216,13 @@
         overflow: hidden;
         background: var(--_bg);
         color: var(--_text);
+        /* A bottom corner with a footer button in it follows the nesting rule:
+           that button's radius + the padding, so they sit concentric. The script
+           measures which corners hold a button and sets --_corner-bl / -br. */
         border-radius: var(--_radius);
+        /* Elliptical when the padding differs per side ("r+padX r+padY"). */
+        border-bottom-right-radius: var(--_corner-br, var(--_radius));
+        border-bottom-left-radius: var(--_corner-bl, var(--_radius));
         box-shadow: var(--_shadow);
         opacity: 0;
         transform: translateY(8px) scale(.98);
@@ -215,8 +243,12 @@
 
       .header-box, .footer-box { flex-shrink: 0; }
       .header-box[hidden], .footer-box[hidden] { display: none; }
+      /* Normal page declarations beat ::slotted, so a page rule like
+         "h2 { margin-top: 2.75rem }" would push the title down. Only !important
+         from the shadow tree wins over them: the panel's spacing comes from its
+         gap and padding alone. */
       ::slotted([slot="header"]) {
-        margin: 0;
+        margin: 0 !important;
         font-size: var(--_title-size);
         font-weight: var(--_title-weight);
         letter-spacing: -0.01em;
@@ -232,17 +264,34 @@
         flex-direction: column;
         gap: var(--_gap);
       }
-      .body ::slotted(*) { margin-block: 0; }
+      .body ::slotted(*) { margin-block: 0 !important; }
 
+      :host { --_justify: flex-end; }
+      :host([button-position="left"]) { --_justify: flex-start; }
+      :host([button-position="center"]) { --_justify: center; }
       .footer-box {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-end;
+        justify-content: var(--_justify);
         align-items: center;
         gap: var(--_footer-gap);
         padding-top: calc(var(--_footer-spacing) - var(--_gap));
       }
+      ::slotted([slot="footer"]) { margin-block: 0 !important; }
       ::slotted(kakao-button[slot="footer"]) { display: inline-flex; }
+      /* A wrapper (<div slot="footer">) is a row of its own across the footer, so
+         its buttons follow button-position and the footer gap too. */
+      ::slotted([slot="footer"]:not(kakao-button)) {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: var(--_justify);
+        gap: var(--_footer-gap);
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+      :host([full-width]) ::slotted(kakao-button[slot="footer"]) { flex: 1 1 0; min-width: 0; }
+      :host([full-width]) ::slotted([slot="footer"]:not(kakao-button)) { flex-wrap: nowrap; }
 
       @media (prefers-reduced-motion: reduce) {
         :host, .scrim, .panel { transition: none; }
@@ -259,7 +308,7 @@
 
   class KakaoDialog extends HTMLElement {
     static get observedAttributes() {
-      return ['open', 'label', 'size', 'no-dismiss'];
+      return ['open', 'label', 'size', 'no-dismiss', 'button-position', 'full-width'];
     }
 
     constructor() {
@@ -280,6 +329,11 @@
 
       this._onKeydown = this._onKeydown.bind(this);
       this._onSlotChange = this._onSlotChange.bind(this);
+      this._fitCorners = this._fitCorners.bind(this);
+      // Footer wrapping, label changes, late-upgrading buttons: refit the corners.
+      this._resize = new ResizeObserver(this._fitCorners);
+      // A footer button turning ghost (or changing size) changes no box size: refit.
+      this._buttonAttrs = new MutationObserver(this._fitCorners);
 
       this._scrim.addEventListener('click', () => {
         if (!this.hasAttribute('no-dismiss')) this.close('dismiss');
@@ -296,26 +350,38 @@
     /* ---------------------------- Lifecycle ---------------------------- */
 
     connectedCallback() {
+      ensurePageStyles();
       this._headerSlot.addEventListener('slotchange', this._onSlotChange);
       this._footerSlot.addEventListener('slotchange', this._onSlotChange);
       this._onSlotChange();
       this._syncLabel();
       this._apply(this.hasAttribute('open'));
+      this._resize.observe(this._panel);
+      this._resize.observe(this._footerBox);
+      this._buttonAttrs.observe(this, { subtree: true, attributes: true, attributeFilter: ['variant', 'size'] });
     }
 
     disconnectedCallback() {
       this._headerSlot.removeEventListener('slotchange', this._onSlotChange);
       this._footerSlot.removeEventListener('slotchange', this._onSlotChange);
       if (this._applied) this._apply(false);
+      this._resize.disconnect();
+      this._buttonAttrs.disconnect();
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
       if (oldValue === newValue) return;
       if (name === 'open') {
         this._apply(this.hasAttribute('open'));
+        if (this.isOpen) {
+          this._fitCorners(); // before the first frame, so the corners never jump in
+          requestAnimationFrame(this._fitCorners);
+        }
         return;
       }
       if (name === 'label') this._syncLabel();
+      // The buttons move to other corners (or fill both): refit them.
+      if (name === 'button-position' || name === 'full-width') requestAnimationFrame(this._fitCorners);
     }
 
     /* ------------------------------ Open ------------------------------- */
@@ -385,6 +451,55 @@
       this._headerBox.hidden = this._headerSlot.assignedElements().length === 0;
       this._footerBox.hidden = this._footerSlot.assignedElements().length === 0;
       this._syncLabel();
+      this._fitCorners();
+    }
+
+    /**
+     * Nesting rule for the bottom corners: a corner gets (button radius +
+     * padding) only when a filled footer button (not ghost) sits right in it, so the two curves
+     * are concentric. Measured, so it follows the button's size (sm/md/lg),
+     * the footer's alignment and wrapping. Other corners keep --_radius.
+     */
+    _fitCorners() {
+      // Only while open. Closing is often a click on a footer button, which is
+      // squashed (scaled) at that moment and would read as "not in the corner":
+      // the corners keep their shape through the exit animation.
+      if (!this.isOpen) return;
+      const panel = this._panel;
+      const corners = { bl: null, br: null };
+      if (!this._footerBox.hidden && panel.offsetWidth) {
+        const box = panel.getBoundingClientRect();
+        const scale = box.width / panel.offsetWidth || 1; // the open animation scales the panel
+        const cs = getComputedStyle(panel);
+        const pad = { left: parseFloat(cs.paddingLeft), right: parseFloat(cs.paddingRight), bottom: parseFloat(cs.paddingBottom) };
+        const near = (a, b) => Math.abs(a - b) <= 1.5;
+        const buttons = this._footerSlot.assignedElements()
+          .flatMap((el) => (el.localName === 'kakao-button' ? [el] : [...el.querySelectorAll('kakao-button')]));
+        buttons.forEach((btn) => {
+          // A ghost button has no fill, so there is no shape for the corner to follow.
+          if (btn.getAttribute('variant') === 'ghost') return;
+          const face = btn.querySelector('.kakao-button-inner') || btn;
+          const r = face.getBoundingClientRect();
+          if (!r.width) return;
+          if (!near((box.bottom - r.bottom) / scale, pad.bottom)) return;
+          const fs = getComputedStyle(face);
+          const radiusOf = (v) => (v.trim().endsWith('%')
+            ? (Math.min(face.offsetWidth, face.offsetHeight) * parseFloat(v)) / 100
+            : parseFloat(v) || 0);
+          if (near((box.right - r.right) / scale, pad.right)) {
+            const rr = radiusOf(fs.borderBottomRightRadius);
+            corners.br = `${rr + pad.right}px ${rr + pad.bottom}px`;
+          }
+          if (near((r.left - box.left) / scale, pad.left)) {
+            const rl = radiusOf(fs.borderBottomLeftRadius);
+            corners.bl = `${rl + pad.left}px ${rl + pad.bottom}px`;
+          }
+        });
+      }
+      Object.entries(corners).forEach(([corner, radius]) => {
+        if (radius == null) panel.style.removeProperty(`--_corner-${corner}`);
+        else panel.style.setProperty(`--_corner-${corner}`, radius);
+      });
     }
 
     /** Name the dialog after its header element, or after the label attribute. */

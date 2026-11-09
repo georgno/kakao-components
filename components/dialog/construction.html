@@ -79,6 +79,32 @@
         </kakao-dialog>
       </div>
     </figure>
+    <figure>
+      <figcaption>Centred · <code>button-position="center"</code></figcaption>
+      <div class="dialog-stage">
+        <kakao-dialog open contained size="sm" button-position="center" label="Centred buttons">
+          <h2 slot="header">Save changes?</h2>
+          <p>The footer buttons sit in the middle; no corner holds a button.</p>
+          <div slot="footer">
+            <kakao-button label="Discard" variant="ghost" data-close="discard"></kakao-button>
+            <kakao-button label="Save" data-close="save"></kakao-button>
+          </div>
+        </kakao-dialog>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Full width · <code>full-width</code></figcaption>
+      <div class="dialog-stage">
+        <kakao-dialog open contained size="sm" full-width label="Full width buttons">
+          <h2 slot="header">Delete project?</h2>
+          <p>The buttons split the width; both bottom corners round to match.</p>
+          <div slot="footer">
+            <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+            <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
+          </div>
+        </kakao-dialog>
+      </div>
+    </figure>
   </div>
 
   <script type="application/json" class="construction-manifest">
@@ -97,7 +123,7 @@
     { "property": "--kakao-dialog-width-md", "label": "Width md", "group": "Size & spacing", "type": "length" },
     { "property": "--kakao-dialog-width-lg", "label": "Width lg", "group": "Size & spacing", "type": "length" },
 
-    { "property": "--kakao-dialog-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-dialog-radius", "label": "Radius", "group": "Shape", "type": "radius", "hint": "a bottom corner holding a filled footer button (not ghost) gets button radius + padding" },
     { "property": "--kakao-dialog-shadow", "label": "Shadow", "group": "Shape", "type": "shadow" },
     { "property": "--kakao-dialog-z", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 9999 },
 

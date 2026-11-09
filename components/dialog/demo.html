@@ -16,6 +16,9 @@
 <script src="dialog.js" defer></script>
 <style>
   .demo-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  /* demo.css spaces stacked card children with margin-top; in a row that only
+     pushes every button but the first down. */
+  .card.demo-row > * + * { margin-top: 0; }
   /* the dialog is fixed, so these only keep the demo page tall enough to scroll */
   main { min-height: 130vh; }
 </style>
@@ -57,13 +60,24 @@
     </div>
   </div>
 
+  <h2>Footer buttons</h2>
+  <p><code>button-position</code> puts them left, centred or right (default). <code>full-width</code> lets them share the whole width in equal parts. A bottom corner with a button in it rounds to match that button.</p>
+  <div class="card demo-row">
+    <kakao-button id="open-pos-left" label="Left" variant="secondary" size="sm"></kakao-button>
+    <kakao-button id="open-pos-center" label="Center" variant="secondary" size="sm"></kakao-button>
+    <kakao-button id="open-pos-right" label="Right" variant="secondary" size="sm"></kakao-button>
+    <kakao-button id="open-full-one" label="Full width · one" variant="secondary" size="sm"></kakao-button>
+    <kakao-button id="open-full-two" label="Full width · two" variant="secondary" size="sm"></kakao-button>
+    <kakao-button id="open-full-three" label="Full width · three" variant="secondary" size="sm"></kakao-button>
+  </div>
+
   <h2>Playground</h2>
   <p>Every open and close bubbles as <code>dialog-open</code> / <code>dialog-close</code>; <code>data-close</code> decides the return value.</p>
   <div class="card">
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 
-  <footer>Attributes: <code>open</code>, <code>label</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>), <code>no-dismiss</code>. Methods: <code>open()</code>, <code>close(returnValue)</code>, <code>toggle()</code>, <code>isOpen</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Full reference in the header of <code>dialog.js</code>.</footer>
+  <footer>Attributes: <code>open</code>, <code>label</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>), <code>no-dismiss</code>, <code>button-position</code> (<code>left</code> · <code>center</code> · <code>right</code>), <code>full-width</code>. Methods: <code>open()</code>, <code>close(returnValue)</code>, <code>toggle()</code>, <code>isOpen</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Full reference in the header of <code>dialog.js</code>.</footer>
 </main>
 
 <!-- ============================== the dialogs ============================== -->
@@ -126,6 +140,58 @@
   <div slot="footer"><kakao-button label="Close" variant="ghost" data-close="close"></kakao-button></div>
 </kakao-dialog>
 
+<kakao-dialog id="pos-left" size="sm" button-position="left" label="Buttons left">
+  <h2 slot="header">Save changes?</h2>
+  <p>Footer buttons with <code>button-position="left"</code>.</p>
+  <div slot="footer">
+    <kakao-button label="Discard" variant="ghost" data-close="discard"></kakao-button>
+    <kakao-button label="Save" data-close="save"></kakao-button>
+  </div>
+</kakao-dialog>
+
+<kakao-dialog id="pos-center" size="sm" button-position="center" label="Buttons center">
+  <h2 slot="header">Save changes?</h2>
+  <p>Footer buttons with <code>button-position="center"</code>.</p>
+  <div slot="footer">
+    <kakao-button label="Discard" variant="ghost" data-close="discard"></kakao-button>
+    <kakao-button label="Save" data-close="save"></kakao-button>
+  </div>
+</kakao-dialog>
+
+<kakao-dialog id="pos-right" size="sm" button-position="right" label="Buttons right">
+  <h2 slot="header">Save changes?</h2>
+  <p>Footer buttons with <code>button-position="right"</code>.</p>
+  <div slot="footer">
+    <kakao-button label="Discard" variant="ghost" data-close="discard"></kakao-button>
+    <kakao-button label="Save" data-close="save"></kakao-button>
+  </div>
+</kakao-dialog>
+
+<kakao-dialog id="full-one" size="sm" full-width label="One button, full width">
+  <h2 slot="header">You're all set</h2>
+  <p>One button covers the whole width.</p>
+  <div slot="footer"><kakao-button label="Start watching" data-close="ok"></kakao-button></div>
+</kakao-dialog>
+
+<kakao-dialog id="full-two" size="sm" full-width label="Two buttons, full width">
+  <h2 slot="header">Delete project?</h2>
+  <p>Two buttons split the width in half.</p>
+  <div slot="footer">
+    <kakao-button label="Keep it" variant="secondary" data-close="cancel"></kakao-button>
+    <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
+  </div>
+</kakao-dialog>
+
+<kakao-dialog id="full-three" full-width label="Three buttons, full width">
+  <h2 slot="header">Unsaved changes</h2>
+  <p>Three buttons, three equal parts.</p>
+  <div slot="footer">
+    <kakao-button label="Cancel" variant="ghost" data-close="cancel"></kakao-button>
+    <kakao-button label="Discard" variant="secondary" data-close="discard"></kakao-button>
+    <kakao-button label="Save" data-close="save"></kakao-button>
+  </div>
+</kakao-dialog>
+
 <script>
   const log = document.getElementById('log');
   logEvents(log, ['dialog-open', 'dialog-close']);
@@ -139,6 +205,8 @@
   open('sm', 'open-sm');
   open('lg', 'open-lg');
   open('tall', 'open-tall');
+  ['left', 'center', 'right'].forEach((pos) => open(`pos-${pos}`, `open-pos-${pos}`));
+  ['one', 'two', 'three'].forEach((n) => open(`full-${n}`, `open-full-${n}`));
 
   // Filler, so the two scroll examples actually overflow.
   const fill = (id, count, text) => {
