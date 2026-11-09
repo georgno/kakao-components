@@ -419,6 +419,16 @@ kakao-button[data-menu-up] .kakao-button-menu {
   --_menu-from: 4px;
 }
 
+/* No room on the right: the menu lines up with the button's right edge. */
+kakao-button[data-menu-end] .kakao-button-menu {
+  left: auto;
+  right: 0;
+  transform-origin: top right;
+}
+kakao-button[data-menu-end][data-menu-up] .kakao-button-menu {
+  transform-origin: bottom right;
+}
+
 .kakao-button-menu-item {
   display: flex;
   align-items: center;

@@ -14,6 +14,9 @@
  *                     [{ "value": "light", "label": "Light", "disabled"?: true }, …]
  *                   Turns the button into a menu button: a trailing chevron, and a
  *                   click (or ↓ / ↑ / Enter / Space) opens the list below it.
+ *                   The list stays on screen: it opens upwards when there is no
+ *                   room below, and from the button's right edge when it would
+ *                   run off the right side (shifted in if neither edge fits).
  *   selected        Value of the checked item (role="menuitemradio"). Updated on pick.
  *   show-selected   Show the selected item's label instead of `label`
  *                   (`label` is then the menu's accessible name: "Theme: Dark").
@@ -415,6 +418,8 @@
       const r = this._btn.getBoundingClientRect();
       const below = window.innerHeight - r.bottom;
       this.toggleAttribute('data-menu-up', below < this._menu.offsetHeight + 16 && r.top > below);
+      // the menu is positioned against the host, so measure the host
+      this._placeMenuX(this.getBoundingClientRect());
       this._syncMenu();
       if (!reduceMotion()) {
         this._menu.animate(
@@ -427,6 +432,28 @@
       const target = focus === 'last' ? items[items.length - 1] : (sel || items[0]);
       if (target) target.focus({ preventScroll: true });
       this.dispatchEvent(new CustomEvent('kakao-button-menu', { bubbles: true, detail: { open: true } }));
+    }
+
+    /**
+     * Keep the open menu inside the viewport sideways. It starts at the
+     * button's left edge; if it would run off the right, it lines up with the
+     * button's right edge instead; if neither fits (a wide menu on a narrow
+     * screen), it is shifted just enough to stay on screen.
+     */
+    _placeMenuX(r) {
+      const MARGIN = 8;
+      const menu = this._menu;
+      menu.style.left = '';
+      const width = menu.offsetWidth;
+      const room = document.documentElement.clientWidth; // excludes a scrollbar
+      const fitsStart = r.left + width <= room - MARGIN;
+      const fitsEnd = r.right - width >= MARGIN;
+      const end = !fitsStart && fitsEnd;
+      this.toggleAttribute('data-menu-end', end);
+      if (fitsStart || end) return;
+      // Neither edge works: place it from the left, clamped to the viewport.
+      const left = Math.max(MARGIN, Math.min(r.left, room - MARGIN - width));
+      menu.style.left = `${Math.round(left - r.left)}px`;
     }
 
     closeMenu(returnFocus = true) {

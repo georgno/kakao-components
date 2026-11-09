@@ -7,6 +7,12 @@ change a component's API.
 
 ## [Unreleased]
 
+### Changed
+
+- `kakao-button` menus stay on screen sideways: a menu that would run off the
+  right edge opens from the button's right edge instead, and one too wide for
+  either edge is shifted in.
+
 ## [0.2.1] - 2026-11-09
 
 ### Added
