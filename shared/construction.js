@@ -38,9 +38,9 @@
   /** Load what the construction UI is built from, unless the page has it. */
   function ensureDependencies() {
     const head = document.head;
-    if (!document.querySelector('link[href*="font-awesome"]')) {
+    if (!document.querySelector('link[href*="fontawesome"], link[href*="font-awesome"]')) {
       head.append(Object.assign(document.createElement('link'), {
-        rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+        rel: 'stylesheet', href: new URL('vendor/fontawesome/css/all.min.css', ENGINE_URL).href,
       }));
     }
     if (!document.querySelector('link[href*="number-input.css"]')) {
