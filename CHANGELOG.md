@@ -3,7 +3,8 @@
 All notable changes to kakao-components are listed here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/). Until 1.0.0, a minor version may
-change a component's API.
+change a component's API. Entries under "Site only" change this project's
+pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
@@ -12,6 +13,17 @@ change a component's API.
 - `kakao-button` menus stay on screen sideways: a menu that would run off the
   right edge opens from the button's right edge instead, and one too wide for
   either edge is shifted in.
+
+### Site only
+
+- Landing page: a theme menu in the corner instead of the theme switch.
+- Landing page wall: a file upload (Subtitles), a chip list with a count
+  badge (Library), and async Playback switches whose demo starts on load and
+  holds while a menu is open. The Plan card moved to the bottom row, a blank
+  card runs into the fade, and the "Open the component list" link is gone.
+- Landing page on phones: one call to action, and the corner tools and cards
+  sit on the page's gutter; the wall's glow no longer makes the page scroll
+  sideways.
 
 ## [0.2.1] - 2026-11-09
 

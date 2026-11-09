@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="shared/vendor/fontawesome/css/all.min.css" />
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/number-input/number-input.css" />
+<link rel="stylesheet" href="components/chip-list/chip-list.css" />
 <script src="components/card/card.js" defer></script>
 <script src="components/button/button.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
@@ -24,9 +25,16 @@
 <script src="components/text-input/text-input.js" defer></script>
 <script src="components/checkbox/checkbox.js" defer></script>
 <script src="components/radio-group/radio-group.js" defer></script>
+<script src="components/chip/chip.js" defer></script>
+<script src="components/chip-list/chip-list.js" defer></script>
+<script src="components/badge/badge.js" defer></script>
+<script src="components/file-upload/file-upload.js" defer></script>
 <style>
   /* ---- this page only ---- */
   main { max-width: 1300px; padding: 4.5rem 1.25rem 5rem; }
+  /* The glow behind the wall (.portal::before) reaches past the right edge
+     at most widths: no sideways scrolling for it. */
+  html { overflow-x: hidden; }
 
   .hero {
     display: grid;
@@ -37,6 +45,16 @@
   @media (max-width: 980px) {
     .hero { grid-template-columns: minmax(0, 1fr); gap: 3.5rem; }
     main { padding-top: 3rem; }
+    /* Stacked, the corner tools keep the page's own 1.25rem gutter, so they
+       line up with the heading and the cards below them. On desktop they stay
+       at 1rem, like on every other page. */
+    .page-tools { right: 1.25rem; }
+    /* Stacked, the glow behind the wall (.portal::before) reaches past the
+       screen edge, and a phone widens its layout to fit it - taking the fixed
+       corner tools off the grid. main spans the screen here, so it clips the
+       glow at the edge. clip, not hidden: no scroll box. (On body this would
+       be handed to the viewport and not count.) */
+    main { overflow-x: clip; }
   }
 
   /* The guide's No uppercase rule: weight and colour, never capitals. */
@@ -129,6 +147,9 @@
      without it the Plan card's price paints over the row below. */
   @media (min-width: 941px) {
     .wall-row:first-child { height: 13rem; margin-top: 10rem; }
+    /* Row 3 sits below the frame here; its height still centres the wall,
+       so it keeps the height it had before the Plan card moved in. */
+    .wall-row:last-child { height: 9.5rem; }
   }
 
   /* A .card from the kitchen sink, in miniature: same surface, radius, padding
@@ -146,11 +167,31 @@
   /* each card is as wide as its content needs */
   .panel { width: 18rem; }
   .p-screens, .p-playback { width: 14.5rem; }
-  .p-subs { width: 16rem; }
+  .p-subs { width: 17rem; }
+  /* The top row is a 13rem band. The card title already says what the field
+     is, so the upload's own label is kept for screen readers only, and the
+     drop area is shorter, tighter and has no hint line (the file dialog only
+     offers .srt and .vtt anyway): together they keep it whole. */
+  .p-subs kakao-file-upload {
+    --kakao-file-upload-min-height: 7.5rem;
+    --kakao-file-upload-drop-padding: 0.75rem;
+  }
+  .p-subs kakao-file-upload::part(label) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .panel-dummy { width: 14.5rem; }
   .p-theme { width: max-content; }
   .p-buffer, .p-coupon { width: 15rem; }
   .p-alerts { width: 18rem; }
-  .p-account, .p-downloads { width: 17rem; }
+  .p-account, .p-library { width: 17rem; }
+  /* Card title with a badge right after it (not pushed to the far edge:
+     the Library card sits at the right end of row 2, where the frame fades). */
+  .panel-head { display: flex; align-items: center; gap: 0.5rem; }
   .panel-title {
     margin: 0;
     font-size: 0.8125rem;
@@ -178,17 +219,25 @@
   /* Narrow screens: nothing to bleed. The wall fits and the mask goes away,
      because a fade over a 16rem band eats the panels' own edges. */
   @media (max-width: 940px) {
+    /* Stacked, the cards run on the page's gutter like the text above them:
+       no side padding in the frame, and the card's transparent 1px border is
+       pulled out so the panels start exactly on the gutter. */
+    .portal kakao-card { margin-inline: -1px; }
     .window {
       height: auto;
-      padding: 1.25rem;
+      padding: 1.25rem 0;
       -webkit-mask-image: none;
       mask-image: none;
     }
     .wall { position: static; transform: none; width: auto; }
     .wall-row { flex-wrap: wrap; }
     .panel { width: auto; flex: 1 1 14rem; }
+    .panel-dummy { display: none; }
   }
   @media (max-width: 620px) {
+    /* Phones: one call to action. Kitchen sink and style guide are linked
+       from the component list. */
+    .actions kakao-button[variant="ghost"] { display: none; }
     .panel { flex: 1 1 100%; }
   }
 
@@ -203,22 +252,12 @@
   }
   .mini-price kakao-animated-number { --kakao-animated-number-font-size: 1.375rem; --kakao-animated-number-font-weight: 600; }
   .mini-price small { font-size: 0.8125rem; font-weight: 400; color: var(--muted); letter-spacing: 0; }
-  .portal-open {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    margin-top: 1.75rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--accent);
-  }
-  .portal-open:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 <div class="page-tools">
-  <kakao-theme-switch class="page-theme-switch"></kakao-theme-switch>
+  <kakao-button class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+    list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
   <a class="page-icon-link" href="settings.html" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></a>
 </div>
 <main>
@@ -248,12 +287,6 @@
             <div class="wall">
               <!-- row 1 -->
               <div class="wall-row">
-                <div class="panel p-plan">
-                  <p class="panel-title">Plan</p>
-                  <kakao-radio-group label="Seats" name="seats" value="team"
-                    list-data='[{"value":"solo","label":"Solo"},{"value":"team","label":"Team"},{"value":"max","label":"Max"}]'></kakao-radio-group>
-                  <div class="mini-price"><span>€</span><kakao-animated-number value="13.49" decimals="2"></kakao-animated-number><small>/ month</small></div>
-                </div>
                 <div class="panel p-screens">
                   <p class="panel-title">Screens</p>
                   <kakao-number-input>
@@ -261,17 +294,18 @@
                   </kakao-number-input>
                   <kakao-slider min="0" max="20" step="1" value="5" unit="GB" label="Data cap"></kakao-slider>
                 </div>
-                <div class="panel p-playback">
-                  <p class="panel-title">Playback</p>
-                  <kakao-switch-group label="Playback" orientation="vertical"
-                    list-data='[{"name":"next","label":"Play next","checked":true},{"name":"skip","label":"Skip intros","checked":true},{"name":"previews","label":"Previews"}]'></kakao-switch-group>
-                </div>
                 <div class="panel p-subs">
                   <p class="panel-title">Subtitles</p>
-                  <kakao-step-switch label="Subtitle size" value="m"
-                    list-data='[{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}]'></kakao-step-switch>
-                  <kakao-checkbox checked label="Bold outline"></kakao-checkbox>
+                  <kakao-file-upload label="Subtitle file" hint="" accept=".srt,.vtt" max-size="1MB" max-files="1"></kakao-file-upload>
                 </div>
+                <div class="panel p-playback">
+                  <p class="panel-title">Playback</p>
+                  <kakao-switch-group id="pb" async label="Playback" orientation="vertical"
+                    list-data='[{"name":"next","label":"Play next","checked":true},{"name":"skip","label":"Skip intros","checked":true},{"name":"previews","label":"Previews"}]'></kakao-switch-group>
+                </div>
+                <!-- a blank card so the row runs on into the fade; gone when
+                     it lies wholly outside the frame (see the script below) -->
+                <div class="panel panel-dummy" aria-hidden="true"></div>
               </div>
               <!-- row 2: the one the frame centres on -->
               <div class="wall-row">
@@ -286,14 +320,30 @@
                     {"value":"light","label":"Light"},{"value":"umber","label":"Umber"},
                     {"value":"dark","label":"Dark"},{"value":"forest","label":"Forest"}]'></kakao-step-switch>
                 </div>
-                <div class="panel p-downloads">
-                  <p class="panel-title">Downloads</p>
-                  <kakao-switch-group id="dl" async label="Downloads" orientation="vertical"
-                    list-data='[{"name":"wifi","label":"Only on Wi-Fi","checked":true},{"name":"auto","label":"Auto-delete"}]'></kakao-switch-group>
+                <div class="panel p-library">
+                  <div class="panel-head">
+                    <p class="panel-title">Library</p>
+                    <kakao-badge id="genre-count" tone="primary">3 genres</kakao-badge>
+                  </div>
+                  <kakao-chip-list id="genres" label="Favourite genres">
+                    <kakao-chip removable value="sci-fi">Sci-fi</kakao-chip>
+                    <kakao-chip removable value="documentary">Documentary</kakao-chip>
+                    <kakao-chip removable value="anime">Anime</kakao-chip>
+                  </kakao-chip-list>
+                  <kakao-chip-list id="more-genres" label="More genres, tap to add">
+                    <kakao-chip action value="comedy"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Comedy</kakao-chip>
+                    <kakao-chip action value="drama"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Drama</kakao-chip>
+                  </kakao-chip-list>
                 </div>
               </div>
               <!-- row 3 -->
               <div class="wall-row">
+                <div class="panel p-plan">
+                  <p class="panel-title">Plan</p>
+                  <kakao-radio-group label="Seats" name="seats" value="team"
+                    list-data='[{"value":"solo","label":"Solo"},{"value":"team","label":"Team"},{"value":"max","label":"Max"}]'></kakao-radio-group>
+                  <div class="mini-price"><span>€</span><kakao-animated-number value="13.49" decimals="2"></kakao-animated-number><small>/ month</small></div>
+                </div>
                 <div class="panel p-buffer">
                   <p class="panel-title">Buffer</p>
                   <kakao-slider min="0" max="60" step="5" value="20" unit="s" label="Buffer"></kakao-slider>
@@ -311,7 +361,6 @@
             </div>
           </div>
       </kakao-card>
-      <a class="portal-open" href="components.html">Open the component list <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
     </section>
   </div>
 </main>
@@ -365,6 +414,15 @@
     portal.addEventListener('focusout', release);
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
 
+    // Opening the theme menu in the corner ends the demo too: its items switch
+    // the theme as the pointer passes them.
+    document.addEventListener('kakao-button-menu', (event) => {
+      if (event.target.closest('[theme-picker]') && event.detail && event.detail.open) {
+        index = themes.length;
+        stop();
+      }
+    });
+
     // A real pick ends the demo: the visitor is driving now.
     document.addEventListener('step-change', (event) => {
       const detail = event.detail || {};
@@ -385,10 +443,20 @@
   (() => {
     const win = document.querySelector('.window');
     if (!win) return;
-    const panels = [...win.querySelectorAll('.panel')];
+    const panels = [...win.querySelectorAll('.panel:not(.panel-dummy)')];
+    const dummies = [...win.querySelectorAll('.panel-dummy')];
+    const overlaps = (box, frame) => box.right > frame.left && box.left < frame.right
+      && box.bottom > frame.top && box.top < frame.bottom;
 
     const mark = () => {
       const frame = win.getBoundingClientRect();
+      // A blank card is only there to run into the fade: measure it in place,
+      // and drop it from the layout when none of it is inside the frame.
+      // All in one frame, so nothing paints in between.
+      dummies.forEach((dummy) => { dummy.style.display = ''; });
+      dummies.forEach((dummy) => {
+        if (!overlaps(dummy.getBoundingClientRect(), frame)) dummy.style.display = 'none';
+      });
       panels.forEach((panel) => {
         const box = panel.getBoundingClientRect();
         const width = Math.min(box.right, frame.right) - Math.max(box.left, frame.left);
@@ -410,20 +478,68 @@
     mark();
   })();
 
-  // The Downloads switches are async - a real toggle waits for a request - so
+  // The Library card: tapping a "+" chip moves the genre into the list above,
+  // removing one puts it back, and the badge counts what is picked.
+  (() => {
+    const picked = document.getElementById('genres');
+    const more = document.getElementById('more-genres');
+    const count = document.getElementById('genre-count');
+    if (!picked || !more || !count) return;
+    const label = (chip) => chip.textContent.trim();
+    const update = () => {
+      // not the faded copy chip-list keeps in place while a chip leaves
+      const n = picked.querySelectorAll(':scope > kakao-chip:not([data-chip-list-ghost])').length;
+      count.textContent = n === 1 ? '1 genre' : `${n} genres`;
+    };
+    const make = (text, value, removable) => {
+      const chip = document.createElement('kakao-chip');
+      chip.setAttribute('value', value);
+      if (removable) {
+        chip.setAttribute('removable', '');
+        chip.textContent = text;
+      } else {
+        chip.setAttribute('action', '');
+        chip.innerHTML = '<i slot="icon" class="fas fa-plus" aria-hidden="true"></i>';
+        chip.append(text);
+      }
+      return chip;
+    };
+    more.addEventListener('chip-action', (event) => {
+      const chip = event.target.closest('kakao-chip');
+      if (!chip) return;
+      const added = make(label(chip), chip.getAttribute('value'), true);
+      picked.append(added);
+      chip.remove();
+      // keep the keyboard's place: focus moves to the genre that was added
+      requestAnimationFrame(() => {
+        const button = added.shadowRoot && added.shadowRoot.querySelector('button');
+        if (button) button.focus();
+      });
+    });
+    picked.addEventListener('chip-remove', (event) => {
+      const chip = event.target.closest('kakao-chip');
+      if (!chip) return;
+      more.append(make(label(chip), chip.getAttribute('value'), false));
+    });
+    // a removed chip leaves after its fade, so count when it is really gone
+    new MutationObserver(update).observe(picked, { childList: true });
+  })();
+
+  // The Playback switches are async - a real toggle waits for a request - so
   // they can show their loader, their checkmark and what a failure looks like.
-  // The demo drives itself for a few flips and then stops; it never fabricates
+  // The demo starts as soon as the page has drawn, drives itself for a few
+  // flips and then stops; it never fabricates
   // latency for a visitor's own tap, never runs for reduced motion, holds still
   // while the pointer or focus is in the portal, and stops for good as soon as
   // the visitor touches the switches themselves.
   customElements.whenDefined('kakao-switch-group').then(() => {
-    const group = document.getElementById('dl');
+    const group = document.getElementById('pb');
     const portal = document.querySelector('.portal');
     if (!group || !portal) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const INTERVAL = 3200;
-    const FLIPS = [1, 0, 1, 0]; // auto (fails), wifi, auto (fails), wifi
+    const FLIPS = [2, 1, 2, 1]; // previews (fails), skip, previews (fails), skip
     let step = 0;
     let timer = null;
     let demoClick = false;
@@ -437,10 +553,10 @@
         return;
       }
       const { name, waitUntil } = event.detail;
-      // "Auto-delete" is the one that fails: loader, then the red X and the
+      // "Previews" is the one that fails: loader, then the red X and the
       // spring back. The setting is local, so only the demo waits at all.
       waitUntil(new Promise((resolve, reject) => {
-        setTimeout(name === 'auto' ? () => reject(new Error('Storage is full')) : resolve, 900);
+        setTimeout(name === 'previews' ? () => reject(new Error('Could not save')) : resolve, 900);
       }));
     });
     group.addEventListener('switch-change', settle);
@@ -467,7 +583,18 @@
 
     const tracks = () => (group.shadowRoot ? [...group.shadowRoot.querySelectorAll('.track')] : []);
 
+    // A flip is a click on the track, which takes focus, and an open button
+    // menu (the theme menu in the corner) closes when focus leaves it. So the
+    // demo holds still while any menu is open.
+    let menuOpen = false;
+    document.addEventListener('kakao-button-menu', (event) => {
+      menuOpen = Boolean(event.detail && event.detail.open);
+      if (menuOpen) stopTimer();
+      else play();
+    });
+
     const tick = () => {
+      if (menuOpen) return;
       if (over || step >= FLIPS.length) return stopDemo();
       const panel = group.closest('.panel');
       if (!panel || panel.hasAttribute('inert')) return; // not on screen yet: wait
@@ -492,7 +619,7 @@
     };
 
     const play = () => {
-      if (timer || over) return;
+      if (timer || over || menuOpen) return;
       timer = setInterval(tick, INTERVAL);
     };
     portal.addEventListener('pointerenter', stopTimer);
@@ -501,7 +628,23 @@
     portal.addEventListener('focusout', play);
     document.addEventListener('visibilitychange', () => (document.hidden ? stopTimer() : play()));
 
-    play();
+    // First flip right away once page-cloak.js has shown the page, then on
+    // the interval.
+    const start = () => setTimeout(() => {
+      tick();
+      play();
+    }, 400);
+    const root = document.documentElement;
+    if (!root.hasAttribute('data-kakao-cloak')) {
+      start();
+    } else {
+      const seen = new MutationObserver(() => {
+        if (root.hasAttribute('data-kakao-cloak')) return;
+        seen.disconnect();
+        start();
+      });
+      seen.observe(root, { attributes: true, attributeFilter: ['data-kakao-cloak'] });
+    }
   });
 </script>
 </body>
