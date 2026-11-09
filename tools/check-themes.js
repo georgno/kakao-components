@@ -40,6 +40,7 @@ const PAIRS = [
   ['on-danger', 'danger', 4.5, 'danger button label'],
   ['on-danger', 'danger-hover', 4.5, 'danger button label, hover'],
   ['danger', 'bg', 4.5, 'error text'],
+  ['success', 'bg', 4.5, 'success text, success badge'],
   ['primary', 'bg', 4.5, 'selected option text'],
   ['field-border', 'bg', 1.1, 'field edge (decorative, see border)'],
   ['border', 'bg', 3, 'field border, off switch track'],

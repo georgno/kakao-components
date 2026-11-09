@@ -41,6 +41,7 @@
   --kakao-color-danger: #dc2626;
   --kakao-color-danger-hover: #b91c1c;
   --kakao-color-on-danger: #ffffff;
+  --kakao-color-success: #15803d;
   --kakao-color-focus: #2563eb;
 }
 /* @generated:end */
@@ -68,6 +69,7 @@
   --kakao-color-danger: #971d18;
   --kakao-color-danger-hover: #ad2822;
   --kakao-color-on-danger: #ffffff;
+  --kakao-color-success: #2f6b1f;
   --kakao-color-focus: #1a5f8a;
 }
 
@@ -94,6 +96,7 @@
   --kakao-color-danger: #f2a09a;
   --kakao-color-danger-hover: #f7b8b3;
   --kakao-color-on-danger: #2a241d;
+  --kakao-color-success: #a7d99b;
   --kakao-color-focus: #93cbf2;
 }
 
@@ -119,6 +122,7 @@
   --kakao-color-danger: #f87171;
   --kakao-color-danger-hover: #fca5a5;
   --kakao-color-on-danger: #18181b;
+  --kakao-color-success: #4ade80;
   --kakao-color-focus: #60a5fa;
 }
 
@@ -145,6 +149,7 @@
   --kakao-color-danger: #f87171;
   --kakao-color-danger-hover: #fca5a5;
   --kakao-color-on-danger: #000000;
+  --kakao-color-success: #4ade80;
   --kakao-color-focus: #60a5fa;
 }
 
@@ -171,6 +176,7 @@
   --kakao-color-danger: #f38ba8;
   --kakao-color-danger-hover: #f5a6bd;
   --kakao-color-on-danger: #11111b;
+  --kakao-color-success: #a6e3a1;
   --kakao-color-focus: #89b4fa;
 }
 
@@ -197,6 +203,7 @@
   --kakao-color-danger: #fca5a5;
   --kakao-color-danger-hover: #fecaca;
   --kakao-color-on-danger: #0b1512;
+  --kakao-color-success: #86efac;
   --kakao-color-focus: #7dd3fc;
 }
 
@@ -222,6 +229,7 @@
     --kakao-color-danger: #f87171;
     --kakao-color-danger-hover: #fca5a5;
     --kakao-color-on-danger: #18181b;
+    --kakao-color-success: #4ade80;
     --kakao-color-focus: #60a5fa;
   }
 }
