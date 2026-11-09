@@ -63,11 +63,13 @@ class KakaoAnimatedNumber extends HTMLElement {
   /** Imperative API (matches kalorienrechner number-flow usage). */
   update(n) {
     const next = this._parseInput(n);
-    if (!this.isConnected) {
+    // Not built yet: on upgrade the value attribute arrives before
+    // connectedCallback has made the shadow parts. Keep it; connectedCallback
+    // shows it without a roll from 0.
+    if (!this.isConnected || !this._row) {
       this._pending = next;
       return;
     }
-    if (this._pending != null) this._pending = null;
 
     const from = this._displayValue;
     this._targetValue = next;
