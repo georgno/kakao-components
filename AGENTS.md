@@ -20,6 +20,9 @@ others render into a shadow root (with slots where they take content).
   must keep passing `node tools/check-themes.js`.
 - A new component is added to `components.html` (the list page), to the styleguide's
   component audit and, if it fits, to `kitchen-sink.html`. `index.html` is the hero page.
+- Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`:
+  it keeps the page hidden until the deferred component scripts have drawn, so
+  reloads don't flicker. It's for this project's pages only, not part of any component.
 - Planning goes through OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
   Project rules for it are in `openspec/config.yaml`. Archive a change once its tasks are done.
 
