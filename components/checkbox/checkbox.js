@@ -83,18 +83,28 @@
       .wrap {
         display: inline-flex;
         align-items: flex-start;
+        vertical-align: top; /* no baseline gap under the row */
         gap: var(--_gap);
         cursor: pointer;
         user-select: none;
       }
       :host([disabled]) .wrap { cursor: not-allowed; }
 
-      .control { position: relative; display: inline-flex; flex: none; }
+      /* One label line tall, box centred in it: the box sits on the first
+         line of the label whatever follows (hint, error, wrapped lines). */
+      .control {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        flex: none;
+        height: 1.4em;
+        height: 1lh;
+      }
       input {
         position: absolute;
         inset: 0;
-        width: var(--_box-size);
-        height: var(--_box-size);
+        width: 100%;
+        height: 100%;
         margin: 0;
         opacity: 0;
         cursor: inherit;
@@ -123,7 +133,7 @@
       input:focus-visible + .box { outline: var(--_focus-width) solid var(--_focus); outline-offset: var(--_focus-offset); }
       :host([error]) .box { border-color: var(--_danger); }
 
-      .text { display: grid; gap: 2px; min-width: 0; padding-top: 1px; }
+      .text { display: grid; gap: 2px; min-width: 0; }
       .label { font-weight: var(--_label-weight); }
       .label:empty { display: none; }
       .hint { font-size: 0.78rem; color: var(--_muted); }

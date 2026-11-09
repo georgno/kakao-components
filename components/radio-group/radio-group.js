@@ -73,8 +73,8 @@
         --_font: var(--kakao-radio-group-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_dot-size: var(--kakao-radio-group-dot-size, 20px);
         --_gap: var(--kakao-radio-group-gap, 10px);
-        --_option-gap: var(--kakao-radio-group-option-gap, 12px);
-        --_option-padding: var(--kakao-radio-group-option-padding, 8px 10px);
+        --_option-gap: var(--kakao-radio-group-option-gap, 4px);
+        --_option-padding: var(--kakao-radio-group-option-padding, 2px 8px);
         --_radius: var(--kakao-radio-group-radius, 10px);
         --_label-weight: var(--kakao-radio-group-label-weight, 600);
         --_focus-width: var(--kakao-radio-group-focus-width, 2px);
@@ -125,12 +125,21 @@
       :host([disabled]) .option,
       .option.is-disabled { cursor: not-allowed; opacity: var(--_disabled-opacity); background: none; }
 
-      .control { position: relative; display: inline-flex; flex: none; }
+      /* One label line tall, dot centred in it: the dot sits on the first
+         line of the option label whatever follows (hint, wrapped lines). */
+      .control {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        flex: none;
+        height: 1.4em;
+        height: 1lh;
+      }
       input {
         position: absolute;
         inset: 0;
-        width: var(--_dot-size);
-        height: var(--_dot-size);
+        width: 100%;
+        height: 100%;
         margin: 0;
         opacity: 0;
         cursor: inherit;
@@ -161,7 +170,7 @@
       input:focus-visible + .dot { outline: var(--_focus-width) solid var(--_focus); outline-offset: var(--_focus-offset); }
       :host([error]) .dot { border-color: var(--_danger); }
 
-      .text { display: grid; gap: 2px; min-width: 0; padding-top: 1px; }
+      .text { display: grid; gap: 2px; min-width: 0; }
       .option-label { font-weight: 450; }
       .option-hint { font-size: 0.78rem; color: var(--_muted); }
       .option-hint:empty { display: none; }

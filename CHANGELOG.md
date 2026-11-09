@@ -8,6 +8,15 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Changed
+
+- `kakao-checkbox` and `kakao-radio-group`: the box and the dot sit centred on
+  the first line of their label at every size, also with a hint or a wrapped
+  label (the checkbox row is top-aligned in its host, so centring the box
+  adds no gap under it). Radio options are closer together (8px between
+  rows, as between stacked checkboxes): `--kakao-radio-group-option-gap` is
+  now 4px and `--kakao-radio-group-option-padding` 2px 8px.
+
 ## [0.2.2] - 2026-11-09
 
 ### Changed
