@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-select - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="select.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Select"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Select</h1>
+    <p><code>&lt;kakao-select&gt;</code> - Pick one value, or several with <code>multiple</code>, from a list with a search field on top. The field looks like the text input; the panel is the library's dropdown and stays on screen. Form-associated.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Single · child <code>&lt;option&gt;</code>s</h3>
+      <kakao-select id="s1" label="Country" hint="Type to filter: “osterr” finds Österreich.">
+        <option value="at">Österreich</option>
+        <option value="de" selected>Deutschland</option>
+        <option value="ch">Schweiz</option>
+        <option value="li">Liechtenstein</option>
+        <option value="lu">Luxembourg</option>
+        <option value="be">Belgique</option>
+        <option value="fr">France</option>
+        <option value="it">Italia</option>
+      </kakao-select>
+    </div>
+    <div class="card">
+      <h3>Groups · <code>&lt;optgroup&gt;</code></h3>
+      <kakao-select label="City" placeholder="Choose a city">
+        <optgroup label="Germany">
+          <option>Berlin</option><option>Hamburg</option><option>München</option><option>Köln</option>
+        </optgroup>
+        <optgroup label="Austria">
+          <option>Wien</option><option>Graz</option><option>Linz</option><option disabled>Salzburg (sold out)</option>
+        </optgroup>
+        <optgroup label="Switzerland">
+          <option>Zürich</option><option>Genève</option><option>Basel</option>
+        </optgroup>
+      </kakao-select>
+    </div>
+    <div class="card">
+      <h3>Multiple · select all</h3>
+      <kakao-select id="s3" multiple label="Genres" value="drama,comedy"
+        hint="Type “ma” and use “Select all N matches”: only the matches change."
+        list-data='[{"value":"action","label":"Action"},{"value":"comedy","label":"Comedy"},{"value":"drama","label":"Drama"},{"value":"horror","label":"Horror"},{"value":"romance","label":"Romance"},{"value":"thriller","label":"Thriller"},{"value":"sci-fi","label":"Science fiction"},{"value":"doc","label":"Documentary"},{"value":"anim","label":"Animation"}]'></kakao-select>
+    </div>
+    <div class="card">
+      <h3>Long list · 200 items</h3>
+      <kakao-select id="s4" multiple label="Products" placeholder="Pick products"></kakao-select>
+    </div>
+  </div>
+
+  <h2>States</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Sizes</h3>
+      <div style="display:grid;gap:.6rem">
+        <kakao-select size="sm" label="Small" list-data='["36px","Other"]' value="36px"></kakao-select>
+        <kakao-select label="Medium" list-data='["44px","Other"]' value="44px"></kakao-select>
+        <kakao-select size="lg" label="Large" list-data='["52px","Other"]' value="52px"></kakao-select>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · error</h3>
+      <div style="display:grid;gap:.6rem">
+        <kakao-select disabled label="Disabled" list-data='["One","Two"]' value="One"></kakao-select>
+        <kakao-select label="Plan" error="Pick a plan to continue." list-data='["Free","Pro","Team"]'></kakao-select>
+      </div>
+    </div>
+  </div>
+
+  <h2>In a form</h2>
+  <div class="card">
+    <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
+      <kakao-select name="country" label="Country" required>
+        <option value="">Please select</option>
+        <option value="at">Austria</option>
+        <option value="de">Germany</option>
+        <option value="ch">Switzerland</option>
+      </kakao-select>
+      <kakao-select name="tags" multiple required label="Tags" value="ui,api"
+        list-data='[{"label":"Area","options":[{"value":"ui","label":"UI"},{"value":"api","label":"API"},{"value":"docs","label":"Docs"}]},{"label":"Kind","options":[{"value":"bug","label":"Bug"},{"value":"feature","label":"Feature"},{"value":"chore","label":"Chore","disabled":true}]}]'></kakao-select>
+      <div class="row">
+        <kakao-button label="Submit" type="submit"></kakao-button>
+        <kakao-button label="Reset" type="reset" variant="secondary"></kakao-button>
+      </div>
+    </form>
+    <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <div class="toolbar" style="margin-top:0">
+      <kakao-button id="apiValues" label='values = ["action","horror"]' variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>select.js</code>.</footer>
+</main>
+<script>
+  const s3 = document.getElementById('s3');
+  const log = document.getElementById('log');
+  logEvents(log, ['change', 'select-change', 'select-open', 'select-close'], s3);
+  logEvents(log, ['select-change'], document.getElementById('s1'));
+
+  const words = ['Alpine', 'Basalt', 'Cedar', 'Delta', 'Ember', 'Fjord', 'Granit', 'Harbor', 'Indigo', 'Juniper'];
+  const kinds = ['lamp', 'chair', 'table', 'shelf', 'rug', 'vase', 'clock', 'mirror', 'stool', 'bench'];
+  const products = [];
+  for (let i = 0; i < 200; i++) {
+    products.push({ value: `p${i + 1}`, label: `${words[i % 10]} ${kinds[Math.floor(i / 10) % 10]} ${i < 100 ? 'Classic' : 'Pro'}` });
+  }
+  document.getElementById('s4').options = products;
+
+  const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+  on('apiValues', () => { s3.values = ['action', 'horror']; });
+  on('apiOpen', () => { s3.focus(); s3.open(); });
+  on('apiDisable', () => { s3.disabled = !s3.disabled; });
+
+  const form = document.getElementById('form');
+  const out = document.getElementById('formOut');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const entries = [...new FormData(form)].map(([k, v]) => `${k}=${v}`);
+    out.textContent = `Submitted: ${entries.join(' · ') || '(nothing)'}`;
+  });
+  form.addEventListener('reset', () => { out.textContent = 'Reset to the initial selection.'; });
+</script>
+</body>
+</html>

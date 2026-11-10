@@ -48,6 +48,7 @@
 <script src="components/progress/progress.js" defer></script>
 <script src="components/meter/meter.js" defer></script>
 <script src="components/accordion/accordion.js" defer></script>
+<script src="components/select/select.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -271,6 +272,23 @@
       <div class="field">
         <div><div class="field-label">Email</div></div>
         <div class="field-control"><kakao-text-input id="email" name="email" type="email" value="fan@example.com" autocomplete="email" icon="fas fa-envelope" aria-label="Email" required></kakao-text-input></div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Country</div>
+          <p class="field-hint">Decides which titles you can watch. Type to search.</p>
+        </div>
+        <div class="field-control">
+          <kakao-select id="country" name="country" aria-label="Country" required>
+            <option value="">Choose your country</option>
+            <option value="at">Austria</option><option value="be">Belgium</option><option value="hr">Croatia</option>
+            <option value="cz">Czechia</option><option value="dk">Denmark</option><option value="fr">France</option>
+            <option value="de" selected>Germany</option><option value="it">Italy</option><option value="li">Liechtenstein</option>
+            <option value="lu">Luxembourg</option><option value="nl">Netherlands</option><option value="pl">Poland</option>
+            <option value="es">Spain</option><option value="se">Sweden</option><option value="ch">Switzerland</option>
+          </kakao-select>
+        </div>
       </div>
 
       <div class="field">
@@ -510,6 +528,7 @@
       account: {
         name: $('name').value,
         email: $('email').value,
+        country: $('country').value,
         bio: $('bio').value,
         genres: [...$('genres').querySelectorAll('kakao-chip')].map((c) => c.getAttribute('value')),
         dateOfBirth: $('dob').value,

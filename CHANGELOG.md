@@ -125,6 +125,32 @@ pages (landing page, settings, demos), not the components.
   `--kakao-aside-sheet-*`, construction page and demo. Listed on the
   components page and in the style guide audit; the kitchen sink explains
   the ID upload in a bottom sheet.
+- `kakao-select`: pick one value, or several with `multiple`, from a list
+  with a search field on top. The field looks like the text input (`label`,
+  `hint`, `error`, `placeholder`, sizes `sm` / `md` / `lg`, `disabled`,
+  `required`); the panel is the dropdown of the button menu and the multi
+  dropdown, in the top layer so a clipping card can't cut it off: below the
+  field, or above when there is no room below, lined up with the field's
+  right edge or shifted in at the side, its height capped by the room on
+  screen, following the field while the page scrolls. Typing in the search
+  filters live, ignoring case and accents and matching anywhere in the label,
+  with "No matches" (`empty-text`) when nothing fits. Options come from child
+  `<option>` / `<optgroup>` elements (a top-level `<option value="">` is the
+  placeholder), `list-data` or the `options` property; groups and disabled
+  options are supported. `multiple` gives each row a checkbox in the
+  checkbox's look, keeps the panel open while picking, adds a tri-state
+  "Select all" row (with a filter: "Select all N matches", acting on the
+  shown matches only) and shows the first label plus "+N" in the field.
+  Keyboard: Enter / Space / arrows open, a letter opens with it in the
+  search, arrows and PageUp / PageDown move, Enter picks, Escape closes and
+  returns focus, Tab closes and moves on. Search field as combobox with
+  `aria-activedescendant` over a listbox (`aria-multiselectable` for
+  multiple). Form-associated: `value` (multiple: comma list or JSON array),
+  `values`, one form entry per value, `required`, reset, state restore;
+  events `input`, `change`, `select-change`, `select-open`, `select-close`.
+  Settings `--kakao-select-*`, construction page and demo. The components
+  page replaces its Select placeholder; the style guide audits it; the
+  kitchen sink asks for the country with it.
 
 ### Changed
 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-select - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="select.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="select" data-source="select.js" data-title="Select">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Single · hint</figcaption>
+      <kakao-select label="Country" hint="Open it to see the panel." value="de"
+        list-data='[{"value":"at","label":"Austria"},{"value":"de","label":"Germany"},{"value":"ch","label":"Switzerland"}]'></kakao-select>
+    </figure>
+    <figure>
+      <figcaption>Multiple · groups</figcaption>
+      <kakao-select multiple label="Tags" value="ui,bug,feature"
+        list-data='[{"label":"Area","options":[{"value":"ui","label":"UI"},{"value":"api","label":"API"}]},{"label":"Kind","options":[{"value":"bug","label":"Bug"},{"value":"feature","label":"Feature"}]}]'></kakao-select>
+    </figure>
+    <figure>
+      <figcaption>Sizes · error</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-select size="sm" list-data='["Small"]' value="Small" aria-label="Small"></kakao-select>
+        <kakao-select size="lg" list-data='["Large"]' value="Large" aria-label="Large"></kakao-select>
+        <kakao-select list-data='["Free","Pro"]' error="Pick a plan" aria-label="Plan"></kakao-select>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-select-bg", "label": "Field background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "placeholder, hint, count, group labels" },
+    { "property": "--kakao-select-border", "label": "Field border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-hover-bg", "label": "Active option", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-focus", "label": "Focus", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-panel-bg", "label": "Panel background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-line", "label": "Select all line", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-check", "label": "Check mark (single)", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-box-bg", "label": "Checkbox", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-box-border", "label": "Checkbox border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-box-checked-bg", "label": "Checkbox checked", "group": "Colour", "type": "color" },
+    { "property": "--kakao-select-mark", "label": "Checkbox mark", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-select-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-select-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-select-height", "label": "Height (md)", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-label-gap", "label": "Label gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-message-gap", "label": "Message gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-chevron-size", "label": "Chevron size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-panel-padding", "label": "Panel padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-panel-offset", "label": "Panel gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-panel-height", "label": "Panel max height", "group": "Size & spacing", "type": "length", "hint": "also capped by the room on screen" },
+    { "property": "--kakao-select-panel-min-width", "label": "Panel min width", "group": "Size & spacing", "type": "length", "hint": "never narrower than the field" },
+    { "property": "--kakao-select-option-height", "label": "Option height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-search-height", "label": "Search height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-box-size", "label": "Checkbox size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-select-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-select-radius", "label": "Field radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-select-panel-radius", "label": "Panel radius", "group": "Shape", "type": "radius", "hint": "option radius + panel padding" },
+    { "property": "--kakao-select-option-radius", "label": "Option radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-select-box-radius", "label": "Checkbox radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-select-panel-shadow", "label": "Panel shadow", "group": "Shape", "type": "shadow", "hint": "elevation level 3 (overlay)" },
+    { "property": "--kakao-select-z", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 9999, "hint": "only without the popover API (top layer)" },
+
+    { "property": "--kakao-select-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+
+    { "property": "--kakao-select-duration", "label": "Panel fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-select-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: fades and colour" }
+  ]
+  </script>
+</main>
+</body>
+</html>
