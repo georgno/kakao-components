@@ -166,68 +166,67 @@ h2 + p { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; }
 
 footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 
-/* ---- Code blocks under the examples (built by demo.js) ----
-   Collapsed by default. The fill is the subtle fill of inline code, so it
-   follows the theme; the highlight colours are theme roles mixed a fifth of
-   the way towards the text colour, which keeps them at 4.5:1 or more on the
+/* ---- Demo pages (<body class="demo-page">) ----
+   Every example is a <kakao-card>, on a row of its own so its code has room.
+   The card's body is a flex column: block content takes the full width (as
+   in a plain block), inline components keep their own width. */
+.demo-page .grid:is([data-example], :has(> kakao-card)) { grid-template-columns: 1fr; }
+:where(.demo-page main kakao-card:not(kakao-card *, [data-example] *)) {
+  position: relative;
+}
+:where(.demo-page main kakao-card:not(kakao-card *, [data-example] *)) > h3[slot="header"] {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+/* Spaced by the card's gap alone: a margin of their own (a toolbar's, a
+   log's, an inline one) would add to it. */
+:where(.demo-page main kakao-card:not(kakao-card *, [data-example] *)) > :not([slot]) { margin-block: 0 !important; }
+:where(.demo-page main kakao-card:not(kakao-card *, [data-example] *)) > :is(kakao-button, .kakao-button-segment, kakao-checkbox, kakao-animated-number, kakao-aside-menu, kakao-color-picker, kakao-multi-dropdown, kakao-theme-switch) {
+  align-self: flex-start;
+  max-width: 100%;
+}
+/* Menus and popups of the examples reach past the card (it clips by
+   default) and over the next one while the card has focus. The glow, which
+   the clipping holds in, is off: an example card's footer starts with its
+   code, so it never glows. */
+:where(.demo-page main kakao-card:not(kakao-card *, [data-example] *))::part(card) { overflow: visible; }
+:where(.demo-page main kakao-card:not(kakao-card *, [data-example] *))::part(glow) { display: none; }
+:where(.demo-page main kakao-card:not(kakao-card *, [data-example] *)):focus-within { z-index: 1; }
+
+/* ---- Code blocks (built by demo.js) ----
+   A kakao-accordion tile at the foot of each example, collapsed, with Copy in
+   its header. The highlight colours are theme roles mixed a fifth of the way
+   towards the text colour, which keeps them at 4.5:1 or more on the tile's
    subtle fill in every theme. */
 .demo-code {
   --code-tag: color-mix(in srgb, var(--kakao-color-primary, #4f46e5) 80%, var(--ink));
   --code-attr: color-mix(in srgb, var(--kakao-color-warning, #b45309) 80%, var(--ink));
   --code-value: color-mix(in srgb, var(--kakao-color-success, #15803d) 80%, var(--ink));
   --code-comment: var(--muted);
-  flex: 1 0 100%; /* in a .row card: a line of its own */
-  grid-column: 1 / -1;
-  position: relative;
+  grid-column: 1 / -1; /* in a grid example: a row of its own */
   min-width: 0;
   font-size: 0.8125rem;
 }
-.card:not(.row) > .demo-code, [data-example] > .demo-code { margin-top: 1rem; }
-.card.row > .demo-code { margin-top: 0.5rem; }
-.demo-code > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  border-radius: 6px;
-  color: var(--muted);
-  font-weight: 600;
-  cursor: pointer;
-  list-style: none;
-}
-.demo-code > summary::-webkit-details-marker { display: none; }
-.demo-code > summary::before {
-  content: "";
-  width: 0.4em;
-  height: 0.4em;
-  border: solid currentColor;
-  border-width: 0 1.5px 1.5px 0;
-  transform: rotate(-45deg);
-  transition: transform 150ms ease;
-}
-.demo-code[open] > summary::before { transform: rotate(45deg) translate(-0.1em, -0.1em); }
-.demo-code > summary:hover { color: var(--ink); }
-.demo-code > summary:focus-visible,
-.demo-code-copy:focus-visible,
-.demo-code code:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
-.demo-code-body { margin-top: 0.5rem; }
+kakao-card > .demo-code[slot="footer"] { display: block; flex: 1 1 100%; margin: 0; }
+[data-example] > .demo-code { margin-top: 1rem; }
+[data-example]:is(.grid, .stack) > .demo-code { margin-top: 0; } /* the gap spaces it */
+.demo-code code:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; border-radius: 4px; }
 .demo-code pre {
   margin: 0;
-  padding: 0.9rem 0;
-  background: var(--code-bg);
+  padding: 0.25rem 0;
   color: var(--ink);
-  border-radius: 10px;
   font: 0.8rem/1.6 ui-monospace, "SF Mono", Menlo, monospace;
 }
 .demo-code code {
   display: block;
   overflow-x: auto;
-  padding: 0 1rem;
+  padding: 0;
   background: none;
   border-radius: 0;
   font: inherit;
   scrollbar-width: thin;
 }
-.demo-code code:focus-visible { border-radius: 4px; }
 /* Edge fade where there is more to scroll (set by demo.js) */
 .demo-code code[data-more-left] {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem));
@@ -246,24 +245,6 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 .demo-code .tok-v { color: var(--code-value); }
 .demo-code .tok-c { color: var(--code-comment); font-style: italic; }
 .demo-code .tok-p { color: var(--muted); }
-/* Copy sits at the end of the summary row, shown while the block is open */
-.demo-code-copy {
-  position: absolute;
-  top: -0.2rem;
-  right: 0;
-  padding: 0.2rem 0.6rem;
-  border: 0;
-  border-radius: 6px;
-  background: var(--kakao-color-subtle-strong, #e6e6e8);
-  color: var(--ink);
-  font: inherit;
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.5;
-  cursor: pointer;
-  transition: background-color 150ms ease;
-}
-.demo-code-copy:hover { background: var(--kakao-color-line, #e5e7eb); }
 .demo-code-status {
   position: absolute;
   width: 1px;
@@ -272,41 +253,6 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
   clip-path: inset(50%);
   white-space: nowrap;
 }
-@media (prefers-reduced-motion: reduce) {
-  .demo-code > summary::before, .demo-code-copy { transition: none; }
-}
-@media (forced-colors: active) {
-  .demo-code-copy { border: 1px solid ButtonText; }
-}
-
-/* Trial: code in a kakao-accordion tile with a small kakao-button for Copy
-   (<body data-demo-code="accordion">). Every example card gets a row of its
-   own, so the code has room. */
-[data-demo-code="accordion"] .grid { grid-template-columns: 1fr; }
-/* Examples in a kakao-card: the title in its header, the code in its footer.
-   The card's body is a flex column, so its parts keep their own width. */
-[data-demo-code="accordion"] main kakao-card > h3[slot="header"] {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--muted);
-}
-[data-demo-code="accordion"] main kakao-card > :not([slot]) { align-self: flex-start; max-width: 100%; }
-[data-demo-code="accordion"] main kakao-card > :is(.row, .log, .toolbar, div:not([class])) { align-self: stretch; }
-[data-demo-code="accordion"] main kakao-card > .demo-code-acc[slot="footer"] { display: block; flex: 1 1 100%; min-width: 0; margin: 0; }
-.demo-code-acc pre {
-  padding: 0.25rem 0 0.25rem;
-  background: none; /* on the tile's subtle fill: the highlight contrast is measured there */
-  border-radius: 0;
-}
-.demo-code-acc code { padding: 0; }
-.demo-code-acc .demo-code-copy {
-  position: static;
-  padding: 0;
-  background: none;
-  border-radius: 0;
-  font-weight: inherit;
-}
-.demo-code-acc .demo-code-copy:hover { background: none; }
 
 /* ---- Overview page ---- */
 .overview { display: grid; gap: 1.25rem; }

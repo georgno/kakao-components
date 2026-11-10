@@ -23,14 +23,23 @@ others render into a shadow root (with slots where they take content).
 - Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`:
   it keeps the page hidden until the deferred component scripts have drawn, so
   reloads don't flicker. It's for this project's pages only, not part of any component.
-- Demo pages get a "Code" block under every example from `shared/demo.js`: the
-  example's markup as written (a top-level `.card` in `<main>`, or any element with
-  `data-example`), minus its `<h3>`, `<p>` notes, `.toolbar`, `.log` and `onclick`.
-  Mark demo-only controls `data-demo-only`, demo-only layout wrappers `data-demo-wrap`,
-  skip a card with `data-no-code`, pull in markup from elsewhere on the page (a sheet,
-  a dialog) with `data-code-with="id …"`. For script-driven examples add
-  `<template data-code>` with the real API call: markup in it replaces the snippet; a
-  template holding only a `<script>` is appended to it.
+- Demo pages (`<body class="demo-page">`) show every example as a `<kakao-card>`, title in
+  `<h3 slot="header">`, one card per row (a `.grid` of them is one column there). A layout
+  the example needs inside the card (a row of buttons, a form) goes in a `data-demo-wrap`
+  element, not on the card. `shared/demo.js` appends a collapsed "Code" accordion (a
+  `kakao-accordion` tile with a small Copy `kakao-button` in its header) to each card's
+  footer, so every demo page loads `card.js`, `accordion.js`, `button.js` and `button.css`.
+  The code is the example's markup as written, minus its `<h3>`, `<p>` notes, `.toolbar`,
+  `.log` and `onclick`. An example whose component is itself a box (accordion, card,
+  settings group) stays bare as a `data-example` element, its code tile after it.
+  Mark demo-only controls `data-demo-only`, demo-only layout wrappers `data-demo-wrap`
+  (see-through: their content counts as the example's own), skip a card with
+  `data-no-code`, pull in markup from elsewhere on the page (a sheet, a dialog) with
+  `data-code-with="id …"`. For script-driven examples add `<template data-code>` with the
+  real API call: markup in it replaces the snippet; a template holding only a `<script>`
+  is appended to it.
+  This layout is the demo pages' own convention (in `shared/demo.css` under `.demo-page`),
+  not a styleguide rule; the other pages that load `demo.css` are not affected.
 - A new top-level page (or file a page loads, like `CHANGELOG.md`) must also be added to
   the copy list in `.github/workflows/pages.yml`, or it is missing from the live site.
 - The deploy minifies the published copy with `tools/minify-site.mjs` (HTML, JS, CSS;

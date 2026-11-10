@@ -49,19 +49,26 @@ function toggleButton(btn, label, onChange) {
 /*
  * Code blocks on the demo pages
  * ============================================================================
- * Every example on a demo page (components/<name>/demo.html) gets a collapsed
- * "Code" block with its markup, so a developer can see how to use it.
+ * Every example on a demo page (components/<name>/demo.html, <body
+ * class="demo-page">) is a <kakao-card> with its title in the header
+ * (<h3 slot="header">). Its markup goes in a collapsed "Code" accordion (a
+ * kakao-accordion tile) appended to the card's footer, with a small Copy
+ * button in the accordion's header, so a developer can see how to use it.
  *
- *   example         a top-level .card in <main>, or any element marked
- *                   data-example (for examples that are not in a .card)
+ *   example         a top-level <kakao-card> in <main>, or any element marked
+ *                   data-example (an example that is itself a box, such as a
+ *                   card or an accordion: its code tile goes inside it, after
+ *                   its last own part)
  *   what it shows   the example's own markup as written in the page source,
  *                   without the example's own <h3> title, <p> notes (a <p>
  *                   with a kakao- element in it is an example) and
  *                   .toolbar controls, event logs (.log), inline scripts,
  *                   inline event handler attributes (onclick) and anything
  *                   marked data-demo-only (whatever only drives the demo)
- *   data-demo-wrap  on a layout wrapper that only the demo needs: the snippet
- *                   shows its content without it
+ *   data-demo-wrap  on a layout wrapper that only the demo needs (a row of
+ *                   buttons, a form): the snippet shows its content without
+ *                   it, and its children count as the example's own (a <p>
+ *                   note or .toolbar in it is left out too)
  *   data-no-code    on an example: no code block
  *   <template data-code>
  *                   inside an example: shown verbatim instead of the markup;
@@ -77,7 +84,10 @@ function toggleButton(btn, label, onChange) {
  * The markup is read before any script changes it (see the end of this
  * function), so it is the source as written, not what the components turn it
  * into (the light DOM ones rewrite their children) or what the page's own
- * script fills in. The block is built later, once the page is ready.
+ * script fills in. The block is built later, once the page is ready. The
+ * demo pages load card.js, accordion.js and button.js (with button.css)
+ * themselves, so the cards are drawn before the page shows; need() is only
+ * a fallback for a page that doesn't.
  */
 (function demoCode() {
   if (!/\/demo(\.html)?$/.test(location.pathname)) return;
@@ -85,11 +95,14 @@ function toggleButton(btn, label, onChange) {
   const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr']);
   const RAW = new Set(['script', 'style']);
   const snippets = new Map(); // example element -> [[text, class], ...]
-  // Trial (button demo first): <body data-demo-code="accordion"> wraps the
-  // code in a kakao-accordion with a small kakao-button for Copy, and puts
-  // every example card on a row of its own.
   const HERE = document.currentScript && document.currentScript.src;
-  const useAccordion = () => document.body && document.body.dataset.demoCode === 'accordion';
+  // Copy's icon is an inline SVG, so the demo pages need no icon font for it
+  const SVG = 'http://www.w3.org/2000/svg';
+  const ICONS = {
+    copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>',
+    check: '<path d="M20 6 9 17l-5-5"/>',
+    failed: '<path d="M18 6 6 18M6 6l12 12"/>',
+  };
   function need(tag, path) {
     if (customElements.get(tag) || !HERE || document.querySelector(`script[data-demo-need="${tag}"]`)) return;
     const s = document.createElement('script');
@@ -99,15 +112,18 @@ function toggleButton(btn, label, onChange) {
   }
 
   function examples() {
-    return [...document.querySelectorAll(useAccordion() ? 'main .card, main kakao-card, main [data-example]' : 'main .card, main [data-example]')].filter(
-      (el) => !el.parentElement.closest('.card, kakao-card, [data-example], [data-demo-only]') && !el.hasAttribute('data-demo-only'),
+    return [...document.querySelectorAll('main kakao-card, main [data-example]')].filter(
+      (el) => !el.parentElement.closest('kakao-card, [data-example], [data-demo-only]') && !el.hasAttribute('data-demo-only'),
     );
   }
 
   /** True for the parts of an example that are not the example itself. */
   function isFurniture(el, example) {
     if (el.matches('[data-demo-only], .log, script, template[data-code]')) return true;
-    if (el.parentElement !== example) return false;
+    // a data-demo-wrap is see-through: its children count as the example's own
+    let parent = el.parentElement;
+    while (parent && parent !== example && parent.hasAttribute('data-demo-wrap')) parent = parent.parentElement;
+    if (parent !== example) return false;
     if (el.matches('h3, .toolbar')) return true;
     // a <p> is a note, unless components sit in it (a component in running text)
     return el.localName === 'p' && ![...el.querySelectorAll('*')].some((d) => d.localName.startsWith('kakao-'));
@@ -196,66 +212,6 @@ function toggleButton(btn, label, onChange) {
     });
   }
 
-  function render() {
-    if (useAccordion()) return renderAccordion();
-    snippets.forEach((lines, example) => {
-      const details = document.createElement('details');
-      details.className = 'demo-code';
-      details.dir = 'ltr'; // code reads left to right, also in an RTL example
-      const summary = document.createElement('summary');
-      summary.textContent = 'Code';
-      const body = document.createElement('div');
-      body.className = 'demo-code-body';
-      const pre = document.createElement('pre');
-      const code = document.createElement('code');
-      code.setAttribute('aria-label', 'Example code');
-      lines.forEach((line, i) => {
-        if (i) code.append('\n');
-        let run = null;
-        line.forEach(([ch, cls]) => {
-          if (!run || run.cls !== cls) {
-            run = { cls, node: cls ? document.createElement('span') : document.createTextNode('') };
-            if (cls) run.node.className = `tok-${cls}`;
-            code.append(run.node);
-          }
-          run.node.textContent += ch;
-        });
-      });
-      const text = lines.map((l) => l.map(([ch]) => ch).join('')).join('\n');
-      const copy = document.createElement('button');
-      copy.type = 'button';
-      copy.className = 'demo-code-copy';
-      copy.textContent = 'Copy';
-      copy.setAttribute('aria-label', 'Copy code');
-      const status = document.createElement('span');
-      status.className = 'demo-code-status';
-      status.setAttribute('role', 'status');
-      let timer = 0;
-      copy.addEventListener('click', async () => {
-        let ok = true;
-        try {
-          await navigator.clipboard.writeText(text);
-        } catch {
-          ok = copyFallback(text);
-        }
-        copy.textContent = ok ? 'Copied' : 'Copy failed';
-        status.textContent = ok ? 'Code copied' : 'Copying failed';
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          copy.textContent = 'Copy';
-          status.textContent = '';
-        }, 1600);
-      });
-      pre.append(code);
-      body.append(copy, pre, status);
-      details.append(summary, body);
-      code.addEventListener('scroll', () => syncFade(code), { passive: true });
-      details.addEventListener('toggle', () => details.open && syncFade(code));
-      placeIn(example, details);
-    });
-    window.addEventListener('resize', () => document.querySelectorAll('details.demo-code[open] code').forEach(syncFade));
-  }
-
   function buildCode(lines) {
     const pre = document.createElement('pre');
     const code = document.createElement('code');
@@ -277,14 +233,14 @@ function toggleButton(btn, label, onChange) {
     return { pre, code, text: lines.map((l) => l.map(([ch]) => ch).join('')).join('\n') };
   }
 
-  function renderAccordion() {
+  function render() {
     need('kakao-accordion', '../components/accordion/accordion.js');
     need('kakao-button', '../components/button/button.js');
     need('kakao-card', '../components/card/card.js');
     snippets.forEach((lines, example) => {
       const { pre, code, text } = buildCode(lines);
       const acc = document.createElement('kakao-accordion');
-      acc.className = 'demo-code demo-code-acc';
+      acc.className = 'demo-code';
       acc.setAttribute('variant', 'tile');
       acc.setAttribute('heading', 'Code');
       acc.dir = 'ltr'; // code reads left to right, also in an RTL example
@@ -294,8 +250,14 @@ function toggleButton(btn, label, onChange) {
       copy.className = 'demo-code-copy';
       copy.setAttribute('size', 'sm');
       copy.setAttribute('variant', 'secondary');
-      copy.setAttribute('icon', 'fas fa-copy');
       copy.setAttribute('label', 'Copy');
+      const icon = document.createElementNS(SVG, 'svg');
+      icon.setAttribute('slot', 'icon');
+      icon.setAttribute('viewBox', '0 0 24 24');
+      icon.setAttribute('aria-hidden', 'true');
+      ['fill', 'none', 'stroke', 'currentColor', 'stroke-width', '2', 'stroke-linecap', 'round', 'stroke-linejoin', 'round'].forEach((v, i, a) => i % 2 || icon.setAttribute(v, a[i + 1]));
+      icon.innerHTML = ICONS.copy;
+      copy.append(icon);
       const status = document.createElement('span');
       status.className = 'demo-code-status';
       status.setAttribute('role', 'status');
@@ -308,12 +270,12 @@ function toggleButton(btn, label, onChange) {
           ok = copyFallback(text);
         }
         copy.setAttribute('label', ok ? 'Copied' : 'Copy failed');
-        copy.setAttribute('icon', ok ? 'fas fa-check' : 'fas fa-xmark');
+        icon.innerHTML = ok ? ICONS.check : ICONS.failed;
         status.textContent = ok ? 'Code copied' : 'Copying failed';
         clearTimeout(timer);
         timer = setTimeout(() => {
           copy.setAttribute('label', 'Copy');
-          copy.setAttribute('icon', 'fas fa-copy');
+          icon.innerHTML = ICONS.copy;
           status.textContent = '';
         }, 1600);
       });
@@ -327,16 +289,17 @@ function toggleButton(btn, label, onChange) {
       if (acc.slot === 'footer') example.append(acc);
       else placeIn(example, acc);
     });
-    window.addEventListener('resize', () => document.querySelectorAll('.demo-code-acc[open] code').forEach(syncFade));
+    window.addEventListener('resize', () => document.querySelectorAll('.demo-code[open] code').forEach(syncFade));
   }
 
-  /* The block goes right after the example's last own part, before any
-     trailing demo furniture (a log, demo controls). */
-  function placeIn(example, details) {
+  /* In an example that is not a card, the block goes right after the
+     example's last own part, before any trailing demo furniture (a log,
+     demo controls). */
+  function placeIn(example, block) {
     const kids = [...example.children];
     const last = kids.filter((el) => !isFurniture(el, example)).pop() || kids.filter((el) => el.matches('[data-demo-only], .toolbar')).pop();
-    if (last) last.after(details);
-    else example.append(details);
+    if (last) last.after(block);
+    else example.append(block);
   }
 
   /* Edge fade where there is more to scroll (styleguide rule). */
