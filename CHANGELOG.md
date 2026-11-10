@@ -8,6 +8,8 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-10
+
 ### Added
 
 - `kakao-header-bar`: the page's sticky top bar, a `<header>` (banner
@@ -359,7 +361,8 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/georgno/kakao-components/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/georgno/kakao-components/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/georgno/kakao-components/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/georgno/kakao-components/compare/v0.1.0...v0.2.0
