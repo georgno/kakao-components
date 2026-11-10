@@ -44,6 +44,7 @@
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
 <script src="components/alert/alert.js" defer></script>
 <script src="components/toast/toast.js" defer></script>
+<script src="components/progress/progress.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -71,6 +72,7 @@
   .price small { color: var(--muted); }
   kakao-animated-number { --kakao-animated-number-font-size: 2rem; --kakao-animated-number-font-weight: 700; }
   .more-genres-label { margin-top: 0.9rem; margin-bottom: 0.4rem; }
+  .summary kakao-progress { margin-top: 0.9rem; max-width: 22rem; }
   .summary [slot="footer"] { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
   .danger-zone { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -350,6 +352,7 @@
       <kakao-animated-number id="price" value="13.49" decimals="2"></kakao-animated-number>
       <small id="price-period">/ month</small>
     </div>
+    <kakao-progress id="profile" label="Profile" value="0" max="4" show-value value-text="0 of 4"></kakao-progress>
     <div slot="footer">
       <kakao-button id="save" label="Save changes" icon="fas fa-check" type="submit" form="settings"></kakao-button>
       <kakao-button id="reset" label="Reset" variant="ghost"></kakao-button>
@@ -531,9 +534,24 @@
     language = 'English';
     $('language-out').textContent = language;
     // setData() on the switch groups applies in a microtask
-    Promise.resolve().then(() => Promise.resolve()).then(updatePrice);
+    Promise.resolve().then(() => Promise.resolve()).then(() => { updatePrice(); updateProfile(); });
     logLine(log, 'reset');
   });
+
+  // ---- profile completeness: name, email, bio, ID documents ----
+  function updateProfile() {
+    const done = [
+      String($('name').value || '').trim(),
+      String($('email').value || '').trim(),
+      String($('bio').value || '').trim(),
+      ($('documents').files || []).length,
+    ].filter(Boolean).length;
+    $('profile').value = done;
+    $('profile').setAttribute('value-text', `${done} of 4`);
+  }
+  ['name', 'email', 'bio'].forEach((id) => $(id).addEventListener('input', updateProfile));
+  $('documents').addEventListener('files-change', updateProfile);
+  Promise.all(['kakao-progress', 'kakao-text-input', 'kakao-textarea', 'kakao-file-upload'].map((t) => customElements.whenDefined(t))).then(updateProfile);
 
   // ---- breadcrumb: the last step follows the selected tab ----
   document.querySelector('kakao-tabs').addEventListener('tab-change', (e) => {

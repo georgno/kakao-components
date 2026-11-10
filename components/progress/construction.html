@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-progress - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="progress.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .bars { display: grid; gap: 1rem; }
+  .bars .row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="progress" data-source="progress.js" data-title="Progress">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Fill and pop</figcaption>
+      <div class="bars">
+        <kakao-progress id="cx-play" label="Uploading" value="0" max="8" show-value></kakao-progress>
+        <div class="row">
+          <kakao-button id="cx-up" label="+ 1" size="sm"></kakao-button>
+          <kakao-button id="cx-jump" label="+ 4" variant="secondary" size="sm"></kakao-button>
+          <kakao-button id="cx-reset" label="Reset" variant="ghost" size="sm"></kakao-button>
+        </div>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Sizes, tones, indeterminate</figcaption>
+      <div class="bars">
+        <kakao-progress size="sm" label="Small" value="0.45" show-value></kakao-progress>
+        <kakao-progress size="lg" tone="success" label="Large, success" value="0.75" show-value></kakao-progress>
+        <kakao-progress tone="warning" label="Warning" segments="1" value="0.85" show-value></kakao-progress>
+        <kakao-progress tone="danger" label="Danger" value="0.3" show-value></kakao-progress>
+        <kakao-progress label="Loading"></kakao-progress>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-progress-track", "label": "Track", "group": "Colour", "type": "color" },
+    { "property": "--kakao-progress-primary", "label": "Primary fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-progress-success", "label": "Success fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-progress-warning", "label": "Warning fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-progress-danger", "label": "Danger fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-progress-label-color", "label": "Label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-progress-value-color", "label": "Value text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-progress-height", "label": "Bar height", "group": "Size & spacing", "type": "length", "hint": "md" },
+    { "property": "--kakao-progress-sm-height", "label": "Bar height sm", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-progress-lg-height", "label": "Bar height lg", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-progress-gap", "label": "Segment gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-progress-label-gap", "label": "Label gap", "group": "Size & spacing", "type": "length", "hint": "label row to bar" },
+    { "property": "--kakao-progress-font-size", "label": "Font size", "group": "Typography", "type": "length", "hint": "md" },
+    { "property": "--kakao-progress-sm-font-size", "label": "Font size sm", "group": "Typography", "type": "length" },
+    { "property": "--kakao-progress-lg-font-size", "label": "Font size lg", "group": "Typography", "type": "length" },
+    { "property": "--kakao-progress-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 300, "max": 800, "step": 50 },
+    { "property": "--kakao-progress-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-progress-fill-duration", "label": "Fill", "group": "Motion", "type": "duration", "hint": "longer when it completes several segments" },
+    { "property": "--kakao-progress-fill-ease", "label": "Fill easing", "group": "Motion", "type": "easing" },
+    { "property": "--kakao-progress-pop-duration", "label": "Pop", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-progress-pop-ease", "label": "Pop easing", "group": "Motion", "type": "easing", "hint": "every leg of stretch, squash and settle" },
+    { "property": "--kakao-progress-pop-scale", "label": "Pop stretch", "group": "Motion", "type": "number", "min": 1, "max": 2.5, "step": 0.05, "hint": "height factor at the top of the pop" },
+    { "property": "--kakao-progress-pop-stagger", "label": "Pop stagger", "group": "Motion", "type": "duration", "hint": "minimum time between pops" },
+    { "property": "--kakao-progress-sweep-duration", "label": "Sweep", "group": "Motion", "type": "duration", "hint": "indeterminate loop" },
+    { "property": "--kakao-progress-sweep-ease", "label": "Sweep easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+<script>
+  customElements.whenDefined('kakao-progress').then(() => {
+    const bar = document.getElementById('cx-play');
+    let v = 0;
+    const set = (n) => { v = Math.min(Math.max(n, 0), bar.max); bar.value = v; };
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+    on('cx-up', () => set(v + 1));
+    on('cx-jump', () => set(v + 4));
+    on('cx-reset', () => set(0));
+  });
+</script>
+</body>
+</html>

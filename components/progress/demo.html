@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-progress - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="progress.js" defer></script>
+<style>
+  .bars { display: grid; gap: 1.25rem; align-content: start; }
+  .note { color: var(--muted); font-size: 0.85rem; }
+</style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Progress"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Progress</h1>
+    <p><code>&lt;kakao-progress&gt;</code> - a progress bar split into segments. The value fills them in order, and every segment the fill completes gives a short pop. Without a value it is indeterminate.</p>
+  </header>
+
+  <h2>Step through it</h2>
+  <p>Step the value and watch each segment pop as the fill completes it. Jump past several and they pop one after the other. Going down and back up inside a segment doesn't pop again; a segment pops again only after it has emptied.</p>
+  <div class="grid">
+    <div class="card full">
+      <div class="bars">
+        <kakao-progress id="play" label="Uploading photos" value="0" max="12" show-value></kakao-progress>
+      </div>
+      <div class="row">
+        <kakao-button id="play-down" label="− 1" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="play-up" label="+ 1" size="sm"></kakao-button>
+        <kakao-button id="play-jump" label="+ 7" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="play-full" label="Done" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="play-reset" label="Reset" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-indet" variant="ghost" size="sm"></kakao-button>
+      </div>
+      <div class="row">
+        <kakao-button data-segments="1" label="segments 1" variant="ghost" size="sm"></kakao-button>
+        <kakao-button data-segments="3" label="segments 3" variant="ghost" size="sm"></kakao-button>
+        <kakao-button data-segments="4" label="segments 4" variant="ghost" size="sm"></kakao-button>
+        <kakao-button data-segments="12" label="segments 12" variant="ghost" size="sm"></kakao-button>
+      </div>
+      <div class="log" id="log" role="log" aria-label="Event log"></div>
+    </div>
+  </div>
+
+  <h2>Segments · <code>segments</code></h2>
+  <p>Default 4. <code>segments="1"</code> is one plain bar. The segment the value lands in fills partly.</p>
+  <div class="grid">
+    <div class="card full bars">
+      <kakao-progress label="One segment" segments="1" value="0.62" show-value></kakao-progress>
+      <kakao-progress label="Step 2 of 3" segments="3" value="2" max="3" show-value value-text="2 of 3"></kakao-progress>
+      <kakao-progress label="Four segments (default)" value="0.6" show-value></kakao-progress>
+      <kakao-progress label="Eight segments" segments="8" value="5.5" max="8" show-value></kakao-progress>
+    </div>
+  </div>
+
+  <h2>Indeterminate</h2>
+  <p>No <code>value</code>: a highlight sweeps through the segments. With reduced motion it fades in place instead.</p>
+  <div class="grid">
+    <div class="card bars">
+      <kakao-progress label="Loading"></kakao-progress>
+      <kakao-progress label="Connecting" segments="1" show-value value-text="Waiting for the server"></kakao-progress>
+    </div>
+  </div>
+
+  <h2>Sizes · <code>size</code> and tones · <code>tone</code></h2>
+  <div class="grid">
+    <div class="card bars">
+      <kakao-progress size="sm" label="Small" value="0.45" show-value></kakao-progress>
+      <kakao-progress label="Medium (default)" value="0.45" show-value></kakao-progress>
+      <kakao-progress size="lg" label="Large" value="0.45" show-value></kakao-progress>
+    </div>
+    <div class="card bars">
+      <kakao-progress label="Primary (default)" value="0.7" show-value></kakao-progress>
+      <kakao-progress tone="success" label="Success" value="1" show-value></kakao-progress>
+      <kakao-progress tone="warning" label="Warning" value="0.85" show-value value-text="85 of 100 GB"></kakao-progress>
+      <kakao-progress tone="danger" label="Danger" value="0.3" show-value></kakao-progress>
+    </div>
+  </div>
+
+  <h2>No visible label</h2>
+  <p>Without <code>label</code>, name the bar with <code>aria-label</code>.</p>
+  <div class="grid">
+    <div class="card bars">
+      <kakao-progress aria-label="Profile completeness" value="3" max="4"></kakao-progress>
+    </div>
+  </div>
+
+  <footer>Attributes: <code>value</code>, <code>max</code> (default 1), <code>segments</code> (default 4), <code>label</code>, <code>show-value</code>, <code>value-text</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>), <code>tone</code> (<code>primary</code> · <code>success</code> · <code>warning</code> · <code>danger</code>, alias <code>error</code>). Properties: <code>value</code>, <code>max</code>, <code>segments</code>, <code>position</code>. Event: <code>progress-segment-complete</code>. Full reference in the header of <code>progress.js</code>.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-progress').then(() => {
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+    const play = document.getElementById('play');
+    const log = document.getElementById('log');
+    logEvents(log, ['progress-segment-complete'], play);
+
+    let last = 0;
+    const set = (v) => {
+      last = Math.min(Math.max(v, 0), play.max);
+      play.value = last;
+    };
+    on('play-up', () => set(last + 1));
+    on('play-down', () => set(last - 1));
+    on('play-jump', () => set(last + 7));
+    on('play-full', () => set(play.max));
+    on('play-reset', () => set(0));
+    toggleButton(document.getElementById('play-indet'), 'indeterminate', (v) => {
+      if (v) play.value = null; else play.value = last;
+    });
+    document.querySelectorAll('[data-segments]').forEach((b) => b.addEventListener('kakao-button-action', () => {
+      play.segments = b.dataset.segments;
+      logLine(log, 'segments', { segments: play.segments });
+    }));
+  });
+</script>
+</body>
+</html>

@@ -44,6 +44,7 @@
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
 <script src="components/alert/alert.js" defer></script>
 <script src="components/toast/toast.js" defer></script>
+<script src="components/progress/progress.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -971,6 +972,45 @@
       </div>
     </article>
 
+    <!-- ============================== Progress ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Progress</h2>
+        <code>&lt;kakao-progress&gt;</code>
+        <a href="components/progress/construction.html">Construction</a>
+        <a href="components/progress/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A progress bar split into segments, like native <code>&lt;progress&gt;</code> (<code>value</code>, <code>max</code>; no value = indeterminate). The fill moves smoothly and every segment it completes gives a short squash-and-stretch pop, once per fill. <code>role="progressbar"</code>, four tones, three sizes.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Step through it · <code>value</code></h3>
+          <div style="display:grid;gap:.75rem">
+            <kakao-progress id="ov-progress" label="Uploading photos" value="0" max="8" show-value></kakao-progress>
+            <div class="row">
+              <kakao-button id="ov-progress-up" label="+ 1" size="sm"></kakao-button>
+              <kakao-button id="ov-progress-jump" label="+ 4" variant="secondary" size="sm"></kakao-button>
+              <kakao-button id="ov-progress-reset" label="Reset" variant="ghost" size="sm"></kakao-button>
+            </div>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Segments · <code>segments</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-progress label="One bar" segments="1" value="0.62" show-value></kakao-progress>
+            <kakao-progress label="Step 2 of 3" segments="3" value="2" max="3" show-value value-text="2 of 3"></kakao-progress>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Indeterminate · tones · <code>tone</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-progress label="Loading"></kakao-progress>
+            <kakao-progress tone="success" size="sm" value="1" aria-label="Done"></kakao-progress>
+            <kakao-progress tone="warning" size="sm" value="0.85" aria-label="Storage"></kakao-progress>
+          </div>
+        </div>
+      </div>
+    </article>
+
   </div>
 
   <!-- ============================== Not built yet ============================== -->
@@ -1017,15 +1057,6 @@
       </div>
     </article>
 
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Progress</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;progress&gt;</code> (determinate and indeterminate)</p>
-      <div class="native">
-        <progress value="62" max="100">62%</progress>
-        <progress>Loading…</progress>
-      </div>
-    </article>
 
     <article class="card placeholder">
       <div class="component-head"><h2>Meter</h2><kakao-badge outline>Missing</kakao-badge></div>
@@ -1097,6 +1128,16 @@
     document.getElementById('ov-toast-undo').addEventListener('kakao-button-action', () => {
       KakaoToast.show({ message: '3 photos moved to the bin.', action: { label: 'Undo', onClick: () => KakaoToast.show({ tone: 'success', message: 'Photos restored.' }) } });
     });
+  });
+
+  // Progress example: step the value, watch the segments pop.
+  customElements.whenDefined('kakao-progress').then(() => {
+    const bar = document.getElementById('ov-progress');
+    let v = 0;
+    const set = (n) => { v = Math.min(Math.max(n, 0), bar.max); bar.value = v; };
+    document.getElementById('ov-progress-up').addEventListener('kakao-button-action', () => set(v + 1));
+    document.getElementById('ov-progress-jump').addEventListener('kakao-button-action', () => set(v + 4));
+    document.getElementById('ov-progress-reset').addEventListener('kakao-button-action', () => set(0));
   });
 
   // Alert examples: show the closed one again; add a self-hiding one.

@@ -60,6 +60,22 @@ pages (landing page, settings, demos), not the components.
   header bar in top corners, spans the screen below 30rem and moves beside an
   aside menu opening on its side. Events `toast-show` and `toast-hidden`
   (with a reason). Settings `--kakao-toast-*`, construction page and demo.
+- `kakao-progress`: a segmented progress bar. `value` and `max` as on native
+  `<progress>` (max defaults to 1); without a value it is indeterminate and
+  a highlight sweeps through the segments. `segments` (default 4, `1` = one
+  plain bar) splits the bar; the value fills them in order, the last one
+  partly. The fill moves smoothly between values, and each segment it
+  completes gives a short squash-and-stretch pop (standard easing),
+  staggered when a jump completes several. A segment pops once per fill and
+  only again after it has emptied; nothing pops on load or going down.
+  Reduced motion: no pop, no fill animation, a fade instead of the sweep.
+  `role="progressbar"` with `aria-valuenow/min/max`, `value-text` as
+  `aria-valuetext`; `label` is shown above the bar and names it,
+  `show-value` adds the percentage in tabular figures. `size` sm / md / lg,
+  `tone` primary / success / warning / danger. Event
+  `progress-segment-complete`. Settings `--kakao-progress-*`, construction
+  page and demo. The kitchen sink's plan card shows profile completeness
+  with it.
 
 ### Changed
 
