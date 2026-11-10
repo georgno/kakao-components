@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-tag-input - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../chip/chip.js" defer></script>
+<script src="tag-input.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="tag-input" data-source="tag-input.js" data-title="Tag input">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Tags · suggestions · hint</figcaption>
+      <kakao-tag-input label="Labels" value="Design, Docs" placeholder="Add a label" hint="Type “b” to see the suggestions."
+        list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-tag-input>
+    </figure>
+    <figure>
+      <figcaption>Wrapping</figcaption>
+      <kakao-tag-input label="Ingredients" value="Flour, Sugar, Butter, Eggs, Milk, Vanilla extract, Baking powder, Salt"></kakao-tag-input>
+    </figure>
+    <figure>
+      <figcaption>Sizes · error</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-tag-input size="sm" value="Small" aria-label="Small"></kakao-tag-input>
+        <kakao-tag-input size="lg" value="Large" aria-label="Large"></kakao-tag-input>
+        <kakao-tag-input error="Add at least one topic" placeholder="Add a topic" aria-label="Topics"></kakao-tag-input>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-tag-input-bg", "label": "Field background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tag-input-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tag-input-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "placeholder, hint" },
+    { "property": "--kakao-tag-input-border", "label": "Field border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tag-input-hover-bg", "label": "Active suggestion", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tag-input-focus", "label": "Focus", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tag-input-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tag-input-selected-bg", "label": "Selected tag fill", "group": "Colour", "type": "color", "hint": "the tag Backspace or the arrows selected" },
+    { "property": "--kakao-tag-input-selected-text", "label": "Selected tag text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tag-input-panel-bg", "label": "Panel background", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-tag-input-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-tag-input-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-tag-input-height", "label": "Height (md)", "group": "Size & spacing", "type": "length", "hint": "one line; the field grows by lines" },
+    { "property": "--kakao-tag-input-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-padding-y", "label": "Padding y", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-gap", "label": "Tag gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-row-gap", "label": "Line gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-text-min-width", "label": "Text min width", "group": "Size & spacing", "type": "length", "hint": "less room left wraps the text to a new line" },
+    { "property": "--kakao-tag-input-label-gap", "label": "Label gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-message-gap", "label": "Message gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-panel-padding", "label": "Panel padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-panel-offset", "label": "Panel gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-panel-height", "label": "Panel max height", "group": "Size & spacing", "type": "length", "hint": "also capped by the room on screen" },
+    { "property": "--kakao-tag-input-panel-min-width", "label": "Panel min width", "group": "Size & spacing", "type": "length", "hint": "never narrower than the field" },
+    { "property": "--kakao-tag-input-option-height", "label": "Option height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tag-input-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-tag-input-radius", "label": "Field radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-tag-input-panel-radius", "label": "Panel radius", "group": "Shape", "type": "radius", "hint": "option radius + panel padding" },
+    { "property": "--kakao-tag-input-option-radius", "label": "Option radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-tag-input-panel-shadow", "label": "Panel shadow", "group": "Shape", "type": "shadow", "hint": "elevation level 3 (overlay)" },
+    { "property": "--kakao-tag-input-z", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 9999, "hint": "only without the popover API (top layer)" },
+
+    { "property": "--kakao-tag-input-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+
+    { "property": "--kakao-tag-input-duration", "label": "Fade", "group": "Motion", "type": "duration", "hint": "panel and new tags" },
+    { "property": "--kakao-tag-input-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: fades and colour" }
+  ]
+  </script>
+</main>
+</body>
+</html>

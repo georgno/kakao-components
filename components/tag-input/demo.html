@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-tag-input - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../chip/chip.js" defer></script>
+<script src="tag-input.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Tag input"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Tag input</h1>
+    <p><code>&lt;kakao-tag-input&gt;</code> - Free text that becomes tags: type and press Enter or a comma, paste “a, b, c” to add several. The tags are <code>&lt;kakao-chip&gt;</code>s that wrap inside the text input's field. Backspace in the empty field selects the last tag, a second Backspace removes it; ← / → move between tags. Form-associated: one form entry per tag.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Enter or comma</h3>
+      <kakao-tag-input id="t1" label="Keywords" value="design, tokens, theming" placeholder="Add a keyword"
+        hint="Enter or a comma adds the text. Paste “a, b, c” to add three."></kakao-tag-input>
+    </div>
+    <div class="card">
+      <h3>Suggestions · <code>list-data</code></h3>
+      <kakao-tag-input label="Labels" placeholder="Type to see suggestions"
+        hint="Matching labels open below the field; any other text works too."
+        list-data='["Bug","Feature","Docs","Design","Performance","Security","Accessibility","Refactoring"]'></kakao-tag-input>
+    </div>
+    <div class="card">
+      <h3>Delimiters · <code>delimiters=",; "</code></h3>
+      <kakao-tag-input label="Recipients" delimiters=",; " placeholder="name@example.com"
+        hint="Comma, semicolon or space ends a tag."></kakao-tag-input>
+    </div>
+    <div class="card">
+      <h3>Limit · <code>max-tags="3"</code></h3>
+      <kakao-tag-input label="Top three skills" max-tags="3" value="CSS, JavaScript"
+        hint="Up to three. Adding “css” again flashes the existing tag."></kakao-tag-input>
+    </div>
+    <div class="card">
+      <h3>Duplicates allowed · tags with commas</h3>
+      <kakao-tag-input label="Authors" allow-duplicates delimiters=";"
+        value='["Smith, J.", "Doe, A.", "Smith, J."]' hint="Semicolon ends a tag, so names keep their comma."></kakao-tag-input>
+    </div>
+    <div class="card">
+      <h3>Many tags · wraps</h3>
+      <kakao-tag-input label="Ingredients"
+        value="Flour, Sugar, Butter, Eggs, Milk, Vanilla extract, Baking powder, Salt, Lemon zest, Cinnamon"></kakao-tag-input>
+    </div>
+  </div>
+
+  <h2>States</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Sizes</h3>
+      <div style="display:grid;gap:.6rem" data-demo-wrap>
+        <kakao-tag-input size="sm" label="Small" value="36px, sm"></kakao-tag-input>
+        <kakao-tag-input label="Medium" value="44px, md"></kakao-tag-input>
+        <kakao-tag-input size="lg" label="Large" value="52px, lg"></kakao-tag-input>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · read-only · error</h3>
+      <div style="display:grid;gap:.6rem" data-demo-wrap>
+        <kakao-tag-input disabled label="Disabled" value="One, Two"></kakao-tag-input>
+        <kakao-tag-input readonly label="Read-only" value="Locked, Shown"></kakao-tag-input>
+        <kakao-tag-input label="Topics" error="Add at least one topic." placeholder="Add a topic"></kakao-tag-input>
+      </div>
+    </div>
+  </div>
+
+  <h2>In a form</h2>
+  <div class="card">
+    <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
+      <kakao-tag-input name="tags" label="Tags" required placeholder="Add a tag" value="news, berlin"></kakao-tag-input>
+      <kakao-tag-input name="cc" label="Cc" delimiters=",; " placeholder="name@example.com"></kakao-tag-input>
+      <div class="row">
+        <kakao-button label="Submit" type="submit"></kakao-button>
+        <kakao-button label="Reset" type="reset" variant="secondary"></kakao-button>
+      </div>
+    </form>
+    <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <kakao-tag-input id="play" label="Playground" value="alpha, beta" placeholder="Add a tag"
+      hint="Tags starting with “x” are refused by a tag-add listener."></kakao-tag-input>
+    <div class="toolbar">
+      <kakao-button id="apiAdd" label='add("gamma")' variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiValues" label='values = ["one", "two"]' variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiClear" label="clear()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <kakao-tag-input id="play" label="Playground" value="alpha, beta" placeholder="Add a tag"></kakao-tag-input>
+      <script>
+        const tags = document.getElementById('play');
+        tags.addEventListener('tag-add', (e) => {
+          if (e.detail.value.startsWith('x')) e.preventDefault(); // refuse it
+        });
+        tags.add('gamma');
+        tags.values = ['one', 'two'];
+        tags.clear();
+        tags.disabled = true;
+      </script>
+    </template>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>tag-input.js</code>.</footer>
+</main>
+<script>
+  const play = document.getElementById('play');
+  const log = document.getElementById('log');
+  logEvents(log, ['tag-add', 'tag-remove'], play);
+  play.addEventListener('change', () => logLine(log, 'change', { value: play.value }));
+  play.addEventListener('tag-add', (e) => {
+    if (e.detail.value.toLowerCase().startsWith('x')) e.preventDefault();
+  });
+
+  const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+  on('apiAdd', () => { play.add('gamma'); });
+  on('apiValues', () => { play.values = ['one', 'two']; });
+  on('apiClear', () => { play.clear(); });
+  on('apiDisable', () => { play.disabled = !play.disabled; });
+
+  const form = document.getElementById('form');
+  const out = document.getElementById('formOut');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const entries = [...new FormData(form)].map(([k, v]) => `${k}=${v}`);
+    out.textContent = `Submitted: ${entries.join(' · ') || '(nothing)'}`;
+  });
+  form.addEventListener('reset', () => { out.textContent = 'Reset to the initial values.'; });
+</script>
+</body>
+</html>
