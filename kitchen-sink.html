@@ -40,6 +40,7 @@
 <script src="components/color-picker/color-picker.js" defer></script>
 <script src="components/card/card.js" defer></script>
 <script src="components/badge/badge.js" defer></script>
+<script src="components/color-code/color-code.js" defer></script>
 <script src="components/chip/chip.js" defer></script>
 <script src="components/chip-list/chip-list.js" defer></script>
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
@@ -198,7 +199,7 @@
       <div class="field">
         <div>
           <div class="field-label">Subtitle colour <kakao-badge tone="primary">New</kakao-badge></div>
-          <p class="field-hint">Lower the opacity for a softer look.</p>
+          <p class="field-hint">Lower the opacity for a softer look. Now <kakao-color-code id="subtitle-color-code">#ffffff</kakao-color-code></p>
         </div>
         <div class="field-control">
           <kakao-color-picker id="subtitle-color" name="subtitleColor" value="#ffffff" alpha aria-label="Subtitle colour"
@@ -453,6 +454,13 @@
   align.addEventListener('kakao-button-action', (e) => {
     align.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b === e.target));
   });
+
+  // ---- subtitle colour: the hint shows the current value ----
+  // The picker reflects its value to the attribute (also on reset), so watch that.
+  const subColor = $('subtitle-color');
+  const showSubColor = () => { $('subtitle-color-code').textContent = subColor.getAttribute('value') || ''; };
+  new MutationObserver(showSubColor).observe(subColor, { attributes: true, attributeFilter: ['value'] });
+  showSubColor();
 
   // ---- audio language ----
   let language = 'English';

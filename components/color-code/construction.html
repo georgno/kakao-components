@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-color-code - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="color-code.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .codes { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="color-code" data-source="color-code.js" data-title="Color code">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Colours</figcaption>
+      <div class="codes">
+        <kakao-color-code>#4f46e5</kakao-color-code>
+        <kakao-color-code>oklch(70% 0.15 145)</kakao-color-code>
+        <kakao-color-code value="var(--kakao-color-ink)">ink</kakao-color-code>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Same as the fill · transparent · not a colour</figcaption>
+      <div class="codes">
+        <kakao-color-code value="var(--kakao-color-subtle)">subtle</kakao-color-code>
+        <kakao-color-code>rgb(0 0 0 / 30%)</kakao-color-code>
+        <kakao-color-code>16px</kakao-color-code>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-color-code-fill", "label": "Fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-code-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-code-ring", "label": "Swatch ring", "group": "Colour", "type": "color", "hint": "keeps a swatch visible on its own colour" },
+    { "property": "--kakao-color-code-checker", "label": "Checkerboard squares", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-code-checker-bg", "label": "Checkerboard base", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-code-invalid", "label": "Not a colour mark", "group": "Colour", "type": "color" },
+    { "property": "--kakao-color-code-swatch-size", "label": "Swatch size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-code-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-code-padding-y", "label": "Padding y", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-code-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-color-code-font-family", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-color-code-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-color-code-font-weight", "label": "Font weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-color-code-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-color-code-swatch-radius", "label": "Swatch radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+</main>
+</body>
+</html>

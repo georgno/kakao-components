@@ -40,6 +40,7 @@
 <script src="components/checkbox/checkbox.js" defer></script>
 <script src="components/radio-group/radio-group.js" defer></script>
 <script src="components/badge/badge.js" defer></script>
+<script src="components/color-code/color-code.js" defer></script>
 <script src="components/chip/chip.js" defer></script>
 <script src="components/chip-list/chip-list.js" defer></script>
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
@@ -686,6 +687,34 @@
         <div class="example">
           <h3>Outline</h3>
           <kakao-badge outline>Missing</kakao-badge>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Color code ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Color code</h2>
+        <code>&lt;kakao-color-code&gt;</code>
+        <a href="components/color-code/construction.html">Construction</a>
+        <a href="components/color-code/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A colour value as a badge-sized monospace label with a swatch of the colour before it. Any CSS colour (hex, <code>rgb()</code>, <code>oklch()</code>, <code>color-mix()</code>, <code>var(--…)</code>…); <code>value</code> paints a different colour than the text. Transparency shows over a checkerboard; a value that is not a colour gets an empty dashed swatch.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Values</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
+            <kakao-color-code>#4f46e5</kakao-color-code>
+            <kakao-color-code>oklch(70% 0.15 145)</kakao-color-code>
+            <kakao-color-code>rgb(0 0 0 / 40%)</kakao-color-code>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Theme variable · not a colour</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
+            <kakao-color-code value="var(--kakao-color-ink)">ink</kakao-color-code>
+            <kakao-color-code>16px</kakao-color-code>
+          </div>
         </div>
       </div>
     </article>

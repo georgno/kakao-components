@@ -8,6 +8,20 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Added
+
+- `kakao-color-code`: a colour value as a badge-sized monospace label with
+  a small swatch of the colour before the text. The text is the colour;
+  `value` paints a different one (`<kakao-color-code
+  value="var(--kakao-color-ink)">ink</kakao-color-code>`). Any CSS colour
+  works: hex (3/4/6/8 digits), `rgb()`, `hsl()`, `hwb()`, `lab()`, `lch()`,
+  `oklab()`, `oklch()`, `color()`, `color-mix()`, named colours,
+  `transparent`, `currentColor` and `var(--…)`. The swatch has a 1px inset
+  ring, so it shows on its own colour, and sits on a checkerboard, so
+  transparency reads; a value that is not a colour gets an empty dashed
+  swatch with a slash and `:state(invalid)`. Text and `value` changes
+  repaint. Settings `--kakao-color-code-*`, construction page and demo.
+
 ## [0.3.0] - 2026-11-10
 
 ### Added
