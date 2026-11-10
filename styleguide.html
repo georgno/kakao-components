@@ -155,7 +155,6 @@
   }
   .focus-sample.soft:focus { box-shadow: 0 0 0 4px rgba(24,24,27,.16); }
   .focus-sample.solid:focus { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
-  .focus-sample.both:focus { box-shadow: 0 0 0 4px rgba(24,24,27,.10); outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 4px; }
   .focus-sample.always.soft { box-shadow: 0 0 0 4px rgba(24,24,27,.16); }
   .focus-sample.always.solid { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
   .focus-label { display: block; margin-top: 0.5rem; font-size: 0.78rem; color: var(--muted); }
@@ -367,7 +366,7 @@
     </div>
 
     <h3 class="sub">Contrast findings <kakao-badge>Now</kakao-badge></h3>
-    <p class="lede small">Default colours checked against WCAG 2.2: text needs 4.5:1 (1.4.3), UI parts and focus indicators 3:1 (1.4.11). Theming fixed the rows marked; the focus halos and the unselected tab are still open.</p>
+    <p class="lede small">Default colours checked against WCAG 2.2: text needs 4.5:1 (1.4.3), UI parts and focus indicators 3:1 (1.4.11). Theming fixed the rows marked; the button's focus halo and the unselected tab are still open.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Where</th><th>Pair</th><th>Ratio</th><th>Needs</th><th></th></tr></thead>
@@ -379,7 +378,7 @@
           <tr><td>List row action icon</td><td><kakao-color-code>#aaa</kakao-color-code> on white</td><td class="num">2.32</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
           <tr><td>Switch, off track</td><td><kakao-color-code>#d1d5db</kakao-color-code> on white</td><td class="num">1.47</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now border token, 3.8</span></td></tr>
           <tr><td>Button focus ring</td><td>ink 16% halo on white</td><td class="num">1.40</td><td>3</td><td><kakao-badge tone="danger">Fails</kakao-badge></td></tr>
-          <tr><td>Number input focus ring</td><td>ink 14% halo on white</td><td class="num">1.33</td><td>3</td><td><kakao-badge tone="danger">Fails</kakao-badge></td></tr>
+          <tr><td>Number input focus ring</td><td>ink 14% halo on white</td><td class="num">1.33</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now focus outline, 5.2</span></td></tr>
           <tr><td>Tabs focus outline</td><td><kakao-color-code>#888</kakao-color-code> on <kakao-color-code>#ebebeb</kakao-color-code></td><td class="num">2.97</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now focus token</span></td></tr>
           <tr><td>Muted text token</td><td><kakao-color-code>#6b7280</kakao-color-code> on white</td><td class="num">4.83</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
           <tr><td>Switch focus outline</td><td><kakao-color-code>#2563eb</kakao-color-code> on white</td><td class="num">5.17</td><td>3</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
@@ -388,7 +387,7 @@
         </tbody>
       </table>
     </div>
-    <p class="small muted" style="margin-top:.6rem">Still to fix: the focus rule below for the halos, and a stronger unselected tab.</p>
+    <p class="small muted" style="margin-top:.6rem">Still to fix: the button's halo (focus rule below), and a stronger unselected tab.</p>
 
     <h3 class="sub">File types <kakao-badge>Now</kakao-badge></h3>
     <p class="lede small">The file upload tags files with a small categorical palette. It's the only place we use more than one hue, so it stays local to that component.</p>
@@ -601,15 +600,14 @@
   <!-- ================================================================ -->
   <section id="focus">
     <h2>Focus &amp; states</h2>
-    <p>Two focus styles ship today: a soft translucent halo (button, number input, multi dropdown) and a solid 2px outline (switches, slider, list, popover, tabs). The halo looks nicer but fails the 3:1 rule.</p>
+    <p>Two focus styles shipped: a soft translucent halo and a solid 2px outline. The halo looks nicer but fails the 3:1 rule, so fields now all draw the outline. The button is the last part still on its halo.</p>
 
     <div class="card">
-      <h3>Focus indicator <kakao-badge tone="primary">Proposed</kakao-badge></h3>
-      <p class="small">Every focusable part shows <code>outline: 2px solid var(--kakao-color-focus)</code> with a 2px offset on <code>:focus-visible</code>. The soft halo may stay as an extra layer, but it is never the only sign of focus. Tab through these to compare:</p>
+      <h3>Focus indicator <kakao-badge tone="ink">Rule</kakao-badge></h3>
+      <p class="small">Every focusable part shows <code>outline: 2px solid var(--kakao-color-focus)</code> with a 2px offset on <code>:focus-visible</code>. Fields (text input, textarea, number input, select, multi dropdown, combobox, date, time, password, code and tag input, color picker) draw it around the whole field box and turn their border the focus colour too; with an error, outline and border are danger. No soft halo on fields. Each field keeps <code>-focus</code>, <code>-focus-width</code> and <code>-focus-offset</code> settings (2px / 2px). The button still has its halo, to be moved to the outline next. Tab through these to compare:</p>
       <div class="focus-row" style="margin-top:1rem">
-        <div><span class="focus-sample soft" tabindex="0">Halo only</span><span class="focus-label">Today's button · 1.4:1 ✗</span></div>
-        <div><span class="focus-sample solid" tabindex="0">Outline</span><span class="focus-label">Switch style · 5.2:1 ✓</span></div>
-        <div><span class="focus-sample both" tabindex="0">Halo + outline</span><span class="focus-label">Proposed default ✓</span></div>
+        <div><span class="focus-sample soft" tabindex="0">Halo only</span><span class="focus-label">Button today · 1.4:1 ✗</span></div>
+        <div><span class="focus-sample solid" tabindex="0">Outline</span><span class="focus-label">The rule · 5.2:1 ✓</span></div>
       </div>
     </div>
 
@@ -753,11 +751,11 @@ KakaoComponents.meta('kakao-card');</pre>
         <tbody>
           <tr><td>Button</td><td>A</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">11/13/15</td><td>Halo ✗</td><td class="num">0.2</td><td>Add outline</td></tr>
           <tr><td>Tabs</td><td>A</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/6</td><td>#888 ✗</td><td class="num">0.2</td><td>Idle tab contrast; focus colour</td></tr>
-          <tr><td>Number input</td><td>A*</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>Halo ✗</td><td class="num">0.55</td><td>44px height; outline</td></tr>
+          <tr><td>Number input</td><td>A*</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>✓</td><td class="num">0.55</td><td>44px height</td></tr>
           <tr><td>Switch group</td><td>B</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>✓</td><td class="num">0.55</td><td>Thumb shadow</td></tr>
           <tr><td>Step switch</td><td>B</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
           <tr><td>File upload</td><td>B</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14/10/7</td><td>✓</td><td class="num">0.55</td><td>Thumb radius 7 → 6 (nesting rule)</td></tr>
-          <tr><td>Multi dropdown</td><td>B</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/6</td><td>Halo ✗</td><td class="num">0.55</td><td>Outline; 44px</td></tr>
+          <tr><td>Multi dropdown</td><td>B</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/6</td><td>✓</td><td class="num">0.55</td><td>44px</td></tr>
           <tr><td>List</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4/6</td><td>✓</td><td class="num">0.5</td><td>Reduced motion</td></tr>
           <tr><td>Popover</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">-</td><td>Radius 10; overlay shadow instead of none</td></tr>
           <tr><td>Slider</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">3</td><td>✓</td><td class="num">0.4</td><td>Reduced motion; accent follows ink, not primary</td></tr>
@@ -795,7 +793,7 @@ KakaoComponents.meta('kakao-card');</pre>
 </tbody>
       </table>
     </div>
-    <p class="small muted" style="margin-top:.6rem">“Theme” = every colour setting defaults to a theme variable, so the component follows light, dark and any later theme. The families still differ in shape and size. * Number input borrows the family A focus halo.</p>
+    <p class="small muted" style="margin-top:.6rem">“Theme” = every colour setting defaults to a theme variable, so the component follows light, dark and any later theme. The families still differ in shape and size. * Number input started in family A, with its focus halo; it now draws the field outline.</p>
   </section>
 
   <!-- ================================================================ -->
@@ -825,7 +823,7 @@ KakaoComponents.meta('kakao-card');</pre>
     <h3 class="sub">Suggested order</h3>
     <div class="card">
       <ol class="small" style="margin:0;padding-left:1.2rem;display:grid;gap:.35rem">
-        <li><b>Accessibility first:</b> focus outline everywhere, plus the contrast fixes in the table above. Small changes with a big effect.</li>
+        <li><b>Accessibility first:</b> focus outline everywhere (fields done, button next), plus the contrast fixes in the table above. Small changes with a big effect.</li>
         <li><b>Neutrals:</b> <kakao-badge tone="success">Done</kakao-badge> colour roles and themes; every component's colours follow them.</li>
         <li><b>Shape &amp; elevation:</b> radius and shadow tokens; restyle list, popover and slider.</li>
         <li><b>Sizes:</b> align fields to the 36/44/52 control heights.</li>
