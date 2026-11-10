@@ -279,6 +279,35 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
   .demo-code-copy { border: 1px solid ButtonText; }
 }
 
+/* Trial: code in a kakao-accordion tile with a small kakao-button for Copy
+   (<body data-demo-code="accordion">). Every example card gets a row of its
+   own, so the code has room. */
+[data-demo-code="accordion"] .grid { grid-template-columns: 1fr; }
+/* Examples in a kakao-card: the title in its header, the code in its footer.
+   The card's body is a flex column, so its parts keep their own width. */
+[data-demo-code="accordion"] main kakao-card > h3[slot="header"] {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+[data-demo-code="accordion"] main kakao-card > :not([slot]) { align-self: flex-start; max-width: 100%; }
+[data-demo-code="accordion"] main kakao-card > :is(.row, .log, .toolbar, div:not([class])) { align-self: stretch; }
+[data-demo-code="accordion"] main kakao-card > .demo-code-acc[slot="footer"] { display: block; flex: 1 1 100%; min-width: 0; margin: 0; }
+.demo-code-acc pre {
+  padding: 0.25rem 0 0.25rem;
+  background: none; /* on the tile's subtle fill: the highlight contrast is measured there */
+  border-radius: 0;
+}
+.demo-code-acc code { padding: 0; }
+.demo-code-acc .demo-code-copy {
+  position: static;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  font-weight: inherit;
+}
+.demo-code-acc .demo-code-copy:hover { background: none; }
+
 /* ---- Overview page ---- */
 .overview { display: grid; gap: 1.25rem; }
 .component-head {

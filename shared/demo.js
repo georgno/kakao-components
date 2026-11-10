@@ -85,10 +85,22 @@ function toggleButton(btn, label, onChange) {
   const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr']);
   const RAW = new Set(['script', 'style']);
   const snippets = new Map(); // example element -> [[text, class], ...]
+  // Trial (button demo first): <body data-demo-code="accordion"> wraps the
+  // code in a kakao-accordion with a small kakao-button for Copy, and puts
+  // every example card on a row of its own.
+  const HERE = document.currentScript && document.currentScript.src;
+  const useAccordion = () => document.body && document.body.dataset.demoCode === 'accordion';
+  function need(tag, path) {
+    if (customElements.get(tag) || !HERE || document.querySelector(`script[data-demo-need="${tag}"]`)) return;
+    const s = document.createElement('script');
+    s.src = new URL(path, HERE).href;
+    s.dataset.demoNeed = tag;
+    document.head.append(s);
+  }
 
   function examples() {
-    return [...document.querySelectorAll('main .card, main [data-example]')].filter(
-      (el) => !el.parentElement.closest('.card, [data-example], [data-demo-only]') && !el.hasAttribute('data-demo-only'),
+    return [...document.querySelectorAll(useAccordion() ? 'main .card, main kakao-card, main [data-example]' : 'main .card, main [data-example]')].filter(
+      (el) => !el.parentElement.closest('.card, kakao-card, [data-example], [data-demo-only]') && !el.hasAttribute('data-demo-only'),
     );
   }
 
@@ -185,6 +197,7 @@ function toggleButton(btn, label, onChange) {
   }
 
   function render() {
+    if (useAccordion()) return renderAccordion();
     snippets.forEach((lines, example) => {
       const details = document.createElement('details');
       details.className = 'demo-code';
@@ -241,6 +254,80 @@ function toggleButton(btn, label, onChange) {
       placeIn(example, details);
     });
     window.addEventListener('resize', () => document.querySelectorAll('details.demo-code[open] code').forEach(syncFade));
+  }
+
+  function buildCode(lines) {
+    const pre = document.createElement('pre');
+    const code = document.createElement('code');
+    code.setAttribute('aria-label', 'Example code');
+    lines.forEach((line, i) => {
+      if (i) code.append('\n');
+      let run = null;
+      line.forEach(([ch, cls]) => {
+        if (!run || run.cls !== cls) {
+          run = { cls, node: cls ? document.createElement('span') : document.createTextNode('') };
+          if (cls) run.node.className = `tok-${cls}`;
+          code.append(run.node);
+        }
+        run.node.textContent += ch;
+      });
+    });
+    pre.append(code);
+    code.addEventListener('scroll', () => syncFade(code), { passive: true });
+    return { pre, code, text: lines.map((l) => l.map(([ch]) => ch).join('')).join('\n') };
+  }
+
+  function renderAccordion() {
+    need('kakao-accordion', '../components/accordion/accordion.js');
+    need('kakao-button', '../components/button/button.js');
+    need('kakao-card', '../components/card/card.js');
+    snippets.forEach((lines, example) => {
+      const { pre, code, text } = buildCode(lines);
+      const acc = document.createElement('kakao-accordion');
+      acc.className = 'demo-code demo-code-acc';
+      acc.setAttribute('variant', 'tile');
+      acc.setAttribute('heading', 'Code');
+      acc.dir = 'ltr'; // code reads left to right, also in an RTL example
+      const body = document.createElement('div');
+      body.className = 'demo-code-body';
+      const copy = document.createElement('kakao-button');
+      copy.className = 'demo-code-copy';
+      copy.setAttribute('size', 'sm');
+      copy.setAttribute('variant', 'secondary');
+      copy.setAttribute('icon', 'fas fa-copy');
+      copy.setAttribute('label', 'Copy');
+      const status = document.createElement('span');
+      status.className = 'demo-code-status';
+      status.setAttribute('role', 'status');
+      let timer = 0;
+      copy.addEventListener('kakao-button-action', async () => {
+        let ok = true;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          ok = copyFallback(text);
+        }
+        copy.setAttribute('label', ok ? 'Copied' : 'Copy failed');
+        copy.setAttribute('icon', ok ? 'fas fa-check' : 'fas fa-xmark');
+        status.textContent = ok ? 'Code copied' : 'Copying failed';
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          copy.setAttribute('label', 'Copy');
+          copy.setAttribute('icon', 'fas fa-copy');
+          status.textContent = '';
+        }, 1600);
+      });
+      copy.slot = 'actions'; // in the header row, before the chevron
+      if (example.localName === 'kakao-card') acc.slot = 'footer';
+      body.append(pre, status);
+      acc.append(body, copy); // not copy first: a footer starting with a button makes kakao-card glow
+      acc.addEventListener('accordion-toggle', (e) => {
+        if (e.target === acc && e.detail && e.detail.open) syncFade(code);
+      });
+      if (acc.slot === 'footer') example.append(acc);
+      else placeIn(example, acc);
+    });
+    window.addEventListener('resize', () => document.querySelectorAll('.demo-code-acc[open] code').forEach(syncFade));
   }
 
   /* The block goes right after the example's last own part, before any

@@ -16,10 +16,11 @@
 <link rel="stylesheet" href="button.css" />
 <script src="../../shared/demo.js"></script>
 <script src="button.js" defer></script>
+<script src="../card/card.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body data-demo-code="accordion">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -35,27 +36,29 @@
 
   <h2>Variants</h2>
   <p><code>variant</code>: primary (default), secondary, ghost, danger.</p>
-  <div class="card row">
-    <kakao-button label="Primary"></kakao-button>
-    <kakao-button label="Secondary" variant="secondary"></kakao-button>
-    <kakao-button label="Ghost" variant="ghost"></kakao-button>
-    <kakao-button label="Danger" variant="danger" icon="fas fa-trash"></kakao-button>
-    <kakao-button label="Disabled" disabled></kakao-button>
-  </div>
+  <kakao-card>
+    <div class="row" data-demo-wrap>
+      <kakao-button label="Primary"></kakao-button>
+      <kakao-button label="Secondary" variant="secondary"></kakao-button>
+      <kakao-button label="Ghost" variant="ghost"></kakao-button>
+      <kakao-button label="Danger" variant="danger" icon="fas fa-trash"></kakao-button>
+      <kakao-button label="Disabled" disabled></kakao-button>
+    </div>
+  </kakao-card>
 
   <h2>Sizes &amp; icons</h2>
   <p><code>size</code>: sm, md, lg. <code>icon-position</code>: left, right, only (inferred when no label). An icon is a child with <code>slot="icon"</code> (first row): an inline SVG needs nothing else; an icon-font element such as the gear works too when the page loads that font. The <code>icon</code> attribute is an optional shortcut for icon-font classes (second row); it also needs the font, which is why this site loads Font Awesome.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Sizes</h3>
+    <kakao-card>
+      <h3 slot="header">Sizes</h3>
       <div class="row">
         <kakao-button label="Small" size="sm"></kakao-button>
         <kakao-button label="Medium" size="md"></kakao-button>
         <kakao-button label="Large" size="lg"></kakao-button>
       </div>
-    </div>
-    <div class="card">
-      <h3>Icons</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Icons</h3>
       <div class="row">
         <kakao-button label="Download" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></kakao-button>
         <kakao-button label="Download" icon-position="right" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></kakao-button>
@@ -68,58 +71,58 @@
         <kakao-button icon="fas fa-gear" aria-label="Settings" variant="secondary"></kakao-button>
         <kakao-button icon="fas fa-heart" aria-label="Like" size="sm" variant="ghost"></kakao-button>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Toggle</h2>
   <p><code>toggle</code> flips <code>pressed</code> on click. Inside <code>.kakao-button-segment</code> they look like a segmented control.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Single toggle</h3>
+    <kakao-card>
+      <h3 slot="header">Single toggle</h3>
       <kakao-button id="toggle1" label="Bold" icon="fas fa-bold" variant="secondary" toggle></kakao-button>
-    </div>
-    <div class="card">
-      <h3>Segment (exclusive)</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Segment (exclusive)</h3>
       <div class="kakao-button-segment" id="segment">
         <kakao-button icon="fas fa-align-left" aria-label="Left" toggle pressed></kakao-button>
         <kakao-button icon="fas fa-align-center" aria-label="Center" toggle></kakao-button>
         <kakao-button icon="fas fa-align-right" aria-label="Right" toggle></kakao-button>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Menu</h2>
   <p><code>list-data</code> turns any variant into a dropdown button: a chevron and a menu of choices. <code>selected</code> marks the current one; <code>show-selected</code> puts it on the button; <code>no-chevron</code> hides the chevron (icon-only dropdowns then stay round). Keyboard: ↓ / ↑ open, arrows move, a letter jumps, Enter picks, Escape closes.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Shows the choice · <code>show-selected</code></h3>
+    <kakao-card>
+      <h3 slot="header">Shows the choice · <code>show-selected</code></h3>
       <kakao-button id="sort" label="Sort by" variant="secondary" show-selected selected="newest"
         list-data='[{"value":"newest","label":"Newest first"},{"value":"oldest","label":"Oldest first"},{"value":"name","label":"Name"},{"value":"size","label":"Size","disabled":true}]'></kakao-button>
-    </div>
-    <div class="card">
-      <h3>Action menu · primary</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Action menu · primary</h3>
       <kakao-button label="Export" icon="fas fa-download"
         list-data='[{"value":"csv","label":"CSV"},{"value":"xlsx","label":"Excel"},{"value":"pdf","label":"PDF"}]'></kakao-button>
-    </div>
-    <div class="card">
-      <h3>Actions · <code>no-chevron</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Actions · <code>no-chevron</code></h3>
       <div class="row">
         <kakao-button icon="fas fa-ellipsis" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
           list-data='[{"value":"edit","label":"Edit"},{"value":"duplicate","label":"Duplicate"},{"value":"delete","label":"Delete"}]'></kakao-button>
         <kakao-button icon="fas fa-ellipsis-vertical" aria-label="More actions" icon-position="only" variant="ghost" no-chevron
           list-data='[{"value":"rename","label":"Rename"},{"value":"move","label":"Move"},{"value":"archive","label":"Archive"}]'></kakao-button>
       </div>
-    </div>
-    <div class="card">
-      <h3>Ghost · small</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Ghost · small</h3>
       <kakao-button label="View" variant="ghost" size="sm" show-selected selected="list"
         list-data='[{"value":"list","label":"List"},{"value":"grid","label":"Grid"},{"value":"map","label":"Map"}]'></kakao-button>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
   <p><code>run()</code> wires a promise to the loading animation; it resolves to a check, rejects back to the label.</p>
-  <div class="card">
+  <kakao-card>
     <div class="row">
       <kakao-button id="runOk" label="Save (succeeds)" icon="fas fa-cloud-arrow-up"></kakao-button>
       <kakao-button id="runFail" label="Save (fails)" variant="danger"></kakao-button>
@@ -138,7 +141,7 @@
       <kakao-button id="apiLabel" label="Change label of first button" variant="secondary" size="sm"></kakao-button>
     </div>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>label</code>, <code>icon</code>, <code>icon-position</code>, <code>variant</code>, <code>size</code>, <code>disabled</code>, <code>toggle</code>, <code>pressed</code>, <code>type</code>, <code>name</code>, <code>value</code>, <code>form</code>, <code>href</code>, <code>aria-label</code>. <code>data-*</code> is mirrored onto the inner button. Menu form: <code>list-data</code>, <code>selected</code>, <code>show-selected</code>, <code>no-chevron</code>. Events <code>kakao-button-action</code>, <code>kakao-button-select</code>, <code>kakao-button-menu</code>.</footer>
 </main>
