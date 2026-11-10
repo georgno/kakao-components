@@ -118,7 +118,9 @@
  * ----------------------------------------------------------------------------
  *  box     surface, hairline border, 14px radius, 4px inner padding; rows
  *          have their own side padding, hairlines are inset to the text, and
- *          link rows get a 10px rounded hover wash (14 - 4, nesting rule).
+ *          link rows get a hover wash with 10px outer corners (14 - 4,
+ *          nesting rule): only the first row rounds its top and only the
+ *          last its bottom, so washes of neighbouring rows meet flush.
  *  plain   no surface, no border, no side padding: the card's (or
  *          accordion's) padding is the indent, so a group in a card is never
  *          a card in a card. Hairlines run the full width.
@@ -240,6 +242,11 @@
       .footer { font-size: var(--_description-size); color: var(--_muted); overflow-wrap: anywhere; }
       /* Every row after the first draws a hairline above itself. */
       .rows ::slotted(:not(:first-child)) { --_kakao-setting-line: var(--_line); }
+      /* Rows join up: only the first row rounds its top corners and only the
+         last its bottom ones, so hover and focus shapes of neighbouring rows
+         meet flush and the outer corners follow the box. */
+      .rows ::slotted(:not(:first-child)) { --_kakao-setting-radius-top: 0px; }
+      .rows ::slotted(:not(:last-child)) { --_kakao-setting-radius-bottom: 0px; }
       .rows ::slotted(*) { margin-block: 0; }
 
       .group[data-look="plain"] .rows { padding: 0; background: transparent; border: 0; border-radius: 0; }
@@ -388,7 +395,10 @@
         margin: 0;
         padding: var(--_row-padding-y) var(--_px);
         border: 0;
-        border-radius: var(--_row-radius);
+        border-start-start-radius: var(--_kakao-setting-radius-top, var(--_row-radius));
+        border-start-end-radius: var(--_kakao-setting-radius-top, var(--_row-radius));
+        border-end-start-radius: var(--_kakao-setting-radius-bottom, var(--_row-radius));
+        border-end-end-radius: var(--_kakao-setting-radius-bottom, var(--_row-radius));
         background: transparent;
         color: inherit;
         font: inherit;
