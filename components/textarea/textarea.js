@@ -26,11 +26,15 @@
  *  value         The current value (reflected back on input).
  *  rows          Initial visible rows (default 3).
  *  maxlength     Maximum characters; with counter it shows "n / max".
+ *  minlength     Minimum characters (checked once the person has typed).
  *  counter       Show the character counter (needs maxlength for the total).
  *  autosize      Grow with the content (up to max-height), no scrollbar until then.
  *  max-height    Height cap for autosize (any CSS length, default 18rem).
  *  resize        "vertical" (default) | "none" | "both" | "horizontal".
  *  name · required · disabled · readonly   Form participation.
+ *                Validity follows the inner textarea (required, minlength,
+ *                maxlength; a longer value set from script is too long as
+ *                well), with the browser's message; `error` takes precedence.
  *  size          "sm" | "md" (default) | "lg".
  *
  *  data-* attributes on the host are mirrored onto the field.
@@ -186,6 +190,8 @@
     </div>
   `;
 
+  /* The ValidityState flags the inner field's validity is copied from. */
+  const VALIDITY_FLAGS = ['valueMissing', 'tooLong', 'tooShort'];
   let seq = 0;
 
   class KakaoTextarea extends HTMLElement {
@@ -194,7 +200,7 @@
     }
 
     static get observedAttributes() {
-      return ['label', 'hint', 'error', 'placeholder', 'value', 'rows', 'maxlength',
+      return ['label', 'hint', 'error', 'placeholder', 'value', 'rows', 'maxlength', 'minlength',
         'counter', 'autosize', 'max-height', 'resize', 'name', 'required',
         'disabled', 'readonly', 'size', 'aria-label'];
     }
@@ -328,9 +334,11 @@
       this._area.readOnly = this.hasAttribute('readonly');
       this._area.required = this.hasAttribute('required');
       this._area.rows = Math.max(1, parseInt(this.getAttribute('rows') || '3', 10) || 3);
-      const max = this.getAttribute('maxlength');
-      if (max == null) this._area.removeAttribute('maxlength');
-      else this._area.setAttribute('maxlength', max);
+      ['maxlength', 'minlength'].forEach((attr) => {
+        const v = this.getAttribute(attr);
+        if (v == null) this._area.removeAttribute(attr);
+        else this._area.setAttribute(attr, v);
+      });
       if (this.hasAttribute('max-height')) this.style.setProperty('--kakao-textarea-max-height', this.getAttribute('max-height'));
 
       const label = this.getAttribute('label') || '';
@@ -371,13 +379,29 @@
       this._area.style.height = `${this._area.scrollHeight}px`;
     }
 
+    /**
+     * Form value and validity. The `error` attribute wins (customError);
+     * otherwise the inner textarea's validity is copied (required, minlength,
+     * maxlength, with the browser's message). A value longer than maxlength
+     * (set from script, the counter shows it red) is tooLong too, and only
+     * spaces counts as missing.
+     */
     _syncForm() {
       if (!this._internals) return;
       this._internals.setFormValue(this._area.value);
       const error = this.getAttribute('error');
-      if (error) this._internals.setValidity({ customError: true }, error, this._area);
-      else if (this.hasAttribute('required') && !this._area.value.trim()) {
-        this._internals.setValidity({ valueMissing: true }, 'Please fill in this field.', this._area);
+      if (error) { this._internals.setValidity({ customError: true }, error, this._area); return; }
+      const v = this._area.validity;
+      const flags = {};
+      VALIDITY_FLAGS.forEach((k) => { if (v[k]) flags[k] = true; });
+      const max = parseInt(this.getAttribute('maxlength'), 10);
+      const len = this._area.value.length;
+      if (Object.keys(flags).length) {
+        this._internals.setValidity(flags, this._area.validationMessage || 'Please check this field.', this._area);
+      } else if (max >= 0 && len > max) {
+        this._internals.setValidity({ tooLong: true }, `Please use no more than ${max} characters (you are using ${len}).`, this._area);
+      } else if (this.hasAttribute('required') && !this._area.value.trim()) {
+        this._internals.setValidity({ valueMissing: true }, 'Please fill out this field.', this._area);
       } else {
         this._internals.setValidity({});
       }

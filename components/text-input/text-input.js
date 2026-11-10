@@ -31,6 +31,10 @@
  *  placeholder   Placeholder text.
  *  value         The current value (reflected back on input).
  *  name · required · disabled · readonly   Form participation.
+ *                The field's validity follows the inner input: required,
+ *                type="email" / "url", pattern, minlength / maxlength and
+ *                min / max / step make it invalid with the browser's message
+ *                (an error summary lists it); `error` takes precedence.
  *  size          "sm" | "md" (default) | "lg".
  *  icon          Optional shortcut for an icon-font icon in front of the field, e.g.
  *                "fas fa-magnifying-glass": the component adds an
@@ -39,8 +43,8 @@
  *                Awesome is not part of the library). Ignored while the page gives its
  *                own slot="icon" child; removing the attribute removes the <i>.
  *  clearable     Show a clear (×) button while the field has a value.
- *  maxlength · minlength · pattern · autocomplete · inputmode · spellcheck
- *                Passed through to the field.
+ *  maxlength · minlength · pattern · min · max · step · autocomplete · inputmode · spellcheck
+ *                Passed through to the field (and to its validity).
  *
  *  data-* attributes on the host are mirrored onto the field for form
  *  frameworks (Yii data-confirm and friends).
@@ -228,6 +232,9 @@
     <p class="error" part="error" id="error" role="alert"></p>
   `;
 
+  /* The ValidityState flags the inner field's validity is copied from. */
+  const VALIDITY_FLAGS = ['valueMissing', 'typeMismatch', 'patternMismatch', 'tooLong', 'tooShort',
+    'rangeUnderflow', 'rangeOverflow', 'stepMismatch', 'badInput'];
   let seq = 0;
 
   class KakaoTextInput extends HTMLElement {
@@ -238,7 +245,7 @@
     static get observedAttributes() {
       return ['type', 'label', 'hint', 'error', 'placeholder', 'value', 'name',
         'required', 'disabled', 'readonly', 'size', 'icon', 'clearable',
-        'maxlength', 'minlength', 'pattern', 'autocomplete', 'inputmode', 'spellcheck', 'aria-label'];
+        'maxlength', 'minlength', 'pattern', 'min', 'max', 'step', 'autocomplete', 'inputmode', 'spellcheck', 'aria-label'];
     }
 
     constructor() {
@@ -377,7 +384,7 @@
       this._input.disabled = this.hasAttribute('disabled');
       this._input.readOnly = this.hasAttribute('readonly');
       this._input.required = this.hasAttribute('required');
-      ['maxlength', 'minlength', 'pattern', 'autocomplete', 'inputmode', 'spellcheck'].forEach((attr) => {
+      ['maxlength', 'minlength', 'pattern', 'min', 'max', 'step', 'autocomplete', 'inputmode', 'spellcheck'].forEach((attr) => {
         const v = this.getAttribute(attr);
         if (v == null) this._input.removeAttribute(attr);
         else this._input.setAttribute(attr, v);
@@ -434,13 +441,24 @@
       this._clearBtn.classList.toggle('has-value', this._input.value !== '');
     }
 
+    /**
+     * Form value and validity. The `error` attribute wins (customError);
+     * otherwise the inner field's own validity is copied, so type="email" /
+     * "url", pattern, minlength / maxlength, min / max / step and required
+     * count with the browser's message. Only spaces counts as missing too.
+     */
     _syncForm() {
       if (!this._internals) return;
       this._internals.setFormValue(this._input.value);
       const error = this.getAttribute('error');
-      if (error) this._internals.setValidity({ customError: true }, error, this._input);
-      else if (this.hasAttribute('required') && !this._input.value.trim()) {
-        this._internals.setValidity({ valueMissing: true }, 'Please fill in this field.', this._input);
+      if (error) { this._internals.setValidity({ customError: true }, error, this._input); return; }
+      const v = this._input.validity;
+      const flags = {};
+      VALIDITY_FLAGS.forEach((k) => { if (v[k]) flags[k] = true; });
+      if (Object.keys(flags).length) {
+        this._internals.setValidity(flags, this._input.validationMessage || 'Please check this field.', this._input);
+      } else if (this.hasAttribute('required') && !this._input.value.trim()) {
+        this._internals.setValidity({ valueMissing: true }, 'Please fill out this field.', this._input);
       } else {
         this._internals.setValidity({});
       }
