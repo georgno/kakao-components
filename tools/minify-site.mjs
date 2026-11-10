@@ -21,6 +21,9 @@
  *       string to the browser). If the block then doesn't read exactly like
  *       the source, that file is published unminified.
  *   - <script type="application/json"> (construction manifests) and <pre>.
+ *   - Demo pages (components/<name>/demo.html), copied unchanged: their code
+ *     blocks (shared/demo.js) show each example's markup as written, so its
+ *     line breaks, indentation and the scripts in <template data-code> stay.
  *   - One space where HTML had whitespace between elements, so inline layouts
  *     (buttons in a row, words around inline code) stay as they are.
  *   - Already minified vendor files (shared/vendor) are left alone.
@@ -30,7 +33,7 @@
  * ============================================================================
  */
 import { readdir, readFile, writeFile, stat } from 'node:fs/promises';
-import { join, extname, relative } from 'node:path';
+import { join, extname, relative, sep } from 'node:path';
 import { minify as minifyHtml } from 'html-minifier-terser';
 import { minify as minifyJs } from 'terser';
 import CleanCSS from 'clean-css';
@@ -43,6 +46,7 @@ if (!root) {
 
 const SKIP_DIRS = new Set(['vendor', 'fonts']);
 const KEEP_CSS = /@kakao-settings|@theme |@generated/;
+const DEMO_PAGE = /^components\/[^/]+\/demo\.html$/;
 
 const JS_OPTIONS = {
   compress: { passes: 2 },
@@ -108,6 +112,10 @@ for await (const file of files(root)) {
   let out;
   try {
     if (ext === '.html') {
+      if (DEMO_PAGE.test(relative(root, file).split(sep).join('/'))) {
+        kept.push(relative(root, file));
+        continue;
+      }
       out = await minifyHtml(source, HTML_OPTIONS);
     } else if (ext === '.css') {
       if (KEEP_CSS.test(source)) {
@@ -143,5 +151,5 @@ for await (const file of files(root)) {
 
 const kb = (n) => `${(n / 1024).toFixed(0)} KB`;
 console.log(`minify-site: ${count} files, ${kb(before)} -> ${kb(after)} (${Math.round((1 - after / before) * 100)}% smaller)`);
-if (kept.length) console.log(`minify-site: kept as is (settings markers): ${kept.join(', ')}`);
+if (kept.length) console.log(`minify-site: kept as is (settings markers, demo pages): ${kept.join(', ')}`);
 if (unminified.length) console.log(`minify-site: settings block not restorable, published unminified: ${unminified.join(', ')}`);

@@ -22,6 +22,17 @@ pages (landing page, settings, demos), not the components.
   swatch with a slash and `:state(invalid)`. Text and `value` changes
   repaint. Settings `--kakao-color-code-*`, construction page and demo.
 
+### Site only
+
+- Demo pages: every example has a collapsed "Code" block under it with its
+  markup as written in the page (read before the components draw), lightly
+  highlighted in theme colours, with a Copy button. Examples driven by
+  script show the real API call next to the markup (`KakaoToast.show()`,
+  opening a dialog, `run()`, the playground methods). `shared/demo.js`
+  builds the blocks; `data-demo-only`, `data-demo-wrap`, `data-no-code`,
+  `data-code-with` and `<template data-code>` tune what a snippet shows
+  (see AGENTS.md).
+
 ## [0.3.0] - 2026-11-10
 
 ### Added

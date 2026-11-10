@@ -23,10 +23,18 @@ others render into a shadow root (with slots where they take content).
 - Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`:
   it keeps the page hidden until the deferred component scripts have drawn, so
   reloads don't flicker. It's for this project's pages only, not part of any component.
+- Demo pages get a "Code" block under every example from `shared/demo.js`: the
+  example's markup as written (a top-level `.card` in `<main>`, or any element with
+  `data-example`), minus its `<h3>`, `<p>` notes, `.toolbar`, `.log` and `onclick`.
+  Mark demo-only controls `data-demo-only`, demo-only layout wrappers `data-demo-wrap`,
+  skip a card with `data-no-code`, pull in markup from elsewhere on the page (a sheet,
+  a dialog) with `data-code-with="id …"`. For script-driven examples add
+  `<template data-code>` with the real API call: markup in it replaces the snippet; a
+  template holding only a `<script>` is appended to it.
 - A new top-level page (or file a page loads, like `CHANGELOG.md`) must also be added to
   the copy list in `.github/workflows/pages.yml`, or it is missing from the live site.
 - The deploy minifies the published copy with `tools/minify-site.mjs` (HTML, JS, CSS;
-  settings blocks kept line for line). Sources in the repo stay readable; never commit
+  settings blocks kept line for line; demo pages kept as written for their code blocks). Sources in the repo stay readable; never commit
   minified files.
 - Releases: note changes in `CHANGELOG.md` under Unreleased; on a release, move them
   under the new version, bump the version on `index.html` (hero facts), and tag `vX.Y.Z`.

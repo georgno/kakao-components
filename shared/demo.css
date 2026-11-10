@@ -166,6 +166,119 @@ h2 + p { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; }
 
 footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 
+/* ---- Code blocks under the examples (built by demo.js) ----
+   Collapsed by default. The fill is the subtle fill of inline code, so it
+   follows the theme; the highlight colours are theme roles mixed a fifth of
+   the way towards the text colour, which keeps them at 4.5:1 or more on the
+   subtle fill in every theme. */
+.demo-code {
+  --code-tag: color-mix(in srgb, var(--kakao-color-primary, #4f46e5) 80%, var(--ink));
+  --code-attr: color-mix(in srgb, var(--kakao-color-warning, #b45309) 80%, var(--ink));
+  --code-value: color-mix(in srgb, var(--kakao-color-success, #15803d) 80%, var(--ink));
+  --code-comment: var(--muted);
+  flex: 1 0 100%; /* in a .row card: a line of its own */
+  grid-column: 1 / -1;
+  position: relative;
+  min-width: 0;
+  font-size: 0.8125rem;
+}
+.card:not(.row) > .demo-code, [data-example] > .demo-code { margin-top: 1rem; }
+.card.row > .demo-code { margin-top: 0.5rem; }
+.demo-code > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 6px;
+  color: var(--muted);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.demo-code > summary::-webkit-details-marker { display: none; }
+.demo-code > summary::before {
+  content: "";
+  width: 0.4em;
+  height: 0.4em;
+  border: solid currentColor;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(-45deg);
+  transition: transform 150ms ease;
+}
+.demo-code[open] > summary::before { transform: rotate(45deg) translate(-0.1em, -0.1em); }
+.demo-code > summary:hover { color: var(--ink); }
+.demo-code > summary:focus-visible,
+.demo-code-copy:focus-visible,
+.demo-code code:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+.demo-code-body { margin-top: 0.5rem; }
+.demo-code pre {
+  margin: 0;
+  padding: 0.9rem 0;
+  background: var(--code-bg);
+  color: var(--ink);
+  border-radius: 10px;
+  font: 0.8rem/1.6 ui-monospace, "SF Mono", Menlo, monospace;
+}
+.demo-code code {
+  display: block;
+  overflow-x: auto;
+  padding: 0 1rem;
+  background: none;
+  border-radius: 0;
+  font: inherit;
+  scrollbar-width: thin;
+}
+.demo-code code:focus-visible { border-radius: 4px; }
+/* Edge fade where there is more to scroll (set by demo.js) */
+.demo-code code[data-more-left] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem));
+  mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem));
+}
+.demo-code code[data-more-right] {
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--kakao-scroll-fade, 1.5rem));
+  mask-image: linear-gradient(to left, transparent, #000 var(--kakao-scroll-fade, 1.5rem));
+}
+.demo-code code[data-more-left][data-more-right] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem), #000 calc(100% - var(--kakao-scroll-fade, 1.5rem)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem), #000 calc(100% - var(--kakao-scroll-fade, 1.5rem)), transparent);
+}
+.demo-code .tok-t { color: var(--code-tag); }
+.demo-code .tok-a { color: var(--code-attr); }
+.demo-code .tok-v { color: var(--code-value); }
+.demo-code .tok-c { color: var(--code-comment); font-style: italic; }
+.demo-code .tok-p { color: var(--muted); }
+/* Copy sits at the end of the summary row, shown while the block is open */
+.demo-code-copy {
+  position: absolute;
+  top: -0.2rem;
+  right: 0;
+  padding: 0.2rem 0.6rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--kakao-color-subtle-strong, #e6e6e8);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+.demo-code-copy:hover { background: var(--kakao-color-line, #e5e7eb); }
+.demo-code-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-code > summary::before, .demo-code-copy { transition: none; }
+}
+@media (forced-colors: active) {
+  .demo-code-copy { border: 1px solid ButtonText; }
+}
+
 /* ---- Overview page ---- */
 .overview { display: grid; gap: 1.25rem; }
 .component-head {
