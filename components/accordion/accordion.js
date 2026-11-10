@@ -234,6 +234,8 @@
         align-items: center;
         gap: 0.5rem;
       }
+      /* the card look's 1px border puts the header 1px down */
+      .frame[data-look="card"] .actions { top: 1px; }
       .actions-space { flex: none; width: var(--_actions-w, 0px); }
       .actions[hidden], .actions-space[hidden] { display: none; }
       .chevron {
