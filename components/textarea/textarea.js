@@ -40,6 +40,7 @@
  * ----------------------------------------------------------------------------
  *  value                 Get / set the value.
  *  focus() · blur() · select()
+ *  checkValidity() · reportValidity() · validity · validationMessage · form
  *  disabled · readOnly   Property mirrors.
  *
  *  Calls made before the element is connected are queued.
@@ -300,6 +301,12 @@
     set readOnly(v) {
       this.toggleAttribute('readonly', !!v);
     }
+
+    get form() { return this._internals ? this._internals.form : null; }
+    get validity() { return this._internals ? this._internals.validity : this._area.validity; }
+    get validationMessage() { return this._internals ? this._internals.validationMessage : this._area.validationMessage; }
+    checkValidity() { return this._internals ? this._internals.checkValidity() : this._area.checkValidity(); }
+    reportValidity() { return this._internals ? this._internals.reportValidity() : this._area.reportValidity(); }
 
     focus(options) {
       this._area.focus(options);

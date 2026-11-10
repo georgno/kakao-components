@@ -39,6 +39,7 @@
  *  getData()               Deep copy of the options.
  *  setData(options)        Replace the options (same shape as list-data).
  *  focus()                 Focus the checked option (or the first one).
+ *  checkValidity() · reportValidity() · validity · validationMessage · form
  *
  *  Calls made before the element is connected are queued.
  *
@@ -299,6 +300,12 @@
       this._render();
       this._sync();
     }
+
+    get form() { return this._internals ? this._internals.form : null; }
+    get validity() { return this._internals ? this._internals.validity : undefined; }
+    get validationMessage() { return this._internals ? this._internals.validationMessage : ''; }
+    checkValidity() { return this._internals ? this._internals.checkValidity() : true; }
+    reportValidity() { return this._internals ? this._internals.reportValidity() : true; }
 
     focus(options) {
       const target = this._inputFor(this.getAttribute('value'))

@@ -60,6 +60,7 @@
  * ----------------------------------------------------------------------------
  *  value                 Get / set the value.
  *  focus() · blur()      Forwarded to the field.
+ *  checkValidity() · reportValidity() · validity · validationMessage · form
  *  select()              Select the whole value.
  *  disabled · readOnly   Property mirrors.
  *
@@ -349,6 +350,12 @@
     set readOnly(v) {
       this.toggleAttribute('readonly', !!v);
     }
+
+    get form() { return this._internals ? this._internals.form : null; }
+    get validity() { return this._internals ? this._internals.validity : this._input.validity; }
+    get validationMessage() { return this._internals ? this._internals.validationMessage : this._input.validationMessage; }
+    checkValidity() { return this._internals ? this._internals.checkValidity() : this._input.checkValidity(); }
+    reportValidity() { return this._internals ? this._internals.reportValidity() : this._input.reportValidity(); }
 
     focus(options) {
       this._input.focus(options);

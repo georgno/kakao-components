@@ -32,6 +32,7 @@
  * ----------------------------------------------------------------------------
  *  checked · indeterminate · disabled · value   Property mirrors.
  *  focus() · blur()
+ *  checkValidity() · reportValidity() · validity · validationMessage · form
  *
  *  Calls made before the element is connected are queued.
  *
@@ -282,6 +283,12 @@
     set value(v) {
       this.setAttribute('value', v == null ? '' : String(v));
     }
+
+    get form() { return this._internals ? this._internals.form : null; }
+    get validity() { return this._internals ? this._internals.validity : this._input.validity; }
+    get validationMessage() { return this._internals ? this._internals.validationMessage : this._input.validationMessage; }
+    checkValidity() { return this._internals ? this._internals.checkValidity() : this._input.checkValidity(); }
+    reportValidity() { return this._internals ? this._internals.reportValidity() : this._input.reportValidity(); }
 
     focus(options) {
       this._input.focus(options);
