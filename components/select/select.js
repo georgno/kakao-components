@@ -253,7 +253,8 @@
         overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
       }
 
-      /* ---- Panel: the dropdown surface (overlay, elevation level 3) ---- */
+      /* ---- Panel: the dropdown surface (overlay, elevation level 3) ----
+         Keep in step with combobox.js: same panel, rows and groups. */
       .panel {
         position: fixed;
         inset: auto;
@@ -293,7 +294,11 @@
         border: 1px solid var(--_border);
         border-radius: var(--_option-radius);
       }
-      .search:focus-within { border-color: var(--_focus); box-shadow: 0 0 0 1px var(--_focus); }
+      .search:has(input:focus-visible) {
+        border-color: var(--_focus);
+        outline: var(--_focus-width) solid var(--_focus);
+        outline-offset: var(--_focus-offset);
+      }
       .search svg {
         flex: none; width: 1em; height: 1em; fill: none;
         stroke: var(--_muted); stroke-width: 2.2; stroke-linecap: round;

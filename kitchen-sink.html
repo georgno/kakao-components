@@ -49,6 +49,7 @@
 <script src="components/meter/meter.js" defer></script>
 <script src="components/accordion/accordion.js" defer></script>
 <script src="components/select/select.js" defer></script>
+<script src="components/combobox/combobox.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -293,6 +294,17 @@
 
       <div class="field">
         <div>
+          <div class="field-label">City</div>
+          <p class="field-hint">Pick a suggestion or type your own; it sets the local cinema times.</p>
+        </div>
+        <div class="field-control">
+          <kakao-combobox id="city" name="city" aria-label="City" placeholder="Pick or type a city"
+            list-data='["Berlin","Hamburg","München","Köln","Frankfurt am Main","Wien","Graz","Zürich","Basel","Genève"]'></kakao-combobox>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
           <div class="field-label">Profile bio</div>
           <p class="field-hint">Shown on your profile to people you share a household with.</p>
         </div>
@@ -529,6 +541,7 @@
         name: $('name').value,
         email: $('email').value,
         country: $('country').value,
+        city: $('city').value,
         bio: $('bio').value,
         genres: [...$('genres').querySelectorAll('kakao-chip')].map((c) => c.getAttribute('value')),
         dateOfBirth: $('dob').value,

@@ -134,7 +134,8 @@ pages (landing page, settings, demos), not the components.
   right edge or shifted in at the side, its height capped by the room on
   screen, following the field while the page scrolls. Typing in the search
   filters live, ignoring case and accents and matching anywhere in the label,
-  with "No matches" (`empty-text`) when nothing fits. Options come from child
+  with "No matches" (`empty-text`) when nothing fits; the search field shows
+  focus with the 2px outline. Options come from child
   `<option>` / `<optgroup>` elements (a top-level `<option value="">` is the
   placeholder), `list-data` or the `options` property; groups and disabled
   options are supported. `multiple` gives each row a checkbox in the
@@ -151,6 +152,25 @@ pages (landing page, settings, demos), not the components.
   Settings `--kakao-select-*`, construction page and demo. The components
   page replaces its Select placeholder; the style guide audits it; the
   kitchen sink asks for the country with it.
+- `kakao-combobox`: a text field with suggestions, where the typed text may
+  also be the value (an editable combobox with list autocomplete). Typing
+  filters the list like the select (case and accents ignored, anywhere in
+  the label); picking a suggestion sets the value to its value and the field
+  to its label, other text is kept as the value on Enter, Tab or leaving the
+  field. While the text names no option, a "Use “…”" row sits at the top
+  (`create-label`, hidden with `no-create`); `strict` allows only listed
+  values. `autocomplete="both"` completes the first match in the field,
+  `"none"` turns filtering off. Keyboard per the APG pattern: arrows,
+  PageUp / PageDown, Enter picks or commits, Escape closes the list and on a
+  closed list clears the field, Tab commits and moves on. Options, groups,
+  panel, placement and row look are the select's (copied, so each file stays
+  inlineable). Form-associated: `value`, `required`, `pattern`, `minlength`,
+  `maxlength`, reset, state restore; events `input`, `change`,
+  `combobox-change`, `combobox-create` (a new free-text value),
+  `combobox-open`, `combobox-close`. Settings `--kakao-combobox-*`,
+  construction page and demo. The components page replaces its Combobox
+  placeholder; the style guide audits it; the kitchen sink asks for the city
+  with it.
 
 ### Changed
 

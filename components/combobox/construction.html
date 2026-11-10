@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-combobox - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="combobox.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="combobox" data-source="combobox.js" data-title="Combobox">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Suggestions · hint</figcaption>
+      <kakao-combobox label="City" hint="Type to see the list and the “Use” row." value="Berlin"
+        list-data='["Berlin","Hamburg","München","Köln","Wien","Zürich"]'></kakao-combobox>
+    </figure>
+    <figure>
+      <figcaption>Groups · inline completion</figcaption>
+      <kakao-combobox autocomplete="both" label="Tag" placeholder="Start typing"
+        list-data='[{"label":"Area","options":["UI","API","Docs"]},{"label":"Kind","options":["Bug","Feature"]}]'></kakao-combobox>
+    </figure>
+    <figure>
+      <figcaption>Sizes · error</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-combobox size="sm" list-data='["Small"]' value="Small" aria-label="Small"></kakao-combobox>
+        <kakao-combobox size="lg" list-data='["Large"]' value="Large" aria-label="Large"></kakao-combobox>
+        <kakao-combobox list-data='["Free","Pro"]' error="Pick or name a plan" aria-label="Plan"></kakao-combobox>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-combobox-bg", "label": "Field background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-combobox-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-combobox-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "placeholder, hint, chevron, group labels" },
+    { "property": "--kakao-combobox-border", "label": "Field border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-combobox-hover-bg", "label": "Active option", "group": "Colour", "type": "color" },
+    { "property": "--kakao-combobox-focus", "label": "Focus", "group": "Colour", "type": "color" },
+    { "property": "--kakao-combobox-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-combobox-panel-bg", "label": "Panel background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-combobox-line", "label": "“Use” row line", "group": "Colour", "type": "color" },
+    { "property": "--kakao-combobox-check", "label": "Check mark", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-combobox-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-combobox-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-combobox-height", "label": "Height (md)", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-label-gap", "label": "Label gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-message-gap", "label": "Message gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-chevron-size", "label": "Chevron size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-panel-padding", "label": "Panel padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-panel-offset", "label": "Panel gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-panel-height", "label": "Panel max height", "group": "Size & spacing", "type": "length", "hint": "also capped by the room on screen" },
+    { "property": "--kakao-combobox-panel-min-width", "label": "Panel min width", "group": "Size & spacing", "type": "length", "hint": "never narrower than the field" },
+    { "property": "--kakao-combobox-option-height", "label": "Option height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-combobox-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-combobox-radius", "label": "Field radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-combobox-panel-radius", "label": "Panel radius", "group": "Shape", "type": "radius", "hint": "option radius + panel padding" },
+    { "property": "--kakao-combobox-option-radius", "label": "Option radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-combobox-panel-shadow", "label": "Panel shadow", "group": "Shape", "type": "shadow", "hint": "elevation level 3 (overlay)" },
+    { "property": "--kakao-combobox-z", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 9999, "hint": "only without the popover API (top layer)" },
+
+    { "property": "--kakao-combobox-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+
+    { "property": "--kakao-combobox-duration", "label": "Panel fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-combobox-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: fades and colour" }
+  ]
+  </script>
+</main>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Design
+
+## Context
+
+`kakao-select` (just built) already has everything the combobox needs except the editable field: option parsing (children, `list-data`, `options`, groups, disabled), the dropdown panel in the top layer with placement and flip, option rows with a check mark, group headings, folding for case- and accent-insensitive matching, the empty state, the polite match count and ElementInternals. `kakao-text-input` gives the field look (label, hint, error, sizes 36/44/52).
+
+## Decisions
+
+- **Duplicate, don't share.** No component in the library loads another file at runtime; each `<name>.js` is one inlineable file and components never reach into each other. A shared module under `shared/` would add a second script every page must load before the component (and break the single-file rule); exporting helpers from `select.js` would make the combobox depend on the select being loaded. So `combobox.js` copies the select's option parsing, row rendering, placement and panel CSS, kept in the same order and names so a diff between the two stays readable. The CSS of the panel, rows and groups is kept identical (only the prefix differs); the header comment of both files says "keep in step with select.js / combobox.js".
+- **Editable combobox with list autocomplete (APG).** The field is `<input role="combobox" aria-autocomplete aria-expanded aria-controls aria-activedescendant>`; focus never leaves it. The chevron is a `tabindex="-1"` button (pointer only, as in the APG example) that toggles the list.
+- **Text vs value.** Internal state: `_value` (committed value), `_label` (committed text), and the live text in the input. Picking an option commits `{value: option.value, text: option.label}`. Committing text looks for an option whose folded label equals the folded text: if found, it commits that option; otherwise the text is both value and label (free text). An empty text commits an empty value. `value` set from script shows the matching option's label (by value) or the value itself.
+- **Commit points.** Enter, picking a row, Tab / blur (focusout leaving the component), and the "Use" row. Escape on an open list only closes it (the typed text stays, uncommitted until blur/Enter); Escape on a closed list clears the text (and commits empty, per APG). Typing alone does not change the value.
+- **"Use" row.** First row of the listbox (`role="option"`, id `opt-create`) when the text is non-empty, matches no option label exactly, free text is allowed (`strict` absent) and `no-create` is absent. Label from `create-label`, default `Use “{text}”`. No row is active while typing (APG list autocomplete without automatic selection): Enter with no active row commits the typed text (which picks an option when it matches a label exactly), ArrowDown moves to the first row. This keeps Enter predictable ("what I typed") and never silently replaces free text. With `autocomplete="both"` the completed option is active, since its label is already in the field.
+- **Inline autocomplete (`autocomplete="both"`).** Cheap: on an `input` event with `inputType` starting with `insertText`, if the first visible enabled option's folded label starts with the folded text, set the input to typed + rest of that label and select the rest; the first match becomes active. Deletion events never complete.
+- **`strict`.** Unmatched text on commit reverts to the last committed label. Covers "searchable select with the text input as field" without a second component.
+- **Validation.** `required` → valueMissing; `pattern` (anchored like the native one, `^(?:…)$`, `v` flag tried then `u`) → patternMismatch; `minlength`/`maxlength` → tooShort/tooLong; `maxlength` is also set on the input. Only free-text values are checked against pattern/length, since options are trusted. The anchor for messages is the input.
+- **Out of scope.** `multiple` (free-text tags) - a later change, probably on top of the chip list. Async suggestions - apps can set `options` on `input`.
+- **Select fixes.** Panel gets `border: 1px solid var(--_panel-border)` (line token, like the button menu) and the default `--kakao-select-panel-shadow` drops its `0 0 0 1px` ring; the search box gets `outline: 2px solid focus; outline-offset: 2px` on `:focus-within` when the input is `:focus-visible` (the halo is gone). The combobox uses the same values.
+
+## Risks / Trade-offs
+
+- Duplicated code can drift: mitigated by identical structure and the cross-reference comment; a later shared helper can replace both if the library ever gains a bundling step.
+- `aria-activedescendant` inside one shadow root (input and listbox in the same root) works in Chromium and Firefox.

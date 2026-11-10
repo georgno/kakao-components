@@ -96,3 +96,10 @@ The panel SHALL fade in with a small move on the standard easing token over the 
 #### Scenario: Reduced motion
 - **WHEN** reduced motion is preferred and the panel opens
 - **THEN** it appears at once
+
+### Requirement: Search focus
+Keyboard focus in the search field SHALL show the shared 2px outline in the focus colour with a 2px offset, not a halo.
+
+#### Scenario: Search focus
+- **WHEN** the search field has focus
+- **THEN** its box shows a 2px outline in the focus colour, 2px away from it

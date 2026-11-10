@@ -49,6 +49,7 @@
 <script src="components/meter/meter.js" defer></script>
 <script src="components/accordion/accordion.js" defer></script>
 <script src="components/select/select.js" defer></script>
+<script src="components/combobox/combobox.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -1142,6 +1143,32 @@
       </div>
     </article>
 
+    <!-- ============================== Combobox ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Combobox</h2>
+        <code>&lt;kakao-combobox&gt;</code>
+        <a href="components/combobox/construction.html">Construction</a>
+        <a href="components/combobox/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A text field with suggestions: typing filters the list (ignoring case and accents), and you either pick a suggestion or keep your own text, offered as a “Use …” row at the top. <code>autocomplete="both"</code> completes the first match in the field; <code>strict</code> allows only listed values. The field is the text input; the list is the select's dropdown. Form-associated, with <code>pattern</code>, <code>minlength</code> and <code>maxlength</code> for free text.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Pick or type · groups</h3>
+          <kakao-combobox label="City" placeholder="Pick or type a city">
+            <optgroup label="Germany"><option>Berlin</option><option>Hamburg</option><option>München</option><option>Köln</option></optgroup>
+            <optgroup label="Austria"><option>Wien</option><option>Graz</option><option>Linz</option></optgroup>
+            <optgroup label="Switzerland"><option>Zürich</option><option>Genève</option><option>Basel</option></optgroup>
+          </kakao-combobox>
+        </div>
+        <div class="example">
+          <h3>Inline completion</h3>
+          <kakao-combobox autocomplete="both" label="Tag" placeholder="Start typing" create-label="Create tag “{text}”"
+            list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-combobox>
+        </div>
+      </div>
+    </article>
+
   </div>
 
   <!-- ============================== Not built yet ============================== -->
@@ -1152,17 +1179,6 @@
 
 
 
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Combobox</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;input list&gt;</code> + <code>&lt;datalist&gt;</code></p>
-      <div class="native">
-        <input list="ov-datalist" placeholder="Pick or type a city" />
-        <datalist id="ov-datalist">
-          <option value="Berlin"></option><option value="Hamburg"></option><option value="München"></option><option value="Köln"></option>
-        </datalist>
-      </div>
-    </article>
 
     <article class="card placeholder">
       <div class="component-head"><h2>Date &amp; time picker</h2><kakao-badge outline>Missing</kakao-badge></div>

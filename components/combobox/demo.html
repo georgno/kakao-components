@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-combobox - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="combobox.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Combobox"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Combobox</h1>
+    <p><code>&lt;kakao-combobox&gt;</code> - A text field with suggestions: typing filters the list, and you either pick a suggestion or keep your own text. The field is the text input; the list is the select's dropdown and stays on screen. Form-associated.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Suggestions · child <code>&lt;option&gt;</code>s</h3>
+      <kakao-combobox id="c1" label="Country" placeholder="Pick or type a country" hint="“osterr” finds Österreich. Any other text is kept too.">
+        <option value="at">Österreich</option>
+        <option value="de">Deutschland</option>
+        <option value="ch">Schweiz</option>
+        <option value="li">Liechtenstein</option>
+        <option value="lu">Luxembourg</option>
+        <option value="be">Belgique</option>
+        <option value="fr">France</option>
+        <option value="it">Italia</option>
+      </kakao-combobox>
+    </div>
+    <div class="card">
+      <h3>Groups · <code>&lt;optgroup&gt;</code></h3>
+      <kakao-combobox label="City" placeholder="Pick or type a city">
+        <optgroup label="Germany">
+          <option>Berlin</option><option>Hamburg</option><option>München</option><option>Köln</option>
+        </optgroup>
+        <optgroup label="Austria">
+          <option>Wien</option><option>Graz</option><option>Linz</option><option disabled>Salzburg (sold out)</option>
+        </optgroup>
+        <optgroup label="Switzerland">
+          <option>Zürich</option><option>Genève</option><option>Basel</option>
+        </optgroup>
+      </kakao-combobox>
+    </div>
+    <div class="card">
+      <h3>Free text · “Use …” row</h3>
+      <kakao-combobox id="c3" label="Tag" placeholder="Add a tag" create-label="Create tag “{text}”"
+        hint="Type “Release” to see the create row; picking it fires combobox-create."
+        list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-combobox>
+    </div>
+    <div class="card">
+      <h3>Inline completion · <code>autocomplete="both"</code></h3>
+      <kakao-combobox autocomplete="both" label="Fruit" placeholder="Start typing"
+        hint="Type “ba”: the field completes to Banana, the added part selected."
+        list-data='["Apple","Apricot","Banana","Blackberry","Blueberry","Cherry","Grape","Mango","Melon","Orange","Peach","Pear"]'></kakao-combobox>
+    </div>
+    <div class="card">
+      <h3>Strict · only listed values</h3>
+      <kakao-combobox strict label="Currency" value="eur" hint="Unlisted text goes back to the last value."
+        list-data='[{"value":"eur","label":"Euro"},{"value":"chf","label":"Swiss franc"},{"value":"usd","label":"US dollar"},{"value":"gbp","label":"Pound sterling"}]'></kakao-combobox>
+    </div>
+    <div class="card">
+      <h3>Long list · 200 items</h3>
+      <kakao-combobox id="c6" label="Product" placeholder="Search or name a product"></kakao-combobox>
+    </div>
+  </div>
+
+  <h2>States</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Sizes</h3>
+      <div style="display:grid;gap:.6rem">
+        <kakao-combobox size="sm" label="Small" list-data='["36px","Other"]' value="36px"></kakao-combobox>
+        <kakao-combobox label="Medium" list-data='["44px","Other"]' value="44px"></kakao-combobox>
+        <kakao-combobox size="lg" label="Large" list-data='["52px","Other"]' value="52px"></kakao-combobox>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · error</h3>
+      <div style="display:grid;gap:.6rem">
+        <kakao-combobox disabled label="Disabled" list-data='["One","Two"]' value="One"></kakao-combobox>
+        <kakao-combobox label="Plan" error="Pick or name a plan." list-data='["Free","Pro","Team"]'></kakao-combobox>
+      </div>
+    </div>
+  </div>
+
+  <h2>In a form</h2>
+  <div class="card">
+    <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
+      <kakao-combobox name="city" label="City" required placeholder="Pick or type a city"
+        list-data='[{"value":"ber","label":"Berlin"},{"value":"ham","label":"Hamburg"},{"value":"vie","label":"Wien"},{"value":"zrh","label":"Zürich"}]'></kakao-combobox>
+      <kakao-combobox name="code" label="Postcode" pattern="[0-9]{4,5}" maxlength="5" no-create
+        hint="Four or five digits (pattern). Free text, no “Use” row."
+        list-data='["1010","10115","20095","8001"]'></kakao-combobox>
+      <div class="row">
+        <kakao-button label="Submit" type="submit"></kakao-button>
+        <kakao-button label="Reset" type="reset" variant="secondary"></kakao-button>
+      </div>
+    </form>
+    <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <div class="toolbar" style="margin-top:0">
+      <kakao-button id="apiValue" label='value = "Design"' variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiFree" label='value = "Onboarding"' variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>combobox.js</code>.</footer>
+</main>
+<script>
+  const c3 = document.getElementById('c3');
+  const log = document.getElementById('log');
+  logEvents(log, ['change', 'combobox-change', 'combobox-create', 'combobox-open', 'combobox-close'], c3);
+  logEvents(log, ['combobox-change', 'combobox-create'], document.getElementById('c1'));
+
+  const words = ['Alpine', 'Basalt', 'Cedar', 'Delta', 'Ember', 'Fjord', 'Granit', 'Harbor', 'Indigo', 'Juniper'];
+  const kinds = ['lamp', 'chair', 'table', 'shelf', 'rug', 'vase', 'clock', 'mirror', 'stool', 'bench'];
+  const products = [];
+  for (let i = 0; i < 200; i++) {
+    products.push({ value: `p${i + 1}`, label: `${words[i % 10]} ${kinds[Math.floor(i / 10) % 10]} ${i < 100 ? 'Classic' : 'Pro'}` });
+  }
+  document.getElementById('c6').options = products;
+
+  const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+  on('apiValue', () => { c3.value = 'Design'; });
+  on('apiFree', () => { c3.value = 'Onboarding'; });
+  on('apiOpen', () => { c3.focus(); c3.open(); });
+  on('apiDisable', () => { c3.disabled = !c3.disabled; });
+
+  const form = document.getElementById('form');
+  const out = document.getElementById('formOut');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const entries = [...new FormData(form)].map(([k, v]) => `${k}=${v}`);
+    out.textContent = `Submitted: ${entries.join(' · ') || '(nothing)'}`;
+  });
+  form.addEventListener('reset', () => { out.textContent = 'Reset to the initial values.'; });
+</script>
+</body>
+</html>
