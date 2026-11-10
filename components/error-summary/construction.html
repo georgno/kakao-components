@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-error-summary - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../alert/alert.js" defer></script>
+<script src="../text-input/text-input.js" defer></script>
+<script src="error-summary.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="error-summary" data-source="error-summary.js" data-title="Error summary">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Two field errors and one without a field</figcaption>
+      <kakao-error-summary id="preview" no-focus>
+        <form style="display: grid; gap: 1rem;">
+          <kakao-text-input id="cx-name" label="Full name"></kakao-text-input>
+          <kakao-text-input id="cx-email" label="Email" value="kim@"></kakao-text-input>
+        </form>
+      </kakao-error-summary>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-error-summary-link", "label": "Link", "group": "Colour", "type": "color" },
+    { "property": "--kakao-error-summary-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-error-summary-list-gap", "label": "List gap", "group": "Size & spacing", "type": "length", "hint": "title to list" },
+    { "property": "--kakao-error-summary-item-gap", "label": "Item gap", "group": "Size & spacing", "type": "length", "hint": "between lines" },
+    { "property": "--kakao-error-summary-space", "label": "Space below", "group": "Size & spacing", "type": "length", "hint": "box to wrapped content" },
+    { "property": "--kakao-error-summary-scroll-gap", "label": "Scroll gap", "group": "Size & spacing", "type": "length", "hint": "kept above a field scrolled to, below the header bar" }
+  ]
+  </script>
+</main>
+<script>
+  customElements.whenDefined('kakao-error-summary').then(() => {
+    document.getElementById('preview').show([
+      { field: 'cx-name', message: 'Enter your full name' },
+      { field: 'cx-email', message: 'Enter an email address like name@example.com' },
+      { message: 'The server is busy, try again in a minute' },
+    ], { focus: false });
+  });
+</script>
+</body>
+</html>

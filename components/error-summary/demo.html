@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-error-summary - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../number-input/number-input.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../alert/alert.js" defer></script>
+<script src="../text-input/text-input.js" defer></script>
+<script src="../select/select.js" defer></script>
+<script src="../checkbox/checkbox.js" defer></script>
+<script src="../date-input/date-input.js" defer></script>
+<script src="../number-input/number-input.js" defer></script>
+<script src="error-summary.js" defer></script>
+<style>
+  .form { display: grid; gap: 1.25rem; }
+  .card .form > * + *, .card.form > * + * { margin-top: 0; }
+  .fields { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
+  .fields > * + *, .native > * + * { margin-top: 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .note { color: var(--muted); font-size: 0.85rem; }
+
+  /* Plain native fields, drawn to sit next to the kakao ones. */
+  .native { display: grid; gap: 6px; font-size: 0.95rem; }
+  .native > label, .native > legend { font-size: 0.82rem; font-weight: 600; padding: 0; }
+  .native input[type="email"] {
+    box-sizing: border-box;
+    min-height: var(--kakao-text-input-height, 44px);
+    padding: 0 var(--kakao-text-input-padding-x, 12px);
+    border: 1px solid var(--kakao-text-input-border, var(--kakao-color-field-border, #ececef));
+    border-radius: var(--kakao-text-input-radius, 10px);
+    background: var(--kakao-color-bg, #fff);
+    color: var(--kakao-color-text, #18181b);
+    font: inherit;
+  }
+  .native input[type="email"]:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+  fieldset.native { margin: 0; padding: 0; border: 0; min-width: 0; }
+  fieldset.native label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+  fieldset.native input { accent-color: var(--kakao-color-primary, #4f46e5); margin: 0; }
+</style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Error summary"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Error summary</h1>
+    <p><code>&lt;kakao-error-summary&gt;</code> - the list of a form's errors at the top of the form, each one a link to its field. It replaces the browser's error bubbles: on submit it lists every invalid field, native or kakao, and takes focus so a screen reader reads it out. A link moves focus to the field and scrolls it into view below the header bar.</p>
+  </header>
+
+  <h2>A form · inside it</h2>
+  <p>Submit the empty form. The summary lists the kakao text inputs, select, date input and checkbox (through their <code>ElementInternals</code> validity) and the native email field, number input and radio group (through the browser's). With <code>live</code>, a line goes away as soon as its field is fixed.</p>
+  <div class="grid">
+    <div class="card full">
+      <form id="signup" class="form">
+        <kakao-error-summary live></kakao-error-summary>
+        <div class="fields">
+          <kakao-text-input id="su-name" name="name" label="Full name" required></kakao-text-input>
+          <div class="native">
+            <label for="su-email">Work email</label>
+            <input id="su-email" name="email" type="email" required autocomplete="email" />
+          </div>
+          <kakao-select id="su-plan" name="plan" label="Plan" placeholder="Choose a plan" required>
+            <option value="starter">Starter</option>
+            <option value="team">Team</option>
+            <option value="business">Business</option>
+          </kakao-select>
+          <kakao-date-input id="su-start" name="start" label="Start date" min="2026-11-10" required></kakao-date-input>
+          <div class="native">
+            <label for="su-seats">Seats</label>
+            <kakao-number-input>
+              <input id="su-seats" name="seats" type="number" min="1" max="50" step="1" required />
+            </kakao-number-input>
+          </div>
+          <fieldset class="native">
+            <legend>How did you hear about us?</legend>
+            <label><input type="radio" name="source" value="friend" required /> A friend</label>
+            <label><input type="radio" name="source" value="search" /> A search engine</label>
+            <label><input type="radio" name="source" value="other" /> Somewhere else</label>
+          </fieldset>
+        </div>
+        <kakao-checkbox id="su-terms" name="terms" label="I accept the terms" required></kakao-checkbox>
+        <div class="actions">
+          <kakao-button type="submit" label="Create account"></kakao-button>
+        </div>
+      </form>
+      <p class="note" id="signup-done" data-demo-only hidden>All fields are valid. (The demo stops the submit here.)</p>
+      <div class="log" id="log" role="log" aria-label="Event log"></div>
+    </div>
+  </div>
+
+  <h2>Linked with <code>for</code> · server errors with <code>show()</code></h2>
+  <p>A summary outside the form names it with <code>for</code>. A kakao field that comes back from the server with an <code>error</code> attribute counts as invalid with that text. Errors the page knows itself go in with <code>show([{ field, message }])</code>; a line without a field has no link. <code>clear()</code> empties it.</p>
+  <div class="grid">
+    <div class="card full">
+      <kakao-error-summary for="workspace" heading="The workspace was not created"></kakao-error-summary>
+      <form id="workspace" class="form" novalidate>
+        <div class="fields">
+          <kakao-text-input id="ws-name" name="workspace" label="Workspace name" value="acme" error="That name is taken. Try another one."></kakao-text-input>
+          <kakao-text-input id="ws-url" name="url" label="Address" value="acme.example"></kakao-text-input>
+        </div>
+        <div class="actions">
+          <kakao-button type="submit" label="Create workspace"></kakao-button>
+          <kakao-button id="ws-server" label="Simulate a server reply" variant="secondary" data-demo-only></kakao-button>
+          <kakao-button id="ws-clear" label="clear()" variant="ghost" data-demo-only></kakao-button>
+        </div>
+      </form>
+      <template data-code>
+        <script>
+          const summary = document.querySelector('kakao-error-summary[for="workspace"]');
+          summary.show([
+            { field: 'ws-url', message: 'This address is already in use' },
+            { message: 'Workspaces are limited to 3 on the free plan' },
+          ]);
+        </script>
+      </template>
+    </div>
+  </div>
+
+  <h2>Around the form · <code>heading</code> · description</h2>
+  <p>The summary can also wrap its form; the form is its default slot and sits below the box. <code>slot="description"</code> adds a line between the title and the list.</p>
+  <div class="grid">
+    <div class="card full">
+      <kakao-error-summary heading="Check your answers">
+        <p slot="description">Fix these to continue.</p>
+        <form class="form">
+          <div class="fields">
+            <kakao-text-input name="city" label="City" required></kakao-text-input>
+            <kakao-text-input name="postcode" label="Postcode" required></kakao-text-input>
+          </div>
+          <div class="actions">
+            <kakao-button type="submit" label="Continue"></kakao-button>
+          </div>
+        </form>
+      </kakao-error-summary>
+    </div>
+  </div>
+
+  <footer>Attributes: <code>for</code>, <code>heading</code>, <code>heading-level</code>, <code>live</code>, <code>no-focus</code>, <code>has-errors</code> (read only). Properties and methods: <code>form</code>, <code>errors</code>, <code>validate()</code>, <code>show(errors, { focus })</code>, <code>clear()</code>. Events: <code>error-summary-show</code>, <code>error-summary-clear</code>. Slots: default (content below the box), <code>description</code>. Needs <code>alert.js</code>. Full reference in the header of <code>error-summary.js</code>.</footer>
+</main>
+<script>
+  Promise.all(['kakao-error-summary', 'kakao-alert'].map((t) => customElements.whenDefined(t))).then(() => {
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+
+    const signup = document.getElementById('signup');
+    const done = document.getElementById('signup-done');
+    const log = document.getElementById('log');
+    logEvents(log, ['error-summary-show', 'error-summary-clear'], signup);
+    signup.addEventListener('submit', (e) => { e.preventDefault(); done.hidden = false; });
+    signup.addEventListener('error-summary-show', () => { done.hidden = true; });
+
+    const ws = document.getElementById('workspace');
+    const summary = document.querySelector('kakao-error-summary[for="workspace"]');
+    ws.addEventListener('submit', (e) => e.preventDefault());
+    // A server error stands until the field changes.
+    document.getElementById('ws-name').addEventListener('input', (e) => e.currentTarget.removeAttribute('error'));
+    on('ws-server', () => summary.show([
+      { field: 'ws-url', message: 'This address is already in use' },
+      { message: 'Workspaces are limited to 3 on the free plan' },
+    ]));
+    on('ws-clear', () => summary.clear());
+
+    document.querySelectorAll('kakao-error-summary:not([for]) form:not(#signup)').forEach((f) => {
+      f.addEventListener('submit', (e) => e.preventDefault());
+    });
+  });
+</script>
+</body>
+</html>
