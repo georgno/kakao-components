@@ -595,7 +595,7 @@
       <div style="box-shadow:0 8px 24px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.05)"><b>3 · Overlay</b><span class="muted">Popover, dropdown panel, menus.</span><pre style="margin-top:.5rem;font-size:.68rem">0 8px 24px rgb(0 0 0/.08),
 0 0 0 1px rgb(0 0 0/.05)</pre></div>
     </div>
-    <p class="small muted" style="margin-top:.6rem">The 1px ring in levels 1 and 3 replaces a separate border, so overlays stay crisp on any background. Exception: toasts use level 3 without the ring, because they hold alerts, and alerts have no edge. The switch thumb's current <code>0 1px 3px rgba(0,0,0,.3)</code> is the heaviest shadow in the set; level 2 softens it.</p>
+    <p class="small muted" style="margin-top:.6rem">The 1px ring in levels 1 and 3 replaces a separate border, so overlays stay crisp on any background. Exception: toasts use level 3 without the ring, because they hold alerts, and alerts have no edge. In light themes they make up for the missing edge with a contact shadow under the soft one (<code>0 1px 3px rgb(0 0 0/.14), 0 8px 24px rgb(0 0 0/.16)</code>), a fill from the raised colour and a 16% tint (alerts too); dark themes keep plain level 3 and 10%. The switch thumb's current <code>0 1px 3px rgba(0,0,0,.3)</code> is the heaviest shadow in the set; level 2 softens it.</p>
   </section>
 
   <!-- ================================================================ -->
@@ -772,7 +772,7 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>Breadcrumb</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>✓</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Header bar</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">-</td><td>n/a (slotted controls)</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Alert</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">-</td><td>None</td></tr>
-          <tr><td>Toast</td><td>-</td><td>Inherits (alert cards)</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10 (alert)</td><td>✓ (alert close)</td><td class="num">-</td><td>Overlay drop shadow without the 1px ring: toasts have no edge, like the alerts they hold</td></tr>
+          <tr><td>Toast</td><td>-</td><td>Inherits (alert cards)</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10 (alert)</td><td>✓ (alert close)</td><td class="num">-</td><td>Overlay drop shadow without the 1px ring: toasts have no edge, like the alerts they hold. Light themes add a contact shadow, a raised fill and a 16% tint (shared/themes.css)</td></tr>
           <tr><td>Progress</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Meter</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Accordion</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14 (card) / 10 (tile) / 0 (row)</td><td>✓</td><td class="num">-</td><td>None</td></tr>

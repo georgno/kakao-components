@@ -243,6 +243,39 @@
 }
 /* @generated:end */
 
+/* ---- alerts and toasts on light themes -------------------------------- */
+/* On a light page a 10% tint and a faint shadow leave toasts barely apart from
+   the page, and alerts and toasts have no edge. So light themes get a stronger
+   tint (text stays above 7:1), a contact shadow under the soft one, and toasts
+   (page-level, so set from the root) are filled from the raised colour. Dark
+   themes keep the component defaults, also when nested in a light page.
+   A new light theme is added to these selectors. */
+[data-kakao-theme="light"],
+[data-kakao-theme="beige"],
+:root:not([data-kakao-theme])[data-bs-theme="light"] {
+  --kakao-alert-tint: 16%;
+  --kakao-toast-shadow: 0 1px 3px rgb(0 0 0 / .14), 0 8px 24px rgb(0 0 0 / .16);
+}
+[data-kakao-theme]:not([data-kakao-theme="light"]):not([data-kakao-theme="beige"]),
+[data-bs-theme="dark"]:not([data-kakao-theme]) {
+  --kakao-alert-tint: initial;
+  --kakao-toast-shadow: initial;
+}
+:root[data-kakao-theme="light"] kakao-toast,
+:root[data-kakao-theme="beige"] kakao-toast,
+:root:not([data-kakao-theme])[data-bs-theme="light"] kakao-toast {
+  --kakao-alert-surface: var(--kakao-color-raised);
+}
+@media not (prefers-color-scheme: dark) {
+  :root:not([data-kakao-theme]):not([data-bs-theme]) {
+    --kakao-alert-tint: 16%;
+    --kakao-toast-shadow: 0 1px 3px rgb(0 0 0 / .14), 0 8px 24px rgb(0 0 0 / .16);
+  }
+  :root:not([data-kakao-theme]):not([data-bs-theme]) kakao-toast {
+    --kakao-alert-surface: var(--kakao-color-raised);
+  }
+}
+
 /* ---- more contrast (OS setting) ---------------------------------------- */
 @media (prefers-contrast: more) {
   :root,

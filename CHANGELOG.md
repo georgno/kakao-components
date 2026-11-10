@@ -207,6 +207,11 @@ pages (landing page, settings, demos), not the components.
 - `kakao-toast`: no outline. The region's shadow drops the overlay's 1px ring
   and keeps only the soft drop shadow, so toasts match the borderless alert.
 
+- `kakao-toast`, `kakao-alert`: in the light and beige themes toasts stand
+  apart from the page without a border: a contact shadow alongside the soft
+  one, a fill from the raised colour, and a 16% tone tint (inline alerts get
+  the tint too). Dark themes keep the defaults.
+
 ### Fixed
 
 - `kakao-aside-sheet`, `kakao-dialog`: placed where page CSS gives them a
