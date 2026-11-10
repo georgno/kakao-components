@@ -25,6 +25,7 @@
 <script src="components/button/button.js" defer></script>
 <script src="components/number-input/number-input.js" defer></script>
 <script src="components/slider/slider.js" defer></script>
+<script src="components/range-slider/range-slider.js" defer></script>
 <script src="components/animated-number/animated-number.js" defer></script>
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
@@ -52,6 +53,12 @@
 <script src="components/select/select.js" defer></script>
 <script src="components/combobox/combobox.js" defer></script>
 <script src="components/date-input/date-input.js" defer></script>
+<script src="components/time-input/time-input.js" defer></script>
+<script src="components/password-input/password-input.js" defer></script>
+<script src="components/code-input/code-input.js" defer></script>
+<script src="components/tag-input/tag-input.js" defer></script>
+<script src="components/settings-group/settings-group.js" defer></script>
+<script src="components/error-summary/error-summary.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -401,6 +408,27 @@
         <div class="example">
           <h3>Disabled</h3>
           <kakao-slider min="0" max="100" step="5" value="50" unit="€" label="Budget" disabled></kakao-slider>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Range slider ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Range slider</h2>
+        <code>&lt;kakao-range-slider&gt;</code>
+        <a href="components/range-slider/construction.html">Construction</a>
+        <a href="components/range-slider/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The slider with two thumbs: picks a span between <code>min</code> and <code>max</code> on the same track, with the friction points, two number fields and the unit badge. <code>min-gap</code> keeps the thumbs apart. Form-associated: two entries under one <code>name</code>, low first.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Price · step 10</h3>
+          <kakao-range-slider min="0" max="200" step="10" value="40,140" unit="€" label="Price"></kakao-range-slider>
+        </div>
+        <div class="example">
+          <h3>Minimum gap · <code>min-gap</code></h3>
+          <kakao-range-slider min="18" max="80" step="1" value="25,40" min-gap="5" label="Age"></kakao-range-slider>
         </div>
       </div>
     </article>
@@ -826,6 +854,70 @@
       </div>
     </article>
 
+    <!-- ============================== Password input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Password input</h2>
+        <code>&lt;kakao-password-input&gt;</code>
+        <a href="components/password-input/construction.html">Construction</a>
+        <a href="components/password-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The text input for passwords: a show / hide button in the field and a Caps Lock warning while typing. With <code>requirements</code>, a list of rules whose progress is a segmented <code>&lt;kakao-progress&gt;</code>, one segment per rule met; <code>required-strength</code> makes them block the form. Form-associated.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Sign in · show / hide</h3>
+          <kakao-password-input label="Password" placeholder="Your password"></kakao-password-input>
+        </div>
+        <div class="example">
+          <h3>New password · <code>requirements</code></h3>
+          <kakao-password-input label="New password" requirements></kakao-password-input>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Code input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Code input</h2>
+        <code>&lt;kakao-code-input&gt;</code>
+        <a href="components/code-input/construction.html">Construction</a>
+        <a href="components/code-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A one-time code or PIN, one box per character (4 to 8). The boxes are drawn over one real field, so SMS autofill, paste and screen readers get a single input. <code>mask</code> for PINs, <code>separator</code> for groups. Form-associated.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Verification code</h3>
+          <kakao-code-input label="Verification code" hint="We sent a 6-digit code to +43 660 ··· 12."></kakao-code-input>
+        </div>
+        <div class="example">
+          <h3>PIN · <code>length="4"</code> <code>mask</code></h3>
+          <kakao-code-input label="Card PIN" length="4" mask autocomplete="off" value="12"></kakao-code-input>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Tag input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Tag input</h2>
+        <code>&lt;kakao-tag-input&gt;</code>
+        <a href="components/tag-input/construction.html">Construction</a>
+        <a href="components/tag-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Typed text becomes a <code>&lt;kakao-chip&gt;</code> on Enter or a comma; the chips wrap inside the field. Optional suggestions from <code>list-data</code>, a <code>max-tags</code> limit, duplicates refused. Form-associated: one entry per tag.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Enter or comma</h3>
+          <kakao-tag-input label="Keywords" value="design, tokens, theming" placeholder="Add a keyword"></kakao-tag-input>
+        </div>
+        <div class="example">
+          <h3>Suggestions · <code>list-data</code></h3>
+          <kakao-tag-input label="Labels" placeholder="Type to see suggestions"
+            list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-tag-input>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Textarea ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1012,6 +1104,29 @@
       </div>
     </article>
 
+    <!-- ============================== Error summary ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Error summary</h2>
+        <code>&lt;kakao-error-summary&gt;</code>
+        <a href="components/error-summary/construction.html">Construction</a>
+        <a href="components/error-summary/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A form's errors at the top of the form, drawn as a danger alert: on submit it lists every invalid field instead of the browser's bubbles, takes focus, and each line links to its field. With <code>live</code>, fixed fields drop out as you type.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Submit the empty form · <code>live</code></h3>
+          <form id="ov-summary-form" style="display:grid;gap:.75rem">
+            <kakao-error-summary live heading-level="4"></kakao-error-summary>
+            <kakao-text-input name="name" label="Full name" required></kakao-text-input>
+            <kakao-text-input name="email" type="email" label="Work email" required></kakao-text-input>
+            <kakao-checkbox name="terms" label="I accept the terms" required></kakao-checkbox>
+            <div><kakao-button type="submit" label="Create account"></kakao-button></div>
+          </form>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Toast ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1147,6 +1262,38 @@
       </div>
     </article>
 
+    <!-- ============================== Settings group ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Settings group</h2>
+        <code>&lt;kakao-settings-group&gt;</code>
+        <a href="components/settings-group/construction.html">Construction</a>
+        <a href="components/settings-group/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The settings-screen layout: a titled group of <code>&lt;kakao-setting&gt;</code> rows, label and hint on one side, the control on the other, hairlines between. The row names its control; on a narrow row the control drops below the label. Rows can also be links or whole-row buttons; the group drops its box inside a <code>&lt;kakao-card&gt;</code> or accordion.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Controls in rows</h3>
+          <kakao-settings-group heading="Notifications" description="How we reach you">
+            <kakao-setting label="Email digest" hint="A summary every Monday">
+              <kakao-switch-group list-data='[{"name":"digest","label":"","checked":true}]'></kakao-switch-group>
+            </kakao-setting>
+            <kakao-setting label="Language">
+              <kakao-select value="en" list-data='[{"value":"en","label":"English"},{"value":"de","label":"Deutsch"},{"value":"fr","label":"Français"}]'></kakao-select>
+            </kakao-setting>
+          </kakao-settings-group>
+        </div>
+        <div class="example">
+          <h3>Links · actions · <code>variant="danger"</code></h3>
+          <kakao-settings-group heading="Account">
+            <kakao-setting label="Connected accounts" href="#settings-group" value="2 accounts"></kakao-setting>
+            <kakao-setting label="Sign out everywhere" hint="Ends every session except this one" action></kakao-setting>
+            <kakao-setting label="Delete account" variant="danger" action></kakao-setting>
+          </kakao-settings-group>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Select ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1222,6 +1369,27 @@
             <kakao-date-input type="datetime-local" label="Meeting" value="2026-10-30T09:30"></kakao-date-input>
             <kakao-date-input type="month" label="Invoice month" value="2026-10" hint="A typed YYYY-MM where the browser has no month field"></kakao-date-input>
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Time input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Time input</h2>
+        <code>&lt;kakao-time-input&gt;</code>
+        <a href="components/time-input/construction.html">Construction</a>
+        <a href="components/time-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The date input's sibling for times: the browser's time field and picker in the library's field, 12 or 24 hours as the browser is set, the value always ISO. <code>step</code> in seconds; <code>now</code> adds a tag that sets the current time. Form-associated.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Quarter hours · <code>step="900"</code></h3>
+          <kakao-time-input label="Start" value="09:15" step="900"></kakao-time-input>
+        </div>
+        <div class="example">
+          <h3>Now · <code>now</code></h3>
+          <kakao-time-input label="Logged at" now hint="Now in one click"></kakao-time-input>
         </div>
       </div>
     </article>
@@ -1371,6 +1539,9 @@
   segment.addEventListener('kakao-button-action', (e) => {
     segment.querySelectorAll('kakao-button').forEach((b) => b.toggleAttribute('pressed', b === e.target));
   });
+
+  // Error summary example: the summary checks on submit; a valid form is not sent.
+  document.getElementById('ov-summary-form').addEventListener('submit', (e) => e.preventDefault());
 
 </script>
 <script>
