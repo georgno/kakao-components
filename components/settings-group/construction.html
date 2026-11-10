@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-settings-group - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../switch-group/switch-group.js" defer></script>
+<script src="../select/select.js" defer></script>
+<script src="settings-group.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  kakao-settings-group, kakao-card { max-width: 30rem; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="settings-group" data-source="settings-group.js" data-title="Settings group">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Box · control, link, action and danger rows</figcaption>
+      <kakao-settings-group heading="Notifications" description="How we reach you">
+        <kakao-setting label="Email digest" hint="A summary every Monday">
+          <kakao-switch-group list-data='[{"name":"digest","label":"","checked":true}]'></kakao-switch-group>
+        </kakao-setting>
+        <kakao-setting label="Language">
+          <kakao-select name="language" value="en" list-data='[{"value":"en","label":"English"},{"value":"de","label":"Deutsch"}]'></kakao-select>
+        </kakao-setting>
+        <kakao-setting label="Connected accounts" href="#accounts" value="2 accounts"></kakao-setting>
+        <kakao-setting label="Delete account" hint="This can't be undone" variant="danger" action></kakao-setting>
+        <span slot="footer">Security emails are always sent.</span>
+      </kakao-settings-group>
+    </figure>
+    <figure>
+      <figcaption>Plain · in a card</figcaption>
+      <kakao-card>
+        <kakao-settings-group heading="Privacy">
+          <kakao-setting label="Usage analytics" hint="Anonymous">
+            <kakao-switch-group list-data='[{"name":"analytics","label":""}]'></kakao-switch-group>
+          </kakao-setting>
+          <kakao-setting label="Download my data" href="#export"></kakao-setting>
+          <kakao-setting label="Single sign-on" href="#sso" disabled></kakao-setting>
+        </kakao-settings-group>
+      </kakao-card>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-settings-group-bg", "label": "Box background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-settings-group-border", "label": "Box border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-settings-group-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-settings-group-muted", "label": "Description, hint and chevron", "group": "Colour", "type": "color" },
+    { "property": "--kakao-settings-group-danger", "label": "Danger label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-settings-group-focus", "label": "Focus outline", "group": "Colour", "type": "color" },
+    { "property": "--kakao-settings-group-line", "label": "Row hairline", "group": "Colour", "type": "color" },
+    { "property": "--kakao-settings-group-hover", "label": "Link row hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-settings-group-radius", "label": "Box radius", "group": "Box", "type": "radius" },
+    { "property": "--kakao-settings-group-padding", "label": "Box padding", "group": "Box", "type": "length", "hint": "around the rows; row radius = box radius − this" },
+    { "property": "--kakao-settings-group-header-gap", "label": "Header gap", "group": "Box", "type": "length", "hint": "title block to box, box to footer" },
+    { "property": "--kakao-settings-group-title-size", "label": "Title size", "group": "Text", "type": "length" },
+    { "property": "--kakao-settings-group-title-weight", "label": "Title weight", "group": "Text", "type": "number", "min": 300, "max": 800, "step": 50 },
+    { "property": "--kakao-settings-group-description-size", "label": "Description size", "group": "Text", "type": "length", "hint": "also the footer note" },
+    { "property": "--kakao-settings-group-label-size", "label": "Row label size", "group": "Text", "type": "length" },
+    { "property": "--kakao-settings-group-label-weight", "label": "Row label weight", "group": "Text", "type": "number", "min": 300, "max": 800, "step": 50 },
+    { "property": "--kakao-settings-group-hint-size", "label": "Hint size", "group": "Text", "type": "length", "hint": "also the value of link rows" },
+    { "property": "--kakao-settings-group-row-padding-x", "label": "Row side padding", "group": "Row", "type": "length", "hint": "box look; plain rows have none" },
+    { "property": "--kakao-settings-group-row-padding-y", "label": "Row padding", "group": "Row", "type": "length", "hint": "above and below" },
+    { "property": "--kakao-settings-group-row-min-height", "label": "Row minimum height", "group": "Row", "type": "length" },
+    { "property": "--kakao-settings-group-row-radius", "label": "Row radius", "group": "Row", "type": "radius", "hint": "hover wash and focus ring" },
+    { "property": "--kakao-settings-group-gap", "label": "Label to control", "group": "Row", "type": "length" },
+    { "property": "--kakao-settings-group-field-width", "label": "Field width", "group": "Row", "type": "length", "hint": "fields, select and slider beside the label" },
+    { "property": "--kakao-settings-group-icon-size", "label": "Icon size", "group": "Row", "type": "length" },
+    { "property": "--kakao-settings-group-chevron-size", "label": "Chevron size", "group": "Row", "type": "length" },
+    { "property": "--kakao-settings-group-disabled-opacity", "label": "Disabled opacity", "group": "Row", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+    { "property": "--kakao-settings-group-duration", "label": "Hover fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-settings-group-ease", "label": "Easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+</body>
+</html>

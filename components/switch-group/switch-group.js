@@ -31,6 +31,9 @@
  *  - list-data         JSON     Array of switch definitions. NEVER use the
  *                               reserved `data` attribute name.
  *                               Shape: [{ name, label, checked, disabled }]
+ *                               An item with label "" draws no label and is
+ *                               named by the group's label (a single switch
+ *                               beside its own label, e.g. in a kakao-setting).
  *  - orientation       string   "horizontal" (default) | "vertical"
  *  - disabled          boolean  Disables the entire group, sets aria-disabled
  *                               on the host, and blocks all interaction.
@@ -360,6 +363,7 @@
         white-space: nowrap;
         transition: color var(--_anim-duration) ease;
       }
+      .label:empty { display: none; } /* no gap after a switch without a label */
 
       /* Opt-in (color-labels attribute): a checked switch colours its label too. */
       .group[data-color-labels="true"] .track[aria-checked="true"]:not([aria-disabled="true"]) + .label {
@@ -878,6 +882,10 @@
     _syncLabel() {
       const label = this.getAttribute('label') || 'Switch group';
       this._groupEl.setAttribute('aria-label', label);
+      this._groupEl.querySelectorAll('.track').forEach((track) => {
+        const item = this._items[Number(track.dataset.index)];
+        if (item && !item.label) track.setAttribute('aria-label', this.getAttribute('label') || 'Switch');
+      });
     }
 
     _syncOrientation() {
@@ -960,7 +968,9 @@
         track.setAttribute('aria-disabled', String(item.disabled || hostDisabled));
         track.setAttribute('aria-posinset', String(index + 1));
         track.setAttribute('aria-setsize', String(this._items.length));
-        track.setAttribute('aria-label', item.label);
+        // An item without a label (a single switch whose label sits beside it,
+        // e.g. in a kakao-setting row) is named by the group's label.
+        track.setAttribute('aria-label', item.label || this.getAttribute('label') || 'Switch');
         track.setAttribute('data-index', String(index));
         track.tabIndex = index === focusIndex ? 0 : -1;
         if (item.disabled || hostDisabled) track.disabled = true;

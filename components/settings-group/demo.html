@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-settings-group - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../number-input/number-input.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../switch-group/switch-group.js" defer></script>
+<script src="../select/select.js" defer></script>
+<script src="../text-input/text-input.js" defer></script>
+<script src="../number-input/number-input.js" defer></script>
+<script src="../slider/slider.js" defer></script>
+<script src="settings-group.js" defer></script>
+<style>
+  .stack { display: grid; gap: 2rem; max-width: 40rem; }
+  .narrow { max-width: 22rem; }
+  kakao-card p, kakao-accordion p { margin: 0; color: var(--muted); }
+</style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Settings group"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Settings group</h1>
+    <p><code>&lt;kakao-settings-group&gt;</code> with <code>&lt;kakao-setting&gt;</code> rows - the settings-screen layout: a titled group of rows, each with a label and hint on one side and its control on the other. The row names its control from the label. Narrow rows put the control under the label.</p>
+  </header>
+
+  <h2>A settings screen</h2>
+  <p>Real controls in the rows: a single switch (a switch group with one unlabelled item), a select, a text input, a number input and a slider. None of them has its own label; the row names it.</p>
+  <div class="stack" data-example>
+    <kakao-settings-group heading="Profile" description="Shown to people you work with" heading-level="3">
+      <kakao-setting label="Display name" hint="Your first name is enough">
+        <kakao-text-input name="display-name" value="Mara" autocomplete="nickname"></kakao-text-input>
+      </kakao-setting>
+      <kakao-setting label="Language">
+        <kakao-select name="language" value="en" list-data='[{"value":"en","label":"English"},{"value":"de","label":"Deutsch"},{"value":"es","label":"Español"},{"value":"fr","label":"Français"}]'></kakao-select>
+      </kakao-setting>
+      <kakao-setting label="Show my status" hint="Others see when you are online">
+        <kakao-switch-group list-data='[{"name":"status","label":"","checked":true}]'></kakao-switch-group>
+      </kakao-setting>
+    </kakao-settings-group>
+
+    <kakao-settings-group heading="Notifications" heading-level="3">
+      <kakao-setting label="Email digest" hint="A summary of the week, every Monday">
+        <kakao-switch-group list-data='[{"name":"digest","label":"","checked":true}]'></kakao-switch-group>
+      </kakao-setting>
+      <kakao-setting label="Push notifications">
+        <kakao-switch-group list-data='[{"name":"push","label":""}]'></kakao-switch-group>
+      </kakao-setting>
+      <kakao-setting label="Remind me before meetings" hint="Minutes, 0 for no reminder">
+        <kakao-number-input><input type="number" name="reminder" min="0" max="120" step="5" value="10" /></kakao-number-input>
+      </kakao-setting>
+      <kakao-setting label="Notification volume">
+        <kakao-slider min="0" max="100" step="10" value="60" unit="%"></kakao-slider>
+      </kakao-setting>
+      <span slot="footer">Security emails are always sent.</span>
+    </kakao-settings-group>
+  </div>
+
+  <h2>Links to subpages</h2>
+  <p>With <code>href</code> the whole row is a link with a chevron; <code>value</code> shows the current choice before it. A leading icon goes in <code>slot="icon"</code>.</p>
+  <div class="stack" data-example>
+    <kakao-settings-group heading="Account">
+      <kakao-setting label="Password" hint="Last changed 3 months ago" href="#password">
+        <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+      </kakao-setting>
+      <kakao-setting label="Connected accounts" href="#accounts" value="2 accounts">
+        <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>
+      </kakao-setting>
+      <kakao-setting label="Plan" href="#plan">
+        <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg>
+        <kakao-badge tone="primary">Pro</kakao-badge>
+      </kakao-setting>
+    </kakao-settings-group>
+  </div>
+
+  <h2>Danger zone</h2>
+  <p><code>variant="danger"</code> colours the label. A row can hold a danger button, or with <code>action</code> be one button itself (it sends <code>setting-action</code>). Give a short button label a full <code>aria-label</code>.</p>
+  <div class="stack" data-example>
+    <kakao-settings-group heading="Danger zone">
+      <kakao-setting label="Sign out everywhere" hint="Ends every session except this one" action></kakao-setting>
+      <kakao-setting label="Delete account" hint="Removes your data. This can't be undone." variant="danger">
+        <kakao-button label="Delete" variant="danger" size="sm" aria-label="Delete account"></kakao-button>
+      </kakao-setting>
+    </kakao-settings-group>
+    <div class="log" id="log" aria-live="polite"></div>
+    <template data-code>
+      <script>
+        document.addEventListener('setting-action', (e) => console.log(e.detail.label));
+      </script>
+    </template>
+  </div>
+
+  <h2>In a card and in an accordion</h2>
+  <p>Inside a <code>kakao-card</code> or <code>kakao-accordion</code> the group drops its own box: no second border, and the rows line up with the card's text.</p>
+  <div class="stack" data-example>
+    <kakao-card>
+      <h3 slot="header">Privacy</h3>
+      <kakao-settings-group description="Choose what we may store">
+        <kakao-setting label="Usage analytics" hint="Anonymous, helps us fix bugs">
+          <kakao-switch-group list-data='[{"name":"analytics","label":"","checked":true}]'></kakao-switch-group>
+        </kakao-setting>
+        <kakao-setting label="Keep history for">
+          <kakao-select name="history" value="90" list-data='[{"value":"30","label":"30 days"},{"value":"90","label":"90 days"},{"value":"365","label":"A year"}]'></kakao-select>
+        </kakao-setting>
+        <kakao-setting label="Download my data" href="#export"></kakao-setting>
+      </kakao-settings-group>
+    </kakao-card>
+    <kakao-accordion heading="Advanced" description="For people who know what they're doing" open>
+      <kakao-settings-group>
+        <kakao-setting label="Developer mode">
+          <kakao-switch-group list-data='[{"name":"dev","label":""}]'></kakao-switch-group>
+        </kakao-setting>
+        <kakao-setting label="Request timeout" hint="Seconds">
+          <kakao-number-input><input type="number" name="timeout" min="5" max="120" value="30" /></kakao-number-input>
+        </kakao-setting>
+      </kakao-settings-group>
+    </kakao-accordion>
+  </div>
+
+  <h2>Narrow</h2>
+  <p>Each row is a size container: below 30rem the control drops under the label and fields take the full width. Switches stay beside the label. <code>layout="inline"</code> or <code>"stack"</code> forces one layout.</p>
+  <div class="stack narrow" data-example>
+    <kakao-settings-group heading="Display">
+      <kakao-setting label="Theme">
+        <kakao-select name="theme" value="auto" list-data='[{"value":"auto","label":"Match the system"},{"value":"light","label":"Light"},{"value":"dark","label":"Dark"}]'></kakao-select>
+      </kakao-setting>
+      <kakao-setting label="Text size">
+        <kakao-slider min="12" max="24" step="1" value="16" unit="px"></kakao-slider>
+      </kakao-setting>
+      <kakao-setting label="Reduce motion" hint="Fewer animations">
+        <kakao-switch-group list-data='[{"name":"motion","label":""}]'></kakao-switch-group>
+      </kakao-setting>
+      <kakao-setting label="Fonts" href="#fonts" value="Inter Tight"></kakao-setting>
+    </kakao-settings-group>
+  </div>
+
+  <h2>Disabled</h2>
+  <p><code>disabled</code> dims the row's text and disables its control; a disabled link or action row does nothing.</p>
+  <div class="stack" data-example>
+    <kakao-settings-group heading="Team" description="Available on the Team plan">
+      <kakao-setting label="Single sign-on" hint="Upgrade to turn this on" disabled>
+        <kakao-switch-group list-data='[{"name":"sso","label":""}]'></kakao-switch-group>
+      </kakao-setting>
+      <kakao-setting label="Audit log" href="#audit" disabled></kakao-setting>
+    </kakao-settings-group>
+  </div>
+
+  <footer><code>&lt;kakao-settings-group&gt;</code> attributes: <code>heading</code>, <code>description</code>, <code>heading-level</code>, <code>variant</code> (box, plain); slots: default (rows), <code>title</code>, <code>description</code>, <code>footer</code>. <code>&lt;kakao-setting&gt;</code> attributes: <code>label</code>, <code>hint</code>, <code>href</code> (+ <code>target</code>, <code>rel</code>), <code>action</code>, <code>value</code>, <code>variant</code> (danger), <code>disabled</code>, <code>layout</code> (auto, inline, stack); slots: default (the control), <code>label</code>, <code>hint</code>, <code>icon</code>. Event: <code>setting-action</code>. Full reference in the header of <code>settings-group.js</code>.</footer>
+</main>
+<script>
+  logEvents(document.getElementById('log'), ['setting-action']);
+</script>
+</body>
+</html>
