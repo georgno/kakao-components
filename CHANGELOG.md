@@ -204,6 +204,9 @@ pages (landing page, settings, demos), not the components.
   tinted fill and the icon. The `--kakao-alert-border-mix` setting is gone.
   Under forced colours a 1px line remains, since the tint is dropped there.
 
+- `kakao-toast`: no outline. The region's shadow drops the overlay's 1px ring
+  and keeps only the soft drop shadow, so toasts match the borderless alert.
+
 ### Fixed
 
 - `kakao-aside-sheet`, `kakao-dialog`: placed where page CSS gives them a

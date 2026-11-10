@@ -109,7 +109,7 @@
         --_fade-step: var(--kakao-toast-fade-step, 0.18);
         --_tilt: var(--kakao-toast-tilt, 6deg);
         --_perspective: var(--kakao-toast-perspective, 1000px);
-        --_shadow: var(--kakao-toast-shadow, 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent));
+        --_shadow: var(--kakao-toast-shadow, 0 8px 24px rgb(0 0 0 / .08));
         --_z-index: var(--kakao-toast-z-index, 70);
         --_motion-duration: var(--kakao-toast-motion-duration, var(--kakao-motion-duration, 320ms));
         --_ease: var(--kakao-toast-ease, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
