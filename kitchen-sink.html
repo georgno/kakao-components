@@ -46,6 +46,7 @@
 <script src="components/toast/toast.js" defer></script>
 <script src="components/progress/progress.js" defer></script>
 <script src="components/meter/meter.js" defer></script>
+<script src="components/accordion/accordion.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -73,7 +74,8 @@
   .price small { color: var(--muted); }
   kakao-animated-number { --kakao-animated-number-font-size: 2rem; --kakao-animated-number-font-weight: 700; }
   .more-genres-label { margin-top: 0.9rem; margin-bottom: 0.4rem; }
-  .summary kakao-progress, .summary kakao-meter { margin-top: 0.9rem; max-width: 22rem; }
+  .summary kakao-progress, .summary kakao-meter, .summary kakao-accordion { margin-top: 0.9rem; max-width: 22rem; }
+  .summary kakao-accordion ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
   .summary [slot="footer"] { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
   .danger-zone { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -355,6 +357,13 @@
     </div>
     <kakao-progress id="profile" label="Profile" value="0" max="4" show-value value-text="0 of 4"></kakao-progress>
     <kakao-meter label="Download space" value="14.2" max="20" low="10" high="16" optimum="0" show-value value-text="14.2 of 20 GB"></kakao-meter>
+    <kakao-accordion variant="tile" heading="What's included">
+      <ul>
+        <li>Ad-free streaming on every plan</li>
+        <li>Downloads on up to two devices</li>
+        <li>Cancel anytime</li>
+      </ul>
+    </kakao-accordion>
     <div slot="footer">
       <kakao-button id="save" label="Save changes" icon="fas fa-check" type="submit" form="settings"></kakao-button>
       <kakao-button id="reset" label="Reset" variant="ghost"></kakao-button>

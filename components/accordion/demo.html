@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-accordion - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="../text-input/text-input.js" defer></script>
+<script src="../checkbox/checkbox.js" defer></script>
+<script src="accordion.js" defer></script>
+<style>
+  .stack { display: grid; gap: 0.75rem; max-width: 40rem; }
+  kakao-accordion p, kakao-accordion ul { color: var(--muted); }
+  kakao-accordion ul { padding-left: 1.1rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+</style>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Accordion"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Accordion</h1>
+    <p><code>&lt;kakao-accordion&gt;</code> - a card that opens and closes to show any content. Built on native <code>&lt;details&gt;</code>, so the header is a real disclosure button. Nested accordions step down to tiles and rows instead of stacking cards.</p>
+  </header>
+
+  <h2>Single</h2>
+  <p>Title and description from attributes, or from the <code>title</code>, <code>description</code> and <code>meta</code> slots.</p>
+  <div class="stack">
+    <kakao-accordion heading="Shipping" description="Delivery times and costs" open>
+      <p>Orders ship within two working days. Delivery is free from 50 €.</p>
+    </kakao-accordion>
+    <kakao-accordion>
+      <span slot="title">Invoices</span>
+      <span slot="description">Download past invoices as PDF</span>
+      <kakao-badge slot="meta" tone="primary">3 new</kakao-badge>
+      <ul>
+        <li>March 2026 · 12.00 €</li>
+        <li>February 2026 · 12.00 €</li>
+        <li>January 2026 · 12.00 €</li>
+      </ul>
+    </kakao-accordion>
+  </div>
+
+  <h2>Grouped</h2>
+  <p>Accordions with the same <code>name</code> form a group: opening one closes the others, like <code>&lt;details name&gt;</code>.</p>
+  <div class="stack" id="faq">
+    <kakao-accordion name="faq" heading="Can I cancel anytime?" open>
+      <p>Yes. Your plan stays active until the end of the billing period.</p>
+    </kakao-accordion>
+    <kakao-accordion name="faq" heading="Do you offer refunds?">
+      <p>Within 14 days of purchase, no questions asked.</p>
+    </kakao-accordion>
+    <kakao-accordion name="faq" heading="Can I change my plan later?">
+      <p>Upgrades apply at once; downgrades at the next billing date.</p>
+    </kakao-accordion>
+  </div>
+
+  <h2>Rich content</h2>
+  <p>The body takes anything: here a small form.</p>
+  <div class="stack">
+    <kakao-accordion heading="Contact details" description="Used for receipts and account recovery">
+      <span slot="meta">Optional</span>
+      <kakao-text-input label="Phone" name="phone" type="tel" autocomplete="tel"></kakao-text-input>
+      <kakao-text-input label="Backup email" name="backup" type="email" autocomplete="email"></kakao-text-input>
+      <kakao-checkbox label="Send me a receipt for every payment" checked></kakao-checkbox>
+      <div class="actions">
+        <kakao-button label="Save" size="sm"></kakao-button>
+        <kakao-button label="Cancel" size="sm" variant="ghost"></kakao-button>
+      </div>
+    </kakao-accordion>
+  </div>
+
+  <h2>Nesting</h2>
+  <p>Three levels: the outer accordion is a card, the ones inside are tiles on the subtle fill, and the third level is flat rows divided by hairlines. Only the outer one has a border.</p>
+  <div class="stack" id="nested">
+    <kakao-accordion heading="Account settings" description="Profile, security and notifications" open>
+      <p>Everything about your account in one place.</p>
+      <kakao-accordion heading="Security" description="Password and sign-in" open>
+        <p>Choose how you sign in and which devices stay signed in.</p>
+        <kakao-accordion heading="Password" open>
+          <p>Last changed 3 months ago.</p>
+          <div class="actions"><kakao-button label="Change password" size="sm" variant="secondary"></kakao-button></div>
+        </kakao-accordion>
+        <kakao-accordion heading="Two-factor sign-in">
+          <span slot="meta">On</span>
+          <p>Codes come from your authenticator app.</p>
+        </kakao-accordion>
+        <kakao-accordion heading="Signed-in devices">
+          <ul>
+            <li>Laptop · Berlin · now</li>
+            <li>Phone · Berlin · 2 hours ago</li>
+          </ul>
+        </kakao-accordion>
+      </kakao-accordion>
+      <kakao-accordion heading="Notifications" description="Email and push">
+        <kakao-checkbox label="Weekly summary" checked></kakao-checkbox>
+        <kakao-checkbox label="Product news"></kakao-checkbox>
+      </kakao-accordion>
+    </kakao-accordion>
+  </div>
+
+  <h2>Methods and events</h2>
+  <p><code>show()</code>, <code>hide()</code> and <code>toggle()</code>; every change sends <code>accordion-toggle</code>.</p>
+  <div class="stack">
+    <kakao-accordion id="play" heading="Controlled from outside">
+      <p>Opened and closed by the buttons below as well as its header.</p>
+    </kakao-accordion>
+    <div class="toolbar" style="margin-top:0">
+      <kakao-button id="m-show" label="show()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="m-hide" label="hide()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="m-toggle" label="toggle()" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" aria-live="polite"></div>
+  </div>
+
+  <footer>Attributes: <code>heading</code>, <code>description</code>, <code>open</code>, <code>name</code>, <code>variant</code> (card, tile, row), <code>no-animate</code>. Slots: default (body), <code>title</code>, <code>description</code>, <code>meta</code>. Event: <code>accordion-toggle</code>. Parts: <code>accordion</code>, <code>header</code>, <code>title</code>, <code>description</code>, <code>meta</code>, <code>chevron</code>, <code>panel</code>, <code>body</code>. Full reference in the header of <code>accordion.js</code>.</footer>
+</main>
+<script>
+  const play = document.getElementById('play');
+  document.getElementById('m-show').addEventListener('kakao-button-action', () => play.show());
+  document.getElementById('m-hide').addEventListener('kakao-button-action', () => play.hide());
+  document.getElementById('m-toggle').addEventListener('kakao-button-action', () => play.toggle());
+  const log = document.getElementById('log');
+  document.addEventListener('accordion-toggle', (e) => {
+    const line = document.createElement('div');
+    const title = e.target.getAttribute('heading') || e.target.querySelector('[slot="title"]')?.textContent || '';
+    line.innerHTML = '<b>accordion-toggle</b> ';
+    line.append(`${title}: open ${e.detail.open}${e.detail.name ? `, name ${e.detail.name}` : ''}`);
+    log.prepend(line);
+    while (log.children.length > 6) log.lastElementChild.remove();
+  });
+</script>
+</body>
+</html>

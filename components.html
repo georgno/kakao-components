@@ -46,6 +46,7 @@
 <script src="components/toast/toast.js" defer></script>
 <script src="components/progress/progress.js" defer></script>
 <script src="components/meter/meter.js" defer></script>
+<script src="components/accordion/accordion.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -1048,6 +1049,37 @@
       </div>
     </article>
 
+    <!-- ============================== Accordion ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Accordion</h2>
+        <code>&lt;kakao-accordion&gt;</code>
+        <a href="components/accordion/construction.html">Construction</a>
+        <a href="components/accordion/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A card that opens and closes to show any content, built on native <code>&lt;details&gt;</code>. Title, description, trailing meta and a turning chevron; the height glides open. A shared <code>name</code> keeps one open per group. Nested accordions step down to tiles and rows.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Grouped · <code>name</code></h3>
+          <div style="display:grid;gap:0.75rem">
+            <kakao-accordion name="ov-acc" heading="Can I cancel anytime?" open><p>Yes, at the end of the billing period.</p></kakao-accordion>
+            <kakao-accordion name="ov-acc" heading="Do you offer refunds?"><p>Within 14 days of purchase.</p></kakao-accordion>
+            <kakao-accordion name="ov-acc" heading="Can I change my plan?"><span slot="meta">Billing</span><p>Upgrades apply at once, downgrades at the next billing date.</p></kakao-accordion>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Nested · card, tile, row</h3>
+          <kakao-accordion heading="Account settings" description="Profile and security" open>
+            <kakao-accordion heading="Security" description="Password and sign-in" open>
+              <kakao-accordion heading="Password" open><p>Last changed 3 months ago.</p></kakao-accordion>
+              <kakao-accordion heading="Two-factor sign-in"><span slot="meta">On</span><p>Codes come from your authenticator app.</p></kakao-accordion>
+            </kakao-accordion>
+            <kakao-accordion heading="Notifications"><p>Weekly summary by email.</p></kakao-accordion>
+          </kakao-accordion>
+        </div>
+      </div>
+    </article>
+
   </div>
 
   <!-- ============================== Not built yet ============================== -->
@@ -1096,14 +1128,6 @@
 
 
 
-    <article class="card placeholder">
-      <div class="component-head"><h2>Accordion</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;details&gt;</code> + <code>&lt;summary&gt;</code> (shared <code>name</code> = exclusive)</p>
-      <div class="native">
-        <details name="ov-acc" open><summary>Can I cancel anytime?</summary><p>Yes, at the end of the billing period.</p></details>
-        <details name="ov-acc"><summary>Do you offer refunds?</summary><p>Within 14 days of purchase.</p></details>
-      </div>
-    </article>
 
 
   </div>

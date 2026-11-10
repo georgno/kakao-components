@@ -88,6 +88,21 @@ pages (landing page, settings, demos), not the components.
   percentage in tabular figures. `size` sm / md / lg; read-only `position`
   and `region`. Settings `--kakao-meter-*`, construction page and demo. The
   kitchen sink's plan card shows the download space with it.
+- `kakao-accordion`: a card that opens and closes to show any content,
+  built on native `<details>` / `<summary>` (one tab stop, Enter and Space,
+  expanded state, closed content not focusable). Header with `heading` or a
+  `title` slot, `description`, a `meta` slot and a turning chevron; the body
+  takes anything. `open`, `show()` / `hide()` / `toggle(force)` and a
+  bubbling `accordion-toggle` event (also a trigger). A shared `name` keeps
+  one open per group, like `<details name>`. The height glides open and
+  closed (`--kakao-motion-duration`, standard easing); none under reduced
+  motion, with `no-animate` or on first render. Nesting steps down instead
+  of stacking cards: a card at the top, a borderless tile on the subtle
+  fill inside it, flat rows with a hairline from the third level (indented
+  from the fourth); `variant` (card, tile, row) forces a look. Settings
+  `--kakao-accordion-*`, construction page and demo. The overview replaces
+  its placeholder; the kitchen sink's plan card lists what's included in a
+  tile accordion.
 
 ### Changed
 

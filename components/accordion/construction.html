@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-accordion - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="accordion.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  kakao-accordion { max-width: 26rem; }
+  kakao-accordion kakao-accordion { max-width: none; }
+  kakao-accordion p { margin: 0; opacity: .75; }
+  .stack { display: grid; gap: 0.75rem; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="accordion" data-source="accordion.js" data-title="Accordion">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Card · grouped</figcaption>
+      <div class="stack">
+        <kakao-accordion name="cx" heading="Shipping" description="Delivery times and costs" open>
+          <p>Orders ship within two working days.</p>
+        </kakao-accordion>
+        <kakao-accordion name="cx" heading="Returns">
+          <span slot="meta">30 days</span>
+          <p>Send it back within 30 days for a full refund.</p>
+        </kakao-accordion>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Nested · card, tile, row</figcaption>
+      <kakao-accordion heading="Account settings" description="Profile and security" open>
+        <kakao-accordion heading="Security" description="Password and sign-in" open>
+          <kakao-accordion heading="Password" open><p>Last changed 3 months ago.</p></kakao-accordion>
+          <kakao-accordion heading="Two-factor sign-in"><span slot="meta">On</span><p>Codes come from your authenticator app.</p></kakao-accordion>
+        </kakao-accordion>
+        <kakao-accordion heading="Notifications"><p>Weekly summary.</p></kakao-accordion>
+      </kakao-accordion>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-accordion-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-accordion-border", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-accordion-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-accordion-muted", "label": "Description and chevron", "group": "Colour", "type": "color" },
+    { "property": "--kakao-accordion-focus", "label": "Focus outline", "group": "Colour", "type": "color" },
+    { "property": "--kakao-accordion-padding-x", "label": "Side padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-accordion-padding-y", "label": "Header padding", "group": "Size & spacing", "type": "length", "hint": "above and below the header, below the body" },
+    { "property": "--kakao-accordion-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "hint": "between body items and header parts" },
+    { "property": "--kakao-accordion-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-accordion-title-size", "label": "Title size", "group": "Text", "type": "length" },
+    { "property": "--kakao-accordion-title-weight", "label": "Title weight", "group": "Text", "type": "number" },
+    { "property": "--kakao-accordion-description-size", "label": "Description size", "group": "Text", "type": "length" },
+    { "property": "--kakao-accordion-chevron-size", "label": "Chevron size", "group": "Text", "type": "length" },
+    { "property": "--kakao-accordion-tile-bg", "label": "Tile fill", "group": "Nested (level 2 tile)", "type": "color" },
+    { "property": "--kakao-accordion-tile-radius", "label": "Tile radius", "group": "Nested (level 2 tile)", "type": "radius" },
+    { "property": "--kakao-accordion-tile-padding-x", "label": "Tile side padding", "group": "Nested (level 2 tile)", "type": "length" },
+    { "property": "--kakao-accordion-tile-padding-y", "label": "Tile header padding", "group": "Nested (level 2 tile)", "type": "length" },
+    { "property": "--kakao-accordion-nested-title-size", "label": "Nested title size", "group": "Nested (level 2 tile)", "type": "length", "hint": "tiles and rows" },
+    { "property": "--kakao-accordion-row-line", "label": "Row hairline", "group": "Nested (level 3+ row)", "type": "color" },
+    { "property": "--kakao-accordion-row-padding-y", "label": "Row header padding", "group": "Nested (level 3+ row)", "type": "length" },
+    { "property": "--kakao-accordion-row-indent", "label": "Row indent", "group": "Nested (level 3+ row)", "type": "length", "hint": "from level 4" },
+    { "property": "--kakao-accordion-duration", "label": "Open and close", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-accordion-ease", "label": "Easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+</body>
+</html>
