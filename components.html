@@ -801,7 +801,7 @@
         <a href="components/text-input/construction.html">Construction</a>
         <a href="components/text-input/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Single-line field with label, hint, error, optional icon and a clear button, in three sizes. Form-associated: <code>name</code>, <code>value</code> and <code>required</code> go with the form.</p>
+      <p class="component-desc">Single-line field with label, hint, error, an optional icon (a <code>slot="icon"</code> child) and a clear button, in three sizes. Form-associated: <code>name</code>, <code>value</code> and <code>required</code> go with the form.</p>
       <div class="examples wide">
         <div class="example">
           <h3>With label and hint</h3>
@@ -809,7 +809,7 @@
         </div>
         <div class="example">
           <h3>Icon · <code>clearable</code></h3>
-          <kakao-text-input type="search" label="Search" icon="fas fa-magnifying-glass" clearable value="kakao"></kakao-text-input>
+          <kakao-text-input type="search" label="Search" clearable value="kakao"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></kakao-text-input>
         </div>
         <div class="example">
           <h3>Error</h3>

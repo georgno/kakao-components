@@ -3,7 +3,8 @@
  * ============================================================================
  * A single-line text field: label, leading icon, optional clear button, hint
  * and error message, three sizes. Form-associated: `name`, `value`, `required`
- * are submitted with the surrounding form. Vanilla JS, Shadow DOM, no deps.
+ * are submitted with the surrounding form. Vanilla JS, Shadow DOM, no deps
+ * (no icon font either: the icon is the page's own, see SLOTS).
  *
  * ----------------------------------------------------------------------------
  * USAGE
@@ -12,8 +13,10 @@
  *
  *   <kakao-text-input label="Email" type="email" name="email"
  *                     placeholder="you@example.com" required></kakao-text-input>
- *   <kakao-text-input label="Search" type="search" clearable icon="fas fa-magnifying-glass"
- *                     hint="Press Enter to search"></kakao-text-input>
+ *   <kakao-text-input label="Search" type="search" clearable hint="Press Enter to search">
+ *     <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+ *          stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
+ *   </kakao-text-input>
  *   <kakao-text-input label="Workspace" value="acme" error="That name is taken"></kakao-text-input>
  *
  * ----------------------------------------------------------------------------
@@ -29,13 +32,28 @@
  *  value         The current value (reflected back on input).
  *  name · required · disabled · readonly   Form participation.
  *  size          "sm" | "md" (default) | "lg".
- *  icon          Icon class in front of the field, e.g. "fas fa-search".
+ *  icon          Optional shortcut for an icon-font icon in front of the field, e.g.
+ *                "fas fa-magnifying-glass": the component adds an
+ *                <i slot="icon" data-kakao-icon> child with those classes to its own
+ *                light DOM, so it only draws when the page loads that icon font (Font
+ *                Awesome is not part of the library). Ignored while the page gives its
+ *                own slot="icon" child; removing the attribute removes the <i>.
  *  clearable     Show a clear (×) button while the field has a value.
  *  maxlength · minlength · pattern · autocomplete · inputmode · spellcheck
  *                Passed through to the field.
  *
  *  data-* attributes on the host are mirrored onto the field for form
  *  frameworks (Yii data-confirm and friends).
+ *
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  icon          An icon in front of the field: an inline <svg> (sized 1em,
+ *                coloured with currentColor; the muted field colour), an <img>,
+ *                or an icon-font element such as <i slot="icon" class="fas fa-at">.
+ *                Slotted content stays in the page's DOM, so page CSS reaches it.
+ *                No icon, no space reserved. The box is aria-hidden: icons are
+ *                decoration, the label names the field.
  *
  * ----------------------------------------------------------------------------
  * PUBLIC API
@@ -164,7 +182,8 @@
         color: var(--_muted);
         font-size: var(--_icon-size);
       }
-      .icon:empty { display: none; }
+      .icon:not(.has-icon) { display: none; }
+      ::slotted(svg) { width: 1em; height: 1em; flex: none; }
 
       .clear {
         flex: none;
@@ -202,7 +221,7 @@
     </style>
     <label class="label" part="label"></label>
     <div class="field" part="field">
-      <span class="icon" part="icon" aria-hidden="true"></span>
+      <span class="icon" part="icon" aria-hidden="true"><slot name="icon"></slot></span>
       <input part="input" />
       <button class="clear" part="clear" type="button" tabindex="-1" aria-label="Clear">✕</button>
     </div>
@@ -231,6 +250,11 @@
       this._fieldEl = shadow.querySelector('.field');
       this._input = shadow.querySelector('input');
       this._iconEl = shadow.querySelector('.icon');
+      this._iconSlot = shadow.querySelector('slot[name="icon"]');
+      this._iconSlot.addEventListener('slotchange', () => {
+        this._syncIconShortcut();
+        this._iconEl.classList.toggle('has-icon', this._iconSlot.assignedElements().length > 0);
+      });
       this._clearBtn = shadow.querySelector('.clear');
       this._hintEl = shadow.querySelector('#hint');
       this._errorEl = shadow.querySelector('#error');
@@ -359,9 +383,7 @@
       this._labelEl.textContent = label;
       this._input.setAttribute('aria-label', label || this.getAttribute('aria-label') || this.getAttribute('placeholder') || 'Text');
 
-      const icon = this.getAttribute('icon') || '';
-      this._iconEl.className = icon ? `icon ${icon}` : 'icon';
-      this._iconEl.innerHTML = '';
+      this._syncIconShortcut();
 
       const hint = this.getAttribute('hint') || '';
       const error = this.getAttribute('error') || '';
@@ -378,6 +400,29 @@
       this._syncClear();
       this._syncForm();
       this._mirrorDataAttrs();
+    }
+
+    /**
+     * The `icon` attribute shortcut: an <i slot="icon"> in the host's light DOM
+     * carries the classes, so a page icon font can draw it (CSS from the page
+     * cannot reach into the shadow root). Gone while the page slots its own icon.
+     */
+    _syncIconShortcut() {
+      const cls = (this.getAttribute('icon') || '').trim();
+      let made = this.querySelector(':scope > i[data-kakao-icon]');
+      const own = Array.from(this.children).some((c) => c !== made && c.getAttribute('slot') === 'icon');
+      if (!cls || own) {
+        if (made) made.remove();
+        return;
+      }
+      if (!made) {
+        made = document.createElement('i');
+        made.setAttribute('slot', 'icon');
+        made.setAttribute('data-kakao-icon', '');
+        made.setAttribute('aria-hidden', 'true');
+        this.prepend(made);
+      }
+      if (made.className !== cls) made.className = cls;
     }
 
     _syncClear() {

@@ -27,12 +27,21 @@ pages (landing page, settings, demos), not the components.
   one element across updates and is picked up when added later. Slotted
   SVGs are 1em square by default. The `icon` attribute stays as an optional
   shortcut for icon-font classes; a slotted icon wins over it.
+- `kakao-text-input`: an `icon` slot in front of the field. Slotted content
+  stays in the page's DOM, so page CSS (an icon font too) reaches it; an
+  inline `<svg slot="icon">` needs nothing else.
 
 ### Fixed
 
 - `kakao-button`: the `run()` success check is drawn by the button (inline
   SVG, the menu check's shape at the spinner's size). It was a Font Awesome
   `fa-check` and showed nothing on pages without Font Awesome.
+- `kakao-text-input`: the `icon` attribute drew nothing, even with Font
+  Awesome on the page (its class sat inside the shadow root, out of reach
+  of page CSS, on a box hidden while empty). It now adds an
+  `<i slot="icon" data-kakao-icon>` with those classes to the element, so a
+  page icon font draws it; it steps aside while the page slots its own
+  icon. The slot is the recommended way.
 
 ### Site only
 

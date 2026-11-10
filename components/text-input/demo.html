@@ -11,6 +11,7 @@
 <script src="../../shared/page-cloak.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
+<!-- Font Awesome is for this demo's icon-font examples only; the component needs no icon font -->
 <link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
 <link rel="stylesheet" href="../button/button.css" />
 <script src="../../shared/demo.js"></script>
@@ -42,8 +43,16 @@
     </div>
     <div class="card">
       <h3>Search · icon + <code>clearable</code></h3>
-      <kakao-text-input id="t2" type="search" label="Search" icon="fas fa-magnifying-glass" clearable
-        value="kakao" placeholder="Search components"></kakao-text-input>
+      <kakao-text-input id="t2" type="search" label="Search" clearable
+        value="kakao" placeholder="Search components"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></kakao-text-input>
+    </div>
+    <div class="card">
+      <h3>Icons · slot or icon font</h3>
+      <p class="small" style="margin:0 0 .75rem;color:var(--muted);font-size:.85rem">The icon is a child with <code>slot="icon"</code>. An inline SVG (above) needs nothing else. An icon-font element works when the page loads the font (this site loads Font Awesome); <code>icon="fas …"</code> is a shortcut that adds that element for you.</p>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:.6rem">
+        <kakao-text-input type="email" label="Email · slot" placeholder="you@example.com"><i slot="icon" class="fas fa-at" aria-hidden="true"></i></kakao-text-input>
+        <kakao-text-input label="Website · icon attribute" icon="fas fa-globe" placeholder="example.com"></kakao-text-input>
+      </div>
     </div>
     <div class="card">
       <h3>Error</h3>
