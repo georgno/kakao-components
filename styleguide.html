@@ -27,6 +27,7 @@
 <script src="components/checkbox/checkbox.js" defer></script>
 <script src="components/radio-group/radio-group.js" defer></script>
 <script src="components/badge/badge.js" defer></script>
+<script src="components/color-code/color-code.js" defer></script>
 <script src="components/chip/chip.js" defer></script>
 <script src="components/alert/alert.js" defer></script>
 <style>
@@ -36,7 +37,6 @@
   .theme-panels { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
   .theme-panel { border-radius: 14px; padding: 1.1rem 1.25rem; background: var(--kakao-color-page); color: var(--kakao-color-text); border: 1px solid var(--kakao-color-line); display: grid; gap: 0.9rem; }
   .theme-panel h4 { margin: 0; font-size: 0.9rem; }
-  .tok-chip { display: inline-block; width: 0.9rem; height: 0.9rem; border-radius: 4px; vertical-align: -0.15em; margin-right: 0.35rem; border: 1px solid rgb(128 128 128 / .35); }
 
   nav.toc { margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; font-size: 0.9rem; }
   nav.toc a { text-decoration: none; }
@@ -308,7 +308,7 @@
     <div class="roles">
       <div class="card">
         <h4>Ink - actions</h4>
-        <p class="small muted">Primary buttons, selected segments, text: <code>--kakao-color-ink</code>. <code>#18181b</code> on <code>#fafafa</code> is 17:1. In dark, ink turns light and its label dark.</p>
+        <p class="small muted">Primary buttons, selected segments, text: <code>--kakao-color-ink</code>. <kakao-color-code>#18181b</kakao-color-code> on <kakao-color-code>#fafafa</kakao-color-code> is 17:1. In dark, ink turns light and its label dark.</p>
         <div class="role-demo">
           <kakao-button label="Save"></kakao-button>
           <kakao-button label="Cancel" variant="secondary"></kakao-button>
@@ -316,28 +316,28 @@
       </div>
       <div class="card">
         <h4>Accent - state</h4>
-        <p class="small muted">On, selected, filled, in progress: <code>--kakao-color-primary</code>. <code>#4f46e5</code> is 6.3:1 on white; dark uses <code>#818cf8</code>. The slider fill still follows ink, a later decision.</p>
+        <p class="small muted">On, selected, filled, in progress: <code>--kakao-color-primary</code>. <kakao-color-code>#4f46e5</kakao-color-code> is 6.3:1 on white; dark uses <kakao-color-code>#818cf8</kakao-color-code>. The slider fill still follows ink, a later decision.</p>
         <div class="role-demo">
           <kakao-switch-group list-data='[{"name":"a","label":"On","checked":true},{"name":"b","label":"Off"}]'></kakao-switch-group>
         </div>
       </div>
       <div class="card">
         <h4>Danger - destruction &amp; errors</h4>
-        <p class="small muted">Destructive buttons, invalid fields, failed uploads: <code>--kakao-color-danger</code>, one red for all components. <code>#dc2626</code> is 4.8:1 both ways with white; dark uses <code>#f87171</code> with a dark label.</p>
+        <p class="small muted">Destructive buttons, invalid fields, failed uploads: <code>--kakao-color-danger</code>, one red for all components. <kakao-color-code>#dc2626</kakao-color-code> is 4.8:1 both ways with white; dark uses <kakao-color-code>#f87171</kakao-color-code> with a dark label.</p>
         <div class="role-demo">
           <kakao-button label="Delete" variant="danger"></kakao-button>
         </div>
       </div>
       <div class="card">
         <h4>Success - done &amp; confirmed</h4>
-        <p class="small muted">Passed checks, paid, confirmed: <code>--kakao-color-success</code>. <code>#15803d</code> is 5.0:1 on white; dark uses <code>#4ade80</code>. For status labels, not for "on" (that's the accent).</p>
+        <p class="small muted">Passed checks, paid, confirmed: <code>--kakao-color-success</code>. <kakao-color-code>#15803d</kakao-color-code> is 5.0:1 on white; dark uses <kakao-color-code>#4ade80</kakao-color-code>. For status labels, not for "on" (that's the accent).</p>
         <div class="role-demo">
           <kakao-badge tone="success">Yes</kakao-badge> <kakao-chip tone="success">Paid</kakao-chip>
         </div>
       </div>
       <div class="card">
         <h4>Warning - check before going on</h4>
-        <p class="small muted">Something needs attention but nothing failed yet: <code>--kakao-color-warning</code>. <code>#b45309</code> is 5.0:1 on white; dark uses <code>#fbbf24</code>. Used for icons, titles and tints, never as a fill under text.</p>
+        <p class="small muted">Something needs attention but nothing failed yet: <code>--kakao-color-warning</code>. <kakao-color-code>#b45309</kakao-color-code> is 5.0:1 on white; dark uses <kakao-color-code>#fbbf24</kakao-color-code>. Used for icons, titles and tints, never as a fill under text.</p>
         <div class="role-demo">
           <kakao-alert tone="warning" duration="0">Your trial ends in 3 days.</kakao-alert>
         </div>
@@ -354,14 +354,14 @@
       <table>
         <thead><tr><th>Step</th><th>Hex</th><th>Use</th><th>Rule</th></tr></thead>
         <tbody>
-          <tr><td>50</td><td><code>#fafafa</code></td><td>Page, text on ink</td><td></td></tr>
-          <tr><td>100</td><td><code>#f4f4f5</code></td><td>Secondary fill, segment &amp; tab track, hover</td><td></td></tr>
-          <tr><td>200</td><td><code>#e4e4e7</code></td><td>Hairlines, dividers, card borders</td><td>Decorative only</td></tr>
-          <tr><td>300</td><td><code>#d4d4d8</code></td><td>Disabled track, subtle fills</td><td>Decorative only</td></tr>
-          <tr><td>400</td><td><code>#a1a1aa</code></td><td>Disabled text and icons</td><td>Only 2.6:1 on white: not for borders</td></tr>
-          <tr><td>500</td><td><code>#71717a</code></td><td>Icons. Control borders sit between 400 and 500 (<code>#82828b</code>, 3.8:1)</td><td>4.8:1 on white but 4.2:1 on subtle fills, so muted text uses <code>#62626c</code></td></tr>
-          <tr><td>700</td><td><code>#3f3f46</code></td><td>Secondary text, ghost button</td><td></td></tr>
-          <tr><td>900</td><td><code>#18181b</code></td><td>Ink: text, primary actions</td><td></td></tr>
+          <tr><td>50</td><td><kakao-color-code>#fafafa</kakao-color-code></td><td>Page, text on ink</td><td></td></tr>
+          <tr><td>100</td><td><kakao-color-code>#f4f4f5</kakao-color-code></td><td>Secondary fill, segment &amp; tab track, hover</td><td></td></tr>
+          <tr><td>200</td><td><kakao-color-code>#e4e4e7</kakao-color-code></td><td>Hairlines, dividers, card borders</td><td>Decorative only</td></tr>
+          <tr><td>300</td><td><kakao-color-code>#d4d4d8</kakao-color-code></td><td>Disabled track, subtle fills</td><td>Decorative only</td></tr>
+          <tr><td>400</td><td><kakao-color-code>#a1a1aa</kakao-color-code></td><td>Disabled text and icons</td><td>Only 2.6:1 on white: not for borders</td></tr>
+          <tr><td>500</td><td><kakao-color-code>#71717a</kakao-color-code></td><td>Icons. Control borders sit between 400 and 500 (<kakao-color-code>#82828b</kakao-color-code>, 3.8:1)</td><td>4.8:1 on white but 4.2:1 on subtle fills, so muted text uses <kakao-color-code>#62626c</kakao-color-code></td></tr>
+          <tr><td>700</td><td><kakao-color-code>#3f3f46</kakao-color-code></td><td>Secondary text, ghost button</td><td></td></tr>
+          <tr><td>900</td><td><kakao-color-code>#18181b</kakao-color-code></td><td>Ink: text, primary actions</td><td></td></tr>
         </tbody>
       </table>
     </div>
@@ -372,19 +372,19 @@
       <table>
         <thead><tr><th>Where</th><th>Pair</th><th>Ratio</th><th>Needs</th><th></th></tr></thead>
         <tbody>
-          <tr><td>Multi dropdown placeholder</td><td><code>#9ca3af</code> on white</td><td class="num">2.54</td><td>4.5</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
-          <tr><td>List group label</td><td><code>#999</code> on <code>#f7f7f7</code></td><td class="num">2.66</td><td>4.5</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted on subtle, 5.3</span></td></tr>
-          <tr><td>Slider min/max labels</td><td><code>#999</code> on white</td><td class="num">2.85</td><td>4.5</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
-          <tr><td>Tabs, unselected tab</td><td>ink at 45% on <code>#ebebeb</code></td><td class="num">2.82</td><td>4.5</td><td><kakao-badge tone="danger">Fails</kakao-badge></td></tr>
-          <tr><td>List row action icon</td><td><code>#aaa</code> on white</td><td class="num">2.32</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
-          <tr><td>Switch, off track</td><td><code>#d1d5db</code> on white</td><td class="num">1.47</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now border token, 3.8</span></td></tr>
+          <tr><td>Multi dropdown placeholder</td><td><kakao-color-code>#9ca3af</kakao-color-code> on white</td><td class="num">2.54</td><td>4.5</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
+          <tr><td>List group label</td><td><kakao-color-code>#999</kakao-color-code> on <kakao-color-code>#f7f7f7</kakao-color-code></td><td class="num">2.66</td><td>4.5</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted on subtle, 5.3</span></td></tr>
+          <tr><td>Slider min/max labels</td><td><kakao-color-code>#999</kakao-color-code> on white</td><td class="num">2.85</td><td>4.5</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
+          <tr><td>Tabs, unselected tab</td><td>ink at 45% on <kakao-color-code>#ebebeb</kakao-color-code></td><td class="num">2.82</td><td>4.5</td><td><kakao-badge tone="danger">Fails</kakao-badge></td></tr>
+          <tr><td>List row action icon</td><td><kakao-color-code>#aaa</kakao-color-code> on white</td><td class="num">2.32</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
+          <tr><td>Switch, off track</td><td><kakao-color-code>#d1d5db</kakao-color-code> on white</td><td class="num">1.47</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now border token, 3.8</span></td></tr>
           <tr><td>Button focus ring</td><td>ink 16% halo on white</td><td class="num">1.40</td><td>3</td><td><kakao-badge tone="danger">Fails</kakao-badge></td></tr>
           <tr><td>Number input focus ring</td><td>ink 14% halo on white</td><td class="num">1.33</td><td>3</td><td><kakao-badge tone="danger">Fails</kakao-badge></td></tr>
-          <tr><td>Tabs focus outline</td><td><code>#888</code> on <code>#ebebeb</code></td><td class="num">2.97</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now focus token</span></td></tr>
-          <tr><td>Muted text token</td><td><code>#6b7280</code> on white</td><td class="num">4.83</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
-          <tr><td>Switch focus outline</td><td><code>#2563eb</code> on white</td><td class="num">5.17</td><td>3</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
-          <tr><td>Accent</td><td><code>#4f46e5</code> ↔ white</td><td class="num">6.29</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
-          <tr><td>Danger button</td><td><code>#fdf4f3</code> on <code>#bd4b43</code></td><td class="num">4.57</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
+          <tr><td>Tabs focus outline</td><td><kakao-color-code>#888</kakao-color-code> on <kakao-color-code>#ebebeb</kakao-color-code></td><td class="num">2.97</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now focus token</span></td></tr>
+          <tr><td>Muted text token</td><td><kakao-color-code>#6b7280</kakao-color-code> on white</td><td class="num">4.83</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
+          <tr><td>Switch focus outline</td><td><kakao-color-code>#2563eb</kakao-color-code> on white</td><td class="num">5.17</td><td>3</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
+          <tr><td>Accent</td><td><kakao-color-code>#4f46e5</kakao-color-code> ↔ white</td><td class="num">6.29</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
+          <tr><td>Danger button</td><td><kakao-color-code>#fdf4f3</kakao-color-code> on <kakao-color-code>#bd4b43</kakao-color-code></td><td class="num">4.57</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
         </tbody>
       </table>
     </div>
@@ -625,7 +625,7 @@
       </div>
       <div class="card">
         <h3>Interaction states <kakao-badge>Now</kakao-badge></h3>
-        <p class="small"><b>Hover</b> darkens a fill one step (ink → <code>#2c2c31</code>, secondary <code>#f0f0f1</code> → <code>#e6e6e8</code>) or adds a 4.5% ink wash on ghost surfaces.</p>
+        <p class="small"><b>Hover</b> darkens a fill one step (ink → <kakao-color-code>#2c2c31</kakao-color-code>, secondary <kakao-color-code>#f0f0f1</kakao-color-code> → <kakao-color-code>#e6e6e8</kakao-color-code>) or adds a 4.5% ink wash on ghost surfaces.</p>
         <p class="small"><b>Pressed / held</b> scales slightly and glows (tabs hold glow, button press).</p>
         <p class="small"><b>Busy</b> swaps the label for a spinner and keeps the width; success shows a brief tick (button, switch).</p>
         <p class="small"><b>Error</b> uses danger on the track or border plus a text message. Never colour alone.</p>
@@ -872,12 +872,9 @@ KakaoComponents.meta('kakao-card');</pre>
     const body = document.querySelector('#theme-table tbody');
     const cell = (v) => {
       const td = document.createElement('td');
-      const chip = document.createElement('span');
-      chip.className = 'tok-chip';
-      chip.style.background = v;
-      const code = document.createElement('code');
+      const code = document.createElement('kakao-color-code');
       code.textContent = v;
-      td.append(chip, code);
+      td.append(code);
       return td;
     };
     Object.keys(uses).forEach((name) => {
