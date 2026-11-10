@@ -35,9 +35,10 @@
  * ----------------------------------------------------------------------------
  *  Opt-in with the theme-glow attribute; without it a theme change does
  *  nothing to the card. A theme-glow card with no footer button takes its
- *  glow colour from the theme. When a <kakao-theme-switch> reports a new theme through the trigger API
- *  (shared/component-api.js), the card reacts to "theme-change" and uses the
- *  colour it carries (--kakao-color-primary of the new theme) for the glow.
+ *  glow colour from the theme. When a <kakao-theme-switch> reports a new
+ *  theme through the trigger API (shared/component-api.js), the card reacts
+ *  to "theme-change" and uses the colour it carries (--kakao-color-primary
+ *  of the new theme) for the glow.
  *
  *    <script src="shared/component-api.js"><\/script>
  *    KakaoComponents.on('theme-change', (detail) => console.log(detail.color));
@@ -52,8 +53,9 @@
  *  When content is removed or added, the card glides to its new height
  *  instead of jumping. Not while the page loads (until two frames after the
  *  load event), and not for content that animates its own size (an opening
- *  kakao-accordion resizes the card every frame; the card follows it). A card whose height comes from outside (stretched in a
- *  grid row) or that changes width (window resize) doesn't animate. Off with
+ *  kakao-accordion resizes the card every frame; the card follows it). A
+ *  card whose height comes from outside (stretched in a grid row) or that
+ *  changes width (window resize) doesn't animate. Off with
  *  prefers-reduced-motion or no-animate.
  *
  * ----------------------------------------------------------------------------

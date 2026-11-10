@@ -691,7 +691,7 @@ off(); <span class="c">/* unsubscribe */</span></pre>
         <p class="small muted">Every component declares what it emits and what it watches, so the wiring is documented where it lives.</p>
         <pre>KakaoComponents.register('kakao-card', {
   triggers: [],
-  reactions: { 'theme-change': 'glow color' },
+  reactions: { 'theme-change': 'glow color' }, // only with theme-glow
 });
 
 KakaoComponents.meta('kakao-card');</pre>
@@ -762,7 +762,7 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>Popover</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">-</td><td>Radius 10; overlay shadow instead of none</td></tr>
           <tr><td>Slider</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">3</td><td>✓</td><td class="num">0.4</td><td>Reduced motion; accent follows ink, not primary</td></tr>
           <tr><td>Dialog</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14; button corner 33 (13 + 20)</td><td>✓</td><td class="num">-</td><td>None</td></tr>
-          <tr><td>Card</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Card</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14</td><td>n/a</td><td class="num">-</td><td>None. Theme-change glow only with <code>theme-glow</code></td></tr>
           <tr><td>Theme switch</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
           <tr><td>Color picker</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10/7/14</td><td>✓</td><td class="num">0.45</td><td>None</td></tr>
           <tr><td>Text input</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">0.55</td><td>None</td></tr>
