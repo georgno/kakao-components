@@ -26,6 +26,7 @@
 <script src="components/button/button.js" defer></script>
 <script src="components/number-input/number-input.js" defer></script>
 <script src="components/slider/slider.js" defer></script>
+<script src="components/range-slider/range-slider.js" defer></script>
 <script src="components/animated-number/animated-number.js" defer></script>
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
@@ -52,6 +53,12 @@
 <script src="components/select/select.js" defer></script>
 <script src="components/combobox/combobox.js" defer></script>
 <script src="components/date-input/date-input.js" defer></script>
+<script src="components/time-input/time-input.js" defer></script>
+<script src="components/password-input/password-input.js" defer></script>
+<script src="components/code-input/code-input.js" defer></script>
+<script src="components/tag-input/tag-input.js" defer></script>
+<script src="components/settings-group/settings-group.js" defer></script>
+<script src="components/error-summary/error-summary.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -106,6 +113,8 @@
   <form id="settings" class="card" novalidate>
     <!-- The made-up app's own breadcrumb; its last step follows the selected tab. -->
     <kakao-breadcrumb id="crumbs" start="none" label="Settings path" list-data='[["Account", "#account"], ["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
+    <!-- Lists what blocks a save; a link opens the field's tab first (see the script). -->
+    <kakao-error-summary id="form-errors" live></kakao-error-summary>
     <kakao-tabs role="tablist">
       <kakao-tab controls="tab-plan" selected>Plan</kakao-tab>
       <kakao-tab controls="tab-playback">Playback</kakao-tab>
@@ -219,6 +228,16 @@
 
       <div class="field">
         <div>
+          <div class="field-label">Rentals</div>
+          <p class="field-hint">Only suggest rentals in this price range.</p>
+        </div>
+        <div class="field-control">
+          <kakao-range-slider id="rental-price" name="rentalPrice" min="0" max="20" step="1" value="0,10" unit="€" label="Price"></kakao-range-slider>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
           <div class="field-label">Audio language</div>
           <p class="field-hint">Selected: <strong id="language-out">English</strong></p>
         </div>
@@ -263,6 +282,26 @@
             list-data='[{"value":"instant","label":"Instant"},{"value":"daily","label":"Daily"},{"value":"weekly","label":"Weekly"},{"value":"never","label":"Never"}]'></kakao-step-switch>
         </div>
       </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Quiet hours</div>
+          <p class="field-hint">No push notifications in this window. It may run past midnight.</p>
+        </div>
+        <div class="field-control">
+          <kakao-settings-group role="group" aria-label="Quiet hours">
+            <kakao-setting label="Mute at night">
+              <kakao-switch-group id="quiet" list-data='[{"name":"quiet","label":"","checked":true}]'></kakao-switch-group>
+            </kakao-setting>
+            <kakao-setting label="From">
+              <kakao-time-input id="quiet-from" name="quietFrom" value="22:00" step="900"></kakao-time-input>
+            </kakao-setting>
+            <kakao-setting label="Until">
+              <kakao-time-input id="quiet-until" name="quietUntil" value="07:00" step="900"></kakao-time-input>
+            </kakao-setting>
+          </kakao-settings-group>
+        </div>
+      </div>
     </div>
 
     <!-- ============================== Account ============================== -->
@@ -275,6 +314,22 @@
       <div class="field">
         <div><div class="field-label">Email</div></div>
         <div class="field-control"><kakao-text-input id="email" name="email" type="email" value="fan@example.com" autocomplete="email" icon="fas fa-envelope" aria-label="Email" required></kakao-text-input></div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">New password</div>
+          <p class="field-hint">Leave empty to keep your current one.</p>
+        </div>
+        <div class="field-control"><kakao-password-input id="password" name="password" aria-label="New password" requirements required-strength="4"></kakao-password-input></div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Profile PIN</div>
+          <p class="field-hint">Asked before anyone switches to your profile. Leave empty for no lock.</p>
+        </div>
+        <div class="field-control narrow"><kakao-code-input id="pin" name="pin" length="4" mask autocomplete="off" aria-label="Profile PIN"></kakao-code-input></div>
       </div>
 
       <div class="field">
@@ -356,6 +411,17 @@
             <kakao-chip action value="romance"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Romance</kakao-chip>
             <kakao-chip action value="kids"><i slot="icon" class="fas fa-plus" aria-hidden="true"></i>Kids</kakao-chip>
           </kakao-chip-list>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
+          <div class="field-label">Hidden keywords</div>
+          <p class="field-hint">Titles tagged with these never show up in your recommendations. Enter or comma adds one.</p>
+        </div>
+        <div class="field-control">
+          <kakao-tag-input id="hidden-keywords" name="hiddenKeywords" aria-label="Hidden keywords" value="Spoilers" placeholder="Add a keyword" max-tags="10"
+            list-data='["Horror","Gore","Reality TV","True crime","Spoilers","Jump scares","Cliffhangers"]'></kakao-tag-input>
         </div>
       </div>
 
@@ -549,20 +615,25 @@
         subtitleColor: $('subtitle-color').value,
         subtitleAlign: (align.querySelector('kakao-button[pressed]') || {}).getAttribute?.('value'),
         dataLimitGB: $('data-limit').getValue(),
+        rentalPrice: $('rental-price').getValue(),
         language,
       },
       notifications: {
         email: checkedNames($('notify-email')),
         push: checkedNames($('notify-push')),
         frequency: $('frequency').getAttribute('value'),
+        quietHours: isChecked($('quiet'), 'quiet') ? { from: $('quiet-from').value, until: $('quiet-until').value } : null,
       },
       account: {
         name: $('name').value,
         email: $('email').value,
+        newPassword: $('password').value ? '(set)' : '',
+        profilePin: $('pin').value ? '(set)' : '',
         country: $('country').value,
         city: $('city').value,
         bio: $('bio').value,
         genres: [...$('genres').querySelectorAll('kakao-chip')].map((c) => c.getAttribute('value')),
+        hiddenKeywords: $('hidden-keywords').values,
         dateOfBirth: $('dob').value,
         pauseUntil: $('pause').value,
         documents: $('documents').files.map((f) => f.name),
@@ -572,6 +643,9 @@
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    // The form is novalidate: the error summary checks it and lists what is wrong.
+    const summary = $('form-errors');
+    if (summary.validate && !summary.validate()) return;
     $('save').run(() => new Promise((resolve) => setTimeout(resolve, 900)))
       .then(() => { logLine(log, 'saved', collect()); KakaoToast.show({ tone: 'success', message: 'Changes saved.' }); });
   });
@@ -580,7 +654,7 @@
   let initial = null;
   window.addEventListener('load', () => requestAnimationFrame(() => {
     initial = {
-      switches: ['billing', 'autoplay', 'notify-email', 'notify-push'].map((id) => [id, $(id).getData()]),
+      switches: ['billing', 'autoplay', 'notify-email', 'notify-push', 'quiet'].map((id) => [id, $(id).getData()]),
       steps: ['quality', 'subtitle-size', 'frequency'].map((id) => [id, $(id).getAttribute('value')]),
       dataLimit: $('data-limit').getValue(),
       // form.reset() does not reach these: they have no formResetCallback
@@ -623,6 +697,14 @@
   ['name', 'email', 'bio'].forEach((id) => $(id).addEventListener('input', updateProfile));
   $('documents').addEventListener('files-change', updateProfile);
   Promise.all(['kakao-progress', 'kakao-text-input', 'kakao-textarea', 'kakao-file-upload'].map((t) => customElements.whenDefined(t))).then(updateProfile);
+
+  // ---- error summary: a link to a field in a hidden tab opens that tab first ----
+  $('form-errors').addEventListener('click', (e) => {
+    const link = e.composedPath().find((n) => n.dataset && n.dataset.index !== undefined);
+    const error = link && $('form-errors').errors[Number(link.dataset.index)];
+    const panel = error && error.field && error.field.closest('[role="tabpanel"]');
+    if (panel && panel.hidden) document.querySelector('kakao-tabs').select(panel.id);
+  }, true);
 
   // ---- breadcrumb: the last step follows the selected tab ----
   document.querySelector('kakao-tabs').addEventListener('tab-change', (e) => {
