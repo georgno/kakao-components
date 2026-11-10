@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-password-input - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../progress/progress.js" defer></script>
+<script src="password-input.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="password-input" data-source="password-input.js" data-title="Password input">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Basic · hint · error</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-password-input label="Password" value="correct horse" hint="Case sensitive."></kakao-password-input>
+        <kakao-password-input value="hunter2" error="That password is not right." aria-label="Password"></kakao-password-input>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Requirements (bar: --kakao-progress-*)</figcaption>
+      <kakao-password-input label="New password" requirements value="Tr0ub4dor"></kakao-password-input>
+    </figure>
+    <figure>
+      <figcaption>Sizes · disabled</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-password-input size="sm" value="Small" aria-label="Small"></kakao-password-input>
+        <kakao-password-input size="lg" value="Large" aria-label="Large"></kakao-password-input>
+        <kakao-password-input disabled value="Disabled" aria-label="Disabled"></kakao-password-input>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-password-input-bg", "label": "Field background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-password-input-text", "label": "Text", "group": "Colour", "type": "color", "hint": "also met requirements and the Caps Lock warning" },
+    { "property": "--kakao-password-input-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "hint, placeholder, toggle icon, unmet requirements" },
+    { "property": "--kakao-password-input-border", "label": "Field border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-password-input-focus", "label": "Focus", "group": "Colour", "type": "color" },
+    { "property": "--kakao-password-input-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-password-input-warning", "label": "Caps Lock icon", "group": "Colour", "type": "color" },
+    { "property": "--kakao-password-input-success", "label": "Met check", "group": "Colour", "type": "color" },
+    { "property": "--kakao-password-input-toggle-hover-bg", "label": "Toggle hover fill", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-password-input-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-password-input-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-password-input-height", "label": "Height (md)", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-password-input-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-password-input-label-gap", "label": "Label gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-password-input-message-gap", "label": "Message gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-password-input-toggle-size", "label": "Toggle size", "group": "Size & spacing", "type": "length", "hint": "the show / hide button; sm fields use --kakao-password-input-sm-toggle-size (26px)" },
+    { "property": "--kakao-password-input-icon-size", "label": "Toggle icon size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-password-input-strength-gap", "label": "Bar gap", "group": "Size & spacing", "type": "length", "hint": "space above the strength bar" },
+    { "property": "--kakao-password-input-list-offset", "label": "List gap", "group": "Size & spacing", "type": "length", "hint": "space between the bar and the list" },
+    { "property": "--kakao-password-input-list-gap", "label": "List row gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-password-input-list-min-column", "label": "List column width", "group": "Size & spacing", "type": "length", "hint": "minimum; the list wraps into as many columns as fit" },
+    { "property": "--kakao-password-input-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-password-input-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-password-input-radius", "label": "Field radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-password-input-toggle-radius", "label": "Toggle radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-password-input-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+
+    { "property": "--kakao-password-input-duration", "label": "Colour fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-password-input-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: colour" }
+  ]
+  </script>
+</main>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-password-input - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../progress/progress.js" defer></script>
+<script src="password-input.js" defer></script>
+<script src="../text-input/text-input.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+<style>
+  .stack { display: grid; gap: .6rem; }
+  .out { margin: .75rem 0 0; font-size: .85rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Password input"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Password input</h1>
+    <p><code>&lt;kakao-password-input&gt;</code> - A password field with a show / hide button and a Caps Lock warning. Opt-in requirements are listed under the field, and their progress is drawn with <code>&lt;kakao-progress&gt;</code>: one segment per requirement. Form-associated.</p>
+  </header>
+
+  <h2>Sign in</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Basic · show / hide</h3>
+      <p class="small" style="margin:0 0 .75rem;color:var(--muted);font-size:.85rem">The eye button shows the password as text and back; the caret stays where it was. Turn Caps Lock on while typing to see the warning.</p>
+      <kakao-password-input label="Password" name="password" placeholder="Your password"></kakao-password-input>
+    </div>
+    <div class="card">
+      <h3>Hint · error</h3>
+      <div class="stack">
+        <kakao-password-input label="Password" hint="Case sensitive."></kakao-password-input>
+        <kakao-password-input label="Password" value="hunter2" error="That password is not right."></kakao-password-input>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Sizes</h3>
+      <div class="stack">
+        <kakao-password-input size="sm" label="Small" value="36px tall"></kakao-password-input>
+        <kakao-password-input label="Medium" value="44px tall"></kakao-password-input>
+        <kakao-password-input size="lg" label="Large" value="52px tall"></kakao-password-input>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · readonly · <code>hide-toggle</code></h3>
+      <div class="stack">
+        <kakao-password-input disabled label="Disabled" value="secret"></kakao-password-input>
+        <kakao-password-input readonly label="Read only" value="secret"></kakao-password-input>
+        <kakao-password-input hide-toggle label="No toggle" value="secret"></kakao-password-input>
+      </div>
+    </div>
+  </div>
+
+  <h2>Requirements · <code>requirements</code></h2>
+  <p>The page loads <code>progress.js</code> too: the bar is a <code>&lt;kakao-progress&gt;</code> with one segment per requirement, so every requirement the password meets completes a segment, and that segment pops. The bar turns to the success colour once all are met. Requirements are advice only, unless <code>required-strength</code> is set.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Default requirements</h3>
+      <kakao-password-input id="p1" label="New password" name="new-password" requirements></kakao-password-input>
+      <div class="log" id="log" role="log" aria-label="Event log"></div>
+    </div>
+    <div class="card">
+      <h3>Own requirements · <code>list-data</code></h3>
+      <kakao-password-input label="Passphrase" requirements list-data='[
+        {"label": "At least 16 characters", "pattern": ".{16,}"},
+        {"label": "Four words or more", "pattern": "(\\S+\\s+){3,}\\S+"},
+        {"label": "No word repeated", "pattern": "^(?!.*\\b(\\w+)\\b.*\\b\\1\\b)"}
+      ]'></kakao-password-input>
+    </div>
+    <div class="card">
+      <h3>From <code>minlength</code></h3>
+      <p class="small" style="margin:0 0 .75rem;color:var(--muted);font-size:.85rem">The default length requirement follows <code>minlength</code>.</p>
+      <kakao-password-input label="Admin password" requirements minlength="12"></kakao-password-input>
+    </div>
+    <div class="card">
+      <h3>Set by script · <code>requirements</code> property</h3>
+      <kakao-password-input id="pScript" label="Account password" requirements></kakao-password-input>
+      <template data-code>
+        <script>
+          const field = document.getElementById('pScript');
+          field.requirements = [
+            { label: 'At least 10 characters', pattern: '.{10,}' },
+            { label: 'Not your username', test: (v) => v.toLowerCase() !== 'ana' },
+          ];
+        </script>
+      </template>
+    </div>
+  </div>
+
+  <h2>Blocking the form · <code>required-strength</code></h2>
+  <p>With <code>required-strength</code> unmet requirements make the field invalid, so the form doesn't submit. Empty means all of them; a number means at least that many. It turns <code>requirements</code> on, so the person always sees what's asked.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Sign up</h3>
+      <form id="form" class="stack">
+        <kakao-text-input name="user" label="Username" value="ana" autocomplete="username"></kakao-text-input>
+        <kakao-password-input name="password" label="Password" required required-strength="4"
+          hint="Meet at least 4 of the 5."></kakao-password-input>
+        <div class="row"><kakao-button label="Create account" type="submit"></kakao-button></div>
+      </form>
+      <p class="out" id="formOut">Submit to see the result.</p>
+    </div>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <div class="toolbar" style="margin-top:0">
+      <kakao-button id="apiValue" label="value = &quot;Tr0ub4dor&quot;" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiClear" label="value = &quot;&quot;" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiShow" label="toggle visible" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiCheck" label="checkValidity()" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <kakao-password-input id="play" label="Password" requirements required-strength></kakao-password-input>
+    <template data-code>
+      <script>
+        const field = document.getElementById('play');
+        field.value = 'Tr0ub4dor';
+        field.visible = true;
+        console.log(field.met, field.total, field.valid, field.validationMessage);
+      </script>
+    </template>
+    <div class="log" id="playLog" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>label</code>, <code>hint</code>, <code>error</code>, <code>placeholder</code>, <code>value</code>, <code>name</code>, <code>required</code>, <code>disabled</code>, <code>readonly</code>, <code>minlength</code>, <code>maxlength</code>, <code>autocomplete</code>, <code>size</code>, <code>requirements</code>, <code>list-data</code>, <code>required-strength</code>, <code>hide-toggle</code>. Events: <code>input</code>, <code>change</code>, <code>password-input-toggle</code>, <code>password-input-requirements</code>. Full reference in the header of <code>password-input.js</code>.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-password-input').then(() => {
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+    logEvents(document.getElementById('log'), ['password-input-requirements', 'password-input-toggle', 'change'], document.getElementById('p1'));
+
+    document.getElementById('pScript').requirements = [
+      { label: 'At least 10 characters', pattern: '.{10,}' },
+      { label: 'Not your username', test: (v) => v.toLowerCase() !== 'ana' },
+    ];
+
+    const play = document.getElementById('play');
+    const playLog = document.getElementById('playLog');
+    logEvents(playLog, ['password-input-requirements', 'password-input-toggle'], play);
+    on('apiValue', () => { play.value = 'Tr0ub4dor'; });
+    on('apiClear', () => { play.value = ''; });
+    on('apiShow', () => { play.visible = !play.visible; });
+    on('apiCheck', () => logLine(playLog, 'checkValidity', { valid: play.checkValidity(), message: play.validationMessage }));
+
+    document.getElementById('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(e.target);
+      document.getElementById('formOut').textContent = `Submitted: user="${data.get('user') || ''}", password of ${String(data.get('password') || '').length} characters`;
+    });
+  });
+</script>
+</body>
+</html>
