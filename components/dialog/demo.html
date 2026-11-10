@@ -17,16 +17,15 @@
 <script src="dialog.js" defer></script>
 <style>
   .demo-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
-  /* demo.css spaces stacked card children with margin-top; in a row that only
-     pushes every button but the first down. */
-  .card.demo-row > * + * { margin-top: 0; }
   /* the dialog is fixed, so these only keep the demo page tall enough to scroll */
   main { min-height: 130vh; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -42,11 +41,13 @@
 
   <h2>Try it</h2>
   <p>The page behind scrolls normally while the dialog is closed and is locked while one is open. Escape or a click on the covered page closes it, and focus goes back to the button that opened it.</p>
-  <div class="card demo-row" data-code-with="basic confirm long static">
-    <kakao-button id="open-basic" label="Open dialog"></kakao-button>
-    <kakao-button id="open-confirm" label="Delete account" variant="danger"></kakao-button>
-    <kakao-button id="open-long" label="Long content" variant="secondary"></kakao-button>
-    <kakao-button id="open-static" label="No dismiss" variant="ghost"></kakao-button>
+  <kakao-card data-code-with="basic confirm long static">
+    <div class="demo-row" data-demo-wrap>
+      <kakao-button id="open-basic" label="Open dialog"></kakao-button>
+      <kakao-button id="open-confirm" label="Delete account" variant="danger"></kakao-button>
+      <kakao-button id="open-long" label="Long content" variant="secondary"></kakao-button>
+      <kakao-button id="open-static" label="No dismiss" variant="ghost"></kakao-button>
+    </div>
     <template data-code>
       <script>
         const open = (button, dialog) => document.getElementById(button)
@@ -57,12 +58,12 @@
         open('open-static', 'static');
       </script>
     </template>
-  </div>
+  </kakao-card>
 
   <h2>Variants</h2>
   <div class="grid">
-    <div class="card" data-code-with="bare">
-      <h3>No header · <code>label</code> only</h3>
+    <kakao-card data-code-with="bare">
+      <h3 slot="header">No header · <code>label</code> only</h3>
       <p class="small muted" style="margin:0">The <code>label</code> attribute names the dialog when there is no header element.</p>
       <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-bare" label="Open" variant="secondary" size="sm"></kakao-button></div>
       <template data-code>
@@ -70,9 +71,9 @@
           document.getElementById('open-bare').addEventListener('kakao-button-action', () => document.getElementById('bare').open());
         </script>
       </template>
-    </div>
-    <div class="card" data-code-with="sm lg">
-      <h3>Sizes · <code>size="sm" | "lg"</code></h3>
+    </kakao-card>
+    <kakao-card data-code-with="sm lg">
+      <h3 slot="header">Sizes · <code>size="sm" | "lg"</code></h3>
       <div class="demo-row" data-demo-wrap><kakao-button id="open-sm" label="sm" variant="secondary" size="sm"></kakao-button><kakao-button id="open-lg" label="lg" variant="secondary" size="sm"></kakao-button></div>
       <template data-code>
         <script>
@@ -80,9 +81,9 @@
           document.getElementById('open-lg').addEventListener('kakao-button-action', () => document.getElementById('lg').open());
         </script>
       </template>
-    </div>
-    <div class="card" data-code-with="tall">
-      <h3>Taller than the screen</h3>
+    </kakao-card>
+    <kakao-card data-code-with="tall">
+      <h3 slot="header">Taller than the screen</h3>
       <p class="small muted" style="margin:0">Header and footer stay put; only the body scrolls.</p>
       <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-tall" label="Open tall" variant="secondary" size="sm"></kakao-button></div>
       <template data-code>
@@ -90,18 +91,20 @@
           document.getElementById('open-tall').addEventListener('kakao-button-action', () => document.getElementById('tall').open());
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Footer buttons</h2>
   <p><code>button-position</code> puts them left, centred or right (default). <code>full-width</code> lets them share the whole width in equal parts. A bottom corner with a button in it rounds to match that button.</p>
-  <div class="card demo-row" data-code-with="pos-left pos-center pos-right full-one full-two full-three">
-    <kakao-button id="open-pos-left" label="Left" variant="secondary" size="sm"></kakao-button>
-    <kakao-button id="open-pos-center" label="Center" variant="secondary" size="sm"></kakao-button>
-    <kakao-button id="open-pos-right" label="Right" variant="secondary" size="sm"></kakao-button>
-    <kakao-button id="open-full-one" label="Full width · one" variant="secondary" size="sm"></kakao-button>
-    <kakao-button id="open-full-two" label="Full width · two" variant="secondary" size="sm"></kakao-button>
-    <kakao-button id="open-full-three" label="Full width · three" variant="secondary" size="sm"></kakao-button>
+  <kakao-card data-code-with="pos-left pos-center pos-right full-one full-two full-three">
+    <div class="demo-row" data-demo-wrap>
+      <kakao-button id="open-pos-left" label="Left" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="open-pos-center" label="Center" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="open-pos-right" label="Right" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="open-full-one" label="Full width · one" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="open-full-two" label="Full width · two" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="open-full-three" label="Full width · three" variant="secondary" size="sm"></kakao-button>
+    </div>
     <template data-code>
       <script>
         ['pos-left', 'pos-center', 'pos-right', 'full-one', 'full-two', 'full-three'].forEach((id) => {
@@ -109,13 +112,13 @@
         });
       </script>
     </template>
-  </div>
+  </kakao-card>
 
   <h2>Playground</h2>
   <p>Every open and close bubbles as <code>dialog-open</code> / <code>dialog-close</code>; <code>data-close</code> decides the return value.</p>
-  <div class="card">
+  <kakao-card>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>open</code>, <code>label</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>), <code>no-dismiss</code>, <code>button-position</code> (<code>left</code> · <code>center</code> · <code>right</code>), <code>full-width</code>. Methods: <code>open()</code>, <code>close(returnValue)</code>, <code>toggle()</code>, <code>isOpen</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Full reference in the header of <code>dialog.js</code>.</footer>
 </main>

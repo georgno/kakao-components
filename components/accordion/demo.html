@@ -25,10 +25,11 @@
   kakao-accordion ul { padding-left: 1.1rem; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 </style>
+<script src="../card/card.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -148,6 +149,7 @@
   document.getElementById('m-toggle').addEventListener('kakao-button-action', () => play.toggle());
   const log = document.getElementById('log');
   document.addEventListener('accordion-toggle', (e) => {
+    if (e.target.closest('.demo-code')) return; // the code blocks are accordions too
     const line = document.createElement('div');
     const title = e.target.getAttribute('heading') || e.target.querySelector('[slot="title"]')?.textContent || '';
     line.innerHTML = '<b>accordion-toggle</b> ';

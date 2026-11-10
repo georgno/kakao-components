@@ -17,10 +17,11 @@
 <script src="../../shared/demo.js"></script>
 <script src="button.js" defer></script>
 <script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body data-demo-code="accordion">
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -151,6 +152,7 @@
   logEvents(log, ['kakao-button-select', 'kakao-button-menu']);
   document.addEventListener('kakao-button-action', (e) => {
     const el = e.target;
+    if (el.closest('.demo-code')) return; // Copy in the code blocks
     logLine(log, 'kakao-button-action', {
       label: el.getAttribute('label') || el.getAttribute('aria-label'),
       pressed: el.hasAttribute('toggle') ? el.hasAttribute('pressed') : undefined,

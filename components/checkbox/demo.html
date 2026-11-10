@@ -16,10 +16,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
     <script src="checkbox.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -35,46 +37,46 @@
 
   <h2>Basic</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Simple</h3>
+    <kakao-card>
+      <h3 slot="header">Simple</h3>
       <kakao-checkbox id="c1" label="Send me the newsletter"></kakao-checkbox>
-    </div>
-    <div class="card">
-      <h3>Checked · hint</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Checked · hint</h3>
       <kakao-checkbox checked label="Product updates" hint="About once a month."></kakao-checkbox>
-    </div>
-    <div class="card">
-      <h3>Indeterminate</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Indeterminate</h3>
       <kakao-checkbox id="c2" indeterminate label="Select all"></kakao-checkbox>
       <p style="margin:.6rem 0 0;color:var(--muted);font-size:.85rem">Click it: the dash gives way to a tick, as native checkboxes do.</p>
-    </div>
-    <div class="card">
-      <h3>Sizes</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Sizes</h3>
       <div style="display:grid;gap:.5rem">
         <kakao-checkbox size="sm" checked label="Small"></kakao-checkbox>
         <kakao-checkbox checked label="Medium"></kakao-checkbox>
         <kakao-checkbox size="lg" checked label="Large"></kakao-checkbox>
       </div>
-    </div>
-    <div class="card">
-      <h3>Disabled · error</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled · error</h3>
       <div style="display:grid;gap:.5rem">
         <kakao-checkbox disabled label="Disabled"></kakao-checkbox>
         <kakao-checkbox error="You have to accept the terms." label="I accept the terms"></kakao-checkbox>
       </div>
-    </div>
-    <div class="card">
-      <h3>In a form · <code>name</code> + <code>required</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">In a form · <code>name</code> + <code>required</code></h3>
       <form id="form3" style="display:grid;gap:.5rem">
         <kakao-checkbox name="terms" value="yes" required label="I accept the terms"></kakao-checkbox>
         <div class="row"><kakao-button label="Submit" type="submit"></kakao-button></div>
       </form>
       <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut3">Submit to see the submitted value.</p>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar" style="margin-top:0">
       <kakao-button id="apiToggle" label="checked = !checked" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiInd" label="toggle indeterminate" variant="secondary" size="sm"></kakao-button>
@@ -89,7 +91,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Full reference in the header of <code>checkbox.js</code>.</footer>
 </main>

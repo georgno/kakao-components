@@ -46,10 +46,12 @@
     transition: top var(--kakao-motion-duration, 320ms) cubic-bezier(0.22, 1, 0.36, 1);
   }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -66,19 +68,21 @@
 
   <h2>Try it</h2>
   <p>The menu below is a normal site menu. Open it and watch the page - including this text and the theme switch - slide to the right. The fixed ★ button in the corner (and the theme switch for right menus) ducks below the menu's close button.</p>
-  <div class="card demo-row">
-    <kakao-aside-menu id="menu1" label="Site menu" class="menu-demo">
-      <nav aria-label="Site menu">
-        <a href="#" onclick="return false">Home</a>
-        <a href="#" onclick="return false">Browse</a>
-        <a href="#" onclick="return false">My list</a>
-        <a href="#" onclick="return false">Downloads</a>
-        <a href="#" onclick="return false">Settings</a>
-        <a href="#" onclick="return false">Sign out</a>
-      </nav>
-      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.82rem">Any markup placed inside the element is shown in the menu.</p>
-    </kakao-aside-menu>
-    <kakao-button id="toggleBtn" variant="secondary" size="sm" label="Open via API"></kakao-button>
+  <kakao-card>
+    <div class="demo-row" data-demo-wrap>
+      <kakao-aside-menu id="menu1" label="Site menu" class="menu-demo">
+        <nav aria-label="Site menu">
+          <a href="#" onclick="return false">Home</a>
+          <a href="#" onclick="return false">Browse</a>
+          <a href="#" onclick="return false">My list</a>
+          <a href="#" onclick="return false">Downloads</a>
+          <a href="#" onclick="return false">Settings</a>
+          <a href="#" onclick="return false">Sign out</a>
+        </nav>
+        <p style="margin:.75rem 0 0;color:var(--muted);font-size:.82rem">Any markup placed inside the element is shown in the menu.</p>
+      </kakao-aside-menu>
+      <kakao-button id="toggleBtn" variant="secondary" size="sm" label="Open via API"></kakao-button>
+    </div>
     <template data-code>
       <script>
         document.getElementById('toggleBtn').addEventListener('kakao-button-action', () => {
@@ -86,12 +90,12 @@
         });
       </script>
     </template>
-  </div>
+  </kakao-card>
 
   <h2>Variants</h2>
   <div class="grid">
-    <div class="card">
-      <h3>From the right · <code>position="right"</code></h3>
+    <kakao-card>
+      <h3 slot="header">From the right · <code>position="right"</code></h3>
       <kakao-aside-menu position="right" label="Chat &amp; friends">
         <nav aria-label="Chat menu">
           <a href="#" onclick="return false">New chat</a>
@@ -100,9 +104,9 @@
         </nav>
       </kakao-aside-menu>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The body is pushed to the left instead.</p>
-    </div>
-    <div class="card">
-      <h3>Wide · <code>width="22rem"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Wide · <code>width="22rem"</code></h3>
       <kakao-aside-menu width="22rem" label="Filters">
         <nav aria-label="Filters">
           <a href="#" onclick="return false">Genre</a>
@@ -110,23 +114,23 @@
           <a href="#" onclick="return false">Rating</a>
         </nav>
       </kakao-aside-menu>
-    </div>
-    <div class="card">
-      <h3>With nav list · <code>list-data</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">With nav list · <code>list-data</code></h3>
       <kakao-aside-menu id="menu4" label="Main navigation"
         list-data='[{"value":"home","label":"Home"},{"value":"browse","label":"Browse"},{"value":"lists","label":"My lists","disabled":true},{"value":"account","label":"Account"}]'
         selected="home"></kakao-aside-menu>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Renders its own nav list above any slotted content; picks fire <code>aside-select</code> in the log below.</p>
-    </div>
-    <div class="card">
-      <h3>Always open when wide · <code>persistent="1440px"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Always open when wide · <code>persistent="1440px"</code></h3>
       <kakao-aside-menu id="menu5" label="Persistent menu" persistent="1440px"
         list-data='[{"value":"home","label":"Home"},{"value":"library","label":"Library"},{"value":"account","label":"Account"}]'
         selected="home"></kakao-aside-menu>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Widen the window past 1440px: the panel just appears as a sidebar, the page does not move. Narrower, it is a normal drawer again.</p>
-    </div>
-    <div class="card">
-      <h3>No built-in button · <code>no-open-button</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">No built-in button · <code>no-open-button</code></h3>
       <kakao-aside-menu no-open-button id="menu3" label="External trigger">
         <nav aria-label="External trigger menu">
           <a href="#" onclick="return false">Item one</a>
@@ -142,12 +146,12 @@
         </script>
       </template>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The page calls <code>menu3.open()</code> itself.</p>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
   <p>Changes bubble as <code>aside-change</code> events with <code>{ open }</code> in the detail.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar">
       <kakao-button id="optPosition" variant="secondary" size="sm" toggle></kakao-button>
       <kakao-button id="optWidth" variant="secondary" size="sm" toggle></kakao-button>
@@ -161,7 +165,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes on the host: <code>label</code>, <code>position</code> (<code>left</code> · <code>right</code>), <code>width</code> (any CSS length), <code>open</code>, <code>no-open-button</code>, <code>persistent</code> (min viewport width; stays open above it), <code>list-data</code>, <code>selected</code>. Methods: <code>open()</code>, <code>close()</code>, <code>toggle()</code>. Escape closes, focus is trapped inside the open panel and returned to the trigger. Full reference in the header of <code>aside-menu.js</code>.</footer>
 </main>

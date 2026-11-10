@@ -15,10 +15,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="file-upload.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -35,46 +37,48 @@
   <h2>Variants</h2>
   <p>Drop files on an area, or click it (or focus it and press Enter) to browse.</p>
   <div class="grid">
-    <div class="card full">
-      <h3>Default · any files, several at once</h3>
+    <kakao-card>
+      <h3 slot="header">Default · any files, several at once</h3>
       <kakao-file-upload id="upload1" label="Attachments"></kakao-file-upload>
-    </div>
-    <div class="card full">
-      <h3>List beside the drop area · <code>horizontal</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">List beside the drop area · <code>horizontal</code></h3>
       <kakao-file-upload label="Project files" horizontal></kakao-file-upload>
-    </div>
-    <div class="card">
-      <h3>Images only · max 2 MB · max 4 files</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Images only · max 2 MB · max 4 files</h3>
       <kakao-file-upload label="Photos" accept="image/*" max-size="2MB" max-files="4"></kakao-file-upload>
-    </div>
-    <div class="card">
-      <h3>Single file · <code>multiple="false"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Single file · <code>multiple="false"</code></h3>
       <kakao-file-upload label="CV" accept=".pdf,.doc,.docx" multiple="false" hint="One PDF or Word file; a new pick replaces it"></kakao-file-upload>
-    </div>
-    <div class="card">
-      <h3>Themed</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Themed</h3>
       <kakao-file-upload label="Assets"
         style="--kakao-file-upload-accent:#0d9488;--kakao-file-upload-dot-gap:10px;--kakao-file-upload-dot-color:#99f6e4;--kakao-file-upload-radius:6px"></kakao-file-upload>
-    </div>
-    <div class="card">
-      <h3>Disabled</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled</h3>
       <kakao-file-upload label="Locked" disabled></kakao-file-upload>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In a form</h2>
   <p>With a <code>name</code> the files are submitted like a native file input; Reset clears the list.</p>
-  <form class="card" id="form">
-    <kakao-file-upload name="documents" label="Documents" accept=".pdf,image/*" max-size="10MB"></kakao-file-upload>
-    <div class="toolbar">
-      <kakao-button label="Submit" type="submit" form="form" size="sm"></kakao-button>
-      <kakao-button label="Reset" type="button" variant="secondary" size="sm" id="formReset"></kakao-button>
-    </div>
-  </form>
+  <kakao-card>
+    <form id="form" data-demo-wrap>
+      <kakao-file-upload name="documents" label="Documents" accept=".pdf,image/*" max-size="10MB"></kakao-file-upload>
+      <div class="toolbar">
+        <kakao-button label="Submit" type="submit" form="form" size="sm"></kakao-button>
+        <kakao-button label="Reset" type="button" variant="secondary" size="sm" id="formReset"></kakao-button>
+      </div>
+    </form>
+  </kakao-card>
 
   <h2>Playground</h2>
   <p>Drive the first upload by hand.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar">
       <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiAdd" label="addFiles() - 3 generated files" variant="secondary" size="sm"></kakao-button>
@@ -93,7 +97,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>label</code>, <code>hint</code>, <code>accept</code>, <code>multiple</code>, <code>horizontal</code>, <code>max-files</code>, <code>max-size</code>, <code>disabled</code>, <code>name</code>. Events: <code>files-change</code>, <code>file-reject</code>. Full reference in the header of <code>file-upload.js</code>.</footer>
 </main>

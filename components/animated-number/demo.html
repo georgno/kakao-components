@@ -15,10 +15,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="animated-number.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -35,28 +37,28 @@
   <h2>Variants</h2>
   <p>Each one rolls to a new random value when you press “Randomize all”.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Integer</h3>
+    <kakao-card>
+      <h3 slot="header">Integer</h3>
       <kakao-animated-number class="rnd" value="1280"></kakao-animated-number>
-    </div>
-    <div class="card">
-      <h3>2 decimals · de-DE</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">2 decimals · de-DE</h3>
       <kakao-animated-number class="rnd" value="1234.5" decimals="2" locale="de-DE"></kakao-animated-number>
-    </div>
-    <div class="card">
-      <h3>Sign always · slow</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Sign always · slow</h3>
       <kakao-animated-number class="rnd" value="12" sign-display="always" duration="1500"></kakao-animated-number>
-    </div>
-    <div class="card">
-      <h3>Themed</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Themed</h3>
       <kakao-animated-number class="rnd" value="99"
         style="--kakao-animated-number-font-size:2.5rem;--kakao-animated-number-font-weight:700;--kakao-animated-number-color:#4f46e5"></kakao-animated-number>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
   <p>Drive the first number by hand.</p>
-  <div class="card">
+  <kakao-card>
     <kakao-animated-number id="num" value="0" style="--kakao-animated-number-font-size:2rem"></kakao-animated-number>
     <div class="toolbar">
       <kakao-button id="apiInc" label="+1" variant="secondary" size="sm"></kakao-button>
@@ -71,7 +73,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>value</code>, <code>locale</code>, <code>decimals</code>, <code>duration</code>, <code>sign-display</code>. Method <code>update(n)</code>, event <code>kakao-animated-number-complete</code>. Full reference in the header of <code>animated-number.js</code>.</footer>
 </main>

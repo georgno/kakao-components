@@ -19,10 +19,12 @@
   .bars { display: grid; gap: 1.25rem; align-content: start; }
   .note { color: var(--muted); font-size: 0.85rem; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -39,17 +41,19 @@
   <h2>Storage · lower is better</h2>
   <p><code>max="100" low="30" high="80" optimum="20"</code>: the optimum sits below <code>low</code>, so up to 30 GB is good, up to 80 GB so-so, above that bad.</p>
   <div class="grid">
-    <div class="card full bars">
-      <kakao-meter label="Photos" min="0" max="100" low="30" high="80" optimum="20" value="18" show-value value-text="18 GB of 100 GB"></kakao-meter>
-      <kakao-meter label="Documents" min="0" max="100" low="30" high="80" optimum="20" value="55" show-value value-text="55 GB of 100 GB"></kakao-meter>
-      <kakao-meter label="Backups" min="0" max="100" low="30" high="80" optimum="20" value="92" show-value value-text="92 GB of 100 GB, almost full"></kakao-meter>
-    </div>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-meter label="Photos" min="0" max="100" low="30" high="80" optimum="20" value="18" show-value value-text="18 GB of 100 GB"></kakao-meter>
+        <kakao-meter label="Documents" min="0" max="100" low="30" high="80" optimum="20" value="55" show-value value-text="55 GB of 100 GB"></kakao-meter>
+        <kakao-meter label="Backups" min="0" max="100" low="30" high="80" optimum="20" value="92" show-value value-text="92 GB of 100 GB, almost full"></kakao-meter>
+      </div>
+    </kakao-card>
   </div>
 
   <h2>Step through it</h2>
   <p>Walk the value through the regions: the fill slides, and its colour switches as it enters a new region.</p>
   <div class="grid">
-    <div class="card full">
+    <kakao-card>
       <div class="bars">
         <kakao-meter id="play" label="Disk" min="0" max="100" low="30" high="80" optimum="20" value="18" show-value></kakao-meter>
       </div>
@@ -65,34 +69,42 @@
           document.getElementById('play').value = 55; // the fill slides there
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Where the optimum lies · <code>optimum</code></h2>
   <p>Same range (<code>low="0.3" high="0.7"</code>), same value 0.85, three optimums. With the optimum between <code>low</code> and <code>high</code>, values outside are only so-so, never bad (as on native).</p>
   <div class="grid">
-    <div class="card bars">
-      <kakao-meter label="Optimum 0.9 (higher is better)" low="0.3" high="0.7" optimum="0.9" value="0.85" show-value></kakao-meter>
-      <kakao-meter label="Optimum 0.5 (middle is better)" low="0.3" high="0.7" optimum="0.5" value="0.85" show-value></kakao-meter>
-      <kakao-meter label="Optimum 0.1 (lower is better)" low="0.3" high="0.7" optimum="0.1" value="0.85" show-value></kakao-meter>
-    </div>
-    <div class="card bars">
-      <kakao-meter label="Only a value (good by default)" value="0.4" show-value></kakao-meter>
-      <kakao-meter label="Offset range: 15 in 10…20" min="10" max="20" value="15" show-value></kakao-meter>
-    </div>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-meter label="Optimum 0.9 (higher is better)" low="0.3" high="0.7" optimum="0.9" value="0.85" show-value></kakao-meter>
+        <kakao-meter label="Optimum 0.5 (middle is better)" low="0.3" high="0.7" optimum="0.5" value="0.85" show-value></kakao-meter>
+        <kakao-meter label="Optimum 0.1 (lower is better)" low="0.3" high="0.7" optimum="0.1" value="0.85" show-value></kakao-meter>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-meter label="Only a value (good by default)" value="0.4" show-value></kakao-meter>
+        <kakao-meter label="Offset range: 15 in 10…20" min="10" max="20" value="15" show-value></kakao-meter>
+      </div>
+    </kakao-card>
   </div>
 
   <h2>Sizes · <code>size</code></h2>
   <div class="grid">
-    <div class="card bars">
-      <kakao-meter size="sm" label="Small" value="0.45" show-value></kakao-meter>
-      <kakao-meter label="Medium (default)" value="0.45" show-value></kakao-meter>
-      <kakao-meter size="lg" label="Large" value="0.45" show-value></kakao-meter>
-    </div>
-    <div class="card bars">
-      <p class="note">No visible label: name it with <code>aria-label</code>.</p>
-      <kakao-meter aria-label="Battery" value="0.22" low="0.25" high="0.6" optimum="1" value-text="22%, low"></kakao-meter>
-    </div>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-meter size="sm" label="Small" value="0.45" show-value></kakao-meter>
+        <kakao-meter label="Medium (default)" value="0.45" show-value></kakao-meter>
+        <kakao-meter size="lg" label="Large" value="0.45" show-value></kakao-meter>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <p class="note">No visible label: name it with <code>aria-label</code>.</p>
+        <kakao-meter aria-label="Battery" value="0.22" low="0.25" high="0.6" optimum="1" value-text="22%, low"></kakao-meter>
+      </div>
+    </kakao-card>
   </div>
 
   <footer>Attributes: <code>value</code> (default 0), <code>min</code> (default 0), <code>max</code> (default 1), <code>low</code>, <code>high</code>, <code>optimum</code>, <code>label</code>, <code>show-value</code>, <code>value-text</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>). Properties: the same numbers, plus read-only <code>position</code> and <code>region</code>. Full reference in the header of <code>meter.js</code>.</footer>

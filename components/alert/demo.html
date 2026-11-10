@@ -18,14 +18,16 @@
 <script src="alert.js" defer></script>
 <style>
   .stack { display: grid; gap: 0.75rem; }
-  .card.stack > * + *, .stack > * + * { margin-top: 0; }
+  .stack > * + * { margin-top: 0; }
   .stack:empty::before { content: "No alerts right now."; color: var(--muted); font-size: 0.85rem; }
   .note { color: var(--muted); font-size: 0.85rem; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -42,35 +44,37 @@
   <h2>Tones · <code>tone</code></h2>
   <p>Info (default), success, warning and danger (<code>error</code> works too). Warning and danger get <code>role="alert"</code>, info and success <code>role="status"</code>. These examples have <code>duration="0"</code> so they stay.</p>
   <div class="grid">
-    <div class="card full stack">
-      <kakao-alert duration="0">A new version is available. It installs the next time you open the app.</kakao-alert>
-      <kakao-alert tone="success" duration="0">Settings saved.</kakao-alert>
-      <kakao-alert tone="warning" heading="Your trial ends in 3 days">Add a payment method to keep your projects.</kakao-alert>
-      <kakao-alert tone="danger" heading="Payment failed" dismissible>Your card was declined. <a href="#billing">Update your card</a> and try again.</kakao-alert>
-    </div>
+    <kakao-card>
+      <div class="stack" data-demo-wrap>
+        <kakao-alert duration="0">A new version is available. It installs the next time you open the app.</kakao-alert>
+        <kakao-alert tone="success" duration="0">Settings saved.</kakao-alert>
+        <kakao-alert tone="warning" heading="Your trial ends in 3 days">Add a payment method to keep your projects.</kakao-alert>
+        <kakao-alert tone="danger" heading="Payment failed" dismissible>Your card was declined. <a href="#billing">Update your card</a> and try again.</kakao-alert>
+      </div>
+    </kakao-card>
   </div>
 
   <h2>Title and icon</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Title slot · <code>slot="title"</code></h3>
+    <kakao-card>
+      <h3 slot="header">Title slot · <code>slot="title"</code></h3>
       <kakao-alert tone="success" duration="0"><strong slot="title">Upload complete</strong>3 files were added to <em>Invoices 2026</em>.</kakao-alert>
-    </div>
-    <div class="card">
-      <h3>Own icon · <code>slot="icon"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Own icon · <code>slot="icon"</code></h3>
       <kakao-alert duration="0"><i slot="icon" class="fas fa-wand-magic-sparkles"></i>Tip: press <kbd>/</kbd> to search.</kakao-alert>
-    </div>
-    <div class="card">
-      <h3>No icon · <code>no-icon</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">No icon · <code>no-icon</code></h3>
       <kakao-alert tone="warning" no-icon duration="0">Maintenance tonight from 22:00 to 23:00.</kakao-alert>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Closing · <code>dismissible</code></h2>
   <p>The × fires a cancelable <code>alert-hide</code>. Unless a listener cancels it, the alert fades out, gets <code>hidden</code> and fires <code>alert-hidden</code>. Focus goes back to where it came from.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Closes</h3>
+    <kakao-card>
+      <h3 slot="header">Closes</h3>
       <kakao-alert id="closes" tone="success" dismissible duration="0">Your profile is public now.</kakao-alert>
       <kakao-button id="closes-back" label="Show it again" variant="ghost" size="sm"></kakao-button>
       <template data-code>
@@ -79,9 +83,9 @@
           document.getElementById('closes-back').addEventListener('kakao-button-action', () => document.getElementById('closes').show());
         </script>
       </template>
-    </div>
-    <div class="card">
-      <h3>Cancelled · the page decides</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Cancelled · the page decides</h3>
       <kakao-alert id="locked" tone="warning" dismissible duration="0" close-label="Dismiss warning">This warning cancels its own close.</kakao-alert>
       <p class="note" id="locked-out">Try the ×.</p>
       <template data-code>
@@ -91,14 +95,14 @@
           });
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Fading out · <code>duration</code></h2>
   <p>Info and success alerts hide after <code>--kakao-alert-duration</code> (8 seconds), warning and danger stay. <code>duration</code> sets the time in ms for any tone; <code>duration="0"</code> turns it off. The timer pauses while the pointer is over the alert, while focus is inside it, and while the tab is hidden. With reduced motion there is no fade; the alert still goes.</p>
   <p class="note">A message that disappears can be gone before someone using a screen reader or magnifier, or reading slowly, gets to it. Don't put the only copy of important information in an alert that hides itself.</p>
   <div class="grid">
-    <div class="card full">
+    <kakao-card>
       <div class="row" data-demo-only>
         <kakao-button id="add-success" label="Success (default 8s)" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="add-info" label="Info, 3s" variant="secondary" size="sm"></kakao-button>
@@ -117,13 +121,13 @@
           document.getElementById('stack').append(alert);
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
   <p>One alert, driven by its attributes and methods. Every event lands in the log.</p>
   <div class="grid">
-    <div class="card full">
+    <kakao-card>
       <kakao-alert id="play" heading="Heads up" dismissible duration="0">Change the tone, the timer or close it.</kakao-alert>
       <div class="row" data-demo-only>
         <kakao-button data-tone="info" label="Info" variant="secondary" size="sm"></kakao-button>
@@ -142,7 +146,7 @@
         <kakao-button id="play-hide" label="hide()" variant="secondary" size="sm"></kakao-button>
       </div>
       <div class="log" id="log" role="log" aria-label="Event log"></div>
-    </div>
+    </kakao-card>
   </div>
 
   <footer>Attributes: <code>tone</code> (<code>info</code> · <code>success</code> · <code>warning</code> · <code>danger</code>, alias <code>error</code>), <code>heading</code>, <code>dismissible</code>, <code>close-label</code>, <code>duration</code>, <code>no-icon</code>, <code>hidden</code>. Methods: <code>show()</code>, <code>hide()</code>, <code>close()</code>. Events: <code>alert-show</code>, <code>alert-hide</code> (cancelable), <code>alert-hidden</code>. Slots: default (message), <code>title</code>, <code>icon</code>. Full reference in the header of <code>alert.js</code>.</footer>

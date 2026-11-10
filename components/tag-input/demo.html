@@ -16,10 +16,12 @@
 <script src="../button/button.js" defer></script>
 <script src="../chip/chip.js" defer></script>
 <script src="tag-input.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -35,61 +37,61 @@
 
   <h2>Basic</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Enter or comma</h3>
+    <kakao-card>
+      <h3 slot="header">Enter or comma</h3>
       <kakao-tag-input id="t1" label="Keywords" value="design, tokens, theming" placeholder="Add a keyword"
         hint="Enter or a comma adds the text. Paste “a, b, c” to add three."></kakao-tag-input>
-    </div>
-    <div class="card">
-      <h3>Suggestions · <code>list-data</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Suggestions · <code>list-data</code></h3>
       <kakao-tag-input label="Labels" placeholder="Type to see suggestions"
         hint="Matching labels open below the field; any other text works too."
         list-data='["Bug","Feature","Docs","Design","Performance","Security","Accessibility","Refactoring"]'></kakao-tag-input>
-    </div>
-    <div class="card">
-      <h3>Delimiters · <code>delimiters=",; "</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Delimiters · <code>delimiters=",; "</code></h3>
       <kakao-tag-input label="Recipients" delimiters=",; " placeholder="name@example.com"
         hint="Comma, semicolon or space ends a tag."></kakao-tag-input>
-    </div>
-    <div class="card">
-      <h3>Limit · <code>max-tags="3"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Limit · <code>max-tags="3"</code></h3>
       <kakao-tag-input label="Top three skills" max-tags="3" value="CSS, JavaScript"
         hint="Up to three. Adding “css” again flashes the existing tag."></kakao-tag-input>
-    </div>
-    <div class="card">
-      <h3>Duplicates allowed · tags with commas</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Duplicates allowed · tags with commas</h3>
       <kakao-tag-input label="Authors" allow-duplicates delimiters=";"
         value='["Smith, J.", "Doe, A.", "Smith, J."]' hint="Semicolon ends a tag, so names keep their comma."></kakao-tag-input>
-    </div>
-    <div class="card">
-      <h3>Many tags · wraps</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Many tags · wraps</h3>
       <kakao-tag-input label="Ingredients"
         value="Flour, Sugar, Butter, Eggs, Milk, Vanilla extract, Baking powder, Salt, Lemon zest, Cinnamon"></kakao-tag-input>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>States</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Sizes</h3>
+    <kakao-card>
+      <h3 slot="header">Sizes</h3>
       <div style="display:grid;gap:.6rem" data-demo-wrap>
         <kakao-tag-input size="sm" label="Small" value="36px, sm"></kakao-tag-input>
         <kakao-tag-input label="Medium" value="44px, md"></kakao-tag-input>
         <kakao-tag-input size="lg" label="Large" value="52px, lg"></kakao-tag-input>
       </div>
-    </div>
-    <div class="card">
-      <h3>Disabled · read-only · error</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled · read-only · error</h3>
       <div style="display:grid;gap:.6rem" data-demo-wrap>
         <kakao-tag-input disabled label="Disabled" value="One, Two"></kakao-tag-input>
         <kakao-tag-input readonly label="Read-only" value="Locked, Shown"></kakao-tag-input>
         <kakao-tag-input label="Topics" error="Add at least one topic." placeholder="Add a topic"></kakao-tag-input>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In a form</h2>
-  <div class="card">
+  <kakao-card>
     <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
       <kakao-tag-input name="tags" label="Tags" required placeholder="Add a tag" value="news, berlin"></kakao-tag-input>
       <kakao-tag-input name="cc" label="Cc" delimiters=",; " placeholder="name@example.com"></kakao-tag-input>
@@ -99,10 +101,10 @@
       </div>
     </form>
     <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
-  </div>
+  </kakao-card>
 
   <h2>Playground</h2>
-  <div class="card">
+  <kakao-card>
     <kakao-tag-input id="play" label="Playground" value="alpha, beta" placeholder="Add a tag"
       hint="Tags starting with “x” are refused by a tag-add listener."></kakao-tag-input>
     <div class="toolbar">
@@ -125,7 +127,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Full reference in the header of <code>tag-input.js</code>.</footer>
 </main>

@@ -23,10 +23,12 @@
     --kakao-switch-anim-easing: cubic-bezier(.34, 1.56, .64, 1);
   }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -43,14 +45,14 @@
   <h2>Variants</h2>
   <p>Data comes from the <code>list-data</code> attribute.</p>
   <div class="grid">
-    <div class="card full">
-      <h3>In a row · default <code>orientation="horizontal"</code> (stacks itself when narrower than 220px)</h3>
+    <kakao-card>
+      <h3 slot="header">In a row · default <code>orientation="horizontal"</code> (stacks itself when narrower than 220px)</h3>
       <kakao-switch-group label="Preferences"
         list-data='[{"name":"dark","label":"Dark mode"},{"name":"sound","label":"Sound","checked":true},{"name":"haptics","label":"Haptics","checked":true}]'></kakao-switch-group>
-    </div>
+    </kakao-card>
 
-    <div class="card">
-      <h3>Stacked · <code>orientation="vertical"</code></h3>
+    <kakao-card>
+      <h3 slot="header">Stacked · <code>orientation="vertical"</code></h3>
       <kakao-switch-group id="group1" label="Notifications" orientation="vertical"
         list-data='[
           {"name":"email","label":"Email","checked":true},
@@ -58,16 +60,16 @@
           {"name":"push","label":"Push notifications","checked":true},
           {"name":"digest","label":"Weekly digest","disabled":true}
         ]'></kakao-switch-group>
-    </div>
+    </kakao-card>
 
-    <div class="card">
-      <h3>Whole group disabled</h3>
+    <kakao-card>
+      <h3 slot="header">Whole group disabled</h3>
       <kakao-switch-group label="Locked" orientation="vertical" disabled
         list-data='[{"name":"c","label":"Locked on","checked":true},{"name":"d","label":"Locked off"}]'></kakao-switch-group>
-    </div>
+    </kakao-card>
 
-    <div class="card">
-      <h3>Async · <code>async</code></h3>
+    <kakao-card>
+      <h3 slot="header">Async · <code>async</code></h3>
       <kakao-switch-group class="async-demo" label="Synced settings" orientation="vertical" async
         list-data='[{"name":"fast","label":"Saves fast (150ms, no loader)"},{"name":"ok","label":"Saves (1.2s)"},{"name":"fail","label":"Server refuses"},{"name":"flaky","label":"Fails 50% of the time","checked":true}]'></kakao-switch-group>
       <template data-code>
@@ -78,22 +80,22 @@
           });
         </script>
       </template>
-    </div>
+    </kakao-card>
 
-    <div class="card">
-      <h3>Themed · <code>color-labels</code></h3>
+    <kakao-card>
+      <h3 slot="header">Themed · <code>color-labels</code></h3>
       <kakao-switch-group class="green" label="Privacy" orientation="vertical" color-labels
         list-data='[
           {"name":"analytics","label":"Share analytics"},
           {"name":"location","label":"Location access","checked":true},
           {"name":"ads","label":"Personalised ads"}
         ]'></kakao-switch-group>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
   <p>Drive the API of the first group by hand.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar">
       <kakao-button id="optDrag" variant="secondary" size="sm" toggle pressed></kakao-button>
       <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
@@ -120,7 +122,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>label</code>, <code>list-data</code>, <code>orientation</code>, <code>disabled</code>, <code>thumb-drag</code>, <code>color-labels</code>, <code>async</code>, <code>loading-delay</code>. Full reference in the header of <code>switch-group.js</code>.</footer>
 </main>

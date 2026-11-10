@@ -15,10 +15,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="list.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -35,32 +37,32 @@
   <h2>Variants</h2>
   <p>Data comes from the <code>list-data</code> attribute: <code>[{group, names[]}]</code>.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Grouped</h3>
+    <kakao-card>
+      <h3 slot="header">Grouped</h3>
       <kakao-list id="list1" width="220" height="360"
         list-data='[
           {"group":"Fruit","names":["Apple","Banana","Cherry","Date","Elderberry","Fig"]},
           {"group":"Vegetables","names":["Artichoke","Broccoli","Carrot","Daikon","Eggplant"]},
           {"group":"Herbs","names":["Basil","Chives","Dill","Mint","Parsley","Thyme"]}
         ]'></kakao-list>
-    </div>
+    </kakao-card>
 
-    <div class="card">
-      <h3>No groups, smaller tilt</h3>
+    <kakao-card>
+      <h3 slot="header">No groups, smaller tilt</h3>
       <kakao-list width="220" height="360" groups="false" item-height="36" max-tilt="35"
         list-data='[{"group":"","names":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","January","February","March","April","May","June"]}]'></kakao-list>
-    </div>
+    </kakao-card>
 
-    <div class="card">
-      <h3>Disabled</h3>
+    <kakao-card>
+      <h3 slot="header">Disabled</h3>
       <kakao-list width="220" height="240" disabled
         list-data='[{"group":"Locked","names":["One","Two","Three","Four","Five"]}]'></kakao-list>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
   <p>Drive the API of the first list by hand.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar">
       <kakao-button id="apiUp" label="scrollBy(-120)" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiDown" label="scrollBy(120)" variant="secondary" size="sm"></kakao-button>
@@ -79,7 +81,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>width</code>, <code>height</code>, <code>item-height</code>, <code>max-tilt</code>, <code>groups</code>, <code>list-data</code>, <code>disabled</code>. Full reference in the header of <code>list.js</code>.</footer>
 </main>

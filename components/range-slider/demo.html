@@ -18,10 +18,12 @@
 <!-- optional: when kakao-number-input is loaded first, the number fields get stepper arrows -->
 <script src="../number-input/number-input.js" defer></script>
 <script src="range-slider.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -38,44 +40,44 @@
   <h2>Variants</h2>
   <p>Configured through <code>min</code>, <code>max</code>, <code>step</code>, <code>value="low,high"</code>, <code>min-gap</code>, <code>unit</code> and <code>label</code>. A press on the track moves the nearer thumb.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Price, step 10</h3>
+    <kakao-card>
+      <h3 slot="header">Price, step 10</h3>
       <kakao-range-slider id="range1" min="0" max="200" step="10" value="40,140" unit="€" label="Price"></kakao-range-slider>
-    </div>
-    <div class="card">
-      <h3>Minimum gap · <code>min-gap="5"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Minimum gap · <code>min-gap="5"</code></h3>
       <kakao-range-slider min="18" max="80" step="1" value="25,40" min-gap="5" label="Age"></kakao-range-slider>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The thumbs stop 5 apart; Home and End go to each thumb's own limit.</p>
-    </div>
-    <div class="card">
-      <h3>Fine steps · native number fields</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Fine steps · native number fields</h3>
       <kakao-range-slider min="0" max="1" step="0.05" value="0.2,0.65" label="Opacity" scroll-input="false"></kakao-range-slider>
-    </div>
-    <div class="card">
-      <h3>Thumbs may meet</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Thumbs may meet</h3>
       <kakao-range-slider min="0" max="24" step="1" value="12,12" unit="h" label="Hours"></kakao-range-slider>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">With both thumbs on one spot, the first drag direction picks the thumb.</p>
-    </div>
-    <div class="card">
-      <h3>Touch steppers · <code>touch-steppers</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Touch steppers · <code>touch-steppers</code></h3>
       <kakao-range-slider min="0" max="200" step="10" value="40,140" unit="px" label="Width" touch-steppers></kakao-range-slider>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Shown automatically on touch screens: 44px buttons either side of each field, hold to repeat.</p>
-    </div>
-    <div class="card">
-      <h3>Disabled</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled</h3>
       <kakao-range-slider min="0" max="100" step="5" value="25,75" unit="%" label="Volume" disabled></kakao-range-slider>
-    </div>
-    <div class="card">
-      <h3>Themed</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Themed</h3>
       <kakao-range-slider min="0" max="50" step="5" value="10,35" unit="kg" label="Weight"
         style="--kakao-range-slider-accent:#4f46e5;--kakao-range-slider-track-height:6px;--kakao-range-slider-thumb-size:20px"></kakao-range-slider>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Every setting falls back to the slider's (<code>--kakao-slider-accent</code> …), so both stay in step unless one is set apart.</p>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In a form</h2>
   <p>One <code>name</code>, two entries: low first, then high.</p>
-  <div class="card">
+  <kakao-card>
     <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
       <kakao-range-slider name="price" min="0" max="500" step="25" value="100,300" min-gap="50" unit="€" label="Price"></kakao-range-slider>
       <div class="row">
@@ -84,11 +86,11 @@
       </div>
     </form>
     <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
-  </div>
+  </kakao-card>
 
   <h2>Playground</h2>
   <p>Drive the API of the first range slider by hand.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar">
       <kakao-button id="apiSet" label="setValue(60, 120)" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiData" label="setData({max:1000,unit:&quot;ms&quot;})" variant="secondary" size="sm"></kakao-button>
@@ -106,7 +108,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>min</code>, <code>max</code>, <code>step</code>, <code>value</code>, <code>min-gap</code>, <code>unit</code>, <code>label</code>, <code>label-low</code>, <code>label-high</code>, <code>name</code>, <code>disabled</code>, <code>scroll-input</code>, <code>touch-steppers</code>. Events: <code>range-slider-change</code>, <code>range-slider-input</code>, <code>range-slider-focus</code>, <code>range-slider-blur</code>, plus <code>input</code> and <code>change</code>. Full reference in the header of <code>range-slider.js</code>.</footer>
 </main>

@@ -17,10 +17,12 @@
 <script src="../switch-group/switch-group.js" defer></script>
 <script src="../step-switch/step-switch.js" defer></script>
 <script src="../slider/slider.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -37,52 +39,52 @@
   <h2>Variants</h2>
   <p>All switches on a page stay in sync, also across tabs.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Icon only</h3>
+    <kakao-card>
+      <h3 slot="header">Icon only</h3>
       <kakao-theme-switch></kakao-theme-switch>
-    </div>
-    <div class="card">
-      <h3>With label · <code>show-label</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">With label · <code>show-label</code></h3>
       <kakao-theme-switch show-label></kakao-theme-switch>
-    </div>
-    <div class="card">
-      <h3>Disabled</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled</h3>
       <kakao-theme-switch disabled></kakao-theme-switch>
-    </div>
-    <div class="card">
-      <h3>Dropdown · <code>kakao-button</code> menu</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Dropdown · <code>kakao-button</code> menu</h3>
       <kakao-button class="theme-menu" theme-picker label="Theme" variant="secondary" show-selected
         list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
       <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Picks any theme, also ones the switch doesn't cycle through. Run the pointer down the list and the page cross-fades after it; the check mark and the label move with the theme. No page script: <code>theme-switch.js</code> wires it.</p>
-    </div>
-    <div class="card full">
-      <h3>Step switch · <code>theme-picker</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Step switch · <code>theme-picker</code></h3>
       <kakao-step-switch theme-picker label="Theme" list-data='[
         {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
         {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
         {"value":"forest","label":"Forest"}]'></kakao-step-switch>
       <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The page follows the thumb: drag it across the track and every step it crosses changes the theme, also the ones it only flies over when you tap further away. The page cross-fades between themes instead of rippling, so nothing freezes under the pointer. No page script: <code>theme-switch.js</code> wires it.</p>
-    </div>
-    <div class="card">
-      <h3>Themed components</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Themed components</h3>
       <div class="row">
         <kakao-button label="Save"></kakao-button>
         <kakao-button label="Cancel" variant="secondary"></kakao-button>
       </div>
       <kakao-switch-group list-data='[{"name":"a","label":"Notifications","checked":true}]'></kakao-switch-group>
       <kakao-slider min="0" max="100" value="60" label="Volume"></kakao-slider>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Accessibility</h2>
   <p>Every theme has to pass <code>node tools/check-themes.js</code>: text 4.5:1, borders, focus and filled controls 3:1.</p>
-  <div class="card">
+  <kakao-card>
     <p>With <em>reduce motion</em> turned on in the system, the theme changes at once, without the ripple or the icon morph. Keyboard activation starts the ripple at the button. A polite live region announces the new theme. With the system's <em>increase contrast</em> setting, muted text and borders get stronger in every theme.</p>
-  </div>
+  </kakao-card>
 
   <h2>Playground</h2>
   <p>Drive the first switch by hand.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar">
       <kakao-button id="toLight" label="setTheme(&quot;light&quot;)" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="toDark" label="setTheme(&quot;dark&quot;)" variant="secondary" size="sm"></kakao-button>
@@ -99,7 +101,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>list-data</code>, <code>storage-key</code>, <code>show-label</code>, <code>disabled</code>. Events: <code>theme-change</code>. Pickers follow the pointer via <code>step-cross</code> (step switch) and <code>kakao-button-menu-hover</code> (menu), and pick via <code>kakao-button-select</code>. Themes live in <code>shared/themes.css</code>. Full reference in the header of <code>theme-switch.js</code>.</footer>
 </main>

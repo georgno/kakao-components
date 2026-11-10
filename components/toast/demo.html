@@ -19,10 +19,12 @@
 <style>
   .note { color: var(--muted); font-size: 0.85rem; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -39,7 +41,7 @@
   <h2>Tones · <code>KakaoToast.show()</code></h2>
   <p>Info and success leave after 8 seconds (<code>--kakao-alert-duration</code>); warning and danger stay until closed. Showing a toast never moves focus; the region is a polite live region and each toast keeps the alert's role.</p>
   <div class="grid">
-    <div class="card full">
+    <kakao-card>
       <div class="row">
         <kakao-button data-tone="info" label="Info" variant="secondary" size="sm"></kakao-button>
         <kakao-button data-tone="success" label="Success" variant="secondary" size="sm"></kakao-button>
@@ -55,13 +57,13 @@
           KakaoToast.show({ tone: 'danger', heading: 'Upload failed', message: 'invoice-march.pdf is larger than 20 MB.' });
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Stack · <code>max</code></h2>
   <p>At most <code>max</code> toasts are visible (default 3); older ones wait hidden behind the stack, with their timers stopped, and come forward as newer ones leave. While the stack is fanned out (pointer or focus), every timer in it pauses. On touch, tap the stack to fan it out.</p>
   <div class="grid">
-    <div class="card full">
+    <kakao-card>
       <div class="row">
         <kakao-button id="burst-1" label="Show 1" size="sm"></kakao-button>
         <kakao-button id="burst-3" label="Show 3" size="sm"></kakao-button>
@@ -81,13 +83,13 @@
           document.querySelectorAll('kakao-toast kakao-alert').forEach((alert) => alert.close());
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Corner · <code>position</code></h2>
   <p><code>bottom-right</code> (default), <code>bottom-left</code>, <code>top-right</code>, <code>top-left</code>. The newest toast is nearest the corner. Top corners sit below the header bar; below 30rem the stack spans the screen. An aside menu opening on the same side pushes the stack beside its panel when there is room.</p>
   <div class="grid">
-    <div class="card full">
+    <kakao-card>
       <div class="row">
         <kakao-button data-position="bottom-right" label="Bottom right" variant="secondary" size="sm"></kakao-button>
         <kakao-button data-position="bottom-left" label="Bottom left" variant="secondary" size="sm"></kakao-button>
@@ -97,14 +99,14 @@
       <template data-code>
         <kakao-toast position="top-left"></kakao-toast>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Timer, action and handle</h2>
   <p><code>duration</code> in ms sets the time for any tone; <code>0</code> keeps the toast. <code>action</code> adds a button under the message that closes the toast unless its <code>onClick</code> returns <code>false</code>. <code>show()</code> returns a handle with <code>close()</code> and a <code>closed</code> promise.</p>
   <p class="note">A message that disappears can be gone before someone using a screen reader or magnifier, or reading slowly, gets to it. Keep toasts short, and don't put the only copy of important information in one.</p>
   <div class="grid">
-    <div class="card full">
+    <kakao-card>
       <div class="row" data-demo-only>
         <kakao-button id="short" label="Info, 3s" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="sticky" label="Success, stays" variant="secondary" size="sm"></kakao-button>
@@ -125,13 +127,13 @@
           handle.close();
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Written toasts</h2>
   <p>A <code>&lt;kakao-alert&gt;</code> written into <code>&lt;kakao-toast&gt;</code> (server flash messages) or appended to it later becomes a toast; its own <code>duration</code> is the toast's time. Toasts already in the page at load are shown but not announced.</p>
   <div class="grid">
-    <div class="card full" data-code-with="toasts">
+    <kakao-card data-code-with="toasts">
       <div class="row" data-demo-only>
         <kakao-button id="append" label="Append a kakao-alert" variant="secondary" size="sm"></kakao-button>
       </div>
@@ -145,7 +147,7 @@
         </script>
       </template>
       <div class="log" id="log" role="log" aria-label="Event log"></div>
-    </div>
+    </kakao-card>
   </div>
 
   <footer>Attributes: <code>position</code>, <code>max</code>, <code>label</code>, <code>expanded</code> (set by the region). Method: <code>show(options)</code>; helper <code>KakaoToast.show(options)</code> with <code>tone</code>, <code>heading</code>, <code>message</code>, <code>duration</code>, <code>dismissible</code>, <code>closeLabel</code>, <code>action</code>, <code>region</code>. Events: <code>toast-show</code>, <code>toast-hidden</code> (with <code>reason</code>). Full reference in the header of <code>toast.js</code>.</footer>

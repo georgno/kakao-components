@@ -21,10 +21,12 @@
   .narrow { max-width: 17rem; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -41,8 +43,8 @@
   <h2>Removing</h2>
   <p>Remove chips with the × (mouse, or Tab and Enter). Chips at the start of a row slide up to the end of the row above.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Wrapping into rows</h3>
+    <kakao-card>
+      <h3 slot="header">Wrapping into rows</h3>
       <div class="narrow">
         <kakao-chip-list id="filters" label="Active filters">
         <kakao-chip removable value="hd">HD only</kakao-chip>
@@ -60,7 +62,7 @@
         <kakao-button id="add" label="Add a chip" variant="ghost" size="sm"></kakao-button>
         <kakao-button id="drop-first" label="Remove the first by script" variant="ghost" size="sm"></kakao-button>
       </div>
-    </div>
+    </kakao-card>
   </div>
 </main>
 <script>

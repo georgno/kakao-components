@@ -17,6 +17,8 @@
 <script src="date-input.js" defer></script>
 <script src="../select/select.js" defer></script>
 <script src="../combobox/combobox.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 <style>
@@ -25,7 +27,7 @@
   .locale-out b { color: var(--kakao-color-text, inherit); font-weight: 600; }
 </style>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -41,58 +43,58 @@
 
   <h2>Types</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Date · <code>type="date"</code> (default)</h3>
+    <kakao-card>
+      <h3 slot="header">Date · <code>type="date"</code> (default)</h3>
       <kakao-date-input label="Start date" value="2026-03-04" hint="Value 2026-03-04"></kakao-date-input>
-    </div>
-    <div class="card">
-      <h3>Time · <code>step="900"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Time · <code>step="900"</code></h3>
       <kakao-date-input type="time" label="Start time" value="09:30" step="900" hint="Picker in 15-minute steps (Chromium)"></kakao-date-input>
-    </div>
-    <div class="card">
-      <h3>Date and time · <code>datetime-local</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Date and time · <code>datetime-local</code></h3>
       <kakao-date-input type="datetime-local" label="Meeting" value="2026-03-04T14:30"></kakao-date-input>
-    </div>
-    <div class="card">
-      <h3>Month</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Month</h3>
       <kakao-date-input type="month" label="Billing month" value="2026-03" hint="Firefox and desktop Safari have no month field: type YYYY-MM."></kakao-date-input>
-    </div>
-    <div class="card">
-      <h3>Week</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Week</h3>
       <kakao-date-input type="week" label="Sprint week" value="2026-W10" hint="Firefox and desktop Safari have no week field: type YYYY-Www."></kakao-date-input>
-    </div>
-    <div class="card">
-      <h3>Min · max</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Min · max</h3>
       <kakao-date-input id="range" label="Delivery" min="2026-11-16" max="2026-11-27" value="2026-11-30"
         hint="Weekdays from 16 to 27 November"></kakao-date-input>
       <p class="locale-out" id="rangeOut"></p>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Today shortcut · <code>today</code></h2>
   <p>A tag in the row under the field sets the current day, time, month or week in one click, as a user edit (<code>input</code> and <code>change</code> fire once each). Its label follows the locale; <code>today-label</code> overrides it. Outside <code>min</code> / <code>max</code> it stays, disabled, and says why: in its title on hover and in its accessible description for keyboard and screen reader users.</p>
   <div class="grid" id="todayGrid">
-    <div class="card">
-      <h3>Date</h3>
+    <kakao-card>
+      <h3 slot="header">Date</h3>
       <kakao-date-input today label="Entry date" hint="Today in one click"></kakao-date-input>
-    </div>
-    <div class="card">
-      <h3>Time · <code>step="900"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Time · <code>step="900"</code></h3>
       <kakao-date-input today type="time" step="900" label="Started at" hint="Now, to the nearest quarter hour"></kakao-date-input>
-    </div>
-    <div class="card">
-      <h3>Date and time</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Date and time</h3>
       <kakao-date-input today type="datetime-local" label="Logged at"></kakao-date-input>
-    </div>
-    <div class="card">
-      <h3>Month · week</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Month · week</h3>
       <div class="stack">
         <kakao-date-input today type="month" label="Billing month"></kakao-date-input>
         <kakao-date-input today type="week" label="Sprint week"></kakao-date-input>
       </div>
-    </div>
-    <div class="card">
-      <h3>Out of range · disabled tag</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Out of range · disabled tag</h3>
       <kakao-date-input today id="todayOut" label="Delivery" hint="Earliest date is next week"></kakao-date-input>
       <template data-code>
         <script>
@@ -102,29 +104,29 @@
           document.getElementById('todayOut').setAttribute('min', next.toISOString().slice(0, 10));
         </script>
       </template>
-    </div>
-    <div class="card">
-      <h3>Locale · <code>today-label</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Locale · <code>today-label</code></h3>
       <div class="stack">
         <kakao-date-input today lang="de-AT" label="Datum"></kakao-date-input>
         <kakao-date-input today today-label="Use today" label="Custom label"></kakao-date-input>
       </div>
-    </div>
+    </kakao-card>
   </div>
   <p class="locale-out" id="todayLog">Use a tag to see its events.</p>
 
   <h2>Beside the other fields</h2>
-  <div class="card">
+  <kakao-card>
     <div class="stack" style="max-width:22rem">
       <kakao-select label="Room" value="b" list-data='[{"value":"a","label":"Room A"},{"value":"b","label":"Room B"}]'></kakao-select>
       <kakao-combobox label="Host" value="Ana" list-data='["Ana","Ben","Chiara"]'></kakao-combobox>
       <kakao-date-input label="Day" value="2026-03-04"></kakao-date-input>
       <kakao-date-input type="time" label="Time" value="14:30"></kakao-date-input>
     </div>
-  </div>
+  </kakao-card>
 
   <h2>Locale</h2>
-  <div class="card">
+  <kakao-card>
     <p style="margin-top:0">The field passes the locale (the <code>locale</code> attribute, else the nearest <code>lang</code>) to the native input. <b>The browser still draws the field in its own format</b>: Chromium in the browser's language, Firefox in its language or the system's regional format, Safari in the system's region. None of them reads <code>lang</code>. What a page can format itself is shown below each field.</p>
     <div class="toolbar">
       <kakao-button class="loc" data-loc="en-US" label="en-US" variant="secondary" size="sm"></kakao-button>
@@ -146,30 +148,30 @@
         </div>
       </template>
     </div>
-  </div>
+  </kakao-card>
 
   <h2>States</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Sizes</h3>
+    <kakao-card>
+      <h3 slot="header">Sizes</h3>
       <div class="stack">
         <kakao-date-input size="sm" label="Small" value="2026-03-04"></kakao-date-input>
         <kakao-date-input label="Medium" value="2026-03-04"></kakao-date-input>
         <kakao-date-input size="lg" label="Large" value="2026-03-04"></kakao-date-input>
       </div>
-    </div>
-    <div class="card">
-      <h3>Disabled · read only · error</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled · read only · error</h3>
       <div class="stack">
         <kakao-date-input disabled label="Disabled" value="2026-03-04"></kakao-date-input>
         <kakao-date-input readonly label="Read only" value="2026-03-04"></kakao-date-input>
         <kakao-date-input type="time" label="Check-in" error="Check-in starts at 15:00." value="11:00"></kakao-date-input>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In a form</h2>
-  <div class="card">
+  <kakao-card>
     <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
       <kakao-date-input name="arrival" label="Arrival" required min="2026-01-01"></kakao-date-input>
       <kakao-date-input name="time" type="time" label="Arrival time" value="15:00" min="15:00" max="22:00" hint="Between 15:00 and 22:00"></kakao-date-input>
@@ -180,10 +182,10 @@
       </div>
     </form>
     <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
-  </div>
+  </kakao-card>
 
   <h2>Playground</h2>
-  <div class="card">
+  <kakao-card>
     <kakao-date-input id="play" label="Playground" type="date" value="2026-03-04" style="max-width:22rem"></kakao-date-input>
     <div class="toolbar">
       <kakao-button id="apiValue" label='value = "2026-12-24"' variant="secondary" size="sm"></kakao-button>
@@ -193,7 +195,7 @@
       <kakao-button id="apiToday" label="toggle today" variant="secondary" size="sm"></kakao-button>
     </div>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Full reference in the header of <code>date-input.js</code>.</footer>
 </main>

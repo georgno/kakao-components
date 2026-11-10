@@ -15,12 +15,14 @@
 <link rel="stylesheet" href="../button/button.css" />
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="header-bar.js" defer></script>
 <style>
   /* The examples sit in cards: they don't stick, and their scrolled state is
      set by hand (no-scroll-watch). */
-  .card kakao-header-bar { position: relative; z-index: auto; }
+  kakao-card kakao-header-bar { position: relative; z-index: auto; }
   .frame {
     overflow: hidden;
     border: 1px solid var(--line);
@@ -43,7 +45,7 @@
   .tall { min-height: 120vh; }
 </style>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -60,17 +62,17 @@
   <h2>Slots</h2>
   <p>Start and end hug the edges; the title stays centred while there is room. Empty regions take no space.</p>
   <div class="grid">
-    <div class="card full">
-      <h3>Tools only · <code>slot="end"</code></h3>
+    <kakao-card>
+      <h3 slot="header">Tools only · <code>slot="end"</code></h3>
       <div class="frame">
         <kakao-header-bar no-scroll-watch>
           <kakao-button slot="end" label="Theme" variant="secondary" size="sm"></kakao-button>
           <kakao-button slot="end" icon="fas fa-gear" icon-position="only" aria-label="Settings" variant="ghost" size="sm"></kakao-button>
         </kakao-header-bar>
       </div>
-    </div>
-    <div class="card full">
-      <h3>Menu, title and tools · <code>start</code>, default, <code>end</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Menu, title and tools · <code>start</code>, default, <code>end</code></h3>
       <div class="frame">
         <kakao-header-bar no-scroll-watch>
           <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
@@ -78,9 +80,9 @@
           <kakao-button slot="end" icon="fas fa-magnifying-glass" icon-position="only" aria-label="Search" variant="ghost" size="sm"></kakao-button>
         </kakao-header-bar>
       </div>
-    </div>
-    <div class="card full">
-      <h3>Navigation · <code>slot="nav"</code> + <code>nav-label</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Navigation · <code>slot="nav"</code> + <code>nav-label</code></h3>
       <div class="frame">
         <kakao-header-bar no-scroll-watch nav-label="Library sections">
           <span slot="start" class="bar-title">Library</span>
@@ -91,14 +93,14 @@
         </kakao-header-bar>
       </div>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The links are wrapped in a <code>&lt;nav&gt;</code> named by <code>nav-label</code>. Without <code>nav</code> children there is no navigation landmark.</p>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Scrolled</h2>
   <p>The bar sets <code>scrolled</code> itself while the window is scrolled down. With <code>no-scroll-watch</code> the page sets it (for previews, or pages that scroll inside a container). Under reduced transparency the background is solid.</p>
   <div class="grid">
-    <div class="card full">
-      <h3>Over content · <code>scrolled</code></h3>
+    <kakao-card>
+      <h3 slot="header">Over content · <code>scrolled</code></h3>
       <div class="frame busy">
         <kakao-header-bar id="manual" no-scroll-watch scrolled>
           <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
@@ -110,7 +112,7 @@
       <div class="toolbar">
         <kakao-button id="toggleScrolled" variant="secondary" size="sm" pressed></kakao-button>
       </div>
-    </div>
+    </kakao-card>
   </div>
   <div class="tall" aria-hidden="true"></div>
 </main>

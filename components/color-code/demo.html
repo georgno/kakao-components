@@ -11,6 +11,7 @@
 <script src="../../shared/page-cloak.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
 <script src="../../shared/demo.js"></script>
 <script src="color-code.js" defer></script>
 <script src="../text-input/text-input.js" defer></script>
@@ -20,10 +21,13 @@
   .red-text { color: var(--kakao-color-danger); }
   .live-out { margin-top: 0.75rem; }
 </style>
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -39,17 +43,17 @@
 
   <h2>Syntaxes</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Hex · 3, 4, 6 and 8 digits</h3>
+    <kakao-card>
+      <h3 slot="header">Hex · 3, 4, 6 and 8 digits</h3>
       <div class="codes">
         <kakao-color-code>#f80</kakao-color-code>
         <kakao-color-code>#f808</kakao-color-code>
         <kakao-color-code>#4f46e5</kakao-color-code>
         <kakao-color-code>#4f46e580</kakao-color-code>
       </div>
-    </div>
-    <div class="card">
-      <h3>Functions</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Functions</h3>
       <div class="codes">
         <kakao-color-code>rgb(220 38 38)</kakao-color-code>
         <kakao-color-code>rgba(0, 0, 0, .3)</kakao-color-code>
@@ -63,42 +67,42 @@
         <kakao-color-code>color(display-p3 1 0.5 0)</kakao-color-code>
         <kakao-color-code>color-mix(in oklch, #4f46e5 40%, white)</kakao-color-code>
       </div>
-    </div>
-    <div class="card">
-      <h3>Keywords</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Keywords</h3>
       <div class="codes">
         <kakao-color-code>rebeccapurple</kakao-color-code>
         <kakao-color-code>white</kakao-color-code>
         <kakao-color-code>transparent</kakao-color-code>
         <span class="red-text">Red text: <kakao-color-code>currentColor</kakao-color-code></span>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Theme variables · <code>value</code></h2>
   <div class="grid">
-    <div class="card">
-      <h3>A name as the label</h3>
+    <kakao-card>
+      <h3 slot="header">A name as the label</h3>
       <div class="codes">
         <kakao-color-code value="var(--kakao-color-ink)">ink</kakao-color-code>
         <kakao-color-code value="var(--kakao-color-primary)">primary</kakao-color-code>
         <kakao-color-code value="var(--kakao-color-danger)">danger</kakao-color-code>
         <kakao-color-code value="var(--kakao-color-subtle)">subtle</kakao-color-code>
       </div>
-    </div>
-    <div class="card">
-      <h3>The variable as the label</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">The variable as the label</h3>
       <div class="codes">
         <kakao-color-code>var(--kakao-color-success)</kakao-color-code>
         <kakao-color-code>var(--kakao-color-warning)</kakao-color-code>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Edge cases</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Same as the fill or the page</h3>
+    <kakao-card>
+      <h3 slot="header">Same as the fill or the page</h3>
       <p class="muted">The ring keeps the swatch visible.</p>
       <div class="codes">
         <kakao-color-code value="var(--kakao-color-subtle)">same as fill</kakao-color-code>
@@ -107,34 +111,34 @@
       <div class="codes on-ink" style="margin-top:.6rem">
         <kakao-color-code value="var(--kakao-color-ink)">ink on ink</kakao-color-code>
       </div>
-    </div>
-    <div class="card">
-      <h3>Transparency</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Transparency</h3>
       <p class="muted">A checkerboard shows through.</p>
       <div class="codes">
         <kakao-color-code>rgb(0 0 0 / 15%)</kakao-color-code>
         <kakao-color-code>rgb(0 0 0 / 50%)</kakao-color-code>
         <kakao-color-code>#4f46e540</kakao-color-code>
       </div>
-    </div>
-    <div class="card">
-      <h3>Not a colour</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Not a colour</h3>
       <p class="muted">An empty dashed box, and <code>:state(invalid)</code>.</p>
       <div class="codes">
         <kakao-color-code>16px</kakao-color-code>
         <kakao-color-code>#12345</kakao-color-code>
         <kakao-color-code>blurple</kakao-color-code>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In text</h2>
-  <div class="card">
+  <kakao-card>
     <p>The primary colour <kakao-color-code>#4f46e5</kakao-color-code> is 6.3:1 on white; dark uses <kakao-color-code>#818cf8</kakao-color-code>. It sits on the line like a <code>code</code> span.</p>
-  </div>
+  </kakao-card>
 
   <h2>Live</h2>
-  <div class="card">
+  <kakao-card>
     <kakao-text-input id="live-in" label="Any colour" value="oklch(65% 0.2 30)" spellcheck="false"></kakao-text-input>
     <div class="live-out"><kakao-color-code id="live-out">oklch(65% 0.2 30)</kakao-color-code> <span class="muted" id="live-state" data-demo-only></span></div>
     <template data-code>
@@ -146,7 +150,7 @@
         });
       </script>
     </template>
-  </div>
+  </kakao-card>
 </main>
 <script>
   customElements.whenDefined('kakao-color-code').then(() => {

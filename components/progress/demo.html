@@ -19,10 +19,12 @@
   .bars { display: grid; gap: 1.25rem; align-content: start; }
   .note { color: var(--muted); font-size: 0.85rem; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -39,7 +41,7 @@
   <h2>Step through it</h2>
   <p>Step the value and watch each segment pop as the fill completes it. Jump past several and they pop one after the other. Going down and back up inside a segment doesn't pop again; a segment pops again only after it has emptied.</p>
   <div class="grid">
-    <div class="card full">
+    <kakao-card>
       <div class="bars">
         <kakao-progress id="play" label="Uploading photos" value="0" max="12" show-value></kakao-progress>
       </div>
@@ -65,50 +67,60 @@
           progress.addEventListener('progress-segment-complete', (e) => console.log(e.detail));
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Segments · <code>segments</code></h2>
   <p>Default 4. <code>segments="1"</code> is one plain bar. The segment the value lands in fills partly.</p>
   <div class="grid">
-    <div class="card full bars">
-      <kakao-progress label="One segment" segments="1" value="0.62" show-value></kakao-progress>
-      <kakao-progress label="Step 2 of 3" segments="3" value="2" max="3" show-value value-text="2 of 3"></kakao-progress>
-      <kakao-progress label="Four segments (default)" value="0.6" show-value></kakao-progress>
-      <kakao-progress label="Eight segments" segments="8" value="5.5" max="8" show-value></kakao-progress>
-    </div>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-progress label="One segment" segments="1" value="0.62" show-value></kakao-progress>
+        <kakao-progress label="Step 2 of 3" segments="3" value="2" max="3" show-value value-text="2 of 3"></kakao-progress>
+        <kakao-progress label="Four segments (default)" value="0.6" show-value></kakao-progress>
+        <kakao-progress label="Eight segments" segments="8" value="5.5" max="8" show-value></kakao-progress>
+      </div>
+    </kakao-card>
   </div>
 
   <h2>Indeterminate</h2>
   <p>No <code>value</code>: a highlight sweeps through the segments. With reduced motion it fades in place instead.</p>
   <div class="grid">
-    <div class="card bars">
-      <kakao-progress label="Loading"></kakao-progress>
-      <kakao-progress label="Connecting" segments="1" show-value value-text="Waiting for the server"></kakao-progress>
-    </div>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-progress label="Loading"></kakao-progress>
+        <kakao-progress label="Connecting" segments="1" show-value value-text="Waiting for the server"></kakao-progress>
+      </div>
+    </kakao-card>
   </div>
 
   <h2>Sizes · <code>size</code> and tones · <code>tone</code></h2>
   <div class="grid">
-    <div class="card bars">
-      <kakao-progress size="sm" label="Small" value="0.45" show-value></kakao-progress>
-      <kakao-progress label="Medium (default)" value="0.45" show-value></kakao-progress>
-      <kakao-progress size="lg" label="Large" value="0.45" show-value></kakao-progress>
-    </div>
-    <div class="card bars">
-      <kakao-progress label="Primary (default)" value="0.7" show-value></kakao-progress>
-      <kakao-progress tone="success" label="Success" value="1" show-value></kakao-progress>
-      <kakao-progress tone="warning" label="Warning" value="0.85" show-value value-text="85 of 100 GB"></kakao-progress>
-      <kakao-progress tone="danger" label="Danger" value="0.3" show-value></kakao-progress>
-    </div>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-progress size="sm" label="Small" value="0.45" show-value></kakao-progress>
+        <kakao-progress label="Medium (default)" value="0.45" show-value></kakao-progress>
+        <kakao-progress size="lg" label="Large" value="0.45" show-value></kakao-progress>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-progress label="Primary (default)" value="0.7" show-value></kakao-progress>
+        <kakao-progress tone="success" label="Success" value="1" show-value></kakao-progress>
+        <kakao-progress tone="warning" label="Warning" value="0.85" show-value value-text="85 of 100 GB"></kakao-progress>
+        <kakao-progress tone="danger" label="Danger" value="0.3" show-value></kakao-progress>
+      </div>
+    </kakao-card>
   </div>
 
   <h2>No visible label</h2>
   <p>Without <code>label</code>, name the bar with <code>aria-label</code>.</p>
   <div class="grid">
-    <div class="card bars">
-      <kakao-progress aria-label="Profile completeness" value="3" max="4"></kakao-progress>
-    </div>
+    <kakao-card>
+      <div class="bars" data-demo-wrap>
+        <kakao-progress aria-label="Profile completeness" value="3" max="4"></kakao-progress>
+      </div>
+    </kakao-card>
   </div>
 
   <footer>Attributes: <code>value</code>, <code>max</code> (default 1), <code>segments</code> (default 4), <code>label</code>, <code>show-value</code>, <code>value-text</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>), <code>tone</code> (<code>primary</code> · <code>success</code> · <code>warning</code> · <code>danger</code>, alias <code>error</code>). Properties: <code>value</code>, <code>max</code>, <code>segments</code>, <code>position</code>. Event: <code>progress-segment-complete</code>. Full reference in the header of <code>progress.js</code>.</footer>

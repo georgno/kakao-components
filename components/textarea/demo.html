@@ -16,10 +16,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
     <script src="textarea.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -35,41 +37,41 @@
 
   <h2>Basic</h2>
   <div class="grid">
-    <div class="card">
-      <h3>With label</h3>
+    <kakao-card>
+      <h3 slot="header">With label</h3>
       <kakao-textarea id="a1" label="Message" name="message" rows="4" placeholder="Write a message…"></kakao-textarea>
-    </div>
-    <div class="card">
-      <h3>Counter · <code>maxlength</code> + <code>counter</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Counter · <code>maxlength</code> + <code>counter</code></h3>
       <kakao-textarea label="Bio" maxlength="140" counter value="Design systems, mostly."></kakao-textarea>
-    </div>
-    <div class="card">
-      <h3>Auto-growing · <code>autosize</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Auto-growing · <code>autosize</code></h3>
       <kakao-textarea label="Notes" autosize rows="2" hint="Grows with what you type."></kakao-textarea>
-    </div>
-    <div class="card">
-      <h3>Error</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Error</h3>
       <kakao-textarea label="Reason" value="Too short" error="Please write at least 20 characters."></kakao-textarea>
-    </div>
-    <div class="card">
-      <h3>Sizes · resize</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Sizes · resize</h3>
       <div style="display:grid;gap:.6rem">
         <kakao-textarea size="sm" rows="2" value="Small"></kakao-textarea>
         <kakao-textarea size="lg" rows="2" resize="none" value="Large, no resize"></kakao-textarea>
       </div>
-    </div>
-    <div class="card">
-      <h3>In a form · <code>required</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">In a form · <code>required</code></h3>
       <form id="form2" style="display:grid;gap:.6rem">
         <kakao-textarea name="feedback" label="Feedback" required rows="3"></kakao-textarea>
         <div class="row"><kakao-button label="Submit" type="submit"></kakao-button></div>
       </form>
       <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut2">Submit to see the submitted value.</p>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar" style="margin-top:0">
       <kakao-button id="apiFocus" label="focus()" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiValue" label="value = long text" variant="secondary" size="sm"></kakao-button>
@@ -83,7 +85,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Full reference in the header of <code>textarea.js</code>.</footer>
 </main>

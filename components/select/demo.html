@@ -15,10 +15,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="select.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -34,8 +36,8 @@
 
   <h2>Basic</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Single · child <code>&lt;option&gt;</code>s</h3>
+    <kakao-card>
+      <h3 slot="header">Single · child <code>&lt;option&gt;</code>s</h3>
       <kakao-select id="s1" label="Country" hint="Type to filter: “osterr” finds Österreich.">
         <option value="at">Österreich</option>
         <option value="de" selected>Deutschland</option>
@@ -46,9 +48,9 @@
         <option value="fr">France</option>
         <option value="it">Italia</option>
       </kakao-select>
-    </div>
-    <div class="card">
-      <h3>Groups · <code>&lt;optgroup&gt;</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Groups · <code>&lt;optgroup&gt;</code></h3>
       <kakao-select label="City" placeholder="Choose a city">
         <optgroup label="Germany">
           <option>Berlin</option><option>Hamburg</option><option>München</option><option>Köln</option>
@@ -60,15 +62,15 @@
           <option>Zürich</option><option>Genève</option><option>Basel</option>
         </optgroup>
       </kakao-select>
-    </div>
-    <div class="card">
-      <h3>Multiple · select all</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Multiple · select all</h3>
       <kakao-select id="s3" multiple label="Genres" value="drama,comedy"
         hint="Type “ma” and use “Select all N matches”: only the matches change."
         list-data='[{"value":"action","label":"Action"},{"value":"comedy","label":"Comedy"},{"value":"drama","label":"Drama"},{"value":"horror","label":"Horror"},{"value":"romance","label":"Romance"},{"value":"thriller","label":"Thriller"},{"value":"sci-fi","label":"Science fiction"},{"value":"doc","label":"Documentary"},{"value":"anim","label":"Animation"}]'></kakao-select>
-    </div>
-    <div class="card">
-      <h3>Long list · 200 items</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Long list · 200 items</h3>
       <kakao-select id="s4" multiple label="Products" placeholder="Pick products"></kakao-select>
       <template data-code>
         <script>
@@ -76,30 +78,30 @@
           document.getElementById('s4').options = products; // [{ value: 'p1', label: 'Oak desk Classic' }, …]
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>States</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Sizes</h3>
+    <kakao-card>
+      <h3 slot="header">Sizes</h3>
       <div style="display:grid;gap:.6rem">
         <kakao-select size="sm" label="Small" list-data='["36px","Other"]' value="36px"></kakao-select>
         <kakao-select label="Medium" list-data='["44px","Other"]' value="44px"></kakao-select>
         <kakao-select size="lg" label="Large" list-data='["52px","Other"]' value="52px"></kakao-select>
       </div>
-    </div>
-    <div class="card">
-      <h3>Disabled · error</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled · error</h3>
       <div style="display:grid;gap:.6rem">
         <kakao-select disabled label="Disabled" list-data='["One","Two"]' value="One"></kakao-select>
         <kakao-select label="Plan" error="Pick a plan to continue." list-data='["Free","Pro","Team"]'></kakao-select>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In a form</h2>
-  <div class="card">
+  <kakao-card>
     <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
       <kakao-select name="country" label="Country" required>
         <option value="">Please select</option>
@@ -115,10 +117,10 @@
       </div>
     </form>
     <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
-  </div>
+  </kakao-card>
 
   <h2>Playground</h2>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar" style="margin-top:0">
       <kakao-button id="apiValues" label='values = ["action","horror"]' variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
@@ -134,7 +136,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Full reference in the header of <code>select.js</code>.</footer>
 </main>

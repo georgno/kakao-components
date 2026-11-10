@@ -20,7 +20,6 @@
 <script src="aside-sheet.js" defer></script>
 <style>
   .demo-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
-  .card.demo-row > * + * { margin-top: 0; }
   /* the sheets are fixed; this keeps the page tall enough to show the scroll lock */
   main { min-height: 160vh; }
   /* content inside the sheets */
@@ -39,10 +38,12 @@
   .comment-form kakao-text-input { flex: 1 1 12rem; }
   .muted-line { color: var(--kakao-color-muted); font-size: 0.875rem; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -58,32 +59,34 @@
 
   <h2>Four sides</h2>
   <p>Each button opens its sheet through the sheet's <code>for</code> attribute: no script. Escape, a click on the covered page or the close button ends it, and focus goes back to the button.</p>
-  <div class="card demo-row" data-code-with="bottom top start end">
-    <kakao-button id="open-bottom" label="Bottom · share"></kakao-button>
-    <kakao-button id="open-top" label="Top · search" variant="secondary"></kakao-button>
-    <kakao-button id="open-start" label="Start · navigation" variant="secondary"></kakao-button>
-    <kakao-button id="open-end" label="End · filters" variant="secondary"></kakao-button>
-  </div>
+  <kakao-card data-code-with="bottom top start end">
+    <div class="demo-row" data-demo-wrap>
+      <kakao-button id="open-bottom" label="Bottom · share"></kakao-button>
+      <kakao-button id="open-top" label="Top · search" variant="secondary"></kakao-button>
+      <kakao-button id="open-start" label="Start · navigation" variant="secondary"></kakao-button>
+      <kakao-button id="open-end" label="End · filters" variant="secondary"></kakao-button>
+    </div>
+  </kakao-card>
 
   <h2>Variants</h2>
   <div class="grid">
-    <div class="card" data-code-with="terms">
-      <h3>Long body · <code>handle</code></h3>
+    <kakao-card data-code-with="terms">
+      <h3 slot="header">Long body · <code>handle</code></h3>
       <p class="small muted" style="margin:0">Header and footer stay put; only the body scrolls. Drag the handle or the header down to close.</p>
       <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-terms" label="Terms" variant="secondary" size="sm"></kakao-button></div>
-    </div>
-    <div class="card" data-code-with="comments">
-      <h3>Form in the footer</h3>
+    </kakao-card>
+    <kakao-card data-code-with="comments">
+      <h3 slot="header">Form in the footer</h3>
       <p class="small muted" style="margin:0">A comment field that stays above the scrolling thread.</p>
       <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-comments" label="Comments" variant="secondary" size="sm"></kakao-button></div>
-    </div>
-    <div class="card" data-code-with="player">
-      <h3>Non-modal · <code>modal="false"</code></h3>
+    </kakao-card>
+    <kakao-card data-code-with="player">
+      <h3 slot="header">Non-modal · <code>modal="false"</code></h3>
       <p class="small muted" style="margin:0">No scrim, no focus trap, no scroll lock: the page stays usable behind it.</p>
       <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-player" label="Now playing" variant="secondary" size="sm"></kakao-button></div>
-    </div>
-    <div class="card" data-code-with="draft discard">
-      <h3>Cancelable close · <code>sheet-hide</code></h3>
+    </kakao-card>
+    <kakao-card data-code-with="draft discard">
+      <h3 slot="header">Cancelable close · <code>sheet-hide</code></h3>
       <p class="small muted" style="margin:0">Type something, then try to close: a dialog asks first and opens over the sheet.</p>
       <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-draft" label="Write a note" variant="secondary" size="sm"></kakao-button></div>
       <template data-code>
@@ -104,28 +107,28 @@
           });
         </script>
       </template>
-    </div>
-    <div class="card" data-code-with="consent">
-      <h3><code>no-dismiss</code></h3>
+    </kakao-card>
+    <kakao-card data-code-with="consent">
+      <h3 slot="header"><code>no-dismiss</code></h3>
       <p class="small muted" style="margin:0">Escape, the scrim and the close button do nothing; only the footer buttons end it.</p>
       <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-consent" label="Cookie choice" variant="secondary" size="sm"></kakao-button></div>
-    </div>
-    <div class="card" dir="rtl">
-      <h3>Right to left · <code>side="end"</code></h3>
+    </kakao-card>
+    <kakao-card dir="rtl">
+      <h3 slot="header">Right to left · <code>side="end"</code></h3>
       <p class="small muted" style="margin:0">Inside <code>dir="rtl"</code> the end side is the left edge.</p>
       <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-rtl" label="End in RTL" variant="secondary" size="sm"></kakao-button></div>
       <kakao-aside-sheet for="open-rtl" side="end" label="RTL sheet">
         <h2 slot="header">End side, right to left</h2>
         <p>This sheet sits inside an element with <code>dir="rtl"</code>, so <code>side="end"</code> attaches it to the left edge and its rounded corners face right.</p>
       </kakao-aside-sheet>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
   <p>Every sheet reports <code>sheet-show</code>, the cancelable <code>sheet-hide</code> and <code>sheet-hidden</code> (after the slide out), with the reason and the <code>data-close</code> value.</p>
-  <div class="card">
+  <kakao-card>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>open</code>, <code>side</code> (<code>bottom</code> · <code>top</code> · <code>start</code> · <code>end</code>; <code>left</code> · <code>right</code>), <code>for</code>, <code>label</code>, <code>modal="false"</code>, <code>no-dismiss</code>, <code>no-close-button</code>, <code>close-label</code>, <code>handle</code>, <code>contained</code>. Methods: <code>show()</code>, <code>hide(returnValue)</code>, <code>toggle()</code>, <code>isOpen</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Full reference in the header of <code>aside-sheet.js</code>.</footer>
 </main>

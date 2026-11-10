@@ -20,10 +20,11 @@
   kakao-card h3[slot="header"] { font-size: 1.05rem; letter-spacing: -0.01em; }
   kakao-card p { color: var(--muted); }
 </style>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -106,7 +107,7 @@
         <kakao-button id="playBtn" label="Action"></kakao-button>
       </div>
     </kakao-card>
-    <div class="card" data-demo-only>
+    <kakao-card data-demo-only>
       <div class="toolbar" style="margin-top:0">
         <kakao-button id="v-primary" label="primary" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="v-secondary" label="secondary" variant="secondary" size="sm"></kakao-button>
@@ -116,7 +117,7 @@
         <kakao-button id="lessContent" label="Remove a line" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="moreContent" label="Add a line" variant="secondary" size="sm"></kakao-button>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <footer>Attributes: <code>no-glow</code>, <code>theme-glow</code>, <code>no-animate</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Parts: <code>card</code>, <code>glow</code>, <code>header</code>, <code>body</code>, <code>footer</code>. Full reference in the header of <code>card.js</code>.</footer>

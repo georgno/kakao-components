@@ -15,16 +15,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="multi-dropdown.js" defer></script>
-<style>
-  /* Open lists overlap the cards below; keep room so the first row isn't clipped visually */
-  .grid .card { overflow: visible; }
-  /* Three dropdowns side by side need wider columns than the default grid */
-  .grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
-</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -41,54 +37,56 @@
   <h2>Dates</h2>
   <p><code>type="date"</code> builds day, month and year. Impossible days are disabled; a day that no longer fits the month moves to its last day and comes back when it fits again.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Unknown day &amp; month</h3>
+    <kakao-card>
+      <h3 slot="header">Unknown day &amp; month</h3>
       <kakao-multi-dropdown id="dob" type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
-    </div>
-    <div class="card">
-      <h3>Every part may be unknown</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Every part may be unknown</h3>
       <kakao-multi-dropdown type="date" label="First visit" allow-unknown></kakao-multi-dropdown>
-    </div>
-    <div class="card">
-      <h3>Known date · year range</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Known date · year range</h3>
       <kakao-multi-dropdown type="date" label="Appointment" min-year="2026" max-year="2030" value="30.10.2026"></kakao-multi-dropdown>
-    </div>
-    <div class="card">
-      <h3>Disabled</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled</h3>
       <kakao-multi-dropdown type="date" label="Locked" value="01.01.2000" disabled></kakao-multi-dropdown>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Custom segments</h2>
   <p>Any segments from <code>list-data</code>, with a <code>separator</code> between them. Hovering an entry of an open list highlights it, exactly like the items of a <code>&lt;kakao-button&gt;</code> menu; Enter then takes the entry under the pointer.</p>
   <div class="grid">
-    <div class="card">
-      <h3>Product variant</h3>
+    <kakao-card>
+      <h3 slot="header">Product variant</h3>
       <kakao-multi-dropdown label="Variant" separator=" / " allow-unknown="color"
         list-data='[
           {"name":"size","label":"Size","options":["XS","S","M","L","XL"]},
           {"name":"color","label":"Colour","options":[{"value":"black","label":"black"},{"value":"white","label":"white"},{"value":"sand","label":"sand"}]}
         ]'></kakao-multi-dropdown>
-    </div>
-    <div class="card">
-      <h3>Time · <code>hh:mm</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Time · <code>hh:mm</code></h3>
       <kakao-multi-dropdown id="time" label="Reminder" separator=":" value="09:30"></kakao-multi-dropdown>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In a form</h2>
   <p>With <code>name</code> the joined value is submitted; <code>required</code> blocks submitting while a part is missing.</p>
-  <form class="card" id="form">
-    <kakao-multi-dropdown type="date" name="since" label="Customer since" allow-unknown="day" required></kakao-multi-dropdown>
-    <div class="toolbar">
-      <kakao-button label="Submit" type="submit" form="form" size="sm"></kakao-button>
-      <kakao-button label="Reset" variant="secondary" size="sm" id="formReset"></kakao-button>
-    </div>
-  </form>
+  <kakao-card>
+    <form id="form" data-demo-wrap>
+      <kakao-multi-dropdown type="date" name="since" label="Customer since" allow-unknown="day" required></kakao-multi-dropdown>
+      <div class="toolbar">
+        <kakao-button label="Submit" type="submit" form="form" size="sm"></kakao-button>
+        <kakao-button label="Reset" variant="secondary" size="sm" id="formReset"></kakao-button>
+      </div>
+    </form>
+  </kakao-card>
 
   <h2>Playground</h2>
   <p>Drive the “Date of birth” field by hand.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar">
       <kakao-button id="apiSet" label="value = &quot;29.02.2024&quot;" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiMonth" label="setPart(&quot;month&quot;, &quot;04&quot;)" variant="secondary" size="sm"></kakao-button>
@@ -107,7 +105,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>label</code>, <code>type</code>, <code>list-data</code>, <code>value</code>, <code>separator</code>, <code>placeholder</code>, <code>allow-unknown</code>, <code>min-year</code>, <code>max-year</code>, <code>disabled</code>, <code>required</code>, <code>name</code>. Events: <code>dropdown-change</code>, <code>dropdown-open</code>, <code>dropdown-close</code>. Keyboard and full reference in the header of <code>multi-dropdown.js</code>.</footer>
 </main>

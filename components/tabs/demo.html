@@ -16,10 +16,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="tabs.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -35,7 +37,7 @@
 
   <h2>Basic</h2>
   <p>Light-DOM component: load <code>tabs.css</code> next to the script.</p>
-  <div class="card">
+  <kakao-card>
     <kakao-tabs id="tabs" role="tablist">
       <kakao-tab controls="panel-one" selected>Tech</kakao-tab>
       <kakao-tab controls="panel-two">Photos</kakao-tab>
@@ -46,11 +48,11 @@
     <div id="panel-two" role="tabpanel" hidden>Your Photos</div>
     <div id="panel-three" role="tabpanel" hidden>Crafts &amp; DIY</div>
     <div id="panel-four" role="tabpanel" hidden>Travel (coming soon)</div>
-  </div>
+  </kakao-card>
 
   <h2>Playground</h2>
   <p>Programmatic selection and adding/removing tabs at runtime.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar">
       <kakao-button id="apiPhotos" label="select(&quot;panel-two&quot;)" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiCrafts" label="select(&quot;panel-three&quot;)" variant="secondary" size="sm"></kakao-button>
@@ -68,7 +70,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>API: <code>select(controlsOrUrlOrItem)</code>, event <code>tab-change</code> <code>{controls, item, url}</code>. <code>&lt;kakao-tab&gt;</code> attributes: <code>controls</code> / <code>data-controls</code>, <code>href</code> / <code>data-url</code>, <code>selected</code>, <code>disabled</code>, <code>data-no-select</code> (host for an embedded control). Full reference in the header of <code>tabs.js</code>.</footer>
 </main>

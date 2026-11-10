@@ -15,10 +15,12 @@
 <script src="../../shared/demo.js"></script>
 <script src="../button/button.js" defer></script>
 <script src="combobox.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -34,8 +36,8 @@
 
   <h2>Basic</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Suggestions · child <code>&lt;option&gt;</code>s</h3>
+    <kakao-card>
+      <h3 slot="header">Suggestions · child <code>&lt;option&gt;</code>s</h3>
       <kakao-combobox id="c1" label="Country" placeholder="Pick or type a country" hint="“osterr” finds Österreich. Any other text is kept too.">
         <option value="at">Österreich</option>
         <option value="de">Deutschland</option>
@@ -46,9 +48,9 @@
         <option value="fr">France</option>
         <option value="it">Italia</option>
       </kakao-combobox>
-    </div>
-    <div class="card">
-      <h3>Groups · <code>&lt;optgroup&gt;</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Groups · <code>&lt;optgroup&gt;</code></h3>
       <kakao-combobox label="City" placeholder="Pick or type a city">
         <optgroup label="Germany">
           <option>Berlin</option><option>Hamburg</option><option>München</option><option>Köln</option>
@@ -60,26 +62,26 @@
           <option>Zürich</option><option>Genève</option><option>Basel</option>
         </optgroup>
       </kakao-combobox>
-    </div>
-    <div class="card">
-      <h3>Free text · “Use …” row</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Free text · “Use …” row</h3>
       <kakao-combobox id="c3" label="Tag" placeholder="Add a tag" create-label="Create tag “{text}”"
         hint="Type “Release” to see the create row; picking it fires combobox-create."
         list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-combobox>
-    </div>
-    <div class="card">
-      <h3>Inline completion · <code>autocomplete="both"</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Inline completion · <code>autocomplete="both"</code></h3>
       <kakao-combobox autocomplete="both" label="Fruit" placeholder="Start typing"
         hint="Type “ba”: the field completes to Banana, the added part selected."
         list-data='["Apple","Apricot","Banana","Blackberry","Blueberry","Cherry","Grape","Mango","Melon","Orange","Peach","Pear"]'></kakao-combobox>
-    </div>
-    <div class="card">
-      <h3>Strict · only listed values</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Strict · only listed values</h3>
       <kakao-combobox strict label="Currency" value="eur" hint="Unlisted text goes back to the last value."
         list-data='[{"value":"eur","label":"Euro"},{"value":"chf","label":"Swiss franc"},{"value":"usd","label":"US dollar"},{"value":"gbp","label":"Pound sterling"}]'></kakao-combobox>
-    </div>
-    <div class="card">
-      <h3>Long list · 200 items</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Long list · 200 items</h3>
       <kakao-combobox id="c6" label="Product" placeholder="Search or name a product"></kakao-combobox>
       <template data-code>
         <script>
@@ -87,30 +89,30 @@
           document.getElementById('c6').options = products; // [{ value: 'p1', label: 'Oak desk Classic' }, …]
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>States</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Sizes</h3>
+    <kakao-card>
+      <h3 slot="header">Sizes</h3>
       <div style="display:grid;gap:.6rem">
         <kakao-combobox size="sm" label="Small" list-data='["36px","Other"]' value="36px"></kakao-combobox>
         <kakao-combobox label="Medium" list-data='["44px","Other"]' value="44px"></kakao-combobox>
         <kakao-combobox size="lg" label="Large" list-data='["52px","Other"]' value="52px"></kakao-combobox>
       </div>
-    </div>
-    <div class="card">
-      <h3>Disabled · error</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled · error</h3>
       <div style="display:grid;gap:.6rem">
         <kakao-combobox disabled label="Disabled" list-data='["One","Two"]' value="One"></kakao-combobox>
         <kakao-combobox label="Plan" error="Pick or name a plan." list-data='["Free","Pro","Team"]'></kakao-combobox>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In a form</h2>
-  <div class="card">
+  <kakao-card>
     <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
       <kakao-combobox name="city" label="City" required placeholder="Pick or type a city"
         list-data='[{"value":"ber","label":"Berlin"},{"value":"ham","label":"Hamburg"},{"value":"vie","label":"Wien"},{"value":"zrh","label":"Zürich"}]'></kakao-combobox>
@@ -123,10 +125,10 @@
       </div>
     </form>
     <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
-  </div>
+  </kakao-card>
 
   <h2>Playground</h2>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar" style="margin-top:0">
       <kakao-button id="apiValue" label='value = "Design"' variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiFree" label='value = "Onboarding"' variant="secondary" size="sm"></kakao-button>
@@ -144,7 +146,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Full reference in the header of <code>combobox.js</code>.</footer>
 </main>

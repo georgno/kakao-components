@@ -31,10 +31,12 @@
   .with-text { display: flex; align-items: center; gap: 0.5rem; }
   .with-text input { flex: 1; min-width: 0; height: 36px; padding: 0 0.6rem; border: 1px solid var(--kakao-color-border); border-radius: 8px; background: var(--card); color: inherit; font: 0.85rem ui-monospace, monospace; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -50,8 +52,8 @@
 
   <h2>Variants</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Live while picking</h3>
+    <kakao-card>
+      <h3 slot="header">Live while picking</h3>
       <kakao-color-picker id="live" label="Brand colour" value="#4f46e5"></kakao-color-picker>
       <div class="live-sample" id="liveSample" data-demo-only>Follows every step</div>
       <template data-code>
@@ -61,18 +63,18 @@
           picker.addEventListener('change', () => console.log(picker.value)); // the final pick
         </script>
       </template>
-    </div>
-    <div class="card">
-      <h3>Opacity · <code>alpha</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Opacity · <code>alpha</code></h3>
       <kakao-color-picker label="Overlay" alpha value="#0d948880"></kakao-color-picker>
-    </div>
-    <div class="card">
-      <h3>Presets · <code>list-data</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Presets · <code>list-data</code></h3>
       <kakao-color-picker label="Tag colour" value="#7c3aed"
         list-data='[{"value":"#4f46e5","label":"Indigo"},{"value":"#0d9488","label":"Teal"},{"value":"#7c3aed","label":"Violet"},{"value":"#db2777","label":"Pink"},{"value":"#d97706","label":"Amber"},{"value":"#dc2626","label":"Red"},{"value":"#18181b","label":"Ink"},{"value":"#ffffff","label":"White"}]'></kakao-color-picker>
-    </div>
-    <div class="card">
-      <h3>Compact · next to your own field</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Compact · next to your own field</h3>
       <div class="with-text">
         <kakao-color-picker compact id="compact" aria-label="Accent" value="#db2777"></kakao-color-picker>
         <input id="compactText" value="#db2777" aria-label="Accent, CSS value" spellcheck="false" />
@@ -85,16 +87,16 @@
           compactText.addEventListener('input', () => { compact.value = compactText.value; });
         </script>
       </template>
-    </div>
-    <div class="card">
-      <h3>Disabled</h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled</h3>
       <kakao-color-picker label="Locked" value="#d97706" disabled></kakao-color-picker>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Playground</h2>
   <p>Drag in the first picker: <code>input</code> fires on every step, <code>change</code> once when you close it.</p>
-  <div class="card">
+  <kakao-card>
     <div class="toolbar" style="margin-top:0">
       <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiSet" label="value = &quot;tomato&quot;" variant="secondary" size="sm"></kakao-button>
@@ -109,7 +111,7 @@
       </script>
     </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
-  </div>
+  </kakao-card>
 
   <footer>Attributes: <code>value</code>, <code>label</code>, <code>alpha</code>, <code>compact</code>, <code>list-data</code>, <code>disabled</code>, <code>required</code>, <code>name</code>. Events: <code>input</code>, <code>change</code>, <code>color-input</code>, <code>color-change</code>, <code>color-open</code>, <code>color-close</code>. Full reference in the header of <code>color-picker.js</code>.</footer>
 </main>

@@ -11,16 +11,20 @@
 <script src="../../shared/page-cloak.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
 <script src="../../shared/demo.js"></script>
 <script src="badge.js" defer></script>
 <style>
   .badges { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
   .in-text h3 { margin: 0; font-size: 1rem; }
 </style>
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../breadcrumb/breadcrumb.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -36,8 +40,8 @@
 
   <h2>Tones</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Soft and solid</h3>
+    <kakao-card>
+      <h3 slot="header">Soft and solid</h3>
       <div class="badges">
         <kakao-badge>Draft</kakao-badge>
         <kakao-badge tone="primary">Proposed</kakao-badge>
@@ -45,20 +49,28 @@
         <kakao-badge tone="danger">Issue</kakao-badge>
         <kakao-badge tone="ink">Rule</kakao-badge>
       </div>
-    </div>
-    <div class="card">
-      <h3>Outline · <code>outline</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Outline · <code>outline</code></h3>
       <div class="badges">
         <kakao-badge outline>Missing</kakao-badge>
         <kakao-badge outline>Draft 0.1 · November 2026</kakao-badge>
       </div>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>In context</h2>
   <div class="grid in-text">
-    <div class="card"><h3>Step switch <kakao-badge tone="primary">New</kakao-badge></h3><p class="muted">Next to a heading, the badge sits on the text's baseline.</p><template data-code><h3>Step switch <kakao-badge tone="primary">New</kakao-badge></h3></template></div>
-    <div class="card"><h3>Combobox <kakao-badge outline>Missing</kakao-badge></h3><p class="muted">Outline for something that's absent or informational.</p><template data-code><h3>Combobox <kakao-badge outline>Missing</kakao-badge></h3></template></div>
+    <kakao-card>
+      <h3 slot="header">Step switch <kakao-badge tone="primary">New</kakao-badge></h3>
+      <p class="muted">Next to a heading, the badge sits on the text's baseline.</p>
+      <template data-code><h3>Step switch <kakao-badge tone="primary">New</kakao-badge></h3></template>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Combobox <kakao-badge outline>Missing</kakao-badge></h3>
+      <p class="muted">Outline for something that's absent or informational.</p>
+      <template data-code><h3>Combobox <kakao-badge outline>Missing</kakao-badge></h3></template>
+    </kakao-card>
   </div>
 </main>
 </body>

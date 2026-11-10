@@ -18,12 +18,13 @@
 <style>
   .stack { display: grid; gap: 1rem; }
   .narrow { max-width: 18rem; }
-  .card.actions > * + * { margin-top: 0; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
 </style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
 <script src="../header-bar/header-bar.js" defer></script>
 </head>
-<body>
+<body class="demo-page">
 <kakao-header-bar>
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
@@ -39,20 +40,24 @@
 
   <h2>Start item</h2>
   <p>A house icon by default (screen readers hear the start text). <code>start="text"</code> shows the text, <code>start="none"</code> leaves it out.</p>
-  <div class="card stack">
-    <kakao-breadcrumb list-data='[["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
-    <kakao-breadcrumb start="text" list-data='[["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
-    <kakao-breadcrumb start="none" list-data='[["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
-  </div>
+  <kakao-card>
+    <div class="stack" data-demo-wrap>
+      <kakao-breadcrumb list-data='[["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
+      <kakao-breadcrumb start="text" list-data='[["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
+      <kakao-breadcrumb start="none" list-data='[["Settings", "#settings"], ["Plan"]]'></kakao-breadcrumb>
+    </div>
+  </kakao-card>
 
   <h2>The start text is a constant</h2>
   <p><code>KakaoBreadcrumb.startText</code> sets it for every breadcrumb at once (default <code>START_TEXT</code>, "Start"); <code>start-text</code> sets it for one.</p>
-  <div class="card stack">
-    <kakao-breadcrumb start="text" list-data='[["Library", "#library"], ["Sci-fi", "#sci-fi"], ["Arrival"]]'></kakao-breadcrumb>
-    <kakao-breadcrumb start="text" start-text="Dashboard" list-data='[["Reports", "#reports"], ["November"]]'></kakao-breadcrumb>
-    <div class="actions" data-demo-only>
-      <kakao-button id="text-home" label="startText = 'Home'" variant="secondary" size="sm"></kakao-button>
-      <kakao-button id="text-reset" label="Back to 'Start'" variant="ghost" size="sm"></kakao-button>
+  <kakao-card>
+    <div class="stack" data-demo-wrap>
+      <kakao-breadcrumb start="text" list-data='[["Library", "#library"], ["Sci-fi", "#sci-fi"], ["Arrival"]]'></kakao-breadcrumb>
+      <kakao-breadcrumb start="text" start-text="Dashboard" list-data='[["Reports", "#reports"], ["November"]]'></kakao-breadcrumb>
+      <div class="actions" data-demo-only>
+        <kakao-button id="text-home" label="startText = 'Home'" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="text-reset" label="Back to 'Start'" variant="ghost" size="sm"></kakao-button>
+      </div>
     </div>
     <template data-code>
       <script>
@@ -60,20 +65,20 @@
         KakaoBreadcrumb.startText = 'Home';
       </script>
     </template>
-  </div>
+  </kakao-card>
 
   <h2>Two ways to pass items</h2>
   <div class="grid">
-    <div class="card">
-      <h3>Pairs · <code>["Title", "/url"]</code></h3>
+    <kakao-card>
+      <h3 slot="header">Pairs · <code>["Title", "/url"]</code></h3>
       <kakao-breadcrumb list-data='[["Library", "#library"], ["Sci-fi", "#sci-fi"], ["Arrival"]]'></kakao-breadcrumb>
-    </div>
-    <div class="card">
-      <h3>Objects · <code>{ "title", "url" }</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Objects · <code>{ "title", "url" }</code></h3>
       <kakao-breadcrumb list-data='[{"title": "Library", "url": "#library"}, {"title": "Sci-fi", "url": "#sci-fi"}, {"title": "Arrival"}]'></kakao-breadcrumb>
-    </div>
-    <div class="card">
-      <h3>From script · <code>el.items = …</code></h3>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">From script · <code>el.items = …</code></h3>
       <kakao-breadcrumb id="scripted"></kakao-breadcrumb>
       <div class="actions" style="margin-top:.75rem" data-demo-only>
         <kakao-button id="deeper" label="Go deeper" variant="secondary" size="sm"></kakao-button>
@@ -84,18 +89,20 @@
           document.getElementById('scripted').items = [['Library', '#library'], ['Sci-fi', '#sci-fi'], ['Arrival']];
         </script>
       </template>
-    </div>
+    </kakao-card>
   </div>
 
   <h2>Long trails</h2>
   <p>The trail wraps; a very long title is cut off with an ellipsis and shows in full on hover.</p>
-  <div class="card narrow">
-    <kakao-breadcrumb list-data='[["Library", "#library"], ["Documentaries about the deep sea and its strangest creatures", "#deep-sea"], ["Episodes", "#episodes"], ["The Abyss"]]'></kakao-breadcrumb>
-  </div>
+  <kakao-card>
+    <div class="narrow" data-demo-wrap>
+      <kakao-breadcrumb list-data='[["Library", "#library"], ["Documentaries about the deep sea and its strangest creatures", "#deep-sea"], ["Episodes", "#episodes"], ["The Abyss"]]'></kakao-breadcrumb>
+    </div>
+  </kakao-card>
 
   <h2>Single-page apps</h2>
   <p>Every link fires a cancelable <code>breadcrumb-navigate</code>. This one is cancelled, so the page stays and the log shows what an app would route to.</p>
-  <div class="card">
+  <kakao-card>
     <kakao-breadcrumb id="spa" list-data='[["Settings", "/settings"], ["Plan", "/settings/plan"], ["Billing"]]'></kakao-breadcrumb>
     <div class="log" id="log" role="log" aria-label="Navigation log" style="margin-top:.75rem"></div>
     <template data-code>
@@ -106,7 +113,7 @@
         });
       </script>
     </template>
-  </div>
+  </kakao-card>
 </main>
 <script>
   customElements.whenDefined('kakao-breadcrumb').then(() => {
