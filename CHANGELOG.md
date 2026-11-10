@@ -76,6 +76,18 @@ pages (landing page, settings, demos), not the components.
   `progress-segment-complete`. Settings `--kakao-progress-*`, construction
   page and demo. The kitchen sink's plan card shows profile completeness
   with it.
+- `kakao-meter`: a gauge, like native `<meter>`, built as a one-piece
+  sibling of `kakao-progress` (same track, sizes and label row). `value`,
+  `min` (default 0), `max` (default 1), `low`, `high` and `optimum` with
+  the native clamping and regions: the fill is green in the optimum region,
+  amber in a suboptimal one and red in the even-less-good one (success /
+  warning / danger roles). A new value slides the fill length
+  (`--kakao-motion-duration`, standard easing) while the colour switches
+  at once; no motion under reduced motion or on first render. `role="meter"` with `aria-valuenow/min/max`,
+  `value-text` as `aria-valuetext`; `label` names it, `show-value` adds the
+  percentage in tabular figures. `size` sm / md / lg; read-only `position`
+  and `region`. Settings `--kakao-meter-*`, construction page and demo. The
+  kitchen sink's plan card shows the download space with it.
 
 ### Changed
 

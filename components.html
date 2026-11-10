@@ -45,6 +45,7 @@
 <script src="components/alert/alert.js" defer></script>
 <script src="components/toast/toast.js" defer></script>
 <script src="components/progress/progress.js" defer></script>
+<script src="components/meter/meter.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -1011,6 +1012,42 @@
       </div>
     </article>
 
+    <!-- ============================== Meter ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Meter</h2>
+        <code>&lt;kakao-meter&gt;</code>
+        <a href="components/meter/construction.html">Construction</a>
+        <a href="components/meter/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A gauge, like native <code>&lt;meter&gt;</code>: <code>value</code> within <code>min</code>…<code>max</code>, and <code>low</code> / <code>high</code> / <code>optimum</code> decide whether the value is good, so-so or bad, shown by the fill colour. Same bar as progress, one piece, the fill slides on change. <code>role="meter"</code>, three sizes.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Storage, lower is better · <code>low</code> <code>high</code> <code>optimum</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-meter label="Photos" min="0" max="100" low="30" high="80" optimum="20" value="18" show-value value-text="18 GB of 100 GB"></kakao-meter>
+            <kakao-meter label="Documents" min="0" max="100" low="30" high="80" optimum="20" value="55" show-value value-text="55 GB of 100 GB"></kakao-meter>
+            <kakao-meter label="Backups" min="0" max="100" low="30" high="80" optimum="20" value="92" show-value value-text="92 GB of 100 GB"></kakao-meter>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Higher is better · <code>optimum</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-meter label="Battery" low="0.25" high="0.6" optimum="1" value="0.82" show-value></kakao-meter>
+            <kakao-meter label="Battery" low="0.25" high="0.6" optimum="1" value="0.18" show-value value-text="18%, low"></kakao-meter>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Sizes · <code>size</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-meter size="sm" value="0.45" aria-label="Small"></kakao-meter>
+            <kakao-meter value="0.45" aria-label="Medium"></kakao-meter>
+            <kakao-meter size="lg" value="0.45" aria-label="Large"></kakao-meter>
+          </div>
+        </div>
+      </div>
+    </article>
+
   </div>
 
   <!-- ============================== Not built yet ============================== -->
@@ -1058,15 +1095,6 @@
     </article>
 
 
-    <article class="card placeholder">
-      <div class="component-head"><h2>Meter</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;meter&gt;</code> (low / high / optimum ranges)</p>
-      <div class="native">
-        <meter min="0" max="100" low="30" high="80" optimum="20" value="18">18 GB</meter>
-        <meter min="0" max="100" low="30" high="80" optimum="20" value="55">55 GB</meter>
-        <meter min="0" max="100" low="30" high="80" optimum="20" value="92">92 GB</meter>
-      </div>
-    </article>
 
     <article class="card placeholder">
       <div class="component-head"><h2>Accordion</h2><kakao-badge outline>Missing</kakao-badge></div>
