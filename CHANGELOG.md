@@ -8,6 +8,8 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-10
+
 ### Changed
 
 - `kakao-text-input`, `kakao-textarea`, `kakao-number-input`,
@@ -522,7 +524,8 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/georgno/kakao-components/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/georgno/kakao-components/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/georgno/kakao-components/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/georgno/kakao-components/compare/v0.2.1...v0.2.2
