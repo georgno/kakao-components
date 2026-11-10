@@ -35,10 +35,18 @@
 <script src="shared/settings-dialog.js" defer></script>
 <style>
   /* ---- this page only ---- */
-  main { max-width: 1300px; padding: var(--kakao-space-below-bar, 8px) 1.25rem 5rem; } /* just below the page bar */
-  /* The glow behind the wall (.portal::before) reaches past the right edge
-     at most widths: no sideways scrolling for it. */
-  html { overflow-x: hidden; }
+  /* main spans the screen and pads its content to the 1300px column (the
+     padding is what max-width: 1300px gave), so it can clip at the screen
+     edge: the wall and its glow (.portal::before) reach past the right edge
+     at most widths, and must not make the page scroll sideways. clip, not
+     hidden: no scroll box, nothing clipped vertically, and the bleed, glow
+     and focus rings stay drawn up to the screen edge. (On html or body this
+     would be handed to the viewport and still count in its scroll width.) */
+  main {
+    max-width: none;
+    padding: var(--kakao-space-below-bar, 8px) max(1.25rem, calc((100% - 1300px) / 2 + 1.25rem)) 5rem; /* just below the page bar */
+    overflow-x: clip;
+  }
 
   .hero {
     display: grid;
@@ -48,12 +56,6 @@
   }
   @media (max-width: 980px) {
     .hero { grid-template-columns: minmax(0, 1fr); gap: 3.5rem; }
-    /* Stacked, the glow behind the wall (.portal::before) reaches past the
-       screen edge, and a phone widens its layout to fit it - taking the page
-       bar's tools off the grid. main spans the screen here, so it clips the
-       glow at the edge. clip, not hidden: no scroll box. (On body this would
-       be handed to the viewport and not count.) */
-    main { overflow-x: clip; }
   }
 
   /* The guide's No uppercase rule: weight and colour, never capitals. */
