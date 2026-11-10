@@ -8,6 +8,39 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Changed
+
+- `kakao-text-input`, `kakao-textarea`, `kakao-number-input`,
+  `kakao-multi-dropdown`: keyboard focus is a 2px outline in the focus
+  colour, 2px from the field, instead of a soft halo (WCAG 1.4.11); fields
+  with an error show it in the danger colour.
+- `kakao-number-input`: `--kakao-number-input-focus-ring-width` removed;
+  `--kakao-number-input-focus-color` defaults to the focus colour; new
+  `-focus-width` and `-focus-offset`.
+- `kakao-multi-dropdown`: `--kakao-multi-dropdown-focus-ring-width` removed;
+  new `-focus`, `-focus-width` and `-focus-offset`. The accent stays for the
+  open box and the selected option.
+- `kakao-textarea`: new `--kakao-textarea-focus-offset`.
+
+### Fixed
+
+- `kakao-text-input`: validity follows the inner field. `type="email"` /
+  `"url"`, `pattern`, `minlength` / `maxlength` and `min` / `max` / `step`
+  make it invalid with the browser's message, so forms stop and error
+  summaries list it. `min`, `max` and `step` are passed through.
+- `kakao-textarea`: validity follows the inner field (`required`,
+  `minlength`, `maxlength`); `minlength` is passed through; a value longer
+  than `maxlength` set from script counts as too long.
+
+### Site only
+
+- Style guide: the 2px focus outline is the rule for fields. Wide tables
+  scroll inside their frame with the edge fade; no sideways page scroll on
+  phones.
+- Landing page: no sideways scroll at 1280px from the portal wall.
+- Components page, kitchen sink: settings groups are plain inside the
+  page's cards.
+
 ## [0.4.0] - 2026-11-10
 
 ### Added
