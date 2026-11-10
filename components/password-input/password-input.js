@@ -112,7 +112,8 @@
  *    meaning. Pointer use keeps focus and the caret in the field; the caret
  *    and selection survive every switch.
  *  - Caps Lock, while the field has focus and the key state is known: a
- *    visible warning under the field and one polite announcement.
+ *    visible warning under the field, at its end on the hint's line (the
+ *    hint wraps beside it), and one polite announcement.
  *  - Requirement changes are announced politely, once typing pauses (about
  *    a second), only while the field has focus, and only what changed
  *    ("Met: A number. 3 of 5 requirements met."), never every keystroke.
@@ -286,25 +287,40 @@
       .toggle:focus-visible { outline: var(--_focus-width) solid var(--_focus); outline-offset: var(--_focus-offset); }
       .toggle:disabled { cursor: not-allowed; }
 
-      /* ---- Rows under the field ---- */
+      /* ---- Rows under the field ----
+         One line: the hint (or the error that replaces it) takes the room
+         and wraps; the Caps Lock warning keeps to the end and never wraps.
+         Nothing shown, the line takes no space. */
+      .messages {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0 0.75rem;
+      }
       .caps, .hint, .error {
         margin: var(--_message-gap) 0 0;
         font-size: 0.78rem;
         color: var(--_muted);
       }
+      /* Under about 9rem left for the hint, the warning moves below it. */
+      .hint, .error { flex: 1 1 9rem; min-width: 0; overflow-wrap: anywhere; }
       .hint:empty, .error:empty { display: none; }
       .error { color: var(--_danger); }
       :host([error]) .hint { display: none; }
 
       .caps {
+        flex: none;
         display: flex;
         align-items: center;
         gap: 0.35em;
+        margin-inline-start: auto;
         color: var(--_text);
         font-weight: 500;
+        white-space: nowrap;
       }
       .caps[hidden] { display: none; }
-      .caps svg { flex: none; width: 1.2em; height: 1.2em; color: var(--_warning); }
+      /* One line box high, so the icon never makes the line taller. */
+      .caps svg { flex: none; width: 1.2em; height: 1.2em; margin-block: -0.1em; color: var(--_warning); }
 
       .strength { margin-top: var(--_strength-gap); }
       .strength[hidden] { display: none; }
@@ -362,9 +378,11 @@
         <span class="on">${EYE}</span><span class="off">${EYE_OFF}</span>
       </button>
     </div>
-    <p class="caps" part="caps" hidden aria-hidden="true">${CAPS}<span>Caps Lock is on</span></p>
-    <p class="hint" part="hint" id="hint"></p>
-    <p class="error" part="error" id="error"></p>
+    <div class="messages">
+      <p class="hint" part="hint" id="hint"></p>
+      <p class="error" part="error" id="error"></p>
+      <p class="caps" part="caps" hidden aria-hidden="true">${CAPS}<span>Caps Lock is on</span></p>
+    </div>
     <div class="strength" hidden>
       <kakao-progress part="strength" size="sm" aria-hidden="true" value="0" max="1" segments="1"></kakao-progress>
       <div id="reqs-desc">

@@ -21,11 +21,15 @@ Unless `hide-toggle` is set, a button at the end of the field SHALL switch the f
 - **THEN** the password shows as text and the caret is still after the second character, in the field
 
 ### Requirement: Caps Lock warning
-While the field has focus and the last key or pointer event in it reports Caps Lock on, a warning "Caps Lock is on" with a warning icon SHALL show under the field and be announced once through a polite live region. It SHALL hide on blur or when Caps Lock is off.
+While the field has focus and the last key or pointer event in it reports Caps Lock on, a warning "Caps Lock is on" with a warning icon SHALL show under the field, at its end on the same line as the hint or error, and be announced once through a polite live region. It SHALL hide on blur or when Caps Lock is off.
 
 #### Scenario: Warning
 - **WHEN** the person types with Caps Lock on
 - **THEN** "Caps Lock is on" shows under the field
+
+#### Scenario: Beside a long hint
+- **WHEN** the field has a hint longer than the line and Caps Lock is on
+- **THEN** the warning sits at the end of the hint's first line without wrapping, the hint wraps in the remaining width, and the requirement list stays below both
 
 ### Requirement: Requirements
 With `requirements` (or `required-strength`) the element SHALL list its requirements under the field, each with its state in an icon (check / open circle) and in words, and draw a `<kakao-progress>` with as many segments as requirements, `max` equal to the count and `value` equal to the number met, in the success tone once all are met and hidden from assistive technology. The defaults SHALL be: at least 8 characters (or `minlength`), a lowercase letter, an uppercase letter, a number, a symbol. `list-data` (JSON `[{label, pattern, flags}]`) or the `requirements` property (also `{label, test}`) SHALL replace them. An empty value meets none. The list SHALL describe the field (`aria-describedby`); changes SHALL be announced politely once typing pauses, only while focused, naming only what changed. `password-input-requirements` SHALL fire with `{ met, total, requirements }` when the met set changes.
