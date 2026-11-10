@@ -732,6 +732,10 @@ KakaoComponents.meta('kakao-card');</pre>
         <h3>Edge fade on horizontal scrollers <kakao-badge tone="ink">Rule</kakao-badge></h3>
         <p class="small">Overflowing horizontal scrollers get an edge fade. A row that scrolls sideways (the header bar's links, tabs, a step switch or switch group too wide for its space) fades out at each edge where there is more to scroll, and only there: no fade at an end it has reached, none at all when everything fits. The fade is a mask, so it works on any background and theme; its width is the main variable <code>--kakao-scroll-fade</code>.</p>
       </div>
+      <div class="card">
+        <h3>Fixed hosts reset their margin <kakao-badge tone="ink">Rule</kakao-badge></h3>
+        <p class="small">A component whose host is fixed to the viewport resets its own margin (<code>margin: 0 !important</code> on <code>:host</code>), so page spacing rules (e.g. sibling margins in a card) can't shift it. Normal page declarations beat <code>:host</code>, so only <code>!important</code> holds. Followed by dialog, aside sheet and toast.</p>
+      </div>
     </div>
   </section>
 

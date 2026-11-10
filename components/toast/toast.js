@@ -129,6 +129,10 @@
         translate: var(--_shift, 0px) 0;
         transition: translate var(--_motion-duration) var(--_ease);
         font-family: inherit;
+        /* A page margin on the host (a card's "> * + * { margin-top }") would
+           shift the fixed box. Normal page declarations beat :host, so only
+           !important holds. */
+        margin: 0 !important;
       }
       :host([data-h="left"]) { right: auto; left: var(--_inset-x-start); }
       :host([data-v="top"]) {

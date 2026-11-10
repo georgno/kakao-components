@@ -211,6 +211,10 @@ pages (landing page, settings, demos), not the components.
   viewport and leaves a strip over the header bar uncovered. The host resets
   its own margin.
 
+- `kakao-toast`: the region resets its own margin, so page spacing rules
+  can't shift it (as dialog and aside sheet do). The style guide records this
+  as a rule for every component fixed to the viewport.
+
 ### Site only
 
 - Every page's top controls live in a `kakao-header-bar` instead of fixed
