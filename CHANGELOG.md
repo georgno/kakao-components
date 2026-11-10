@@ -53,10 +53,7 @@ pages (landing page, settings, demos), not the components.
   builds the blocks; `data-demo-only`, `data-demo-wrap`, `data-no-code`,
   `data-code-with` and `<template data-code>` tune what a snippet shows
   (see AGENTS.md).
-- Landing page: a note under the facts that this site loads Font Awesome
-  for its example icons and the components don't need it ("no
-  dependencies" now also says "not even an icon font"). Style guide: rule
-  "Icons without an icon font". Button and text input demos show inline
+- Style guide: rule "Icons without an icon font". Button and text input demos show inline
   SVG icons next to Font Awesome ones.
 
 ## [0.3.0] - 2026-11-10
