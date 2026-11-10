@@ -102,7 +102,9 @@
  *  settings block of this file: change them on construction.html (some
  *  follow the main variables in shared/tokens.css).
  *
- *  --kakao-multi-dropdown-accent        #4f46e5   focus ring, selected option
+ *  --kakao-multi-dropdown-accent        #4f46e5   open box, selected option
+ *  --kakao-multi-dropdown-focus         #2563eb   focus outline (--kakao-color-focus)
+ *  --kakao-multi-dropdown-focus-width / -focus-offset   2px / 2px
  *  --kakao-multi-dropdown-bg            #ffffff
  *  --kakao-multi-dropdown-border        #d1d5db
  *  --kakao-multi-dropdown-radius        10px
@@ -166,12 +168,14 @@
         --_padding: var(--kakao-multi-dropdown-padding, 0.45rem 0.55rem 0.45rem 0.75rem);
         --_chevron-gap: var(--kakao-multi-dropdown-chevron-gap, 0.6rem);
         --_chevron-size: var(--kakao-multi-dropdown-chevron-size, 0.9em);
-        --_focus-ring-width: var(--kakao-multi-dropdown-focus-ring-width, 3px);
         --_popup-offset: var(--kakao-multi-dropdown-popup-offset, 0.45rem);
         --_popup-padding: var(--kakao-multi-dropdown-popup-padding, 0.25rem);
         --_popup-shadow: var(--kakao-multi-dropdown-popup-shadow, 0 8px 24px rgba(0, 0, 0, 0.08));
         --_option-padding: var(--kakao-multi-dropdown-option-padding, 0.35rem 0.6rem);
         --_option-radius: var(--kakao-multi-dropdown-option-radius, 6px);
+        --_focus: var(--kakao-multi-dropdown-focus, var(--kakao-color-focus, #2563eb));
+        --_focus-width: var(--kakao-multi-dropdown-focus-width, 2px);
+        --_focus-offset: var(--kakao-multi-dropdown-focus-offset, 2px);
         /* @kakao-settings:end */
         display: inline-block;
         max-width: 100%;
@@ -219,7 +223,7 @@
         cursor: pointer;
         outline: none;
         white-space: nowrap;
-        transition: background-color 120ms ease, border-color 150ms ease, box-shadow 150ms ease;
+        transition: background-color 120ms ease, border-color 150ms ease;
       }
 
       /* Only the outer corners of the group are rounded. */
@@ -234,12 +238,17 @@
 
       .trigger:hover { background: var(--_hover-bg); }
 
-      /* The focused / open box draws its full accent border above its neighbours. */
+      /* The open box draws its full accent border above its neighbours; the
+         keyboard-focused one draws the focus outline (2px, 2px away) and border. */
       .trigger:focus-visible,
       .trigger[aria-expanded="true"] {
         z-index: 1;
         border-color: var(--_accent);
-        box-shadow: 0 0 0 var(--_focus-ring-width) color-mix(in srgb, var(--_accent) 14%, transparent);
+      }
+      .trigger:focus-visible {
+        border-color: var(--_focus);
+        outline: var(--_focus-width) solid var(--_focus);
+        outline-offset: var(--_focus-offset);
       }
 
       :host([disabled]) .trigger { cursor: not-allowed; background: var(--_bg); }

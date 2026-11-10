@@ -80,6 +80,7 @@
         --_label-weight: var(--kakao-textarea-label-weight, 600);
         --_focus-width: var(--kakao-textarea-focus-width, 2px);
         --_disabled-opacity: var(--kakao-textarea-disabled-opacity, 0.55);
+        --_focus-offset: var(--kakao-textarea-focus-offset, 2px);
         /* @kakao-settings:end */
         display: block;
         font: var(--_font);
@@ -105,17 +106,15 @@
         background: var(--_bg);
         border: 1px solid var(--_border);
         border-radius: var(--_radius);
-        transition: box-shadow 150ms ease, border-color 150ms ease;
+        transition: border-color 150ms ease;
       }
       :host([error]) .field { border-color: var(--_danger); }
       .field:has(textarea:focus-visible) {
         border-color: var(--_focus);
-        box-shadow: 0 0 0 var(--_focus-width) color-mix(in srgb, var(--_focus) 22%, transparent);
+        outline: var(--_focus-width) solid var(--_focus);
+        outline-offset: var(--_focus-offset);
       }
-      :host([error]) .field:has(textarea:focus-visible) {
-        border-color: var(--_danger);
-        box-shadow: 0 0 0 var(--_focus-width) color-mix(in srgb, var(--_danger) 22%, transparent);
-      }
+      :host([error]) .field:has(textarea:focus-visible) { border-color: var(--_danger); outline-color: var(--_danger); }
 
       textarea {
         box-sizing: border-box;

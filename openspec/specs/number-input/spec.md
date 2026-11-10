@@ -40,3 +40,10 @@ On touch screens or with `touch-steppers`, the steppers SHALL stay on the right 
 #### Scenario: Touch layout
 - **WHEN** a number input is shown on a phone
 - **THEN** it reads | value | − | + | with 44px buttons
+
+### Requirement: Focus indicator
+On keyboard focus the wrapped input SHALL show a solid outline of `--kakao-number-input-focus-width` (2px) in `--kakao-number-input-focus-color` (default: the theme's focus colour), `--kakao-number-input-focus-offset` (2px) outside it, around the steppers too, and its border SHALL take the focus colour. No translucent halo SHALL be drawn; `--kakao-number-input-focus-ring-width` SHALL no longer exist.
+
+#### Scenario: Tabbing into the field
+- **WHEN** the person tabs into a number input, with arrows or touch steppers
+- **THEN** a 2px focus-coloured outline shows 2px outside the field, enclosing the steppers

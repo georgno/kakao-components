@@ -143,7 +143,7 @@
         color: var(--_text);
         border: 1px solid var(--_border);
         border-radius: var(--_radius);
-        transition: box-shadow 150ms ease, border-color 150ms ease, background-color 150ms ease;
+        transition: border-color 150ms ease, background-color 150ms ease;
       }
       :host([error]) .field { border-color: var(--_danger); }
       :host([disabled]) { opacity: var(--_disabled-opacity); }
@@ -167,12 +167,10 @@
 
       .field:has(input:focus-visible) {
         border-color: var(--_focus);
-        box-shadow: 0 0 0 var(--_focus-width) color-mix(in srgb, var(--_focus) 22%, transparent);
+        outline: var(--_focus-width) solid var(--_focus);
+        outline-offset: var(--_focus-offset);
       }
-      :host([error]) .field:has(input:focus-visible) {
-        border-color: var(--_danger);
-        box-shadow: 0 0 0 var(--_focus-width) color-mix(in srgb, var(--_danger) 22%, transparent);
-      }
+      :host([error]) .field:has(input:focus-visible) { border-color: var(--_danger); outline-color: var(--_danger); }
 
       .icon {
         flex: none;
