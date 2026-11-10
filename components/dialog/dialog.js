@@ -179,6 +179,10 @@
            panel can finish its exit animation before everything disappears. */
         position: fixed;
         inset: 0;
+        /* A page margin on the host (a card's "> * + * { margin-top }") would
+           shift the fixed box and leave a strip of the page uncovered at the
+           top. Normal page declarations beat :host, so only !important holds. */
+        margin: 0 !important;
         z-index: var(--_z);
         display: flex;
         align-items: center;

@@ -193,6 +193,10 @@
            Late for visibility, so the panel can finish sliding out first. */
         position: fixed;
         inset: 0;
+        /* A page margin on the host (a card's "> * + * { margin-top }") would
+           shift the fixed box and leave a strip of the page uncovered at the
+           top. Normal page declarations beat :host, so only !important holds. */
+        margin: 0 !important;
         z-index: var(--_z);
         display: block;
         visibility: hidden;

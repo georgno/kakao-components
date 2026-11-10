@@ -45,11 +45,15 @@ A close button SHALL sit in the header (accessible name from `close-label`, defa
 - **THEN** the sheet closes and `sheet-hidden` carries `returnValue: "apply"`
 
 ### Requirement: Modal by default
-Unless `modal="false"` or `contained` is set, an open sheet SHALL cover the page with a scrim, mark its panel `aria-modal="true"`, move focus into the panel, keep Tab and Shift+Tab inside the sheet (including elements inside nested shadow roots), lock the page scroll without a layout shift, and return focus to the element that had it when it closes.
+Unless `modal="false"` or `contained` is set, an open sheet SHALL cover the whole viewport with a scrim, the sticky header bar included, whatever margin the page gives the element, mark its panel `aria-modal="true"`, move focus into the panel, keep Tab and Shift+Tab inside the sheet (including elements inside nested shadow roots), lock the page scroll without a layout shift, and return focus to the element that had it when it closes.
 
 #### Scenario: Focus is trapped and returned
 - **WHEN** a modal sheet is opened from a button and the user presses Tab past its last control and then Escape
 - **THEN** focus wraps to its first control, and after closing focus is back on the button
+
+#### Scenario: Scrim covers the header bar
+- **WHEN** a modal sheet placed in a card whose CSS gives its children a top margin opens under a sticky header bar
+- **THEN** the scrim covers the viewport from its top edge, the header bar included
 
 #### Scenario: Page does not scroll
 - **WHEN** a modal sheet is open and the user scrolls over the scrim

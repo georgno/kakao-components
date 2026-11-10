@@ -200,6 +200,13 @@ pages (landing page, settings, demos), not the components.
   rows, as between stacked checkboxes): `--kakao-radio-group-option-gap` is
   now 4px and `--kakao-radio-group-option-padding` 2px 8px.
 
+### Fixed
+
+- `kakao-aside-sheet`, `kakao-dialog`: placed where page CSS gives them a
+  margin (e.g. inside a card), the scrim no longer starts below the top of the
+  viewport and leaves a strip over the header bar uncovered. The host resets
+  its own margin.
+
 ### Site only
 
 - Every page's top controls live in a `kakao-header-bar` instead of fixed
