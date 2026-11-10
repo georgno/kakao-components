@@ -38,7 +38,8 @@
  *                change once each): today (date), now (time, datetime-local,
  *                rounded to step, else the minute), this month, this ISO week.
  *                Outside min / max it stays but is disabled (aria-disabled,
- *                with a title saying why); hidden while disabled or read only.
+ *                with a title and an accessible description saying why); hidden
+ *                while disabled or read only.
  *  today-label   The tag's text. Default from Intl in the locale: "Today",
  *                "Now", "This month", "This week" ("Heute", "Jetzt" …).
  *  locale        Language tag for the inner field. Without it the nearest
@@ -101,6 +102,9 @@
  *  - Focus is the shared 2px outline with 2px offset, on the field.
  *  - The today tag is a real button after the hint; its name is "Set to
  *    today" (English locales) or its visible label. Focus stays on it.
+ *    When it is disabled (out of range), the reason is its title for the
+ *    mouse and, through aria-describedby, a visually hidden description for
+ *    keyboard and screen reader users.
  * ============================================================================
  */
 (function () {
@@ -157,7 +161,7 @@
         --_today-text: var(--kakao-date-input-today-text, var(--kakao-color-text, #18181b));
         --_today-height: var(--kakao-date-input-today-height, 1.25rem);
         --_today-padding-x: var(--kakao-date-input-today-padding-x, 0.4rem);
-        --_today-font-size: var(--kakao-date-input-today-font-size, 0.75rem);
+        --_today-font-size: var(--kakao-date-input-today-font-size, 0.78rem);
         --_today-font-weight: var(--kakao-date-input-today-font-weight, 600);
         --_today-radius: var(--kakao-date-input-today-radius, 4px);
         /* @kakao-settings:end */
@@ -309,6 +313,18 @@
       .today:focus-visible { outline: var(--_focus-width) solid var(--_focus); outline-offset: var(--_focus-offset); }
       .today[aria-disabled="true"] { opacity: var(--_disabled-opacity); cursor: not-allowed; }
       .today[aria-disabled="true"]:hover { background: var(--_today-bg); }
+      /* The reason a disabled tag gives, read through aria-describedby. */
+      .sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        white-space: nowrap;
+        border: 0;
+      }
 
       @media (forced-colors: active) {
         .today { border: 1px solid ButtonText; }
@@ -327,6 +343,7 @@
       <p class="hint" part="hint" id="hint"></p>
       <p class="error" part="error" id="error"></p>
       <button class="today" part="today" type="button" hidden></button>
+      <span class="sr" id="today-reason"></span>
     </div>
   `;
 
@@ -451,6 +468,7 @@
       this._hintEl = shadow.querySelector('#hint');
       this._errorEl = shadow.querySelector('#error');
       this._todayEl = shadow.querySelector('.today');
+      this._todayReasonEl = shadow.querySelector('#today-reason');
       this._type = 'date';
       this._native = true;
       this._formDisabled = false;
@@ -654,10 +672,15 @@
       if (allowed) {
         tag.removeAttribute('aria-disabled');
         tag.removeAttribute('title');
+        tag.removeAttribute('aria-describedby');
+        this._todayReasonEl.textContent = '';
       } else {
         const range = min && max ? `${min} to ${max}` : (min ? `${min} or later` : `${max} or earlier`);
+        const reason = `${label} (${value}) is outside the allowed range: ${range}.`;
         tag.setAttribute('aria-disabled', 'true');
-        tag.title = `${label} (${value}) is outside the allowed range: ${range}.`;
+        tag.title = reason;  // for the mouse
+        this._todayReasonEl.textContent = reason;  // for keyboard and screen readers
+        tag.setAttribute('aria-describedby', 'today-reason');
       }
     }
 

@@ -70,7 +70,7 @@
   </div>
 
   <h2>Today shortcut · <code>today</code></h2>
-  <p>A tag in the row under the field sets the current day, time, month or week in one click, as a user edit (<code>input</code> and <code>change</code> fire once each). Its label follows the locale; <code>today-label</code> overrides it. Outside <code>min</code> / <code>max</code> it stays, disabled, with a title saying why.</p>
+  <p>A tag in the row under the field sets the current day, time, month or week in one click, as a user edit (<code>input</code> and <code>change</code> fire once each). Its label follows the locale; <code>today-label</code> overrides it. Outside <code>min</code> / <code>max</code> it stays, disabled, and says why: in its title on hover and in its accessible description for keyboard and screen reader users.</p>
   <div class="grid" id="todayGrid">
     <div class="card">
       <h3>Date</h3>
@@ -93,7 +93,7 @@
     </div>
     <div class="card">
       <h3>Out of range · disabled tag</h3>
-      <kakao-date-input today id="todayOut" label="Delivery" hint="Hover the tag for the reason"></kakao-date-input>
+      <kakao-date-input today id="todayOut" label="Delivery" hint="Earliest date is next week"></kakao-date-input>
     </div>
     <div class="card">
       <h3>Locale · <code>today-label</code></h3>

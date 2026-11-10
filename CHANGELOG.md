@@ -215,6 +215,10 @@ pages (landing page, settings, demos), not the components.
   can't shift it (as dialog and aside sheet do). The style guide records this
   as a rule for every component fixed to the viewport.
 
+- `kakao-date-input`: the today tag uses the hint's text size, and when it is
+  disabled screen readers announce why (`aria-describedby`), not only the
+  hover title.
+
 ### Site only
 
 - Every page's top controls live in a `kakao-header-bar` instead of fixed

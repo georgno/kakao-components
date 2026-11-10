@@ -113,11 +113,11 @@ The tag SHALL show `today-label` when set, else a default for the type in the el
 - **THEN** the tag reads "Heute"
 
 ### Requirement: Today out of range
-When the value the tag would set is before `min` or after `max`, the tag SHALL stay visible but be disabled: `aria-disabled="true"`, a title explaining why, a disabled look, and activation SHALL change nothing. The tag SHALL be hidden while the element is disabled (also through a fieldset) or read only.
+When the value the tag would set is before `min` or after `max`, the tag SHALL stay visible but be disabled: `aria-disabled="true"`, a reason explaining why given both as its title (for the mouse) and as its accessible description (`aria-describedby` to a visually hidden element, for keyboard and screen reader users), a disabled look, and activation SHALL change nothing. The tag SHALL be hidden while the element is disabled (also through a fieldset) or read only.
 
 #### Scenario: Min in the future
 - **WHEN** `min` is after today
-- **THEN** the tag has `aria-disabled="true"` and a title, and clicking it neither changes the value nor fires events
+- **THEN** the tag has `aria-disabled="true"`, a title and the same reason as its accessible description, and clicking it neither changes the value nor fires events
 
 #### Scenario: Read only
 - **WHEN** the element is `readonly`
