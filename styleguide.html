@@ -64,7 +64,13 @@
   }
   pre .c { color: #71717a; }
 
-  .table-wrap { overflow-x: auto; margin-top: 0.75rem; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+  .table-wrap { margin-top: 0.75rem; border: 1px solid var(--line); border-radius: 14px; background: var(--card); overflow: hidden; }
+  /* The table scrolls sideways inside the frame when it is too wide, with the
+     edge fade rule: a fade only on a side with more to scroll. */
+  .table-scroll { overflow-x: auto; }
+  .table-scroll[data-more-right] { -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--kakao-scroll-fade, 1.5rem)); mask-image: linear-gradient(to left, transparent, #000 var(--kakao-scroll-fade, 1.5rem)); }
+  .table-scroll[data-more-left] { -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem)); mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem)); }
+  .table-scroll[data-more-left][data-more-right] { -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem), #000 calc(100% - var(--kakao-scroll-fade, 1.5rem)), transparent); mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem), #000 calc(100% - var(--kakao-scroll-fade, 1.5rem)), transparent); }
   table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
   th, td { text-align: left; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
   tr:last-child td { border-bottom: 0; }
@@ -350,7 +356,7 @@
       <div style="background:#71717a;color:#fff">500</div><div style="background:#52525b;color:#fff">600</div><div style="background:#3f3f46;color:#fff">700</div><div style="background:#27272a;color:#fff">800</div><div style="background:#18181b;color:#fff">900</div>
     </div>
     <div class="table-wrap">
-      <table>
+      <div class="table-scroll"><table>
         <thead><tr><th>Step</th><th>Hex</th><th>Use</th><th>Rule</th></tr></thead>
         <tbody>
           <tr><td>50</td><td><kakao-color-code>#fafafa</kakao-color-code></td><td>Page, text on ink</td><td></td></tr>
@@ -362,13 +368,13 @@
           <tr><td>700</td><td><kakao-color-code>#3f3f46</kakao-color-code></td><td>Secondary text, ghost button</td><td></td></tr>
           <tr><td>900</td><td><kakao-color-code>#18181b</kakao-color-code></td><td>Ink: text, primary actions</td><td></td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <h3 class="sub">Contrast findings <kakao-badge>Now</kakao-badge></h3>
     <p class="lede small">Default colours checked against WCAG 2.2: text needs 4.5:1 (1.4.3), UI parts and focus indicators 3:1 (1.4.11). Theming fixed the rows marked; the button's focus halo and the unselected tab are still open.</p>
     <div class="table-wrap">
-      <table>
+      <div class="table-scroll"><table>
         <thead><tr><th>Where</th><th>Pair</th><th>Ratio</th><th>Needs</th><th></th></tr></thead>
         <tbody>
           <tr><td>Multi dropdown placeholder</td><td><kakao-color-code>#9ca3af</kakao-color-code> on white</td><td class="num">2.54</td><td>4.5</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
@@ -385,7 +391,7 @@
           <tr><td>Accent</td><td><kakao-color-code>#4f46e5</kakao-color-code> ↔ white</td><td class="num">6.29</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
           <tr><td>Danger button</td><td><kakao-color-code>#fdf4f3</kakao-color-code> on <kakao-color-code>#bd4b43</kakao-color-code></td><td class="num">4.57</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
     <p class="small muted" style="margin-top:.6rem">Still to fix: the button's halo (focus rule below), and a stronger unselected tab.</p>
 
@@ -455,7 +461,7 @@
       <h3>Picking a theme with a step switch</h3>
       <p class="small muted">A step switch with <code>theme-picker</code> lists the themes as steps, and the page follows the thumb: drag it across the track (or tap further away and watch it fly) and the theme changes with every step it crosses. A <code>&lt;kakao-button theme-picker&gt;</code> menu does the same for the pointer: run down the list and the page changes with each item. Both cross-fade the theme's colour roles instead of rippling, so the control under the pointer keeps rendering. <code>theme-switch.js</code> does the wiring, so a page needs no script for it.</p>
       <div style="margin-top:.9rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
-        <kakao-step-switch theme-picker label="Theme" list-data='[
+        <kakao-step-switch theme-picker label="Theme" style="max-width:100%" list-data='[
           {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
           {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
           {"value":"forest","label":"Forest"}]'></kakao-step-switch>
@@ -484,10 +490,10 @@
 
     <h3 class="sub">Theme variables <kakao-badge>Now</kakao-badge></h3>
     <div class="table-wrap">
-      <table id="theme-table">
+      <div class="table-scroll"><table id="theme-table">
         <thead><tr><th>Variable</th><th>Light</th><th>Beige</th><th>Umber</th><th>Dark</th><th>AMOLED</th><th>Catppuccin</th><th>Forest</th><th>Use</th></tr></thead>
         <tbody></tbody>
-      </table>
+      </table></div>
     </div>
 
     <h3 class="sub">Adding a theme</h3>
@@ -640,7 +646,7 @@
       <div class="card">
         <h3>Durations <kakao-badge tone="primary">Proposed</kakao-badge></h3>
         <div class="table-wrap" style="margin-top:0">
-          <table>
+          <div class="table-scroll"><table>
             <tbody>
               <tr><td><code>instant</code></td><td class="num">80ms</td><td>Drag follow</td></tr>
               <tr><td><code>fast</code></td><td class="num">150ms</td><td>Colour, hover, popover fade</td></tr>
@@ -648,7 +654,7 @@
               <tr><td><code>slow</code></td><td class="num">320ms</td><td>Spring thumbs (<code>--kakao-motion-duration</code>)</td></tr>
               <tr><td><code>count</code></td><td class="num">600ms</td><td>Animated number</td></tr>
             </tbody>
-          </table>
+          </table></div>
         </div>
       </div>
       <div class="card">
@@ -746,7 +752,7 @@ KakaoComponents.meta('kakao-card');</pre>
     <h2>Component audit</h2>
     <p>Where each component stands against this guide. “Family” is the visual dialect it was built in: <b>A</b> zinc / ink (button, tabs, number input), <b>B</b> Tailwind gray / indigo (switches, file upload, multi dropdown), <b>C</b> plain hex greys (list, popover, slider).</p>
     <div class="table-wrap">
-      <table>
+      <div class="table-scroll"><table>
         <thead><tr><th>Component</th><th>Family</th><th>Font token</th><th>Colours</th><th>Radius</th><th>Focus</th><th>Disabled</th><th>To do</th></tr></thead>
         <tbody>
           <tr><td>Button</td><td>A</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">11/13/15</td><td>Halo ✗</td><td class="num">0.2</td><td>Add outline</td></tr>
@@ -791,7 +797,7 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>Settings group</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14 (box) / 10 (row)</td><td>✓</td><td class="num">0.45</td><td>None. Plain (no box) inside kakao-card, accordion, dialog or aside sheet</td></tr>
           <tr><td>Error summary</td><td>-</td><td>Inherits (alert)</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10 (alert)</td><td>✓</td><td class="num">-</td><td>None. A danger alert around a field | issue list (stacks below 22rem), hairlines between rows; title, links and issues in danger mixed 72% into text (5.3:1 or more on the tint in every theme)</td></tr>
 </tbody>
-      </table>
+      </table></div>
     </div>
     <p class="small muted" style="margin-top:.6rem">“Theme” = every colour setting defaults to a theme variable, so the component follows light, dark and any later theme. The families still differ in shape and size. * Number input started in family A, with its focus halo; it now draws the field outline.</p>
   </section>
@@ -909,6 +915,21 @@ KakaoComponents.meta('kakao-card');</pre>
       out.textContent = ok
         ? '✓ Inter Tight is loaded on this page.'
         : 'Inter Tight is not loaded here, so you are seeing the system fallback, as a page without font.css would.';
+    });
+  })();
+
+  // Edge fade on the table scrollers: mark the side(s) with more to scroll.
+  (function () {
+    const sync = (el) => {
+      const max = el.scrollWidth - el.clientWidth;
+      el.toggleAttribute('data-more-left', max > 1 && el.scrollLeft > 1);
+      el.toggleAttribute('data-more-right', max > 1 && el.scrollLeft < max - 1);
+    };
+    const ro = new ResizeObserver((entries) => entries.forEach((e) => sync(e.target.closest('.table-scroll'))));
+    document.querySelectorAll('.table-scroll').forEach((el) => {
+      el.addEventListener('scroll', () => sync(el), { passive: true });
+      ro.observe(el);
+      ro.observe(el.firstElementChild);
     });
   })();
 
