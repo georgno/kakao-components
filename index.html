@@ -87,6 +87,7 @@
     color: var(--muted);
   }
   .facts b { color: var(--ink); font-weight: 600; }
+  .facts-note { margin: 0.75rem 0 0; max-width: 46ch; font-size: 0.8125rem; color: var(--muted); }
   .facts-link { color: inherit; text-underline-offset: 2px; }
   .facts-link:hover { color: var(--ink); }
   .facts-link:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; border-radius: 2px; }
@@ -264,7 +265,7 @@
     <section>
       <p class="eyebrow">A small library, taken seriously</p>
       <h1>The parts of the form people <u>actually touch</u>.</h1>
-      <p class="lede">Thirty-five web components for settings screens, dialogs and menus. Plain JavaScript, no framework, no dependencies - and a theme system whose contrast is checked on every commit.</p>
+      <p class="lede">Thirty-five web components for settings screens, dialogs and menus. Plain JavaScript, no framework, no dependencies, not even an icon font - and a theme system whose contrast is checked on every commit.</p>
       <div class="actions">
         <kakao-button label="Browse the components" icon="fas fa-arrow-right" icon-position="right" href="components.html"></kakao-button>
         <kakao-button label="Kitchen sink" variant="ghost" href="kitchen-sink.html"></kakao-button>
@@ -276,6 +277,7 @@
         <li><b>0</b> dependencies</li>
         <li><b>v0.3.0</b> <a class="facts-link" href="changelog.html">changelog</a></li>
       </ul>
+      <p class="facts-note">This site loads Font Awesome for its example icons. The components draw their own; your pages don't need it.</p>
     </section>
 
     <section class="portal">

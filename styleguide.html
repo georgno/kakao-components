@@ -736,6 +736,10 @@ KakaoComponents.meta('kakao-card');</pre>
         <h3>Fixed hosts reset their margin <kakao-badge tone="ink">Rule</kakao-badge></h3>
         <p class="small">A component whose host is fixed to the viewport resets its own margin (<code>margin: 0 !important</code> on <code>:host</code>), so page spacing rules (e.g. sibling margins in a card) can't shift it. Normal page declarations beat <code>:host</code>, so only <code>!important</code> holds. Followed by dialog, aside sheet and toast.</p>
       </div>
+      <div class="card">
+        <h3>Icons without an icon font <kakao-badge tone="ink">Rule</kakao-badge></h3>
+        <p class="small">A component draws its own glyphs (chevrons, checks, spinners, close marks) as inline SVG in <code>currentColor</code>, so it works on a page with no icon font. Icons the page chooses come through a slot: a <code>slot="icon"</code> child, ideally an inline SVG (button, text input, chip, alert). An <code>icon</code> attribute with icon-font classes is only an optional shortcut and draws only when the page loads that font. This site loads Font Awesome for its examples; the components don't need it.</p>
+      </div>
     </div>
   </section>
 
