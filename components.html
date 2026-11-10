@@ -1230,7 +1230,115 @@
 
   <!-- ============================== Not built yet ============================== -->
   <h2 id="missing">Not built yet</h2>
-  <p>Nothing left: every placeholder on this list has been built.</p>
+  <p>Placeholders: what a kakao component would replace, shown as the plain native element where there is one.</p>
+  <div class="grid">
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Menu &amp; context menu</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: none. Today: <code>&lt;kakao-button list-data&gt;</code> for simple menus</p>
+      <p class="placeholder-native">Groups, separators, shortcuts and submenus, opened from any trigger or by right-click.</p>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Command palette</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: none</p>
+      <p class="placeholder-native">A ⌘K search over the page's actions.</p>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Pagination</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: links</p>
+      <p class="placeholder-native">Page links, plus a compact “1–20 of 143” form.</p>
+      <div class="native">
+        <nav aria-label="Pages"><a href="#missing">‹ Previous</a> · <a href="#missing">1</a> · <b>2</b> · <a href="#missing">3</a> · <a href="#missing">Next ›</a></nav>
+      </div>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Stepper</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: <code>&lt;ol&gt;</code></p>
+      <p class="placeholder-native">Numbered steps of a wizard: done, current, upcoming.</p>
+      <div class="native">
+        <ol style="margin:0;padding-left:1.2rem"><li>Account</li><li><b>Plan</b></li><li>Payment</li></ol>
+      </div>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Avatar</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: <code>&lt;img&gt;</code></p>
+      <p class="placeholder-native">Image, initials or an icon, with a status dot; stacked in groups.</p>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Skeleton</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: none</p>
+      <p class="placeholder-native">Loading placeholders shaped like card and list rows.</p>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Spinner</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: <code>&lt;progress&gt;</code> without a value</p>
+      <p class="placeholder-native">On its own; today it only lives inside the button.</p>
+      <div class="native">
+        <progress aria-label="Loading"></progress>
+      </div>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Empty state</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: none</p>
+      <p class="placeholder-native">An icon, a title, a short text and an action.</p>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Description list</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: <code>&lt;dl&gt;</code></p>
+      <p class="placeholder-native">Key/value rows for summary and detail screens.</p>
+      <div class="native">
+        <dl style="margin:0;display:grid;grid-template-columns:auto 1fr;gap:.25rem 1rem"><dt>Plan</dt><dd style="margin:0">Pro</dd><dt>Renews</dt><dd style="margin:0">1 Dec 2026</dd></dl>
+      </div>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Table</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: <code>&lt;table&gt;</code></p>
+      <p class="placeholder-native">Sortable headers, row selection and a sticky header.</p>
+      <div class="native">
+        <table style="border-collapse:collapse"><thead><tr><th style="text-align:left;padding-right:1rem">Name</th><th style="text-align:left">Size</th></tr></thead><tbody><tr><td style="padding-right:1rem">report.pdf</td><td>2 MB</td></tr><tr><td style="padding-right:1rem">photo.jpg</td><td>4 MB</td></tr></tbody></table>
+      </div>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Kbd</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: <code>&lt;kbd&gt;</code></p>
+      <p class="placeholder-native">Keyboard keys next to menu items and hints.</p>
+      <div class="native">
+        <span><kbd>⌘</kbd> <kbd>K</kbd></span>
+      </div>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Copy button</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: none</p>
+      <p class="placeholder-native">Copies a text and confirms it; half built already for the demo code blocks.</p>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Rating</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: radio buttons</p>
+      <p class="placeholder-native">Stars (or another symbol), usable from the keyboard.</p>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Tree view</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: nested <code>&lt;details&gt;</code></p>
+      <p class="placeholder-native">Nested, collapsible rows: folders or permission groups.</p>
+      <div class="native">
+        <details><summary>Documents</summary><details style="margin-left:1rem"><summary>Invoices</summary><div style="margin-left:1rem">2026.pdf</div></details></details>
+      </div>
+    </article>
+
+  </div>
 
   <footer>Structure: <code>components/&lt;name&gt;/&lt;name&gt;.js</code> + <code>demo.html</code>, shared page styles in <code>shared/</code>.</footer>
 </main>
