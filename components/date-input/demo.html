@@ -69,6 +69,42 @@
     </div>
   </div>
 
+  <h2>Today shortcut · <code>today</code></h2>
+  <p>A tag in the row under the field sets the current day, time, month or week in one click, as a user edit (<code>input</code> and <code>change</code> fire once each). Its label follows the locale; <code>today-label</code> overrides it. Outside <code>min</code> / <code>max</code> it stays, disabled, with a title saying why.</p>
+  <div class="grid" id="todayGrid">
+    <div class="card">
+      <h3>Date</h3>
+      <kakao-date-input today label="Entry date" hint="Today in one click"></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Time · <code>step="900"</code></h3>
+      <kakao-date-input today type="time" step="900" label="Started at" hint="Now, to the nearest quarter hour"></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Date and time</h3>
+      <kakao-date-input today type="datetime-local" label="Logged at"></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Month · week</h3>
+      <div class="stack">
+        <kakao-date-input today type="month" label="Billing month"></kakao-date-input>
+        <kakao-date-input today type="week" label="Sprint week"></kakao-date-input>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Out of range · disabled tag</h3>
+      <kakao-date-input today id="todayOut" label="Delivery" hint="Hover the tag for the reason"></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Locale · <code>today-label</code></h3>
+      <div class="stack">
+        <kakao-date-input today lang="de-AT" label="Datum"></kakao-date-input>
+        <kakao-date-input today today-label="Use today" label="Custom label"></kakao-date-input>
+      </div>
+    </div>
+  </div>
+  <p class="locale-out" id="todayLog">Use a tag to see its events.</p>
+
   <h2>Beside the other fields</h2>
   <div class="card">
     <div class="stack" style="max-width:22rem">
@@ -139,6 +175,7 @@
       <kakao-button id="apiPicker" label="showPicker()" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiType" label="next type" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiToday" label="toggle today" variant="secondary" size="sm"></kakao-button>
     </div>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
@@ -157,6 +194,19 @@
     const types = ['date', 'time', 'datetime-local', 'month', 'week'];
     on('apiType', () => { play.type = types[(types.indexOf(play.type) + 1) % types.length]; play.setAttribute('label', `Playground · ${play.type}`); });
     on('apiDisable', () => { play.disabled = !play.disabled; });
+    on('apiToday', () => { play.toggleAttribute('today'); });
+
+    // Today shortcut: the out-of-range field starts next week; log the events.
+    const next = new Date(); next.setDate(next.getDate() + 7);
+    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    document.getElementById('todayOut').setAttribute('min', iso(next));
+    const todayLog = document.getElementById('todayLog');
+    let pending = [];
+    ['input', 'change'].forEach((type) => document.getElementById('todayGrid').addEventListener(type, (e) => {
+      pending.push(type);
+      todayLog.textContent = `${e.target.getAttribute('label')}: ${pending.join(' · ')} → ${e.target.value}`;
+      queueMicrotask(() => { pending = []; });
+    }));
 
     // Min / max: show what the field reports.
     const range = document.getElementById('range');

@@ -33,6 +33,14 @@
  *                days for dates, weeks, months).
  *  name · required · disabled · readonly · autocomplete   Form participation.
  *  size          "sm" | "md" (default) | "lg".
+ *  today         Shows a small tag in the row under the field that sets the
+ *                value to the current period, like a user edit (input and
+ *                change once each): today (date), now (time, datetime-local,
+ *                rounded to step, else the minute), this month, this ISO week.
+ *                Outside min / max it stays but is disabled (aria-disabled,
+ *                with a title saying why); hidden while disabled or read only.
+ *  today-label   The tag's text. Default from Intl in the locale: "Today",
+ *                "Now", "This month", "This week" ("Heute", "Jetzt" …).
  *  locale        Language tag for the inner field. Without it the nearest
  *                `lang` (the element's own, an ancestor's, <html>) is used,
  *                and followed when it changes.
@@ -64,7 +72,7 @@
  *  focus() · blur()
  *  checkValidity() · reportValidity() · validity · validationMessage · form
  *
- *  Setting value never fires events.
+ *  Setting value never fires events (the today tag does, as a user edit).
  *
  * ----------------------------------------------------------------------------
  * EVENTS (bubble, composed; once each, from the host)
@@ -91,6 +99,8 @@
  *    the error sets aria-invalid. Keyboard and screen reader behaviour is the
  *    browser's own (segments with arrow keys, the picker).
  *  - Focus is the shared 2px outline with 2px offset, on the field.
+ *  - The today tag is a real button after the hint; its name is "Set to
+ *    today" (English locales) or its visible label. Focus stays on it.
  * ============================================================================
  */
 (function () {
@@ -143,6 +153,13 @@
         --_disabled-opacity: var(--kakao-date-input-disabled-opacity, 0.55);
         --_duration: var(--kakao-date-input-duration, 150ms);
         --_ease: var(--kakao-date-input-ease, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
+        --_today-bg: var(--kakao-date-input-today-bg, var(--kakao-color-subtle-strong, #e6e6e8));
+        --_today-text: var(--kakao-date-input-today-text, var(--kakao-color-text, #18181b));
+        --_today-height: var(--kakao-date-input-today-height, 1.25rem);
+        --_today-padding-x: var(--kakao-date-input-today-padding-x, 0.4rem);
+        --_today-font-size: var(--kakao-date-input-today-font-size, 0.75rem);
+        --_today-font-weight: var(--kakao-date-input-today-font-weight, 600);
+        --_today-radius: var(--kakao-date-input-today-radius, 4px);
         /* @kakao-settings:end */
         --_glyph: ${CALENDAR};
         display: block;
@@ -242,22 +259,168 @@
         input[data-native] { margin-inline: -2px var(--_moz-nudge); }
       }
 
-      .hint, .error { margin: var(--_message-gap) 0 0; font-size: 0.78rem; color: var(--_muted); }
+      /* The row under the field: hint or error, then the today tag at the end
+         (as the textarea's counter). */
+      .below {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .hint, .error { flex: 1; min-width: 0; margin: var(--_message-gap) 0 0; font-size: 0.78rem; color: var(--_muted); }
       .hint:empty, .error:empty { display: none; }
       .error { color: var(--_danger); }
       :host([error]) .hint { display: none; }
 
+      /* The today tag: the chip's neutral tag, as a real button. */
+      .today {
+        position: relative;
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        box-sizing: border-box;
+        height: var(--_today-height);
+        margin: var(--_message-gap) 0 0 auto;
+        padding: 0 var(--_today-padding-x);
+        border: 0;
+        border-radius: var(--_today-radius);
+        background: var(--_today-bg);
+        color: var(--_today-text);
+        font-family: inherit;
+        font-size: var(--_today-font-size);
+        font-weight: var(--_today-font-weight);
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background-color var(--_duration) var(--_ease);
+      }
+      .today[hidden] { display: none; }
+      /* The drawn tag stays small; the tap target is at least 24 × 24px (WCAG 2.5.8). */
+      .today::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: max(100%, 24px);
+        height: max(100%, 24px);
+        transform: translate(-50%, -50%);
+      }
+      .today:hover { background: color-mix(in srgb, var(--_today-text) 8%, var(--_today-bg)); }
+      .today:focus-visible { outline: var(--_focus-width) solid var(--_focus); outline-offset: var(--_focus-offset); }
+      .today[aria-disabled="true"] { opacity: var(--_disabled-opacity); cursor: not-allowed; }
+      .today[aria-disabled="true"]:hover { background: var(--_today-bg); }
+
+      @media (forced-colors: active) {
+        .today { border: 1px solid ButtonText; }
+        .today[aria-disabled="true"] { border-color: GrayText; color: GrayText; }
+      }
+
       @media (prefers-reduced-motion: reduce) {
-        .field { transition: none; }
+        .field, .today { transition: none; }
       }
     </style>
     <label class="label" part="label" id="label" for="input"></label>
     <div class="field" part="field">
       <input id="input" part="input" type="date" />
     </div>
-    <p class="hint" part="hint" id="hint"></p>
-    <p class="error" part="error" id="error"></p>
+    <div class="below">
+      <p class="hint" part="hint" id="hint"></p>
+      <p class="error" part="error" id="error"></p>
+      <button class="today" part="today" type="button" hidden></button>
+    </div>
   `;
+
+  /* ---- Today tag: label and value per type ---- */
+  const TODAY_UNIT = { date: 'day', time: 'second', 'datetime-local': 'second', month: 'month', week: 'week' };
+  const TODAY_EN = { date: 'Today', time: 'Now', 'datetime-local': 'Now', month: 'This month', week: 'This week' };
+
+  /** "Today", "Now", "This month" … in the locale, from Intl's relative time words. */
+  function todayLabel(type, locale) {
+    try {
+      const loc = locale || undefined;
+      const word = new Intl.RelativeTimeFormat(loc, { numeric: 'auto' }).format(0, TODAY_UNIT[type]);
+      return word.charAt(0).toLocaleUpperCase(loc) + word.slice(1);
+    } catch (e) {
+      return TODAY_EN[type];
+    }
+  }
+
+  const pad = (n, w = 2) => String(n).padStart(w, '0');
+
+  /** Seconds since midnight of an ISO time, or null. */
+  function timeSeconds(v) {
+    const m = /^(\d{2}):(\d{2})(?::(\d{2}))?/.exec(v || '');
+    return m ? (+m[1]) * 3600 + (+m[2]) * 60 + (+(m[3] || 0)) : null;
+  }
+
+  /** Wall-clock milliseconds (as UTC) of an ISO date-time, or null. */
+  function dateTimeMs(v) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/.exec(v || '');
+    return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +(m[6] || 0)) : null;
+  }
+
+  /** Snaps n onto base + k × step; mode is 'round', 'floor' or 'ceil'. */
+  const snap = (n, base, step, mode) => base + Math[mode]((n - base) / step) * step;
+
+  /**
+   * The value for "now" in the given type: today, the current month, the ISO
+   * week, or the time snapped to step (counted from min, as the native field
+   * does). Returns candidates, nearest first, for the range check to choose from.
+   */
+  function todayValues(type, step, min, now) {
+    const y = now.getFullYear();
+    const mo = now.getMonth();
+    const d = now.getDate();
+    if (type === 'date') return [`${pad(y, 4)}-${pad(mo + 1)}-${pad(d)}`];
+    if (type === 'month') return [`${pad(y, 4)}-${pad(mo + 1)}`];
+    if (type === 'week') {
+      // ISO 8601: the week belongs to the year its Thursday falls in.
+      const t = new Date(Date.UTC(y, mo, d));
+      t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+      const year = t.getUTCFullYear();
+      const week = Math.ceil(((t - Date.UTC(year, 0, 1)) / 86400000 + 1) / 7);
+      return [`${pad(year, 4)}-W${pad(week)}`];
+    }
+    let stepSec = parseFloat(step);
+    if (!(stepSec >= 1)) stepSec = 60;
+    stepSec = Math.round(stepSec);
+    const modes = ['round', 'floor', 'ceil'];
+    if (type === 'time') {
+      const base = timeSeconds(min) || 0;
+      const secs = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+      const withSeconds = stepSec % 60 !== 0 || base % 60 !== 0;
+      return modes.map((mode) => {
+        const t = ((snap(secs, base, stepSec, mode) % 86400) + 86400) % 86400;
+        const hm = `${pad(Math.floor(t / 3600))}:${pad(Math.floor(t / 60) % 60)}`;
+        return withSeconds ? `${hm}:${pad(t % 60)}` : hm;
+      });
+    }
+    // datetime-local
+    const base = dateTimeMs(min) || 0;
+    const ms = Date.UTC(y, mo, d, now.getHours(), now.getMinutes(), now.getSeconds());
+    const withSeconds = stepSec % 60 !== 0 || (base / 1000) % 60 !== 0;
+    return modes.map((mode) => {
+      const t = new Date(snap(ms, base, stepSec * 1000, mode));
+      const v = `${pad(t.getUTCFullYear(), 4)}-${pad(t.getUTCMonth() + 1)}-${pad(t.getUTCDate())}T${pad(t.getUTCHours())}:${pad(t.getUTCMinutes())}`;
+      return withSeconds ? `${v}:${pad(t.getUTCSeconds())}` : v;
+    });
+  }
+
+  /** Whether an ISO value lies within min and max (ISO strings of one type compare in order). */
+  function inRange(type, v, min, max) {
+    const norm = (x) => {
+      if (!x) return x;
+      if (type === 'time' && x.length === 5) return `${x}:00`;
+      if (type === 'datetime-local' && x.length === 16) return `${x}:00`;
+      return x;
+    };
+    const val = norm(v);
+    const lo = norm(min);
+    const hi = norm(max);
+    // A time range may run over midnight (min after max), as on the native field.
+    if (type === 'time' && lo && hi && lo > hi) return val >= lo || val <= hi;
+    return (!lo || val >= lo) && (!hi || val <= hi);
+  }
 
   /* One observer for every instance: a `lang` change anywhere re-resolves the locale. */
   const instances = new Set();
@@ -275,7 +438,7 @@
 
     static get observedAttributes() {
       return ['type', 'label', 'aria-label', 'hint', 'error', 'value', 'min', 'max', 'step', 'name',
-        'required', 'disabled', 'readonly', 'autocomplete', 'size', 'locale'];
+        'required', 'disabled', 'readonly', 'autocomplete', 'size', 'locale', 'today', 'today-label'];
     }
 
     constructor() {
@@ -287,6 +450,7 @@
       this._input = shadow.querySelector('input');
       this._hintEl = shadow.querySelector('#hint');
       this._errorEl = shadow.querySelector('#error');
+      this._todayEl = shadow.querySelector('.today');
       this._type = 'date';
       this._native = true;
       this._formDisabled = false;
@@ -305,6 +469,13 @@
         this._syncForm();
         this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
       });
+
+      // The today tag: sets the value like a user edit. Its range state is
+      // refreshed when it is about to be used, so a page left open over
+      // midnight still offers the right day.
+      this._todayEl.addEventListener('click', () => this._applyToday());
+      this._todayEl.addEventListener('focus', () => this._syncToday());
+      this._todayEl.addEventListener('pointerenter', () => this._syncToday());
     }
 
     /* -------------------------- Lifecycle -------------------------- */
@@ -451,6 +622,55 @@
       const lang = this._resolveLocale();
       if (lang) this._input.setAttribute('lang', lang);
       else this._input.removeAttribute('lang');
+      this._syncToday();
+    }
+
+    /** The value the today tag sets now, and whether min and max allow it. */
+    _todayTarget() {
+      const type = this._resolveType();
+      const min = this.getAttribute('min') || '';
+      const max = this.getAttribute('max') || '';
+      const values = todayValues(type, this.getAttribute('step'), min, new Date());
+      const value = values.find((v) => inRange(type, v, min, max));
+      return { value: value || values[0], allowed: !!value, min, max };
+    }
+
+    _syncToday() {
+      const tag = this._todayEl;
+      const show = this.hasAttribute('today') && !this._isDisabled() && !this.hasAttribute('readonly');
+      tag.hidden = !show;
+      if (!show) return;
+      const type = this._resolveType();
+      const custom = this.getAttribute('today-label');
+      const lang = this._resolveLocale() || navigator.language || 'en';
+      const label = custom || todayLabel(type, lang);
+      tag.textContent = label;
+      // "Set to today" where the words are English; elsewhere the visible
+      // label alone (there is no cheap localised verb).
+      if (!custom && /^en\b/i.test(lang)) tag.setAttribute('aria-label', `Set to ${label.toLowerCase()}`);
+      else tag.removeAttribute('aria-label');
+
+      const { value, allowed, min, max } = this._todayTarget();
+      if (allowed) {
+        tag.removeAttribute('aria-disabled');
+        tag.removeAttribute('title');
+      } else {
+        const range = min && max ? `${min} to ${max}` : (min ? `${min} or later` : `${max} or earlier`);
+        tag.setAttribute('aria-disabled', 'true');
+        tag.title = `${label} (${value}) is outside the allowed range: ${range}.`;
+      }
+    }
+
+    _applyToday() {
+      this._syncToday();
+      const tag = this._todayEl;
+      if (tag.hidden || tag.getAttribute('aria-disabled') === 'true') return;
+      const { value } = this._todayTarget();
+      this._dirty = true;
+      this._input.value = value;
+      this._syncForm();
+      this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+      this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
     }
 
     _syncType() {

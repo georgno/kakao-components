@@ -187,6 +187,9 @@ pages (landing page, settings, demos), not the components.
   and `change`. Settings `--kakao-date-input-*`, construction page and demo.
   The components page replaces its "Date & time picker" placeholder; the
   style guide audits it; the kitchen sink asks when to pause the membership.
+  The `today` attribute adds a tag at the right of the hint row that sets the
+  field to today, now, this month or this week (Intl label, `today-label`
+  overrides it); it is disabled when today is outside `min`/`max`.
 
 ### Changed
 

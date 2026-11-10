@@ -38,6 +38,13 @@
       </div>
     </figure>
     <figure>
+      <figcaption>Today tag · disabled out of range</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-date-input today label="Entry date" hint="Hint, then the tag"></kakao-date-input>
+        <kakao-date-input today label="Last year" max="2025-12-31" hint="Hover the tag for the reason"></kakao-date-input>
+      </div>
+    </figure>
+    <figure>
       <figcaption>Sizes · error</figcaption>
       <div style="display:grid;gap:.5rem">
         <kakao-date-input size="sm" value="2026-03-04" aria-label="Small"></kakao-date-input>
@@ -55,9 +62,13 @@
     { "property": "--kakao-date-input-border", "label": "Field border", "group": "Colour", "type": "color" },
     { "property": "--kakao-date-input-focus", "label": "Focus", "group": "Colour", "type": "color" },
     { "property": "--kakao-date-input-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-date-input-today-bg", "label": "Today tag fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-date-input-today-text", "label": "Today tag text", "group": "Colour", "type": "color" },
 
     { "property": "--kakao-date-input-font", "label": "Font", "group": "Typography", "type": "font" },
     { "property": "--kakao-date-input-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-date-input-today-font-size", "label": "Today tag size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-date-input-today-font-weight", "label": "Today tag weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
 
     { "property": "--kakao-date-input-height", "label": "Height (md)", "group": "Size & spacing", "type": "length" },
     { "property": "--kakao-date-input-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
@@ -65,10 +76,13 @@
     { "property": "--kakao-date-input-message-gap", "label": "Message gap", "group": "Size & spacing", "type": "length" },
     { "property": "--kakao-date-input-icon-size", "label": "Picker icon size", "group": "Size & spacing", "type": "length", "hint": "Chromium only; centred where the select's chevron is" },
     { "property": "--kakao-date-input-moz-nudge", "label": "Firefox icon nudge", "group": "Size & spacing", "type": "length", "hint": "moves Firefox's own picker button onto the chevron's line" },
+    { "property": "--kakao-date-input-today-height", "label": "Today tag height", "group": "Size & spacing", "type": "length", "hint": "the tap target stays at least 24px" },
+    { "property": "--kakao-date-input-today-padding-x", "label": "Today tag padding x", "group": "Size & spacing", "type": "length" },
     { "property": "--kakao-date-input-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "length" },
     { "property": "--kakao-date-input-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "length" },
 
     { "property": "--kakao-date-input-radius", "label": "Field radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-date-input-today-radius", "label": "Today tag radius", "group": "Shape", "type": "radius" },
 
     { "property": "--kakao-date-input-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
 
