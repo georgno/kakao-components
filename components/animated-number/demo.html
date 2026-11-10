@@ -64,6 +64,12 @@
       <kakao-button id="apiNeg" label="update(-42)" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiRandom" label="Randomize all" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const num = document.getElementById('num');
+        num.update(Number(num.value) + 125); // counts to the new value
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

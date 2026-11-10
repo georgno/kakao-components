@@ -90,6 +90,14 @@
       <kakao-button id="noAnim" label="theme = other (no ripple)" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="forget" label="Forget choice · follow system" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const sw = document.querySelector('kakao-theme-switch');
+        sw.setTheme('dark'); // with the ripple
+        sw.next();
+        sw.theme = 'light'; // at once, no ripple
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

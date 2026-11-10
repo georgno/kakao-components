@@ -50,10 +50,16 @@
   <div class="card stack">
     <kakao-breadcrumb start="text" list-data='[["Library", "#library"], ["Sci-fi", "#sci-fi"], ["Arrival"]]'></kakao-breadcrumb>
     <kakao-breadcrumb start="text" start-text="Dashboard" list-data='[["Reports", "#reports"], ["November"]]'></kakao-breadcrumb>
-    <div class="actions">
+    <div class="actions" data-demo-only>
       <kakao-button id="text-home" label="startText = 'Home'" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="text-reset" label="Back to 'Start'" variant="ghost" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        // every breadcrumb without its own start-text
+        KakaoBreadcrumb.startText = 'Home';
+      </script>
+    </template>
   </div>
 
   <h2>Two ways to pass items</h2>
@@ -69,10 +75,15 @@
     <div class="card">
       <h3>From script · <code>el.items = …</code></h3>
       <kakao-breadcrumb id="scripted"></kakao-breadcrumb>
-      <div class="actions" style="margin-top:.75rem">
+      <div class="actions" style="margin-top:.75rem" data-demo-only>
         <kakao-button id="deeper" label="Go deeper" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="up" label="Up one" variant="ghost" size="sm"></kakao-button>
       </div>
+      <template data-code>
+        <script>
+          document.getElementById('scripted').items = [['Library', '#library'], ['Sci-fi', '#sci-fi'], ['Arrival']];
+        </script>
+      </template>
     </div>
   </div>
 
@@ -87,6 +98,14 @@
   <div class="card">
     <kakao-breadcrumb id="spa" list-data='[["Settings", "/settings"], ["Plan", "/settings/plan"], ["Billing"]]'></kakao-breadcrumb>
     <div class="log" id="log" role="log" aria-label="Navigation log" style="margin-top:.75rem"></div>
+    <template data-code>
+      <script>
+        document.getElementById('spa').addEventListener('breadcrumb-navigate', (e) => {
+          e.preventDefault(); // no page load: the app routes instead
+          history.pushState(null, '', e.detail.url);
+        });
+      </script>
+    </template>
   </div>
 </main>
 <script>

@@ -70,6 +70,14 @@
       <h3>Async · <code>async</code></h3>
       <kakao-switch-group class="async-demo" label="Synced settings" orientation="vertical" async
         list-data='[{"name":"fast","label":"Saves fast (150ms, no loader)"},{"name":"ok","label":"Saves (1.2s)"},{"name":"fail","label":"Server refuses"},{"name":"flaky","label":"Fails 50% of the time","checked":true}]'></kakao-switch-group>
+      <template data-code>
+        <script>
+          // with async, a toggle waits for the page: resolve keeps it, reject flips it back
+          document.querySelector('.async-demo').addEventListener('switch-request', (e) => {
+            e.detail.waitUntil(fetch(`/api/settings/${e.detail.name}`, { method: 'PUT' }));
+          });
+        </script>
+      </template>
     </div>
 
     <div class="card">
@@ -97,6 +105,20 @@
       <kakao-button id="apiData" label="setData() - new switches" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiGet" label="getData()" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const group = document.getElementById('group1');
+        group.setChecked(1, true);
+        group.focusSwitch(2);
+        group.setData([
+          { name: 'wifi', label: 'Wi-Fi', checked: true },
+          { name: 'bt', label: 'Bluetooth' },
+        ]);
+        console.log(group.getData());
+        group.thumbDrag = false;
+        group.colorLabels = true;
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

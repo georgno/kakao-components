@@ -39,7 +39,7 @@
 
   <h2>Glow</h2>
   <p>The colour comes from the first footer button: its variant and the theme. Try the theme switch.</p>
-  <div class="grid">
+  <div class="grid" data-example>
     <kakao-card>
       <h3 slot="header">Upgrade to Pro</h3>
       <p>Unlimited projects, version history and priority support.</p>
@@ -65,7 +65,7 @@
 
   <h2>Theme trigger glow</h2>
   <p>A card without a footer button can still glow when the <code>&lt;kakao-theme-switch&gt;</code> sends its colour through the <code>KakaoComponents</code> trigger API. Switch the page theme to see the glow follow <code style="white-space:nowrap">--kakao-color-primary</code>.</p>
-  <div class="grid">
+  <div class="grid" data-example>
     <kakao-card>
       <h3 slot="header">Theme glow</h3>
       <p>This card has no footer button. It reacts to the <code>theme-change</code> trigger and uses the theme's primary colour for the glow.</p>
@@ -74,7 +74,7 @@
 
   <h2>Without glow</h2>
   <p>No button first in the footer, no footer, or <code>no-glow</code>.</p>
-  <div class="grid">
+  <div class="grid" data-example>
     <kakao-card>
       <h3 slot="header">Text first</h3>
       <p>The footer starts with text, so there is no glow.</p>
@@ -93,7 +93,7 @@
 
   <h2>Playground</h2>
   <p>Change the first footer button, remove it, or switch the theme: the glow follows through CSS alone. Remove or add lines: the card glides to its new height.</p>
-  <div class="grid">
+  <div class="grid" data-example>
     <kakao-card id="play">
       <h3 slot="header">Live</h3>
       <p>The glow takes the colour of the first footer button.</p>
@@ -106,7 +106,7 @@
         <kakao-button id="playBtn" label="Action"></kakao-button>
       </div>
     </kakao-card>
-    <div class="card">
+    <div class="card" data-demo-only>
       <div class="toolbar" style="margin-top:0">
         <kakao-button id="v-primary" label="primary" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="v-secondary" label="secondary" variant="secondary" size="sm"></kakao-button>

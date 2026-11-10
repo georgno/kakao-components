@@ -53,7 +53,14 @@
     <div class="card">
       <h3>Live while picking</h3>
       <kakao-color-picker id="live" label="Brand colour" value="#4f46e5"></kakao-color-picker>
-      <div class="live-sample" id="liveSample">Follows every step</div>
+      <div class="live-sample" id="liveSample" data-demo-only>Follows every step</div>
+      <template data-code>
+        <script>
+          const picker = document.getElementById('live');
+          picker.addEventListener('input', () => console.log(picker.value)); // every step while picking
+          picker.addEventListener('change', () => console.log(picker.value)); // the final pick
+        </script>
+      </template>
     </div>
     <div class="card">
       <h3>Opacity · <code>alpha</code></h3>
@@ -70,6 +77,14 @@
         <kakao-color-picker compact id="compact" aria-label="Accent" value="#db2777"></kakao-color-picker>
         <input id="compactText" value="#db2777" aria-label="Accent, CSS value" spellcheck="false" />
       </div>
+      <template data-code>
+        <script>
+          const compact = document.getElementById('compact');
+          const compactText = document.getElementById('compactText');
+          compact.addEventListener('input', () => { compactText.value = compact.value; });
+          compactText.addEventListener('input', () => { compact.value = compactText.value; });
+        </script>
+      </template>
     </div>
     <div class="card">
       <h3>Disabled</h3>
@@ -86,6 +101,13 @@
       <kakao-button id="apiReset" label="value = #4f46e5" variant="secondary" size="sm"></kakao-button>
     </div>
     <p style="margin:.75rem 0 0;font-size:.9rem"><span id="counts">input: 0 · change: 0</span></p>
+    <template data-code>
+      <script>
+        const picker = document.getElementById('live');
+        picker.open();
+        picker.value = 'tomato'; // any CSS colour
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

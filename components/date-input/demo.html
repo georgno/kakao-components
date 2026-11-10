@@ -94,6 +94,14 @@
     <div class="card">
       <h3>Out of range · disabled tag</h3>
       <kakao-date-input today id="todayOut" label="Delivery" hint="Earliest date is next week"></kakao-date-input>
+      <template data-code>
+        <script>
+          // the earliest date is next week, so today is out of range and the tag is off
+          const next = new Date();
+          next.setDate(next.getDate() + 7);
+          document.getElementById('todayOut').setAttribute('min', next.toISOString().slice(0, 10));
+        </script>
+      </template>
     </div>
     <div class="card">
       <h3>Locale · <code>today-label</code></h3>
@@ -130,6 +138,13 @@
       <div><kakao-date-input class="loc-field" type="time" label="Time" value="14:30"></kakao-date-input><p class="locale-out"></p></div>
       <div><kakao-date-input class="loc-field" type="datetime-local" label="Date and time" value="2026-03-04T14:30"></kakao-date-input><p class="locale-out"></p></div>
       <div><kakao-date-input class="loc-field" type="month" label="Month" value="2026-03"></kakao-date-input><p class="locale-out"></p></div>
+      <template data-code>
+        <!-- the locale attribute, else the nearest lang; the browser may still draw its own format -->
+        <kakao-date-input locale="de-AT" label="Datum" value="2026-03-04"></kakao-date-input>
+        <div lang="fr-FR">
+          <kakao-date-input type="time" label="Heure" value="14:30"></kakao-date-input>
+        </div>
+      </template>
     </div>
   </div>
 

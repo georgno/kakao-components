@@ -81,6 +81,14 @@
       <kakao-button id="apiToggle" label="toggle horizontal" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiData" label="setData()" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const radios = document.getElementById('r1');
+        radios.value = 'solo';
+        radios.setAttribute('orientation', 'horizontal');
+        radios.setData([{ value: 'a', label: 'Option A' }, { value: 'b', label: 'Option B' }]);
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

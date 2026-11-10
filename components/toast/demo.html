@@ -46,6 +46,15 @@
         <kakao-button data-tone="warning" label="Warning" variant="secondary" size="sm"></kakao-button>
         <kakao-button data-tone="danger" label="Danger" variant="secondary" size="sm"></kakao-button>
       </div>
+      <template data-code>
+        <!-- KakaoToast.show() adds a <kakao-toast> to the body when the page has none -->
+        <script>
+          KakaoToast.show({ tone: 'info', heading: 'New version', message: 'It installs the next time you open the app.' });
+          KakaoToast.show({ tone: 'success', message: 'Settings saved.' });
+          KakaoToast.show({ tone: 'warning', heading: 'Storage almost full', message: '92% of 10 GB used.' });
+          KakaoToast.show({ tone: 'danger', heading: 'Upload failed', message: 'invoice-march.pdf is larger than 20 MB.' });
+        </script>
+      </template>
     </div>
   </div>
 
@@ -64,6 +73,14 @@
         <kakao-button data-max="3" label="max 3" variant="ghost" size="sm"></kakao-button>
         <kakao-button data-max="5" label="max 5" variant="ghost" size="sm"></kakao-button>
       </div>
+      <template data-code>
+        <kakao-toast max="5"></kakao-toast>
+        <script>
+          KakaoToast.show({ tone: 'success', message: 'Changes saved.' });
+          // close all of them
+          document.querySelectorAll('kakao-toast kakao-alert').forEach((alert) => alert.close());
+        </script>
+      </template>
     </div>
   </div>
 
@@ -77,6 +94,9 @@
         <kakao-button data-position="top-right" label="Top right" variant="secondary" size="sm"></kakao-button>
         <kakao-button data-position="top-left" label="Top left" variant="secondary" size="sm"></kakao-button>
       </div>
+      <template data-code>
+        <kakao-toast position="top-left"></kakao-toast>
+      </template>
     </div>
   </div>
 
@@ -85,23 +105,45 @@
   <p class="note">A message that disappears can be gone before someone using a screen reader or magnifier, or reading slowly, gets to it. Keep toasts short, and don't put the only copy of important information in one.</p>
   <div class="grid">
     <div class="card full">
-      <div class="row">
+      <div class="row" data-demo-only>
         <kakao-button id="short" label="Info, 3s" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="sticky" label="Success, stays" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="undo" label="Deleted, with Undo" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="handle-open" label="Show by handle" size="sm"></kakao-button>
         <kakao-button id="handle-close" label="handle.close()" variant="ghost" size="sm"></kakao-button>
       </div>
+      <template data-code>
+        <script>
+          KakaoToast.show({ message: 'Link copied.', duration: 3000 });
+          KakaoToast.show({ tone: 'success', heading: 'Export ready', message: 'Stays until you close it.', duration: 0 });
+          KakaoToast.show({
+            tone: 'info', message: '3 photos moved to the bin.',
+            action: { label: 'Undo', onClick: () => restorePhotos() },
+          });
+          const handle = KakaoToast.show({ tone: 'warning', message: 'Opened by a script.', duration: 0 });
+          handle.closed.then((reason) => console.log(reason));
+          handle.close();
+        </script>
+      </template>
     </div>
   </div>
 
   <h2>Written toasts</h2>
   <p>A <code>&lt;kakao-alert&gt;</code> written into <code>&lt;kakao-toast&gt;</code> (server flash messages) or appended to it later becomes a toast; its own <code>duration</code> is the toast's time. Toasts already in the page at load are shown but not announced.</p>
   <div class="grid">
-    <div class="card full">
-      <div class="row">
+    <div class="card full" data-code-with="toasts">
+      <div class="row" data-demo-only>
         <kakao-button id="append" label="Append a kakao-alert" variant="secondary" size="sm"></kakao-button>
       </div>
+      <template data-code>
+        <script>
+          const alert = document.createElement('kakao-alert');
+          alert.setAttribute('tone', 'success');
+          alert.setAttribute('duration', '5000');
+          alert.textContent = 'Appended as a plain kakao-alert (5s).';
+          document.getElementById('toasts').append(alert);
+        </script>
+      </template>
       <div class="log" id="log" role="log" aria-label="Event log"></div>
     </div>
   </div>

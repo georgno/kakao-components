@@ -82,6 +82,16 @@
       <kakao-button id="apiClear" label="clear()" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const upload = document.getElementById('upload1');
+        upload.open(); // the file picker
+        upload.addFiles([new File(['hello'], 'hello.txt', { type: 'text/plain' })]);
+        upload.removeFile(0);
+        upload.clear();
+        upload.disabled = true;
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

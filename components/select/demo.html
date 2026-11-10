@@ -70,6 +70,12 @@
     <div class="card">
       <h3>Long list · 200 items</h3>
       <kakao-select id="s4" multiple label="Products" placeholder="Pick products"></kakao-select>
+      <template data-code>
+        <script>
+          // a long list is easier to pass as a property than as list-data
+          document.getElementById('s4').options = products; // [{ value: 'p1', label: 'Oak desk Classic' }, …]
+        </script>
+      </template>
     </div>
   </div>
 
@@ -118,6 +124,15 @@
       <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const select = document.getElementById('s3');
+        select.values = ['action', 'horror'];
+        select.focus();
+        select.open();
+        select.disabled = true;
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

@@ -44,7 +44,7 @@
 
   <h2>Single</h2>
   <p>Title and description from attributes, or from the <code>title</code>, <code>description</code> and <code>meta</code> slots.</p>
-  <div class="stack">
+  <div class="stack" data-example>
     <kakao-accordion heading="Shipping" description="Delivery times and costs" open>
       <p>Orders ship within two working days. Delivery is free from 50 €.</p>
     </kakao-accordion>
@@ -62,7 +62,7 @@
 
   <h2>Grouped</h2>
   <p>Accordions with the same <code>name</code> form a group: opening one closes the others, like <code>&lt;details name&gt;</code>.</p>
-  <div class="stack" id="faq">
+  <div class="stack" id="faq" data-example>
     <kakao-accordion name="faq" heading="Can I cancel anytime?" open>
       <p>Yes. Your plan stays active until the end of the billing period.</p>
     </kakao-accordion>
@@ -76,7 +76,7 @@
 
   <h2>Rich content</h2>
   <p>The body takes anything: here a small form.</p>
-  <div class="stack">
+  <div class="stack" data-example>
     <kakao-accordion heading="Contact details" description="Used for receipts and account recovery">
       <span slot="meta">Optional</span>
       <kakao-text-input label="Phone" name="phone" type="tel" autocomplete="tel"></kakao-text-input>
@@ -91,7 +91,7 @@
 
   <h2>Nesting</h2>
   <p>Three levels: the outer accordion is a card, the ones inside are tiles on the subtle fill, and the third level is flat rows divided by hairlines. Only the outer one has a border.</p>
-  <div class="stack" id="nested">
+  <div class="stack" id="nested" data-example>
     <kakao-accordion heading="Account settings" description="Profile, security and notifications" open>
       <p>Everything about your account in one place.</p>
       <kakao-accordion heading="Security" description="Password and sign-in" open>
@@ -120,7 +120,7 @@
 
   <h2>Methods and events</h2>
   <p><code>show()</code>, <code>hide()</code> and <code>toggle()</code>; every change sends <code>accordion-toggle</code>.</p>
-  <div class="stack">
+  <div class="stack" data-example>
     <kakao-accordion id="play" heading="Controlled from outside">
       <p>Opened and closed by the buttons below as well as its header.</p>
     </kakao-accordion>
@@ -130,6 +130,13 @@
       <kakao-button id="m-toggle" label="toggle()" variant="secondary" size="sm"></kakao-button>
     </div>
     <div class="log" id="log" aria-live="polite"></div>
+    <template data-code>
+      <script>
+        const accordion = document.getElementById('play');
+        accordion.show(); // also hide() and toggle()
+        accordion.addEventListener('accordion-toggle', (e) => console.log(e.detail.open));
+      </script>
+    </template>
   </div>
 
   <footer>Attributes: <code>heading</code>, <code>description</code>, <code>open</code>, <code>name</code>, <code>variant</code> (card, tile, row), <code>no-animate</code>. Slots: default (body), <code>title</code>, <code>description</code>, <code>meta</code>. Event: <code>accordion-toggle</code>. Parts: <code>accordion</code>, <code>header</code>, <code>title</code>, <code>description</code>, <code>meta</code>, <code>chevron</code>, <code>panel</code>, <code>body</code>. Full reference in the header of <code>accordion.js</code>.</footer>

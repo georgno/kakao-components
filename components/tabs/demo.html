@@ -57,6 +57,16 @@
       <kakao-button id="apiAdd" label="Append a tab" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiRemove" label="Remove last tab" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const tabs = document.getElementById('tabs');
+        tabs.select('panel-two'); // by the panel id
+        const tab = document.createElement('kakao-tab');
+        tab.setAttribute('controls', 'panel-five');
+        tab.textContent = 'New';
+        tabs.append(tab);
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

@@ -73,11 +73,24 @@
       <h3>Closes</h3>
       <kakao-alert id="closes" tone="success" dismissible duration="0">Your profile is public now.</kakao-alert>
       <kakao-button id="closes-back" label="Show it again" variant="ghost" size="sm"></kakao-button>
+      <template data-code>
+        <script>
+          // hidden after closing; show() brings it back
+          document.getElementById('closes-back').addEventListener('kakao-button-action', () => document.getElementById('closes').show());
+        </script>
+      </template>
     </div>
     <div class="card">
       <h3>Cancelled · the page decides</h3>
       <kakao-alert id="locked" tone="warning" dismissible duration="0" close-label="Dismiss warning">This warning cancels its own close.</kakao-alert>
       <p class="note" id="locked-out">Try the ×.</p>
+      <template data-code>
+        <script>
+          document.getElementById('locked').addEventListener('alert-hide', (e) => {
+            e.preventDefault(); // the alert stays; e.detail.reason says why it was closing
+          });
+        </script>
+      </template>
     </div>
   </div>
 
@@ -86,12 +99,24 @@
   <p class="note">A message that disappears can be gone before someone using a screen reader or magnifier, or reading slowly, gets to it. Don't put the only copy of important information in an alert that hides itself.</p>
   <div class="grid">
     <div class="card full">
-      <div class="row">
+      <div class="row" data-demo-only>
         <kakao-button id="add-success" label="Success (default 8s)" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="add-info" label="Info, 3s" variant="secondary" size="sm"></kakao-button>
         <kakao-button id="add-danger" label="Error (stays)" variant="secondary" size="sm"></kakao-button>
       </div>
       <div class="stack" id="stack"></div>
+      <template data-code>
+        <div id="stack"></div>
+        <script>
+          const alert = document.createElement('kakao-alert');
+          alert.setAttribute('tone', 'info');
+          alert.setAttribute('dismissible', '');
+          alert.setAttribute('duration', '3000'); // ms; without it info and success leave after 8s
+          alert.textContent = 'Copied to the clipboard';
+          alert.addEventListener('alert-hidden', () => alert.remove());
+          document.getElementById('stack').append(alert);
+        </script>
+      </template>
     </div>
   </div>
 
@@ -100,19 +125,19 @@
   <div class="grid">
     <div class="card full">
       <kakao-alert id="play" heading="Heads up" dismissible duration="0">Change the tone, the timer or close it.</kakao-alert>
-      <div class="row">
+      <div class="row" data-demo-only>
         <kakao-button data-tone="info" label="Info" variant="secondary" size="sm"></kakao-button>
         <kakao-button data-tone="success" label="Success" variant="secondary" size="sm"></kakao-button>
         <kakao-button data-tone="warning" label="Warning" variant="secondary" size="sm"></kakao-button>
         <kakao-button data-tone="danger" label="Danger" variant="secondary" size="sm"></kakao-button>
       </div>
-      <div class="row">
+      <div class="row" data-demo-only>
         <kakao-button data-duration="" label="Default timer" variant="ghost" size="sm"></kakao-button>
         <kakao-button data-duration="4000" label="duration 4000" variant="ghost" size="sm"></kakao-button>
         <kakao-button data-duration="0" label="duration 0" variant="ghost" size="sm"></kakao-button>
         <kakao-button id="play-dismiss" variant="ghost" size="sm"></kakao-button>
       </div>
-      <div class="row">
+      <div class="row" data-demo-only>
         <kakao-button id="play-show" label="show()" size="sm"></kakao-button>
         <kakao-button id="play-hide" label="hide()" variant="secondary" size="sm"></kakao-button>
       </div>

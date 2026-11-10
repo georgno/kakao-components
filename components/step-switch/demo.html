@@ -97,6 +97,17 @@
       <kakao-button id="apiData" label="setData() - new steps" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiGet" label="getData() / getIndex()" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const steps = document.getElementById('steps1');
+        steps.stepBy(1);
+        steps.setValue('high');
+        console.log(steps.getData(), steps.getIndex());
+        steps.thumbDrag = false;
+        steps.colorShift = true;
+        steps.disabled = true;
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

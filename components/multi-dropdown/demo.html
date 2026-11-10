@@ -96,6 +96,16 @@
       <kakao-button id="apiParts" label="getParts()" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiClear" label="clear()" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const dob = document.getElementById('dob');
+        dob.value = '29.02.2024';
+        dob.setPart('month', '04');
+        dob.setPart('day', '00'); // 00 = unknown
+        console.log(dob.getParts());
+        dob.clear();
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

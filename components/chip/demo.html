@@ -85,7 +85,7 @@
         <kakao-chip removable value="new" tone="primary">New this week</kakao-chip>
         <kakao-chip removable value="tag" href="#documentary">Documentary</kakao-chip>
       </kakao-chip-list>
-      <kakao-button id="refill" label="Add them back" variant="ghost" size="sm" style="margin-top:.75rem"></kakao-button>
+      <kakao-button id="refill" label="Add them back" variant="ghost" size="sm" style="margin-top:.75rem" data-demo-only></kakao-button>
     </div>
     <div class="card">
       <h3>Cancelled · the page decides</h3>
@@ -93,6 +93,13 @@
         <kakao-chip removable value="billing">Billing receipts</kakao-chip>
       </kakao-chip-list>
       <p class="muted" id="locked-out" style="font-size:.85rem">This one cancels the event: billing receipts can't be turned off.</p>
+      <template data-code>
+        <script>
+          document.getElementById('locked').addEventListener('chip-remove', (e) => {
+            e.preventDefault(); // the chip stays
+          });
+        </script>
+      </template>
     </div>
   </div>
 </main>

@@ -79,6 +79,13 @@
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.82rem">Any markup placed inside the element is shown in the menu.</p>
     </kakao-aside-menu>
     <kakao-button id="toggleBtn" variant="secondary" size="sm" label="Open via API"></kakao-button>
+    <template data-code>
+      <script>
+        document.getElementById('toggleBtn').addEventListener('kakao-button-action', () => {
+          document.getElementById('menu1').toggle();
+        });
+      </script>
+    </template>
   </div>
 
   <h2>Variants</h2>
@@ -127,6 +134,13 @@
         </nav>
       </kakao-aside-menu>
       <kakao-button id="openMenu3" variant="secondary" size="sm" label="Open menu →"></kakao-button>
+      <template data-code>
+        <script>
+          document.getElementById('openMenu3').addEventListener('kakao-button-action', () => {
+            document.getElementById('menu3').open();
+          });
+        </script>
+      </template>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The page calls <code>menu3.open()</code> itself.</p>
     </div>
   </div>
@@ -138,6 +152,14 @@
       <kakao-button id="optPosition" variant="secondary" size="sm" toggle></kakao-button>
       <kakao-button id="optWidth" variant="secondary" size="sm" toggle></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const menu = document.getElementById('menu1');
+        menu.setAttribute('position', 'right');
+        menu.setAttribute('width', '22rem');
+        menu.addEventListener('aside-change', (e) => console.log(e.detail.open));
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

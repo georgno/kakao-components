@@ -81,6 +81,12 @@
     <div class="card">
       <h3>Long list · 200 items</h3>
       <kakao-combobox id="c6" label="Product" placeholder="Search or name a product"></kakao-combobox>
+      <template data-code>
+        <script>
+          // a long list is easier to pass as a property than as list-data
+          document.getElementById('c6').options = products; // [{ value: 'p1', label: 'Oak desk Classic' }, …]
+        </script>
+      </template>
     </div>
   </div>
 
@@ -127,6 +133,16 @@
       <kakao-button id="apiOpen" label="open()" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const combobox = document.getElementById('c3');
+        combobox.value = 'Design'; // a listed value
+        combobox.value = 'Onboarding'; // free text
+        combobox.focus();
+        combobox.open();
+        combobox.disabled = true;
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

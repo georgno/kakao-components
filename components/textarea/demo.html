@@ -75,6 +75,13 @@
       <kakao-button id="apiValue" label="value = long text" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiClear" label="value = &quot;&quot;" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const textarea = document.getElementById('a1');
+        textarea.focus();
+        textarea.value = 'A longer piece of text\nwith two lines.';
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

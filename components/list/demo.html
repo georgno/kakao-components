@@ -67,6 +67,17 @@
       <kakao-button id="apiData" label="setData() - new rows" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const list = document.getElementById('list1');
+        list.scrollBy(120);
+        list.setData([
+          { group: 'Planets', names: ['Mercury', 'Venus', 'Earth', 'Mars'] },
+          { group: 'Moons', names: ['Moon', 'Phobos', 'Deimos'] },
+        ], true);
+        list.toggleAttribute('disabled', true);
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

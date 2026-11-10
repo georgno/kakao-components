@@ -136,7 +136,16 @@
   <h2>Live</h2>
   <div class="card">
     <kakao-text-input id="live-in" label="Any colour" value="oklch(65% 0.2 30)" spellcheck="false"></kakao-text-input>
-    <div class="live-out"><kakao-color-code id="live-out">oklch(65% 0.2 30)</kakao-color-code> <span class="muted" id="live-state"></span></div>
+    <div class="live-out"><kakao-color-code id="live-out">oklch(65% 0.2 30)</kakao-color-code> <span class="muted" id="live-state" data-demo-only></span></div>
+    <template data-code>
+      <script>
+        document.getElementById('live-in').addEventListener('input', (e) => {
+          const code = document.getElementById('live-out');
+          code.textContent = e.currentTarget.value;
+          console.log(code.valid); // false when it is not a colour
+        });
+      </script>
+    </template>
   </div>
 </main>
 <script>

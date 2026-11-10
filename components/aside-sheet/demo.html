@@ -58,7 +58,7 @@
 
   <h2>Four sides</h2>
   <p>Each button opens its sheet through the sheet's <code>for</code> attribute: no script. Escape, a click on the covered page or the close button ends it, and focus goes back to the button.</p>
-  <div class="card demo-row">
+  <div class="card demo-row" data-code-with="bottom top start end">
     <kakao-button id="open-bottom" label="Bottom · share"></kakao-button>
     <kakao-button id="open-top" label="Top · search" variant="secondary"></kakao-button>
     <kakao-button id="open-start" label="Start · navigation" variant="secondary"></kakao-button>
@@ -67,35 +67,53 @@
 
   <h2>Variants</h2>
   <div class="grid">
-    <div class="card">
+    <div class="card" data-code-with="terms">
       <h3>Long body · <code>handle</code></h3>
       <p class="small muted" style="margin:0">Header and footer stay put; only the body scrolls. Drag the handle or the header down to close.</p>
-      <div class="demo-row" style="margin-top:.75rem"><kakao-button id="open-terms" label="Terms" variant="secondary" size="sm"></kakao-button></div>
+      <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-terms" label="Terms" variant="secondary" size="sm"></kakao-button></div>
     </div>
-    <div class="card">
+    <div class="card" data-code-with="comments">
       <h3>Form in the footer</h3>
       <p class="small muted" style="margin:0">A comment field that stays above the scrolling thread.</p>
-      <div class="demo-row" style="margin-top:.75rem"><kakao-button id="open-comments" label="Comments" variant="secondary" size="sm"></kakao-button></div>
+      <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-comments" label="Comments" variant="secondary" size="sm"></kakao-button></div>
     </div>
-    <div class="card">
+    <div class="card" data-code-with="player">
       <h3>Non-modal · <code>modal="false"</code></h3>
       <p class="small muted" style="margin:0">No scrim, no focus trap, no scroll lock: the page stays usable behind it.</p>
-      <div class="demo-row" style="margin-top:.75rem"><kakao-button id="open-player" label="Now playing" variant="secondary" size="sm"></kakao-button></div>
+      <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-player" label="Now playing" variant="secondary" size="sm"></kakao-button></div>
     </div>
-    <div class="card">
+    <div class="card" data-code-with="draft discard">
       <h3>Cancelable close · <code>sheet-hide</code></h3>
       <p class="small muted" style="margin:0">Type something, then try to close: a dialog asks first and opens over the sheet.</p>
-      <div class="demo-row" style="margin-top:.75rem"><kakao-button id="open-draft" label="Write a note" variant="secondary" size="sm"></kakao-button></div>
+      <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-draft" label="Write a note" variant="secondary" size="sm"></kakao-button></div>
+      <template data-code>
+        <script>
+          // Unsaved text: ask before the sheet closes
+          const draft = document.getElementById('draft');
+          const discard = document.getElementById('discard');
+          const draftText = document.getElementById('draft-text');
+          draft.addEventListener('sheet-hide', (e) => {
+            if (e.detail.returnValue === 'save' || !draftText.value) return;
+            e.preventDefault();
+            discard.open();
+          });
+          discard.addEventListener('dialog-close', (e) => {
+            if (e.detail.returnValue !== 'discard') return;
+            draftText.value = '';
+            draft.hide('discard');
+          });
+        </script>
+      </template>
     </div>
-    <div class="card">
+    <div class="card" data-code-with="consent">
       <h3><code>no-dismiss</code></h3>
       <p class="small muted" style="margin:0">Escape, the scrim and the close button do nothing; only the footer buttons end it.</p>
-      <div class="demo-row" style="margin-top:.75rem"><kakao-button id="open-consent" label="Cookie choice" variant="secondary" size="sm"></kakao-button></div>
+      <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-consent" label="Cookie choice" variant="secondary" size="sm"></kakao-button></div>
     </div>
     <div class="card" dir="rtl">
       <h3>Right to left · <code>side="end"</code></h3>
       <p class="small muted" style="margin:0">Inside <code>dir="rtl"</code> the end side is the left edge.</p>
-      <div class="demo-row" style="margin-top:.75rem"><kakao-button id="open-rtl" label="End in RTL" variant="secondary" size="sm"></kakao-button></div>
+      <div class="demo-row" data-demo-wrap style="margin-top:.75rem"><kakao-button id="open-rtl" label="End in RTL" variant="secondary" size="sm"></kakao-button></div>
       <kakao-aside-sheet for="open-rtl" side="end" label="RTL sheet">
         <h2 slot="header">End side, right to left</h2>
         <p>This sheet sits inside an element with <code>dir="rtl"</code>, so <code>side="end"</code> attaches it to the left edge and its rounded corners face right.</p>

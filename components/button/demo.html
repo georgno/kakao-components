@@ -118,6 +118,15 @@
       <kakao-button id="runOk" label="Save (succeeds)" icon="fas fa-cloud-arrow-up"></kakao-button>
       <kakao-button id="runFail" label="Save (fails)" variant="danger"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const save = document.getElementById('runOk');
+        save.addEventListener('kakao-button-action', () => {
+          // loading while the promise runs, then a check (resolved) or back to the label (rejected)
+          save.run(() => fetch('/api/save', { method: 'POST' }));
+        });
+      </script>
+    </template>
     <div class="toolbar">
       <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
       <kakao-button id="apiLabel" label="Change label of first button" variant="secondary" size="sm"></kakao-button>

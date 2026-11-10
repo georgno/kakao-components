@@ -82,6 +82,14 @@
       <kakao-button id="apiClear" label="value = &quot;&quot;" variant="secondary" size="sm"></kakao-button>
       <kakao-button id="apiError" label="toggle error" variant="secondary" size="sm"></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const field = document.getElementById('t1');
+        field.focus();
+        field.value = 'hello';
+        field.setAttribute('error', 'Something is wrong.');
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 

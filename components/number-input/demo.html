@@ -89,6 +89,14 @@
       <kakao-button id="optSize" variant="secondary" size="sm" toggle></kakao-button>
       <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
     </div>
+    <template data-code>
+      <script>
+        const input = document.getElementById('num1'); // the native input inside
+        input.parentElement.setAttribute('size', 'sm');
+        input.disabled = true;
+        input.addEventListener('change', () => console.log(input.value));
+      </script>
+    </template>
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </div>
 
