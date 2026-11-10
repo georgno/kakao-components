@@ -30,6 +30,56 @@ pages (landing page, settings, demos), not the components.
 - `kakao-text-input`: an `icon` slot in front of the field. Slotted content
   stays in the page's DOM, so page CSS (an icon font too) reaches it; an
   inline `<svg slot="icon">` needs nothing else.
+- `kakao-password-input`: a password field with the text input's look, a
+  show / hide button in the field and a Caps Lock warning while typing.
+  With `requirements`, a list of rules (defaults, `minlength` or
+  `list-data` patterns) whose progress is a segmented `kakao-progress`,
+  one segment per rule met; `required-strength` (all, or at least N) makes
+  unmet rules block the form. The value never lands in the DOM.
+  Form-associated. Settings `--kakao-password-input-*`, construction page
+  and demo.
+- `kakao-code-input`: a one-time code or PIN, one box per character (4 to
+  8). The boxes are drawn over one real field, so SMS autofill
+  (`one-time-code`), paste and screen readers get a single input.
+  `type="alphanumeric"`, `pattern` for the character set, `mask` for PINs,
+  `separator` for groups. Form-associated. Settings `--kakao-code-input-*`,
+  construction page and demo.
+- `kakao-tag-input`: typed text becomes a `kakao-chip` on Enter or a
+  delimiter (comma by default); the chips wrap inside the field. Paste
+  splits, duplicates are refused (or allowed), `max-tags` limits, and
+  `list-data` suggestions open in the select's panel. Form-associated, one
+  entry per tag. Needs chip.js. Settings `--kakao-tag-input-*`,
+  construction page and demo.
+- `kakao-range-slider`: the slider with two thumbs on one track, picking a
+  span; `value="low,high"`, `min-gap` keeps them apart. Same friction
+  points, number fields, unit badges and touch steppers as `kakao-slider`,
+  whose settings it falls back to. Form-associated, two entries under one
+  `name`. Settings `--kakao-range-slider-*`, construction page and demo.
+- `kakao-settings-group` and `kakao-setting`: the settings-screen layout.
+  A titled group of rows, label and hint on one side, the control on the
+  other, hairlines between; the row names its control, and on a narrow row
+  the control drops below the label. Rows can be links (`href`), whole-row
+  buttons (`action`), `variant="danger"` or disabled. A box on its own,
+  plain inside a card, accordion, dialog or aside sheet. Settings
+  `--kakao-settings-group-*`, construction page and demo.
+- `kakao-time-input`: the browser's time field and picker dressed as the
+  library's fields, the sibling of `kakao-date-input`. The value is always
+  ISO 24-hour; `step` in seconds, `min` after `max` runs over midnight,
+  and `now` adds a tag that sets the current time. Form-associated.
+  Settings `--kakao-time-input-*`, construction page and demo.
+- `kakao-error-summary`: a form's errors at the top of the form, each a
+  link to its field, drawn as a danger `kakao-alert`. On submit it replaces
+  the browser's bubbles, lists every invalid field (kakao and native),
+  takes focus, and a link focuses and scrolls to the field. `live` drops
+  fixed fields as you type; `show()` lists errors from a server reply.
+  Works with `novalidate` forms. Needs alert.js. Settings
+  `--kakao-error-summary-*`, construction page and demo.
+- `kakao-text-input`, `kakao-textarea`, `kakao-checkbox`,
+  `kakao-radio-group`: `validity`, `validationMessage`, `checkValidity()`,
+  `reportValidity()` and `form`, as on native fields, so an error summary
+  (or any script) can check them. `kakao-switch-group`: a switch with an
+  empty label is named after the group, so a lone switch in a settings row
+  needs no visible text.
 
 ### Fixed
 
@@ -55,6 +105,10 @@ pages (landing page, settings, demos), not the components.
   (see AGENTS.md).
 - Style guide: rule "Icons without an icon font". Button and text input demos show inline
   SVG icons next to Font Awesome ones.
+- Components page, style guide audit and kitchen sink: password input,
+  code input, tag input, range slider, settings group, time input and error
+  summary. The kitchen sink's settings form gets an error summary at the
+  top; a link to a field on another tab opens that tab.
 
 ## [0.3.0] - 2026-11-10
 
