@@ -1,0 +1,22 @@
+#!/bin/sh
+# Keeps the component count on index.html in step with the components folder
+# (tools/count-components.js). Enable once per clone:
+#   git config core.hooksPath .githooks
+set -e
+root=$(git rev-parse --show-toplevel)
+index="$root/index.html"
+
+# Unstaged edits in index.html would be swept into the commit by the git add
+# below, so leave the file alone then and only check it.
+if ! git diff --quiet -- "$index"; then
+  node "$root/tools/count-components.js" --check || {
+    echo "pre-commit: stage or stash your index.html edits, then commit again."
+    exit 1
+  }
+  exit 0
+fi
+
+node "$root/tools/count-components.js"
+if ! git diff --quiet -- "$index"; then
+  git add "$index"
+fi

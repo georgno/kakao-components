@@ -229,6 +229,9 @@ pages (landing page, settings, demos), not the components.
 
 ### Site only
 
+- The component count on the landing page (hero fact and lede) is written by
+  `tools/count-components.js` from the components folder, run by a pre-commit
+  hook in `.githooks/`; it now reads thirty-four.
 - Every page's top controls live in a `kakao-header-bar` instead of fixed
   corners: theme menu and settings gear (landing page, components), the theme
   switch (style guide, kitchen sink, main variables, changelog, every demo and
