@@ -50,6 +50,7 @@
 <script src="components/accordion/accordion.js" defer></script>
 <script src="components/select/select.js" defer></script>
 <script src="components/combobox/combobox.js" defer></script>
+<script src="components/date-input/date-input.js" defer></script>
 <style>
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
@@ -326,6 +327,16 @@
 
       <div class="field">
         <div>
+          <div class="field-label">Pause membership until</div>
+          <p class="field-hint">Leave empty to keep watching. At most three months ahead.</p>
+        </div>
+        <div class="field-control">
+          <kakao-date-input id="pause" name="pause" aria-label="Pause membership until" min="2026-11-10" max="2027-02-10"></kakao-date-input>
+        </div>
+      </div>
+
+      <div class="field">
+        <div>
           <div class="field-label">Favourite genres</div>
           <p class="field-hint">Shapes your recommendations. Tap a genre to browse it, × to drop it, + to add one.</p>
         </div>
@@ -545,6 +556,7 @@
         bio: $('bio').value,
         genres: [...$('genres').querySelectorAll('kakao-chip')].map((c) => c.getAttribute('value')),
         dateOfBirth: $('dob').value,
+        pauseUntil: $('pause').value,
         documents: $('documents').files.map((f) => f.name),
       },
     };

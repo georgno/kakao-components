@@ -50,6 +50,7 @@
 <script src="components/accordion/accordion.js" defer></script>
 <script src="components/select/select.js" defer></script>
 <script src="components/combobox/combobox.js" defer></script>
+<script src="components/date-input/date-input.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -1169,32 +1170,38 @@
       </div>
     </article>
 
+    <!-- ============================== Date input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Date input</h2>
+        <code>&lt;kakao-date-input&gt;</code>
+        <a href="components/date-input/construction.html">Construction</a>
+        <a href="components/date-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The browser's own date, time, date-and-time, month and week field and picker, dressed as the library's other fields: label, hint, error, three sizes, the picker icon where the select's chevron sits. The value is always ISO; <code>min</code>, <code>max</code>, <code>step</code> and <code>required</code> validate as on the native input. The browser draws the field in its own language, not the page's <code>lang</code> (see the demo). Form-associated.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Date · time</h3>
+          <div style="display:grid;gap:.6rem">
+            <kakao-date-input label="Arrival" value="2026-10-30" min="2026-01-01"></kakao-date-input>
+            <kakao-date-input type="time" label="Arrival time" value="09:30" step="900"></kakao-date-input>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Date and time · month</h3>
+          <div style="display:grid;gap:.6rem">
+            <kakao-date-input type="datetime-local" label="Meeting" value="2026-10-30T09:30"></kakao-date-input>
+            <kakao-date-input type="month" label="Invoice month" value="2026-10" hint="A typed YYYY-MM where the browser has no month field"></kakao-date-input>
+          </div>
+        </div>
+      </div>
+    </article>
+
   </div>
 
   <!-- ============================== Not built yet ============================== -->
   <h2 id="missing">Not built yet</h2>
-  <p>Placeholders: what a kakao component would replace, shown as the plain native element.</p>
-  <div class="grid">
-
-
-
-
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Date &amp; time picker</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;input type="date|time|datetime-local"&gt;</code></p>
-      <div class="native">
-        <input type="date" value="2026-10-30" />
-        <input type="time" value="09:30" />
-        <input type="datetime-local" value="2026-10-30T09:30" />
-      </div>
-    </article>
-
-
-
-
-
-  </div>
+  <p>Nothing left: every placeholder on this list has been built.</p>
 
   <footer>Structure: <code>components/&lt;name&gt;/&lt;name&gt;.js</code> + <code>demo.html</code>, shared page styles in <code>shared/</code>.</footer>
 </main>

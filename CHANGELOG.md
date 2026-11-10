@@ -171,6 +171,22 @@ pages (landing page, settings, demos), not the components.
   construction page and demo. The components page replaces its Combobox
   placeholder; the style guide audits it; the kitchen sink asks for the city
   with it.
+- `kakao-date-input`: the browser's own date, time, date-and-time, month and
+  week field (`type`) and picker, dressed as the library's other fields:
+  `label`, `hint`, `error`, sizes, `disabled`, `readonly`, the 2px focus
+  outline, tabular figures. The picker icon stays the browser's: Chromium
+  draws it muted with our calendar / clock glyph, Firefox in the text colour;
+  both are centred where the select's chevron is. A type the browser has no
+  field for (month and week in Firefox and desktop Safari) becomes a typed
+  ISO field with a placeholder and a pattern. The inner field gets the
+  `locale` attribute or the nearest `lang`, and `locale` reports it; the
+  browser still draws the field in its own language and format (no browser
+  reads `lang`), documented on the demo. Form-associated: ISO `value`,
+  `min`, `max`, `step`, `required`, validity mirrored from the native field,
+  reset, state restore, disabled fieldset; `showPicker()`; events `input`
+  and `change`. Settings `--kakao-date-input-*`, construction page and demo.
+  The components page replaces its "Date & time picker" placeholder; the
+  style guide audits it; the kitchen sink asks when to pause the membership.
 
 ### Changed
 

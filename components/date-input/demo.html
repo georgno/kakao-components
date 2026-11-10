@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-date-input - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="date-input.js" defer></script>
+<script src="../select/select.js" defer></script>
+<script src="../combobox/combobox.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+<style>
+  .stack { display: grid; gap: .6rem; }
+  .locale-out { margin: .5rem 0 0; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .locale-out b { color: var(--kakao-color-text, inherit); font-weight: 600; }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Date input"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Date input</h1>
+    <p><code>&lt;kakao-date-input&gt;</code> - The browser's own date, time, date-and-time, month and week field and picker, dressed as the library's other fields. The value is always ISO. Form-associated.</p>
+  </header>
+
+  <h2>Types</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Date · <code>type="date"</code> (default)</h3>
+      <kakao-date-input label="Start date" value="2026-03-04" hint="Value 2026-03-04"></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Time · <code>step="900"</code></h3>
+      <kakao-date-input type="time" label="Start time" value="09:30" step="900" hint="Picker in 15-minute steps (Chromium)"></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Date and time · <code>datetime-local</code></h3>
+      <kakao-date-input type="datetime-local" label="Meeting" value="2026-03-04T14:30"></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Month</h3>
+      <kakao-date-input type="month" label="Billing month" value="2026-03" hint="Firefox and desktop Safari have no month field: type YYYY-MM."></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Week</h3>
+      <kakao-date-input type="week" label="Sprint week" value="2026-W10" hint="Firefox and desktop Safari have no week field: type YYYY-Www."></kakao-date-input>
+    </div>
+    <div class="card">
+      <h3>Min · max</h3>
+      <kakao-date-input id="range" label="Delivery" min="2026-11-16" max="2026-11-27" value="2026-11-30"
+        hint="Weekdays from 16 to 27 November"></kakao-date-input>
+      <p class="locale-out" id="rangeOut"></p>
+    </div>
+  </div>
+
+  <h2>Beside the other fields</h2>
+  <div class="card">
+    <div class="stack" style="max-width:22rem">
+      <kakao-select label="Room" value="b" list-data='[{"value":"a","label":"Room A"},{"value":"b","label":"Room B"}]'></kakao-select>
+      <kakao-combobox label="Host" value="Ana" list-data='["Ana","Ben","Chiara"]'></kakao-combobox>
+      <kakao-date-input label="Day" value="2026-03-04"></kakao-date-input>
+      <kakao-date-input type="time" label="Time" value="14:30"></kakao-date-input>
+    </div>
+  </div>
+
+  <h2>Locale</h2>
+  <div class="card">
+    <p style="margin-top:0">The field passes the locale (the <code>locale</code> attribute, else the nearest <code>lang</code>) to the native input. <b>The browser still draws the field in its own format</b>: Chromium in the browser's language, Firefox in its language or the system's regional format, Safari in the system's region. None of them reads <code>lang</code>. What a page can format itself is shown below each field.</p>
+    <div class="toolbar">
+      <kakao-button class="loc" data-loc="en-US" label="en-US" variant="secondary" size="sm"></kakao-button>
+      <kakao-button class="loc" data-loc="en-GB" label="en-GB" variant="secondary" size="sm"></kakao-button>
+      <kakao-button class="loc" data-loc="de-AT" label="de-AT" variant="secondary" size="sm"></kakao-button>
+      <kakao-button class="loc" data-loc="fr-FR" label="fr-FR" variant="secondary" size="sm"></kakao-button>
+      <kakao-button class="loc" data-loc="ja-JP" label="ja-JP" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div id="locBox" lang="en-US" class="grid">
+      <div><kakao-date-input class="loc-field" label="Date" value="2026-03-04"></kakao-date-input><p class="locale-out"></p></div>
+      <div><kakao-date-input class="loc-field" type="time" label="Time" value="14:30"></kakao-date-input><p class="locale-out"></p></div>
+      <div><kakao-date-input class="loc-field" type="datetime-local" label="Date and time" value="2026-03-04T14:30"></kakao-date-input><p class="locale-out"></p></div>
+      <div><kakao-date-input class="loc-field" type="month" label="Month" value="2026-03"></kakao-date-input><p class="locale-out"></p></div>
+    </div>
+  </div>
+
+  <h2>States</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Sizes</h3>
+      <div class="stack">
+        <kakao-date-input size="sm" label="Small" value="2026-03-04"></kakao-date-input>
+        <kakao-date-input label="Medium" value="2026-03-04"></kakao-date-input>
+        <kakao-date-input size="lg" label="Large" value="2026-03-04"></kakao-date-input>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · read only · error</h3>
+      <div class="stack">
+        <kakao-date-input disabled label="Disabled" value="2026-03-04"></kakao-date-input>
+        <kakao-date-input readonly label="Read only" value="2026-03-04"></kakao-date-input>
+        <kakao-date-input type="time" label="Check-in" error="Check-in starts at 15:00." value="11:00"></kakao-date-input>
+      </div>
+    </div>
+  </div>
+
+  <h2>In a form</h2>
+  <div class="card">
+    <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
+      <kakao-date-input name="arrival" label="Arrival" required min="2026-01-01"></kakao-date-input>
+      <kakao-date-input name="time" type="time" label="Arrival time" value="15:00" min="15:00" max="22:00" hint="Between 15:00 and 22:00"></kakao-date-input>
+      <kakao-date-input name="month" type="month" label="Invoice month" value="2026-11"></kakao-date-input>
+      <div class="row">
+        <kakao-button label="Submit" type="submit"></kakao-button>
+        <kakao-button label="Reset" type="reset" variant="secondary"></kakao-button>
+      </div>
+    </form>
+    <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <kakao-date-input id="play" label="Playground" type="date" value="2026-03-04" style="max-width:22rem"></kakao-date-input>
+    <div class="toolbar">
+      <kakao-button id="apiValue" label='value = "2026-12-24"' variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiPicker" label="showPicker()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiType" label="next type" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>date-input.js</code>.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-date-input').then(() => {
+    const play = document.getElementById('play');
+    const log = document.getElementById('log');
+    logEvents(log, ['input', 'change'], play);
+
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+    on('apiValue', () => { play.type = 'date'; play.value = '2026-12-24'; });
+    on('apiPicker', () => play.showPicker());
+    const types = ['date', 'time', 'datetime-local', 'month', 'week'];
+    on('apiType', () => { play.type = types[(types.indexOf(play.type) + 1) % types.length]; play.setAttribute('label', `Playground · ${play.type}`); });
+    on('apiDisable', () => { play.disabled = !play.disabled; });
+
+    // Min / max: show what the field reports.
+    const range = document.getElementById('range');
+    const rangeOut = document.getElementById('rangeOut');
+    const showRange = () => {
+      const v = range.validity;
+      rangeOut.textContent = v.valid ? 'Valid.' : `Invalid: ${range.validationMessage}`;
+    };
+    range.addEventListener('input', showRange);
+    showRange();
+
+    // Locale: what changes (lang on the field, our own Intl formatting) and what doesn't (the native field).
+    const box = document.getElementById('locBox');
+    const OPTS = {
+      date: { dateStyle: 'medium' },
+      time: { timeStyle: 'short' },
+      'datetime-local': { dateStyle: 'medium', timeStyle: 'short' },
+      month: { year: 'numeric', month: 'long' },
+    };
+    const toDate = (type, v) => {
+      if (!v) return null;
+      if (type === 'time') return new Date(`1970-01-01T${v}`);
+      if (type === 'month') return new Date(`${v}-01T00:00`);
+      if (type === 'date') return new Date(`${v}T00:00`);
+      return new Date(v);
+    };
+    const render = () => {
+      box.querySelectorAll('.loc-field').forEach((f) => {
+        const out = f.nextElementSibling;
+        const d = toDate(f.type, f.value);
+        const text = d ? new Intl.DateTimeFormat(f.locale, OPTS[f.type]).format(d) : '(empty)';
+        out.innerHTML = '';
+        out.append('lang ', Object.assign(document.createElement('b'), { textContent: f.locale }),
+          ' · value ', Object.assign(document.createElement('b'), { textContent: f.value || '(empty)' }),
+          ' · Intl: ', Object.assign(document.createElement('b'), { textContent: text }));
+      });
+    };
+    document.querySelectorAll('.loc').forEach((b) => b.addEventListener('kakao-button-action', () => {
+      box.lang = b.dataset.loc;
+      requestAnimationFrame(render);
+    }));
+    box.addEventListener('input', render);
+    render();
+
+    const form = document.getElementById('form');
+    const out = document.getElementById('formOut');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const entries = [...new FormData(form)].map(([k, v]) => `${k}=${v}`);
+      out.textContent = `Submitted: ${entries.join(' · ') || '(nothing)'}`;
+    });
+    form.addEventListener('reset', () => { out.textContent = 'Reset to the initial values.'; });
+  });
+</script>
+</body>
+</html>
