@@ -8,6 +8,8 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-10
+
 ### Added
 
 - `kakao-color-code`: a colour value as a badge-sized monospace label with
@@ -70,7 +72,10 @@ pages (landing page, settings, demos), not the components.
 - `kakao-error-summary`: a form's errors at the top of the form, each a
   link to its field, drawn as a danger `kakao-alert`. On submit it replaces
   the browser's bubbles, lists every invalid field (kakao and native),
-  takes focus, and a link focuses and scrolls to the field. `live` drops
+  takes focus, and a link focuses and scrolls to the field. Heading "There
+  is a problem with the following fields"; errors in two columns, field |
+  issue (stacked on narrow boxes), in a danger text colour that reaches
+  5.3:1 or more in every theme. `live` drops
   fixed fields as you type; `show()` lists errors from a server reply.
   Works with `novalidate` forms. Needs alert.js. Settings
   `--kakao-error-summary-*`, construction page and demo.
@@ -80,6 +85,20 @@ pages (landing page, settings, demos), not the components.
   (or any script) can check them. `kakao-switch-group`: a switch with an
   empty label is named after the group, so a lone switch in a settings row
   needs no visible text.
+
+### Changed
+
+- `kakao-accordion`: an `actions` slot for controls in the header row, before
+  the chevron (a small `kakao-button`, for example). They sit outside the
+  header's disclosure button, so clicking them doesn't open or close the
+  accordion, and they stay visible while it is closed. Part `actions`.
+- `kakao-card`: the glow in the theme's colour after a theme switch is now
+  opt-in with the new `theme-glow` attribute. Before, every card without a
+  footer button started glowing as soon as the theme changed.
+- `kakao-card`: no height glide while the page loads (until two frames after
+  the load event), and none for content that animates its own size, such
+  as an opening `kakao-accordion`: the card follows it frame by frame
+  instead of running a second, lagging glide.
 
 ### Fixed
 
@@ -103,6 +122,10 @@ pages (landing page, settings, demos), not the components.
   builds the blocks; `data-demo-only`, `data-demo-wrap`, `data-no-code`,
   `data-code-with` and `<template data-code>` tune what a snippet shows
   (see AGENTS.md).
+- Demo pages (trial on the button demo, `<body data-demo-code="accordion">`):
+  every example is a `kakao-card` on a row of its own, its code in a
+  `kakao-accordion` tile in the card's footer, Copy a small `kakao-button` in
+  the accordion's header.
 - Style guide: rule "Icons without an icon font". Button and text input demos show inline
   SVG icons next to Font Awesome ones.
 - Components page, style guide audit and kitchen sink: password input,
@@ -463,7 +486,8 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/georgno/kakao-components/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/georgno/kakao-components/compare/v0.2.2...v0.3.0
 [0.2.2]: https://github.com/georgno/kakao-components/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/georgno/kakao-components/compare/v0.2.0...v0.2.1
