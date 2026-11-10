@@ -200,6 +200,10 @@ pages (landing page, settings, demos), not the components.
   rows, as between stacked checkboxes): `--kakao-radio-group-option-gap` is
   now 4px and `--kakao-radio-group-option-padding` 2px 8px.
 
+- `kakao-alert`: no border or outline any more; the tone shows through the
+  tinted fill and the icon. The `--kakao-alert-border-mix` setting is gone.
+  Under forced colours a 1px line remains, since the tint is dropped there.
+
 ### Fixed
 
 - `kakao-aside-sheet`, `kakao-dialog`: placed where page CSS gives them a

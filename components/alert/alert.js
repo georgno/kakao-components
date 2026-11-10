@@ -73,7 +73,7 @@
  *  --kakao-alert-radius / -padding-y / -padding-x / -gap / -font-size
  *  --kakao-alert-title-weight / -icon-size
  *  --kakao-alert-surface / -text / -info / -success / -warning / -danger / -focus
- *  --kakao-alert-tint / -border-mix / -icon-mix
+ *  --kakao-alert-tint / -icon-mix
  *  --kakao-alert-duration / -fade-duration / -ease
  *
  * Parts: alert, icon, title, message, close.
@@ -118,7 +118,6 @@
         --_danger: var(--kakao-alert-danger, var(--kakao-color-danger, #dc2626));
         --_focus: var(--kakao-alert-focus, var(--kakao-color-focus, #2563eb));
         --_tint: var(--kakao-alert-tint, 10%);
-        --_border-mix: var(--kakao-alert-border-mix, 28%);
         --_icon-mix: var(--kakao-alert-icon-mix, 72%);
         --_duration: var(--kakao-alert-duration, 8000ms);
         --_fade-duration: var(--kakao-alert-fade-duration, var(--kakao-motion-duration, 320ms));
@@ -147,7 +146,7 @@
         gap: var(--_gap);
         box-sizing: border-box;
         padding: var(--_padding-y) var(--_padding-x);
-        border: 1px solid color-mix(in srgb, var(--_tone) var(--_border-mix), var(--_surface));
+        border: 0;
         border-radius: var(--_radius);
         background: color-mix(in srgb, var(--_tone) var(--_tint), var(--_surface));
         color: var(--_text);
@@ -214,7 +213,8 @@
         .frame { transition: none; }
       }
       @media (forced-colors: active) {
-        .alert { border-color: CanvasText; }
+        /* Forced colours drop the tint, so a line marks the box there only. */
+        .alert { outline: 1px solid CanvasText; outline-offset: -1px; }
         .icon { color: CanvasText; }
       }
     </style>

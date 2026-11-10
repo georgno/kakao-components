@@ -10,7 +10,7 @@ Every toast SHALL be a `<kakao-alert>` child of the region, so its tone (`info`,
 
 #### Scenario: Same look as an alert
 - **WHEN** a danger toast and a danger alert with the same text are shown
-- **THEN** they have the same tint, border, icon and text colours
+- **THEN** they have the same tint, icon and text colours
 
 ### Requirement: Placement
 The region SHALL be fixed to the bottom right of the viewport by default; `position` SHALL accept `bottom-right`, `bottom-left`, `top-right` and `top-left`. It SHALL keep a gutter plus the safe-area insets from the viewport edges, and in top corners SHALL sit below the page header bar.

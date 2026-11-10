@@ -23,6 +23,13 @@ The message and title SHALL use the theme's text colour on a light tint of the t
 - **WHEN** a danger alert is shown in the dark theme
 - **THEN** its text and icon keep the required contrast
 
+### Requirement: No border
+The alert box SHALL have no border, outline or ring; the tint alone marks it. Only in forced colours, where the tint is dropped, SHALL a 1px `CanvasText` line mark the box. The close button's focus ring SHALL stay.
+
+#### Scenario: Default look
+- **WHEN** an alert of any tone is shown in the light or dark theme
+- **THEN** no line is drawn around the box
+
 ### Requirement: Roles
 Unless the author gave the element a `role`, the alert SHALL carry `role="alert"` for warning and danger and `role="status"` for info and success, and SHALL update it when the tone changes.
 

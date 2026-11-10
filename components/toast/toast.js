@@ -445,7 +445,6 @@
       rec.remaining = this._durationFor(el);
       const acs = getComputedStyle(el);
       rec.tint = parseFloat(acs.getPropertyValue('--_tint') || acs.getPropertyValue('--kakao-alert-tint')) || 10;
-      rec.borderMix = parseFloat(acs.getPropertyValue('--_border-mix') || acs.getPropertyValue('--kakao-alert-border-mix')) || 28;
       el.setAttribute('duration', '0');  // the region runs the timer
       this._order.push(rec);
       if (this._resizeObserver) this._resizeObserver.observe(el);
@@ -582,14 +581,12 @@
         el.style.setProperty('--_toast-clip', top
           ? `inset(${c}px ${out}px ${out}px ${out}px)`
           : `inset(${out}px ${out}px ${c}px ${out}px)`);
-        // Cards further back are paler: less tone in fill and border. They
+        // Cards further back are paler: less tone in the fill. They
         // stay opaque, so nothing behind the stack shows through them.
         if (paler < 1) {
           el.style.setProperty('--kakao-alert-tint', `${rec.tint * paler}%`);
-          el.style.setProperty('--kakao-alert-border-mix', `${rec.borderMix * paler}%`);
         } else {
           el.style.removeProperty('--kakao-alert-tint');
-          el.style.removeProperty('--kakao-alert-border-mix');
         }
         if (visible) el.removeAttribute('data-toast-state');
         else el.setAttribute('data-toast-state', 'hidden');
