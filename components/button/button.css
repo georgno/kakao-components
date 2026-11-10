@@ -229,6 +229,13 @@ kakao-button[toggle][pressed] .kakao-button-inner {
   font-size: 0.95em;
 }
 
+/* A slotted inline SVG icon: 1em square by default; :where() keeps it easy to override. */
+:where(.kakao-button-icon) > :where(svg) {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+
 .kakao-button-content {
   display: inline-flex;
   align-items: center;
@@ -250,6 +257,17 @@ kakao-button[toggle][pressed] .kakao-button-inner {
 .kakao-button-spinner svg {
   width: var(--_spinner-size);
   height: var(--_spinner-size);
+}
+
+/* The success check: drawn here, the menu check's shape and stroke at the spinner's size. */
+.kakao-button-check svg {
+  width: var(--_spinner-size);
+  height: var(--_spinner-size);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .kakao-button-spinner circle {

@@ -21,6 +21,18 @@ pages (landing page, settings, demos), not the components.
   transparency reads; a value that is not a colour gets an empty dashed
   swatch with a slash and `:state(invalid)`. Text and `value` changes
   repaint. Settings `--kakao-color-code-*`, construction page and demo.
+- `kakao-button`: icons without an icon font. A child with `slot="icon"`
+  (an inline `<svg>`, an `<img>` or an icon-font `<i>`) is moved into the
+  icon position and follows `icon-position` (left, right, only); it stays
+  one element across updates and is picked up when added later. Slotted
+  SVGs are 1em square by default. The `icon` attribute stays as an optional
+  shortcut for icon-font classes; a slotted icon wins over it.
+
+### Fixed
+
+- `kakao-button`: the `run()` success check is drawn by the button (inline
+  SVG, the menu check's shape at the spinner's size). It was a Font Awesome
+  `fa-check` and showed nothing on pages without Font Awesome.
 
 ### Site only
 

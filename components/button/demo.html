@@ -11,7 +11,7 @@
 <script src="../../shared/page-cloak.js"></script>
 <script src="../../components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="../../shared/demo.css" />
-<!-- icons are Font Awesome class names (the success check uses "fas fa-check") -->
+<!-- Font Awesome is for this demo's icon-class examples only; the button draws its own chevron, spinner and success check -->
 <link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
 <link rel="stylesheet" href="button.css" />
 <script src="../../shared/demo.js"></script>
@@ -44,7 +44,7 @@
   </div>
 
   <h2>Sizes &amp; icons</h2>
-  <p><code>size</code>: sm, md, lg. <code>icon-position</code>: left, right, only (inferred when no label).</p>
+  <p><code>size</code>: sm, md, lg. <code>icon-position</code>: left, right, only (inferred when no label). An icon is a child with <code>slot="icon"</code> (first row): an inline SVG needs nothing else; an icon-font element such as the gear works too when the page loads that font. The <code>icon</code> attribute is an optional shortcut for icon-font classes (second row); it also needs the font, which is why this site loads Font Awesome.</p>
   <div class="grid">
     <div class="card">
       <h3>Sizes</h3>
@@ -56,6 +56,12 @@
     </div>
     <div class="card">
       <h3>Icons</h3>
+      <div class="row">
+        <kakao-button label="Download" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></kakao-button>
+        <kakao-button label="Download" icon-position="right" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></kakao-button>
+        <kakao-button aria-label="Add" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></kakao-button>
+        <kakao-button label="Settings" variant="ghost"><i slot="icon" class="fas fa-gear" aria-hidden="true"></i></kakao-button>
+      </div>
       <div class="row">
         <kakao-button label="Save" icon="fas fa-floppy-disk" variant="secondary"></kakao-button>
         <kakao-button label="Next" icon="fas fa-arrow-right" icon-position="right" variant="secondary"></kakao-button>

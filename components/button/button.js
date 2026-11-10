@@ -9,6 +9,23 @@
  *   size (sm|md|lg), disabled, toggle, pressed, type (button|submit), name, value, form,
  *   href, aria-label
  *
+ * Icons - no icon font needed; the button draws its own glyphs (chevron,
+ * spinner, success check) as inline SVG:
+ *   slot="icon"     A child element with slot="icon" is the icon: an inline <svg>
+ *                   (sized 1em, coloured with currentColor), an <img>, or an icon-font
+ *                   element. Light DOM has no real slots, so the button moves that
+ *                   child into the icon position and keeps it there across updates.
+ *                     <kakao-button label="Save"><svg slot="icon" viewBox="0 0 24 24"
+ *                       aria-hidden="true">…</svg></kakao-button>
+ *                     <kakao-button label="Settings"><i slot="icon" class="fas fa-gear"
+ *                       aria-hidden="true"></i></kakao-button>
+ *   icon            Optional shortcut: icon-font classes put on an <i>, e.g.
+ *                   icon="fas fa-gear". Only draws when the page loads that icon
+ *                   font (Font Awesome is not part of the library). A slotted icon
+ *                   wins over it.
+ *   icon-position   left (default with a label), right, or only (default without one;
+ *                   give it an aria-label or a label, which then names the button).
+ *
  * Menu (dropdown) form - works with every variant and size:
  *   list-data       JSON array of items (never "data"):
  *                     [{ "value": "light", "label": "Light", "disabled"?: true }, …]
@@ -197,7 +214,7 @@
       const check = document.createElement('span');
       check.className = 'kakao-button-check';
       check.setAttribute('aria-hidden', 'true');
-      check.innerHTML = '<i class="fas fa-check"></i>';
+      check.innerHTML = CHECK;
 
       const chevron = document.createElement('span');
       chevron.className = 'kakao-button-chevron';
@@ -225,9 +242,50 @@
       this._spinner = spinner;
       this._check = check;
 
+      // A child given as slot="icon" (there before the upgrade). It is placed by
+      // _placeIcon(); later additions are picked up by _observeDataAttrs().
+      this._slottedIcon = this.querySelector(':scope > [slot="icon"]');
+      if (this._slottedIcon) this._placeIcon(this.getAttribute('icon-position') === 'right' ? 'right' : 'left');
+
       // After the refs above: _readItems → _syncMenu marks the host as a menu
       // button (chevron, aria-haspopup) right away.
       this._readItems();
+    }
+
+    /**
+     * Puts the icon into the span of the current icon-position: the page's own
+     * slot="icon" child when there is one (moved, never copied, so it exists
+     * once), else the <i> that carries the `icon` attribute's classes.
+     * @param {string} iconPos left | right | only
+     * @returns {boolean} whether there is an icon to show
+     */
+    _placeIcon(iconPos) {
+      // Pick up a slot="icon" child added after the upgrade, and let go of one
+      // that was removed (or lost its slot attribute).
+      const own = this._slottedIcon;
+      if (own && (!this.contains(own) || own.getAttribute('slot') !== 'icon')) this._slottedIcon = null;
+      const added = this.querySelector(':scope > [slot="icon"]');
+      if (added && added !== this._slottedIcon) {
+        if (this._slottedIcon) this._slottedIcon.remove(); // one icon: the newest wins
+        this._slottedIcon = added;
+      }
+
+      const target = iconPos === 'right' ? this._iconRight : this._iconLeft;
+      const iconClass = this.getAttribute('icon');
+      if (this._slottedIcon) {
+        this._iconLeftGlyph.remove();
+        this._iconRightGlyph.remove();
+        if (this._slottedIcon.parentNode !== target) target.appendChild(this._slottedIcon);
+        return true;
+      }
+      // The class shortcut: each span keeps its own <i>.
+      if (this._iconLeftGlyph.parentNode !== this._iconLeft) this._iconLeft.appendChild(this._iconLeftGlyph);
+      if (this._iconRightGlyph.parentNode !== this._iconRight) this._iconRight.appendChild(this._iconRightGlyph);
+      if (iconClass) {
+        this._iconLeftGlyph.className = iconClass;
+        this._iconRightGlyph.className = iconClass;
+      }
+      return !!iconClass;
     }
 
     _on(el, type, fn, opts) {
@@ -579,16 +637,23 @@
       if (typeof MutationObserver === 'undefined') {
         return;
       }
-      this._dataObserver = new MutationObserver(() => this._mirrorDataAttrs());
+      this._dataObserver = new MutationObserver((records) => {
+        this._mirrorDataAttrs();
+        // A slot="icon" child added (or one removed) after the upgrade: re-place it.
+        const iconChange = records.some((r) => r.type === 'childList'
+          && [...r.addedNodes, ...r.removedNodes].some((n) => n === this._slottedIcon
+            || (n.nodeType === 1 && n.getAttribute('slot') === 'icon')));
+        if (iconChange) this._syncFromAttributes();
+      });
       this._dataObserver.observe(this, {
         attributes: true,
         attributeFilter: undefined,
+        childList: true,
       });
     }
 
     _syncFromAttributes() {
       const iconPos = this.getAttribute('icon-position') || (this.getAttribute('label') ? 'left' : 'only');
-      const iconClass = this.getAttribute('icon');
       const labelText = this.getAttribute('label') || '';
       const shownItem = this.hasAttribute('show-selected') ? this._selectedItem() : null;
 
@@ -601,13 +666,9 @@
       if (this._label.textContent !== label) this._label.textContent = label;
       this._label.style.display = iconPos === 'only' ? 'none' : '';
 
-      this._iconLeft.style.display =
-        iconClass && (iconPos === 'left' || iconPos === 'only') ? 'inline-flex' : 'none';
-      this._iconRight.style.display = iconClass && iconPos === 'right' ? 'inline-flex' : 'none';
-      if (iconClass) {
-        this._iconLeftGlyph.className = iconClass;
-        this._iconRightGlyph.className = iconClass;
-      }
+      const hasIcon = this._placeIcon(iconPos);
+      this._iconLeft.style.display = hasIcon && iconPos !== 'right' ? 'inline-flex' : 'none';
+      this._iconRight.style.display = hasIcon && iconPos === 'right' ? 'inline-flex' : 'none';
 
       const aria = this.getAttribute('aria-label')
         || (shownItem && labelText ? `${labelText}: ${shownItem.label}` : '')
