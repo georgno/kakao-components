@@ -103,6 +103,28 @@ pages (landing page, settings, demos), not the components.
   `--kakao-accordion-*`, construction page and demo. The overview replaces
   its placeholder; the kitchen sink's plan card lists what's included in a
   tile accordion.
+- `kakao-aside-sheet`: a card that slides in from an edge of the viewport,
+  over the page. `side` is `bottom` (default), `top`, `start` or `end`
+  (follows the writing direction; `left` / `right` are physical aliases).
+  Only the corners facing into the page are rounded. Built like the dialog
+  (a plain fixed overlay): modal by default with a scrim, focus moved in,
+  trapped (also through nested shadow roots) and returned, Escape and a
+  scrim click to close, the page scroll locked; `modal="false"` drops the
+  scrim, trap and lock. `open`, `show()` / `hide(returnValue)` /
+  `toggle()`, `for` (ids of elements that toggle it, with `aria-expanded`),
+  `data-close`, a close button in the header (`close-label`,
+  `no-close-button`), `no-dismiss`, `contained`. Slots `header`, body
+  (scrolls, with hairlines at the edges while content runs past) and
+  `footer`. Bottom / top sheets are at most 85dvh tall and 42rem wide,
+  start / end sheets 24rem wide, never wider than the viewport; safe-area
+  insets kept. `handle` adds a drag handle to bottom sheets; dragging it or
+  the header down closes the sheet. Slides in on the spring curve, leaves on
+  the standard one; a fade only under reduced motion. Events `sheet-show`,
+  `sheet-hide` (cancelable) and `sheet-hidden`, also triggers. z-index 50:
+  over the aside menu, under the dialog and toasts. Settings
+  `--kakao-aside-sheet-*`, construction page and demo. Listed on the
+  components page and in the style guide audit; the kitchen sink explains
+  the ID upload in a bottom sheet.
 
 ### Changed
 

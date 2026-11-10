@@ -30,6 +30,7 @@
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
 <script src="components/aside-menu/aside-menu.js" defer></script>
 <script src="components/dialog/dialog.js" defer></script>
+<script src="components/aside-sheet/aside-sheet.js" defer></script>
 <script src="components/header-bar/header-bar.js" defer></script>
 <script src="shared/settings-dialog.js" defer></script>
 <script src="components/card/card.js" defer></script>
@@ -199,6 +200,40 @@
           <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
         </div>
       </kakao-dialog>
+    </article>
+
+    <!-- ============================== Aside sheet ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Aside sheet</h2>
+        <code>&lt;kakao-aside-sheet&gt;</code>
+        <a href="components/aside-sheet/construction.html">Construction</a>
+        <a href="components/aside-sheet/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A card that slides in from an edge of the viewport: bottom, top, start or end (RTL-aware). Modal by default, built like the dialog; only the corners facing into the page are rounded. Opened by <code>for</code>, the <code>open</code> attribute or <code>show()</code>.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Bottom · <code>handle</code></h3>
+          <div class="row"><kakao-button id="ov-sheet-bottom" label="Share" size="sm"></kakao-button></div>
+        </div>
+        <div class="example">
+          <h3>End · footer buttons</h3>
+          <div class="row"><kakao-button id="ov-sheet-end" label="Filters" variant="secondary" size="sm"></kakao-button></div>
+        </div>
+      </div>
+      <kakao-aside-sheet for="ov-sheet-bottom" handle label="Share">
+        <h2 slot="header">Share</h2>
+        <p>Drag the handle down, press Escape or click the covered page to close it.</p>
+        <div slot="footer"><kakao-button label="Copy link" data-close="copy"></kakao-button></div>
+      </kakao-aside-sheet>
+      <kakao-aside-sheet for="ov-sheet-end" side="end" label="Filters">
+        <h2 slot="header">Filters</h2>
+        <p>The body scrolls when it is taller than the sheet; header and footer stay put.</p>
+        <div slot="footer">
+          <kakao-button label="Reset" variant="ghost" data-close="reset"></kakao-button>
+          <kakao-button label="Show results" data-close="apply"></kakao-button>
+        </div>
+      </kakao-aside-sheet>
     </article>
 
     <!-- ============================== Aside menu ============================== -->

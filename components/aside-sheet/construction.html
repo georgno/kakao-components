@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-aside-sheet - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="aside-sheet.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  /* A sheet is fixed to the viewport. `contained` scopes it to the nearest
+     positioned ancestor instead, so each preview box holds one open sheet and
+     the construction page stays scrollable and tabbable. */
+  .sheet-stage {
+    position: relative;
+    height: 19rem;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--kakao-color-page);
+  }
+  .sheet-stage p { margin: 0; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="aside-sheet" data-source="aside-sheet.js" data-title="Aside sheet">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Bottom · <code>handle</code></figcaption>
+      <div class="sheet-stage">
+        <kakao-aside-sheet open contained handle label="Share">
+          <h2 slot="header">Share</h2>
+          <p>Only the top corners are rounded: the sheet comes in from below the view.</p>
+          <div slot="footer"><kakao-button label="Done" data-close="done"></kakao-button></div>
+        </kakao-aside-sheet>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>End · header, body, footer</figcaption>
+      <div class="sheet-stage">
+        <kakao-aside-sheet open contained side="end" label="Filters">
+          <h2 slot="header">Filters</h2>
+          <p>Full height, as wide as the width setting or the box, whichever is smaller.</p>
+          <div slot="footer">
+            <kakao-button label="Reset" variant="ghost" data-close="reset"></kakao-button>
+            <kakao-button label="Apply" data-close="apply"></kakao-button>
+          </div>
+        </kakao-aside-sheet>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Top</figcaption>
+      <div class="sheet-stage">
+        <kakao-aside-sheet open contained side="top" label="Search">
+          <h2 slot="header">Search</h2>
+          <p>Only the bottom corners are rounded.</p>
+        </kakao-aside-sheet>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Start · long body</figcaption>
+      <div class="sheet-stage">
+        <kakao-aside-sheet open contained side="start" label="Terms">
+          <h2 slot="header">Terms</h2>
+          <p>The body scrolls; a hairline marks the header and footer edges while text runs past them.</p>
+          <p>Paragraph two of a longer text that needs more room than the box has.</p>
+          <p>Paragraph three, still going, so the body has to scroll.</p>
+          <p>Paragraph four.</p>
+          <p>Paragraph five.</p>
+          <div slot="footer"><kakao-button label="Accept" data-close="accept"></kakao-button></div>
+        </kakao-aside-sheet>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-aside-sheet-scrim", "label": "Covered page", "group": "Colour", "type": "color" },
+    { "property": "--kakao-aside-sheet-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-aside-sheet-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-aside-sheet-line", "label": "Scroll edge line", "group": "Colour", "type": "color" },
+    { "property": "--kakao-aside-sheet-handle-color", "label": "Handle", "group": "Colour", "type": "color" },
+    { "property": "--kakao-aside-sheet-focus", "label": "Focus outline", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-aside-sheet-padding", "label": "Padding", "group": "Size & spacing", "type": "length", "hint": "plus the safe-area inset on the edges the sheet touches" },
+    { "property": "--kakao-aside-sheet-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-aside-sheet-footer-gap", "label": "Footer gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-aside-sheet-footer-spacing", "label": "Space above footer", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-aside-sheet-width", "label": "Width (start / end)", "group": "Size & spacing", "type": "length", "hint": "never wider than the viewport" },
+    { "property": "--kakao-aside-sheet-max-width", "label": "Max width (bottom / top)", "group": "Size & spacing", "type": "length", "hint": "centred; none = edge to edge" },
+    { "property": "--kakao-aside-sheet-max-height", "label": "Max height (bottom / top)", "group": "Size & spacing", "type": "length", "hint": "the body scrolls past it" },
+    { "property": "--kakao-aside-sheet-handle-width", "label": "Handle width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-aside-sheet-handle-height", "label": "Handle height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-aside-sheet-close-size", "label": "Close button size", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-aside-sheet-radius", "label": "Radius", "group": "Shape", "type": "radius", "hint": "inner corners only; the edge corners stay square" },
+    { "property": "--kakao-aside-sheet-close-radius", "label": "Close button radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-aside-sheet-shadow", "label": "Shadow", "group": "Shape", "type": "shadow" },
+    { "property": "--kakao-aside-sheet-z", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 9999, "hint": "above aside menu (40), below dialog (60)" },
+
+    { "property": "--kakao-aside-sheet-title-size", "label": "Title size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-aside-sheet-title-weight", "label": "Title weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-aside-sheet-duration", "label": "Slide in", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-aside-sheet-easing", "label": "Slide in easing", "group": "Motion", "type": "easing", "hint": "spring: a move into place along a line" },
+    { "property": "--kakao-aside-sheet-exit-duration", "label": "Slide out", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-aside-sheet-exit-easing", "label": "Slide out easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+</body>
+</html>

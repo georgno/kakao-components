@@ -32,6 +32,7 @@
 <script src="components/aside-menu/aside-menu.js" defer></script>
 <script src="components/header-bar/header-bar.js" defer></script>
 <script src="components/dialog/dialog.js" defer></script>
+<script src="components/aside-sheet/aside-sheet.js" defer></script>
 <script src="components/text-input/text-input.js" defer></script>
 <script src="components/textarea/textarea.js" defer></script>
 <script src="components/checkbox/checkbox.js" defer></script>
@@ -323,6 +324,13 @@
         </div>
         <div class="field-control">
           <kakao-file-upload id="documents" name="documents" label="ID documents" accept="image/*,.pdf" max-size="5MB" max-files="2"></kakao-file-upload>
+          <kakao-button id="why-id" label="Why we ask" icon="fas fa-circle-info" variant="ghost" size="sm"></kakao-button>
+          <kakao-aside-sheet for="why-id" handle label="Why we ask for your ID">
+            <h2 slot="header">Why we ask for your ID</h2>
+            <p>Some films are licensed for adults only. A photo of your ID lets us confirm your age once, so those titles unlock on every device.</p>
+            <p>The images are checked within a day and deleted right after. Only the result, verified or not, stays on your account.</p>
+            <div slot="footer"><kakao-button label="Got it" data-close="ok"></kakao-button></div>
+          </kakao-aside-sheet>
         </div>
       </div>
 
