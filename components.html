@@ -1270,11 +1270,11 @@
         <a href="components/settings-group/construction.html">Construction</a>
         <a href="components/settings-group/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">The settings-screen layout: a titled group of <code>&lt;kakao-setting&gt;</code> rows, label and hint on one side, the control on the other, hairlines between. The row names its control; on a narrow row the control drops below the label. Rows can also be links or whole-row buttons; the group drops its box inside a <code>&lt;kakao-card&gt;</code> or accordion.</p>
+      <p class="component-desc">The settings-screen layout: a titled group of <code>&lt;kakao-setting&gt;</code> rows, label and hint on one side, the control on the other, hairlines between. The row names its control; on a narrow row the control drops below the label. Rows can also be links or whole-row buttons; the group drops its box inside a <code>the group drops its box inside a <code>&lt;kakao-card&gt;</code> or accordion.lt;kakao-cardthe group drops its box inside a <code>&lt;kakao-card&gt;</code> or accordion.gt;</code> or accordion, or with <code>variant="plain"</code> (as here, inside the page card).</p>
       <div class="examples wide">
         <div class="example">
           <h3>Controls in rows</h3>
-          <kakao-settings-group heading="Notifications" description="How we reach you">
+          <kakao-settings-group variant="plain" heading="Notifications" description="How we reach you">
             <kakao-setting label="Email digest" hint="A summary every Monday">
               <kakao-switch-group list-data='[{"name":"digest","label":"","checked":true}]'></kakao-switch-group>
             </kakao-setting>
@@ -1285,7 +1285,7 @@
         </div>
         <div class="example">
           <h3>Links · actions · <code>variant="danger"</code></h3>
-          <kakao-settings-group heading="Account">
+          <kakao-settings-group variant="plain" heading="Account">
             <kakao-setting label="Connected accounts" href="#settings-group" value="2 accounts"></kakao-setting>
             <kakao-setting label="Sign out everywhere" hint="Ends every session except this one" action></kakao-setting>
             <kakao-setting label="Delete account" variant="danger" action></kakao-setting>
