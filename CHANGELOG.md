@@ -34,6 +34,9 @@ pages (landing page, settings, demos), not the components.
 
 ### Site only
 
+- Demo pages: every example is a card on its own row, with its code in a
+  "Code" tile at the card's foot and a Copy button in the tile's header;
+  dropdown menus and popups reach past the card.
 - Style guide: the 2px focus outline is the rule for fields. Wide tables
   scroll inside their frame with the edge fade; no sideways page scroll on
   phones.
