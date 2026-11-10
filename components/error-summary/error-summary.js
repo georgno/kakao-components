@@ -47,7 +47,16 @@
  *             fieldset around a radio group; else placeholder or name.
  *  message    the field's `error` attribute, else its validationMessage (the
  *             browser's or the component's text).
- * Each line reads "Label: message" and links to the field.
+ * The errors are a two-column table, field | issue, one row per field; the
+ * field name links to the field. On a narrow box (under 22rem) the issue
+ * drops below its field. Semantically it stays a list, not a <table>: a
+ * screen reader hears "list, 3 items" and each item as one line, "Email:
+ * That address is taken" (a hidden colon joins the cells), and every field
+ * link is named by the field alone. A table would add column headers that
+ * only repeat what the title says, cell-by-cell navigation nobody needs for
+ * a handful of lines, and loses its role in some browsers once its cells are
+ * restacked for narrow screens. A line from show() without a field or label
+ * spans both columns; one with a label but no field shows the label unlinked.
  *
  * ----------------------------------------------------------------------------
  * BEHAVIOUR
@@ -73,7 +82,8 @@
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
  *  for            Id of the form to watch.
- *  heading        Title of the box. Default "There is a problem".
+ *  heading        Title of the box. Default "There is a problem with the
+ *                 following fields".
  *  heading-level  Level of the title's heading element, 2 (default) to 6.
  *  live           Fixed fields drop out of the list as they are fixed.
  *  no-focus       Showing does not move focus (e.g. a summary on page load
@@ -105,14 +115,21 @@
  * ----------------------------------------------------------------------------
  * CSS CUSTOM PROPERTIES (defaults in the settings block; edit on construction.html)
  * ----------------------------------------------------------------------------
- *  --kakao-error-summary-link / -focus           link and focus ring colours
- *  --kakao-error-summary-item-gap / -list-gap    between lines, above the list
+ *  --kakao-error-summary-color                   title and list text: the danger
+ *                                                colour mixed 72% into the text
+ *                                                colour (the alert icon's tone),
+ *                                                at least 5.3:1 on the tinted box
+ *                                                in every theme
+ *  --kakao-error-summary-link / -focus           field links (default: the text colour), focus ring
+ *  --kakao-error-summary-line                    hairline between rows
+ *  --kakao-error-summary-item-gap / -list-gap    space above and below a row's text, above the list
+ *  --kakao-error-summary-column-gap / -field-max between the columns, widest field column
  *  --kakao-error-summary-space                   below the box, before slotted content
  *  --kakao-error-summary-scroll-gap              space kept above a field scrolled to
  *  The box itself is a danger alert: --kakao-alert-* applies (set them on
  *  kakao-error-summary to change summaries only).
  *
- * Parts: alert, title, description, list, item, link.
+ * Parts: alert, title, description, list, item, field, link, issue.
  * ============================================================================
  */
 (function () {
@@ -121,7 +138,8 @@
   const TAG_NAME = 'kakao-error-summary';
   if (customElements.get(TAG_NAME)) return;
 
-  const DEFAULT_HEADING = 'There is a problem';
+  const DEFAULT_HEADING = 'There is a problem with the following fields';
+  const DEFAULT_LABEL = 'This field';
   const DEFAULT_MESSAGE = 'Check this field.';
 
   const TEMPLATE = document.createElement('template');
@@ -129,12 +147,16 @@
     <style>
       :host {
         /* @kakao-settings:start prefix=--kakao-error-summary- (written by construction.html, edit there) */
-        --_link: var(--kakao-error-summary-link, var(--kakao-color-text, #18181b));
+        --_link: var(--kakao-error-summary-link, color-mix(in srgb, var(--kakao-color-danger, #dc2626) 72%, var(--kakao-color-text, #18181b)));
         --_focus: var(--kakao-error-summary-focus, var(--kakao-color-focus, #2563eb));
-        --_item-gap: var(--kakao-error-summary-item-gap, 0.25rem);
+        --_item-gap: var(--kakao-error-summary-item-gap, 0.375rem);
         --_list-gap: var(--kakao-error-summary-list-gap, 0.375rem);
         --_space: var(--kakao-error-summary-space, 1.25rem);
         --_scroll-gap: var(--kakao-error-summary-scroll-gap, 1rem);
+        --_color: var(--kakao-error-summary-color, color-mix(in srgb, var(--kakao-color-danger, #dc2626) 72%, var(--kakao-color-text, #18181b)));
+        --_line: var(--kakao-error-summary-line, color-mix(in srgb, var(--kakao-color-danger, #dc2626) 22%, transparent));
+        --_column-gap: var(--kakao-error-summary-column-gap, 1rem);
+        --_field-max: var(--kakao-error-summary-field-max, 40%);
         /* @kakao-settings:end */
         display: block;
       }
@@ -146,17 +168,50 @@
       .box:focus-visible { outline: 2px solid var(--_focus); outline-offset: 2px; }
       :host([data-wraps]) .box { margin-bottom: var(--_space); }
 
-      .title { margin: 0; font: inherit; font-weight: var(--kakao-alert-title-weight, 600); }
+      .title { margin: 0; font: inherit; font-weight: var(--kakao-alert-title-weight, 600); color: var(--_color); }
       .description { display: block; margin-top: 0.25em; }
       .description[hidden] { display: none; }
       ::slotted([slot="description"]) { margin: 0; }
 
+      /* The errors: a list (read as "list, 3 items", each "Email, link,
+         That address is taken") laid out as a two-column table, field |
+         issue. Rows share the columns through subgrid; on a narrow box the
+         issue drops below its field. */
+      .table { container: kakao-error-summary / inline-size; margin-top: var(--_list-gap); }
       .list {
         display: grid;
-        gap: var(--_item-gap);
-        margin: var(--_list-gap) 0 0;
+        grid-template-columns: fit-content(var(--_field-max)) minmax(0, 1fr);
+        column-gap: var(--_column-gap);
+        margin: 0;
         padding: 0;
         list-style: none;
+        color: var(--_color);
+      }
+      .item {
+        position: relative;
+        display: grid;
+        grid-column: 1 / -1;
+        grid-template-columns: subgrid;
+        align-items: baseline;
+        padding-block: var(--_item-gap);
+      }
+      .item:first-child { padding-top: 0; }
+      .item:last-child { padding-bottom: 0; }
+      .item + .item { border-top: 1px solid var(--_line); }
+      .field { font-weight: var(--kakao-alert-title-weight, 600); min-width: 0; }
+      .issue { min-width: 0; }
+      .issue.whole { grid-column: 1 / -1; }
+      /* Read between the two cells, so the line reads "Email: That …". */
+      .sep {
+        position: absolute;
+        width: 1px; height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      @container kakao-error-summary (max-width: 22rem) {
+        .list { grid-template-columns: minmax(0, 1fr); }
+        .item { grid-template-columns: minmax(0, 1fr); }
       }
       .list a {
         color: var(--_link);
@@ -167,19 +222,20 @@
       }
       .list a:hover { text-decoration-thickness: 2px; }
       .list a:focus-visible { outline: 2px solid var(--_focus); outline-offset: 2px; }
-      .label { font-weight: var(--kakao-alert-title-weight, 600); }
 
       .probe { position: absolute; display: none; margin-top: var(--_scroll-gap); }
 
       @media (forced-colors: active) {
         .list a { color: LinkText; }
+        .title, .list { color: CanvasText; }
+        .item + .item { border-top-color: CanvasText; }
         .box:focus-visible, .list a:focus-visible { outline-color: Highlight; }
       }
     </style>
     <kakao-alert class="box" part="alert" tone="danger" duration="0" tabindex="-1" hidden>
       <div slot="title" class="title-wrap"><h2 class="title" part="title"></h2></div>
       <div class="description" part="description" hidden><slot name="description"></slot></div>
-      <ul class="list" part="list"></ul>
+      <div class="table"><ul class="list" part="list"></ul></div>
     </kakao-alert>
     <span class="probe" aria-hidden="true"></span>
     <slot class="content"></slot>
@@ -426,27 +482,39 @@
       this._errors = errors;
       const items = errors.map((error, index) => {
         const li = document.createElement('li');
+        li.className = 'item';
         li.setAttribute('part', 'item');
-        const text = document.createDocumentFragment();
-        if (error.label) {
-          const label = document.createElement('span');
-          label.className = 'label';
-          label.textContent = error.label;
-          // "Plan: Choose a plan", but "Where from? Choose one" after a question.
-          const sep = /[?!.:]$/.test(error.label) ? ' ' : ': ';
-          text.append(label, error.message ? `${sep}${error.message}` : '');
-        } else {
-          text.append(error.message);
+        const issue = document.createElement('span');
+        issue.className = 'issue';
+        issue.setAttribute('part', 'issue');
+        issue.textContent = error.message;
+        if (!error.label && !error.field) {
+          // A line about the form, not a field: it spans both columns.
+          issue.classList.add('whole');
+          li.append(issue);
+          return li;
         }
+        const field = document.createElement('span');
+        field.className = 'field';
+        field.setAttribute('part', 'field');
+        const name = error.label || DEFAULT_LABEL;
         if (error.field) {
           const a = document.createElement('a');
           a.setAttribute('part', 'link');
           a.href = error.field.id ? `#${error.field.id}` : '#';
           a.dataset.index = String(index);
-          a.append(text);
-          li.append(a);
+          a.textContent = name;
+          field.append(a);
         } else {
-          li.append(text);
+          field.textContent = name;
+        }
+        li.append(field);
+        if (error.message) {
+          // "Plan: Choose a plan", but "Where from? Choose one" after a question.
+          const sep = document.createElement('span');
+          sep.className = 'sep';
+          sep.textContent = /[?!.:]$/.test(name) ? ' ' : ': ';
+          li.append(sep, issue);
         }
         return li;
       });

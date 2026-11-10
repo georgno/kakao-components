@@ -38,10 +38,14 @@
 
   <script type="application/json" class="construction-manifest">
   [
-    { "property": "--kakao-error-summary-link", "label": "Link", "group": "Colour", "type": "color" },
+    { "property": "--kakao-error-summary-color", "label": "Text", "group": "Colour", "type": "color", "hint": "title and list; keep 4.5:1 on the tinted box" },
+    { "property": "--kakao-error-summary-link", "label": "Link", "group": "Colour", "type": "color", "hint": "field names" },
+    { "property": "--kakao-error-summary-line", "label": "Row line", "group": "Colour", "type": "color", "hint": "between rows" },
     { "property": "--kakao-error-summary-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
     { "property": "--kakao-error-summary-list-gap", "label": "List gap", "group": "Size & spacing", "type": "length", "hint": "title to list" },
-    { "property": "--kakao-error-summary-item-gap", "label": "Item gap", "group": "Size & spacing", "type": "length", "hint": "between lines" },
+    { "property": "--kakao-error-summary-item-gap", "label": "Row padding", "group": "Size & spacing", "type": "length", "hint": "above and below a row's text" },
+    { "property": "--kakao-error-summary-column-gap", "label": "Column gap", "group": "Size & spacing", "type": "length", "hint": "field to issue" },
+    { "property": "--kakao-error-summary-field-max", "label": "Field column max", "group": "Size & spacing", "type": "percent", "hint": "widest the field column gets, of the list width" },
     { "property": "--kakao-error-summary-space", "label": "Space below", "group": "Size & spacing", "type": "length", "hint": "box to wrapped content" },
     { "property": "--kakao-error-summary-scroll-gap", "label": "Scroll gap", "group": "Size & spacing", "type": "length", "hint": "kept above a field scrolled to, below the header bar" }
   ]
