@@ -8,6 +8,8 @@
  *
  *   node tools/count-components.js          rewrite index.html if it is off
  *   node tools/count-components.js --check  only report; exits 1 when off
+ *   --staged   count what git has staged (the pre-commit hook uses this), so
+ *              component folders still being built and not staged don't count
  *
  * It rewrites two places on index.html:
  *   - the hero fact      <li><b>24</b> components</li>
@@ -18,6 +20,7 @@
 'use strict';
 
 const fs = require('fs');
+const { execFileSync } = require('child_process');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
@@ -39,7 +42,17 @@ function words(n) {
 
 const capitalise = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-function countComponents() {
+function countComponents(staged) {
+  if (staged) {
+    // Paths in the git index: components/<name>/<name>.js
+    const files = execFileSync('git', ['ls-files', '--cached', '--', 'components'], { cwd: ROOT, encoding: 'utf8' })
+      .split('\n')
+      .filter(Boolean);
+    return files.filter((f) => {
+      const m = /^components\/([^/]+)\/([^/]+)\.js$/.exec(f);
+      return m && m[1] === m[2];
+    }).length;
+  }
   return fs.readdirSync(COMPONENTS, { withFileTypes: true })
     .filter((d) => d.isDirectory() && fs.existsSync(path.join(COMPONENTS, d.name, d.name + '.js')))
     .length;
@@ -51,7 +64,7 @@ const LEDE_RE = /(<p class="lede">)[A-Za-z][A-Za-z -]*?( web components\b)/;
 
 function main() {
   const check = process.argv.includes('--check');
-  const n = countComponents();
+  const n = countComponents(process.argv.includes('--staged'));
   const html = fs.readFileSync(INDEX, 'utf8');
 
   if (!FACT_RE.test(html) || !LEDE_RE.test(html)) {

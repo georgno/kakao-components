@@ -40,7 +40,7 @@ others render into a shadow root (with slots where they take content).
   under the new version, bump the version on `index.html` (hero facts), and tag `vX.Y.Z`.
 - The component count on `index.html` (the hero fact and the written-out number in
   the lede) is not edited by hand: the pre-commit hook in `.githooks/` runs
-  `node tools/count-components.js`, which counts `components/<name>/<name>.js` and
+  `node tools/count-components.js --staged`, which counts the staged `components/<name>/<name>.js` and
   rewrites both. Enable it once per clone with `git config core.hooksPath .githooks`.
 - Planning goes through OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
   Project rules for it are in `openspec/config.yaml`. Archive a change once its tasks are done.
