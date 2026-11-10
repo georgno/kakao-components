@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-range-slider - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../number-input/number-input.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<!-- optional: when kakao-number-input is loaded first, the number fields get stepper arrows -->
+<script src="../number-input/number-input.js" defer></script>
+<script src="range-slider.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Range slider"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Range slider</h1>
+    <p><code>&lt;kakao-range-slider&gt;</code> - two thumbs on one track pick a span from–to. Same track, ticks and number fields as the slider; the thumbs never cross and can keep a minimum gap. Form-associated.</p>
+  </header>
+
+  <h2>Variants</h2>
+  <p>Configured through <code>min</code>, <code>max</code>, <code>step</code>, <code>value="low,high"</code>, <code>min-gap</code>, <code>unit</code> and <code>label</code>. A press on the track moves the nearer thumb.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>Price, step 10</h3>
+      <kakao-range-slider id="range1" min="0" max="200" step="10" value="40,140" unit="€" label="Price"></kakao-range-slider>
+    </div>
+    <div class="card">
+      <h3>Minimum gap · <code>min-gap="5"</code></h3>
+      <kakao-range-slider min="18" max="80" step="1" value="25,40" min-gap="5" label="Age"></kakao-range-slider>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The thumbs stop 5 apart; Home and End go to each thumb's own limit.</p>
+    </div>
+    <div class="card">
+      <h3>Fine steps · native number fields</h3>
+      <kakao-range-slider min="0" max="1" step="0.05" value="0.2,0.65" label="Opacity" scroll-input="false"></kakao-range-slider>
+    </div>
+    <div class="card">
+      <h3>Thumbs may meet</h3>
+      <kakao-range-slider min="0" max="24" step="1" value="12,12" unit="h" label="Hours"></kakao-range-slider>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">With both thumbs on one spot, the first drag direction picks the thumb.</p>
+    </div>
+    <div class="card">
+      <h3>Touch steppers · <code>touch-steppers</code></h3>
+      <kakao-range-slider min="0" max="200" step="10" value="40,140" unit="px" label="Width" touch-steppers></kakao-range-slider>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Shown automatically on touch screens: 44px buttons either side of each field, hold to repeat.</p>
+    </div>
+    <div class="card">
+      <h3>Disabled</h3>
+      <kakao-range-slider min="0" max="100" step="5" value="25,75" unit="%" label="Volume" disabled></kakao-range-slider>
+    </div>
+    <div class="card">
+      <h3>Themed</h3>
+      <kakao-range-slider min="0" max="50" step="5" value="10,35" unit="kg" label="Weight"
+        style="--kakao-range-slider-accent:#4f46e5;--kakao-range-slider-track-height:6px;--kakao-range-slider-thumb-size:20px"></kakao-range-slider>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Every setting falls back to the slider's (<code>--kakao-slider-accent</code> …), so both stay in step unless one is set apart.</p>
+    </div>
+  </div>
+
+  <h2>In a form</h2>
+  <p>One <code>name</code>, two entries: low first, then high.</p>
+  <div class="card">
+    <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
+      <kakao-range-slider name="price" min="0" max="500" step="25" value="100,300" min-gap="50" unit="€" label="Price"></kakao-range-slider>
+      <div class="row">
+        <kakao-button label="Submit" type="submit"></kakao-button>
+        <kakao-button label="Reset" type="reset" variant="secondary"></kakao-button>
+      </div>
+    </form>
+    <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
+  </div>
+
+  <h2>Playground</h2>
+  <p>Drive the API of the first range slider by hand.</p>
+  <div class="card">
+    <div class="toolbar">
+      <kakao-button id="apiSet" label="setValue(60, 120)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiData" label="setData({max:1000,unit:&quot;ms&quot;})" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiGet" label="getValue()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="optDisabled" variant="secondary" size="sm" toggle></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        const range = document.getElementById('range1');
+        range.setValue(60, 120);           // or range.value = '60,120'
+        range.setData({ min: 0, max: 1000, step: 50, minGap: 100, unit: 'ms' });
+        console.log(range.getValue());     // { low, high }
+        range.toggleAttribute('disabled', true);
+        range.addEventListener('range-slider-change', (e) => console.log(e.detail.low, e.detail.high));
+      </script>
+    </template>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Attributes: <code>min</code>, <code>max</code>, <code>step</code>, <code>value</code>, <code>min-gap</code>, <code>unit</code>, <code>label</code>, <code>label-low</code>, <code>label-high</code>, <code>name</code>, <code>disabled</code>, <code>scroll-input</code>, <code>touch-steppers</code>. Events: <code>range-slider-change</code>, <code>range-slider-input</code>, <code>range-slider-focus</code>, <code>range-slider-blur</code>, plus <code>input</code> and <code>change</code>. Full reference in the header of <code>range-slider.js</code>.</footer>
+</main>
+
+<script>
+  const range = document.getElementById('range1');
+  const log = document.getElementById('log');
+  // range-slider-input fires continuously while dragging, so it's left out of the log
+  logEvents(log, ['range-slider-change', 'range-slider-focus', 'range-slider-blur'], range);
+
+  const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+  on('apiSet', () => range.setValue(60, 120));
+  on('apiData', () => range.setData({ min: 0, max: 1000, step: 50, low: 200, high: 600, minGap: 100, unit: 'ms', label: 'Delay' }));
+  on('apiGet', () => logLine(log, 'getValue()', range.getValue()));
+  toggleButton(document.getElementById('optDisabled'), 'disabled', (on) => range.toggleAttribute('disabled', on));
+
+  const form = document.getElementById('form');
+  const out = document.getElementById('formOut');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const entries = [...new FormData(form)].map(([k, v]) => `${k}=${v}`);
+    out.textContent = `Submitted: ${entries.join(' · ') || '(nothing)'}`;
+  });
+  form.addEventListener('reset', () => { out.textContent = 'Reset to the initial values.'; });
+</script>
+</body>
+</html>

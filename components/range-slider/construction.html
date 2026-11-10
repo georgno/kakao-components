@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-range-slider - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../number-input/number-input.css" />
+<script src="../button/button.js" defer></script>
+<script src="../number-input/number-input.js" defer></script>
+<script src="range-slider.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="range-slider" data-source="range-slider.js" data-title="Range slider">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>With unit and stepper</figcaption>
+      <kakao-range-slider min="0" max="200" step="10" value="40,140" unit="€" label="Price"></kakao-range-slider>
+    </figure>
+    <figure>
+      <figcaption>Fine steps · native input · gap</figcaption>
+      <kakao-range-slider min="0" max="1" step="0.05" value="0.2,0.65" min-gap="0.1" label="Opacity" scroll-input="false"></kakao-range-slider>
+    </figure>
+    <figure>
+      <figcaption>Disabled</figcaption>
+      <kakao-range-slider min="0" max="100" value="25,75" unit="%" label="Volume" disabled></kakao-range-slider>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-range-slider-accent", "label": "Accent", "group": "Colour", "type": "color", "hint": "fill, active thumb; follows the slider's" },
+    { "property": "--kakao-range-slider-track-bg", "label": "Track", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-tick-color", "label": "Ticks", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-tick-active-color", "label": "Ticks inside the span", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-label-color", "label": "Label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-range-color", "label": "Min / max labels", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-input-bg", "label": "Input background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-input-border", "label": "Input border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-unit-bg", "label": "Unit background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-unit-color", "label": "Unit text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-input-color", "label": "Input text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-thumb-bg", "label": "Thumb", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-thumb-border", "label": "Thumb border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-stepper-color", "label": "Stepper arrows", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-stepper-hover-bg", "label": "Stepper hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-stepper-hover-color", "label": "Stepper hover arrows", "group": "Colour", "type": "color" },
+    { "property": "--kakao-range-slider-stepper-active-bg", "label": "Stepper pressed", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-range-slider-track-height", "label": "Track height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-range-slider-thumb-size", "label": "Thumb size", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-range-slider-font-family", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-range-slider-range-font-size", "label": "Min / max label size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-range-slider-input-font-size", "label": "Input size", "group": "Typography", "type": "length" },
+
+    { "property": "--kakao-range-slider-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+
+    { "property": "--kakao-range-slider-transition-speed", "label": "Transition", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-range-slider-touch-step-size", "label": "Touch step button", "group": "Size & spacing", "type": "length", "hint": "touch screens / narrow: | < | value | > |" },
+    { "property": "--kakao-range-slider-touch-radius", "label": "Touch input group radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+</main>
+</body>
+</html>
