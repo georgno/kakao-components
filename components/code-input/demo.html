@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-code-input - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="code-input.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Code input"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Code input</h1>
+    <p><code>&lt;kakao-code-input&gt;</code> - A one-time code or PIN: one box per character, 4 to 8 of them. Typing moves on, Backspace goes back, a pasted or SMS-autofilled code fills every box. One real field lies over the drawn boxes, so autofill, paste and screen readers meet a normal text field. Form-associated.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Verification code</h3>
+      <kakao-code-input label="Verification code" name="otp" hint="We sent a 6-digit code to +43 660 ··· 12."></kakao-code-input>
+      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Try pasting <code>123-456</code> or <code>12 34 56</code>: spaces and dashes are dropped.</p>
+    </div>
+    <div class="card">
+      <h3>Grouped · <code>separator="3"</code></h3>
+      <kakao-code-input label="Sign-in code" separator="3" value="482"></kakao-code-input>
+    </div>
+    <div class="card">
+      <h3>PIN · <code>length="4"</code> <code>mask</code></h3>
+      <kakao-code-input label="Card PIN" length="4" mask autocomplete="off" value="12"></kakao-code-input>
+    </div>
+    <div class="card" style="grid-column:1/-1">
+      <h3>Letters too · <code>type="alphanumeric"</code></h3>
+      <kakao-code-input label="Backup code" type="alphanumeric" length="8" separator="4" hint="Letters and digits, as printed on your backup sheet."></kakao-code-input>
+    </div>
+    <div class="card">
+      <h3>Own character set · <code>pattern</code></h3>
+      <kakao-code-input label="Pairing code (hex)" type="alphanumeric" pattern="[0-9A-F]" length="4" hint="0–9 and A–F; letters are capitalised as you type."></kakao-code-input>
+    </div>
+    <div class="card">
+      <h3>Error</h3>
+      <kakao-code-input label="Verification code" value="123456" error="That code has expired. We sent you a new one."></kakao-code-input>
+    </div>
+    <div class="card">
+      <h3>Sizes</h3>
+      <div style="display:grid;gap:.75rem" data-demo-wrap>
+        <kakao-code-input size="sm" label="Small" length="4" value="36"></kakao-code-input>
+        <kakao-code-input label="Medium" length="4" value="44"></kakao-code-input>
+        <kakao-code-input size="lg" label="Large" length="4" value="52"></kakao-code-input>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · read only</h3>
+      <div style="display:grid;gap:.75rem" data-demo-wrap>
+        <kakao-code-input disabled label="Disabled" length="4" value="1234"></kakao-code-input>
+        <kakao-code-input readonly label="Read only" length="4" value="5678"></kakao-code-input>
+      </div>
+    </div>
+  </div>
+
+  <h2>In a form</h2>
+  <div class="card">
+    <form id="form" style="display:grid;gap:.9rem">
+      <kakao-code-input id="formCode" name="otp" label="Verification code" required hint="Completing the code submits the form."></kakao-code-input>
+      <div class="row">
+        <kakao-button label="Verify" type="submit"></kakao-button>
+        <kakao-button label="Reset" type="reset" variant="secondary"></kakao-button>
+      </div>
+    </form>
+    <template data-code>
+      <script>
+        const code = document.querySelector('kakao-code-input[name="otp"]');
+        code.addEventListener('code-complete', () => code.form.requestSubmit());
+      </script>
+    </template>
+    <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries. A half-filled code does not submit.</p>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <kakao-code-input id="play" label="Playground"></kakao-code-input>
+    <div class="toolbar">
+      <kakao-button id="apiValue" label='value = "908172"' variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiClear" label="clear()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiFocus" label="focus()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiLength" label="next length" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiError" label="toggle error" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <kakao-code-input id="play" label="Playground"></kakao-code-input>
+      <script>
+        const play = document.getElementById('play');
+        play.value = '908172';
+        play.clear();
+        play.focus();
+        play.length = 8;
+        play.addEventListener('code-complete', (e) => console.log(e.detail.value));
+      </script>
+    </template>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>code-input.js</code>, including why it uses one field rather than one per box.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-code-input').then(() => {
+    const play = document.getElementById('play');
+    const log = document.getElementById('log');
+    logEvents(log, ['input', 'change', 'code-complete'], play);
+
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+    on('apiValue', () => { play.value = '908172'; });
+    on('apiClear', () => play.clear());
+    on('apiFocus', () => play.focus());
+    on('apiLength', () => { play.length = play.length >= 8 ? 4 : play.length + 1; logLine(log, 'length', play.length); });
+    on('apiError', () => {
+      if (play.hasAttribute('error')) play.removeAttribute('error');
+      else play.setAttribute('error', 'That code is not right.');
+    });
+
+    const form = document.getElementById('form');
+    const code = document.getElementById('formCode');
+    const out = document.getElementById('formOut');
+    code.addEventListener('code-complete', () => form.requestSubmit());
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const entries = [...new FormData(form)].map(([k, v]) => `${k}=${v}`);
+      out.textContent = `Submitted: ${entries.join(' · ') || '(nothing)'}`;
+    });
+    form.addEventListener('reset', () => { out.textContent = 'Reset to the initial value.'; });
+  });
+</script>
+</body>
+</html>

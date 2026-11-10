@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-code-input - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="code-input.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="code-input" data-source="code-input.js" data-title="Code input">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Basic · hint</figcaption>
+      <kakao-code-input label="Verification code" value="482" hint="We sent it by SMS."></kakao-code-input>
+    </figure>
+    <figure>
+      <figcaption>Separator · mask</figcaption>
+      <div style="display:grid;gap:.75rem">
+        <kakao-code-input label="Sign-in code" separator="3" value="482915"></kakao-code-input>
+        <kakao-code-input label="PIN" length="4" mask value="12"></kakao-code-input>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Sizes · error · disabled</figcaption>
+      <div style="display:grid;gap:.75rem">
+        <kakao-code-input size="sm" length="4" value="36" aria-label="Small"></kakao-code-input>
+        <kakao-code-input size="lg" length="4" value="52" aria-label="Large"></kakao-code-input>
+        <kakao-code-input length="4" value="9999" error="That code has expired." aria-label="Expired code"></kakao-code-input>
+        <kakao-code-input length="4" value="1234" disabled aria-label="Disabled"></kakao-code-input>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-code-input-bg", "label": "Box background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-input-text", "label": "Text", "group": "Colour", "type": "color", "hint": "characters, mask dots, caret" },
+    { "property": "--kakao-code-input-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "hint, separator dash" },
+    { "property": "--kakao-code-input-border", "label": "Box border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-input-focus", "label": "Focus", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-input-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-input-selected-bg", "label": "Selected boxes", "group": "Colour", "type": "color", "hint": "when several characters are selected" },
+
+    { "property": "--kakao-code-input-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-code-input-char-size", "label": "Character size (md)", "group": "Typography", "type": "length" },
+    { "property": "--kakao-code-input-char-weight", "label": "Character weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-code-input-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-code-input-height", "label": "Box height (md)", "group": "Size & spacing", "type": "length", "hint": "the text input's height" },
+    { "property": "--kakao-code-input-box-width", "label": "Box width (md)", "group": "Size & spacing", "type": "length", "hint": "boxes shrink when the row does not fit" },
+    { "property": "--kakao-code-input-gap", "label": "Box gap (md)", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-code-input-group-gap", "label": "Separator space", "group": "Size & spacing", "type": "length", "hint": "each side of the dash" },
+    { "property": "--kakao-code-input-label-gap", "label": "Label gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-code-input-message-gap", "label": "Message gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-code-input-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-code-input-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-code-input-radius", "label": "Box radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-code-input-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+
+    { "property": "--kakao-code-input-duration", "label": "Border fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-code-input-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: colour" }
+  ]
+  </script>
+</main>
+</body>
+</html>
