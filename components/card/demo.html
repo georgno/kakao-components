@@ -64,10 +64,10 @@
   </div>
 
   <h2>Theme trigger glow</h2>
-  <p>A card without a footer button can still glow when the <code>&lt;kakao-theme-switch&gt;</code> sends its colour through the <code>KakaoComponents</code> trigger API. Switch the page theme to see the glow follow <code style="white-space:nowrap">--kakao-color-primary</code>.</p>
+  <p>With <code>theme-glow</code>, a card without a footer button glows when the <code>&lt;kakao-theme-switch&gt;</code> sends its colour through the <code>KakaoComponents</code> trigger API. Switch the page theme to see the glow follow <code style="white-space:nowrap">--kakao-color-primary</code>.</p>
   <div class="grid" data-example>
-    <kakao-card>
-      <h3 slot="header">Theme glow</h3>
+    <kakao-card theme-glow>
+      <h3 slot="header">Theme glow · <code>theme-glow</code></h3>
       <p>This card has no footer button. It reacts to the <code>theme-change</code> trigger and uses the theme's primary colour for the glow.</p>
     </kakao-card>
   </div>
@@ -119,7 +119,7 @@
     </div>
   </div>
 
-  <footer>Attributes: <code>no-glow</code>, <code>no-animate</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Parts: <code>card</code>, <code>glow</code>, <code>header</code>, <code>body</code>, <code>footer</code>. Full reference in the header of <code>card.js</code>.</footer>
+  <footer>Attributes: <code>no-glow</code>, <code>theme-glow</code>, <code>no-animate</code>. Slots: <code>header</code>, default (body), <code>footer</code>. Parts: <code>card</code>, <code>glow</code>, <code>header</code>, <code>body</code>, <code>footer</code>. Full reference in the header of <code>card.js</code>.</footer>
 </main>
 <script>
   const btn = document.getElementById('playBtn');

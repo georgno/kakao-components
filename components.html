@@ -664,7 +664,7 @@
         <a href="components/card/construction.html">Construction</a>
         <a href="components/card/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Content card with header, body and footer. When the footer starts with a button, a faint glow in the button's colour rises from behind it. Without a footer button it can take the glow colour from a theme change instead, through the trigger API.</p>
+      <p class="component-desc">Content card with header, body and footer. When the footer starts with a button, a faint glow in the button's colour rises from behind it. With <code>theme-glow</code> and no footer button it takes the glow colour from a theme change instead, through the trigger API.</p>
       <div class="examples wide">
         <div class="example">
           <h3>Primary button first</h3>
@@ -683,8 +683,8 @@
           </kakao-card>
         </div>
         <div class="example">
-          <h3>Glow from the theme trigger</h3>
-          <kakao-card>
+          <h3>Glow from the theme trigger · <code>theme-glow</code></h3>
+          <kakao-card theme-glow>
             <strong slot="header">No footer button</strong>
             <span style="color:var(--muted)">Switch the page theme: the card picks up the new theme's primary colour.</span>
           </kakao-card>

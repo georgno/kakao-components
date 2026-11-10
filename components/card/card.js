@@ -26,13 +26,16 @@
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
  *  no-glow      Never show the glow.
+ *  theme-glow   Glow in the theme's primary colour after a theme change, when
+ *               no footer button decides the colour (see THEME TRIGGER GLOW).
  *  no-animate   Don't animate height changes.
  *
  * ----------------------------------------------------------------------------
  * THEME TRIGGER GLOW
  * ----------------------------------------------------------------------------
- *  A card with no footer button can take its glow colour from the theme. When
- *  a <kakao-theme-switch> reports a new theme through the trigger API
+ *  Opt-in with the theme-glow attribute; without it a theme change does
+ *  nothing to the card. A theme-glow card with no footer button takes its
+ *  glow colour from the theme. When a <kakao-theme-switch> reports a new theme through the trigger API
  *  (shared/component-api.js), the card reacts to "theme-change" and uses the
  *  colour it carries (--kakao-color-primary of the new theme) for the glow.
  *
@@ -47,7 +50,9 @@
  * HEIGHT CHANGES
  * ----------------------------------------------------------------------------
  *  When content is removed or added, the card glides to its new height
- *  instead of jumping. A card whose height comes from outside (stretched in a
+ *  instead of jumping. Not while the page loads (until two frames after the
+ *  load event), and not for content that animates its own size (an opening
+ *  kakao-accordion resizes the card every frame; the card follows it). A card whose height comes from outside (stretched in a
  *  grid row) or that changes width (window resize) doesn't animate. Off with
  *  prefers-reduced-motion or no-animate.
  *
@@ -229,13 +234,15 @@
       this._onContentResize = this._onContentResize.bind(this);
       this._resizeObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(this._onContentResize) : null;
       this._last = null; // { height, width } of the previous layout
+      this._lastContentChange = -Infinity; // time of the last content resize
+      this._settled = false; // true once the page has loaded and drawn
       this._anim = null;
       this._themeColor = null;
       this._updateGlowColor = this._updateGlowColor.bind(this);
     }
 
     static get observedAttributes() {
-      return ['no-glow'];
+      return ['no-glow', 'theme-glow'];
     }
 
     attributeChangedCallback() {
@@ -247,6 +254,13 @@
       this._headerSlot.addEventListener('slotchange', this._onSlotChange);
       this._footerSlot.addEventListener('slotchange', this._onSlotChange);
       this._onSlotChange();
+      if (!this._settled) {
+        // Settled two frames after the window's load event (or after connect,
+        // when the page has loaded already).
+        const settle = () => requestAnimationFrame(() => requestAnimationFrame(() => { this._settled = true; }));
+        if (document.readyState === 'complete') settle();
+        else window.addEventListener('load', settle, { once: true });
+      }
       if (this._resizeObserver) {
         [this._headerBox, this._body, this._footerBox, this._card].forEach((el) => this._resizeObserver.observe(el));
       }
@@ -286,6 +300,15 @@
       const last = this._last;
       this._last = { height: rect.height, width: rect.width };
 
+      // Content that animates its own size (an opening accordion) resizes the
+      // card on every frame: follow it, don't add a second, lagging glide.
+      const now = performance.now();
+      const streaming = contentChanged && now - this._lastContentChange < 100;
+      if (contentChanged) this._lastContentChange = now;
+
+      // While the page loads, components draw and content is added; the card
+      // takes those heights as they come instead of gliding to each one.
+      if (!this._settled || streaming) return;
       if (!last || !contentChanged) return;
       if (Math.abs(rect.width - last.width) > 0.5) return; // reflow from a width change
       if (Math.abs(rect.height - shown) < 0.5) return;
@@ -313,11 +336,11 @@
 
     /**
      * Glow colour for a card without a footer button: the colour of the last
-     * theme change. A footer button keeps deciding through the page CSS, and
-     * no-glow wins over both.
+     * theme change, only with theme-glow. A footer button keeps deciding
+     * through the page CSS, and no-glow wins over both.
      */
     _updateGlowColor() {
-      if (this.hasAttribute('no-glow')) {
+      if (this.hasAttribute('no-glow') || !this.hasAttribute('theme-glow')) {
         this.style.removeProperty('--kakao-card-glow-color');
         return;
       }

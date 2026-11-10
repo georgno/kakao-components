@@ -698,7 +698,7 @@ KakaoComponents.meta('kakao-card');</pre>
       </div>
     </div>
 
-    <p class="small muted" style="margin-top:.75rem">Live wiring: <code>&lt;kakao-theme-switch&gt;</code> emits <code>theme-change</code> with the new theme's primary colour. <code>&lt;kakao-card&gt;</code> reacts with it: a card without a footer button glows in that colour after a theme change. Its <code>theme-change</code> event carries the same <code>color</code>, so plain page listeners get it too.</p>
+    <p class="small muted" style="margin-top:.75rem">Live wiring: <code>&lt;kakao-theme-switch&gt;</code> emits <code>theme-change</code> with the new theme's primary colour. <code>&lt;kakao-card theme-glow&gt;</code> reacts with it: such a card without a footer button glows in that colour after a theme change (opt-in; plain cards ignore it). Its <code>theme-change</code> event carries the same <code>color</code>, so plain page listeners get it too.</p>
   </section>
 
   <!-- ================================================================ -->

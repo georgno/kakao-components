@@ -33,3 +33,18 @@ When content inside the card is added or removed, the card SHALL animate from it
 #### Scenario: Stretched card
 - **WHEN** the card is stretched by a taller neighbour in a grid row and a line is removed
 - **THEN** the card keeps its height
+
+#### Scenario: Page load
+- **WHEN** components draw and content is added while the page loads (until two frames after the load event)
+- **THEN** the card takes each height at once, without gliding
+
+#### Scenario: Content that animates its own size
+- **WHEN** content resizes the card on consecutive frames (an opening kakao-accordion)
+- **THEN** the card follows it frame by frame instead of running its own glide
+
+### Requirement: Theme glow is opt-in
+A card SHALL glow in the colour of a `theme-change` trigger only with the `theme-glow` attribute and when no footer button decides the glow colour. Without `theme-glow`, a theme change SHALL NOT change the card. `no-glow` SHALL win over both.
+
+#### Scenario: Plain card and a theme switch
+- **WHEN** the theme switches and a card has no `theme-glow`
+- **THEN** the card shows no glow
