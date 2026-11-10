@@ -17,6 +17,13 @@ The header SHALL show the title from the `title` slot or, without one, the `head
 - **WHEN** an accordion has only a heading
 - **THEN** no empty line is reserved for a description
 
+### Requirement: Header actions
+The accordion SHALL have an `actions` slot whose controls show in the header row before the chevron, vertically centred on the header. They SHALL sit outside the header's `<summary>`, so activating them SHALL NOT toggle the accordion, and they SHALL stay visible while it is closed. The header SHALL keep room for them so the title never runs underneath. Without slotted actions the slot SHALL take no space.
+
+#### Scenario: Copy button in the header
+- **WHEN** a `<kakao-button slot="actions">` is clicked on a closed accordion
+- **THEN** the button's action runs and the accordion stays closed
+
 ### Requirement: Open state and API
 The `open` attribute SHALL decide whether the body is shown, and the `open` property SHALL reflect it. `show()` SHALL open, `hide()` SHALL close, and `toggle(force)` SHALL flip the state or set it to `force` when a boolean is given. Clicking the header SHALL toggle it.
 

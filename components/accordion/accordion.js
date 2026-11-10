@@ -36,7 +36,10 @@
  *  no-animate    Opens and closes at once.
  *
  * SLOTS: default (the body), title, description, meta (short text or a badge
- * after the title; never controls, since the whole header is one button).
+ * after the title; never controls, since the whole header is one button),
+ * actions (controls such as a small kakao-button, shown in the header row
+ * before the chevron; they sit outside the header button, so clicking them
+ * doesn't open or close the accordion, and they stay visible while closed).
  *
  * ----------------------------------------------------------------------------
  * METHODS
@@ -87,7 +90,7 @@
  *  --kakao-accordion-row-line / -row-padding-y / -row-indent / -nested-title-size
  *  --kakao-accordion-duration / -ease
  *
- * Parts: accordion, header, title, description, meta, chevron, panel, body.
+ * Parts: accordion, header, title, description, meta, actions, chevron, panel, body.
  * ============================================================================
  */
 (function () {
@@ -132,14 +135,36 @@
       }
       :host([hidden]) { display: none; }
 
-      /* ---- looks: one set of internal values per nesting step ---- */
-      .acc {
+      /* ---- looks: one set of internal values per nesting step, set on the
+         frame so the actions (outside the <details>) read them too ---- */
+      .frame {
         --_l-bg: var(--_bg);
         --_l-border: var(--_border);
         --_l-radius: var(--_radius);
         --_l-px: var(--_padding-x);
         --_l-py: var(--_padding-y);
         --_l-title: var(--_title-size);
+        position: relative;
+      }
+      .frame[data-look="tile"] {
+        --_l-bg: var(--_tile-bg);
+        --_l-border: transparent;
+        --_l-radius: var(--_tile-radius);
+        --_l-px: var(--_tile-padding-x);
+        --_l-py: var(--_tile-padding-y);
+        --_l-title: var(--_nested-title-size);
+        /* Secondary buttons share the subtle fill; on a tile they take the
+           surface colour so they stay visible (also in the actions slot). */
+        --kakao-button-secondary-bg: var(--kakao-color-bg, #ffffff);
+      }
+      .frame[data-look="row"] {
+        --_l-bg: transparent;
+        --_l-radius: 6px;
+        --_l-px: 0px;
+        --_l-py: var(--_row-padding-y);
+        --_l-title: var(--_nested-title-size);
+      }
+      .acc {
         box-sizing: border-box;
         margin: 0;
         background: var(--_l-bg);
@@ -148,24 +173,8 @@
         border-radius: var(--_l-radius);
         line-height: 1.5;
       }
-      .acc[data-look="tile"] {
-        --_l-bg: var(--_tile-bg);
-        --_l-border: transparent;
-        --_l-radius: var(--_tile-radius);
-        --_l-px: var(--_tile-padding-x);
-        --_l-py: var(--_tile-padding-y);
-        --_l-title: var(--_nested-title-size);
-        /* Secondary buttons share the subtle fill; on a tile they take the
-           surface colour so they stay visible. */
-        --kakao-button-secondary-bg: var(--kakao-color-bg, #ffffff);
-        border: 0;
-      }
+      .acc[data-look="tile"] { border: 0; }
       .acc[data-look="row"] {
-        --_l-bg: transparent;
-        --_l-radius: 6px;
-        --_l-px: 0px;
-        --_l-py: var(--_row-padding-y);
-        --_l-title: var(--_nested-title-size);
         border: 0;
         border-top: 1px solid var(--_row-line);
         border-radius: 0;
@@ -212,6 +221,21 @@
         color: var(--_muted);
         font-size: var(--_description-size);
       }
+      /* ---- actions: controls shown in the header row, before the chevron.
+         Buttons may not sit inside the <summary> (it is one button), so the
+         slot lies over the header from outside the <details>, and a spacer
+         in the summary keeps the room free. ---- */
+      .actions {
+        position: absolute;
+        top: 0;
+        inset-inline-end: calc(var(--_l-px) + var(--_chevron-size) + var(--_gap));
+        height: var(--_head-h, auto);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .actions-space { flex: none; width: var(--_actions-w, 0px); }
+      .actions[hidden], .actions-space[hidden] { display: none; }
       .chevron {
         flex: none;
         display: inline-grid;
@@ -244,6 +268,7 @@
         .chevron { color: CanvasText; }
       }
     </style>
+    <div class="frame" data-look="card">
     <details class="acc" part="accordion" data-look="card">
       <summary part="header">
         <span class="text">
@@ -251,10 +276,13 @@
           <span class="description" part="description" hidden><slot name="description"><span class="description-text"></span></slot></span>
         </span>
         <span class="meta" part="meta" hidden><slot name="meta"></slot></span>
+        <span class="actions-space" hidden></span>
         <span class="chevron" part="chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg></span>
       </summary>
       <div class="panel" part="panel"><div class="body" part="body"><slot></slot></div></div>
     </details>
+    <span class="actions" part="actions" hidden><slot name="actions"></slot></span>
+    </div>
   `;
 
   const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -277,6 +305,12 @@
       this._descSlot = shadow.querySelector('slot[name="description"]');
       this._metaBox = shadow.querySelector('.meta');
       this._metaSlot = shadow.querySelector('slot[name="meta"]');
+      this._frame = shadow.querySelector('.frame');
+      this._actionsBox = shadow.querySelector('.actions');
+      this._actionsSpace = shadow.querySelector('.actions-space');
+      this._actionsSlot = shadow.querySelector('slot[name="actions"]');
+      // Keeps the actions centred on the header and their room free in it.
+      this._sizer = new ResizeObserver(() => this._syncActions());
       this._state = false; // the open state the element is in (or moving to)
       this._rendered = false; // false until a frame after the first connect
       this._anim = null;
@@ -290,6 +324,9 @@
       this._details.addEventListener('toggle', this._onNativeToggle);
       this._descSlot.addEventListener('slotchange', this._updateText);
       this._metaSlot.addEventListener('slotchange', this._updateText);
+      this._actionsSlot.addEventListener('slotchange', this._updateText);
+      this._sizer.observe(this._summary);
+      this._sizer.observe(this._actionsBox);
       this._updateText();
       this._updateLook();
       // Two open in one group on load: the first one wins, as with <details name>.
@@ -306,6 +343,8 @@
       this._details.removeEventListener('toggle', this._onNativeToggle);
       this._descSlot.removeEventListener('slotchange', this._updateText);
       this._metaSlot.removeEventListener('slotchange', this._updateText);
+      this._actionsSlot.removeEventListener('slotchange', this._updateText);
+      this._sizer.disconnect();
       if (this._anim) this._anim.cancel();
     }
 
@@ -439,8 +478,16 @@
       const depth = this._depth();
       const look = LOOKS.includes(variant) ? variant : LOOKS[Math.min(depth, 2)];
       this._details.dataset.look = look;
+      this._frame.dataset.look = look;
       // Rows from the fourth level on step in, so level 4 differs from level 3.
       this._details.toggleAttribute('data-indent', look === 'row' && depth >= 3);
+      this._frame.toggleAttribute('data-indent', look === 'row' && depth >= 3);
+    }
+
+    _syncActions() {
+      if (this._actionsBox.hidden) return;
+      this._frame.style.setProperty('--_head-h', `${this._summary.offsetHeight}px`);
+      this._frame.style.setProperty('--_actions-w', `${this._actionsBox.offsetWidth}px`);
     }
 
     _updateText() {
@@ -449,6 +496,10 @@
       this._descText.textContent = description;
       this._descBox.hidden = !description && this._descSlot.assignedNodes().length === 0;
       this._metaBox.hidden = this._metaSlot.assignedNodes().length === 0;
+      const actions = this._actionsSlot.assignedElements().length > 0;
+      this._actionsBox.hidden = !actions;
+      this._actionsSpace.hidden = !actions;
+      this._syncActions();
     }
   }
 
