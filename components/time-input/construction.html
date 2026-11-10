@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-time-input - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="time-input.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="time-input" data-source="time-input.js" data-title="Time input">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Time · hint · seconds</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-time-input label="Start" value="14:30" hint="The browser's own field and picker"></kakao-time-input>
+        <kakao-time-input label="Lap" value="00:01:30" step="1"></kakao-time-input>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Now tag · disabled out of range</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-time-input now label="Logged at" hint="Hint, then the tag"></kakao-time-input>
+        <kakao-time-input now id="nowOut" label="Later window" hint="Hover the tag for the reason"></kakao-time-input>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Sizes · error</figcaption>
+      <div style="display:grid;gap:.5rem">
+        <kakao-time-input size="sm" value="14:30" aria-label="Small"></kakao-time-input>
+        <kakao-time-input size="lg" value="14:30" aria-label="Large"></kakao-time-input>
+        <kakao-time-input value="11:00" error="Check-in starts at 15:00" aria-label="Check-in"></kakao-time-input>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-time-input-bg", "label": "Field background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-time-input-text", "label": "Text", "group": "Colour", "type": "color", "hint": "also the clock button in Firefox" },
+    { "property": "--kakao-time-input-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "hint, picker icon (Chromium)" },
+    { "property": "--kakao-time-input-border", "label": "Field border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-time-input-focus", "label": "Focus", "group": "Colour", "type": "color" },
+    { "property": "--kakao-time-input-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-time-input-now-bg", "label": "Now tag fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-time-input-now-text", "label": "Now tag text", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-time-input-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-time-input-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-time-input-now-font-size", "label": "Now tag size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-time-input-now-font-weight", "label": "Now tag weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+
+    { "property": "--kakao-time-input-height", "label": "Height (md)", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-time-input-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-time-input-label-gap", "label": "Label gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-time-input-message-gap", "label": "Message gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-time-input-icon-size", "label": "Picker icon size", "group": "Size & spacing", "type": "length", "hint": "Chromium only; centred where the select's chevron is" },
+    { "property": "--kakao-time-input-moz-nudge", "label": "Firefox icon nudge", "group": "Size & spacing", "type": "length", "hint": "moves Firefox's own clock button onto the chevron's line" },
+    { "property": "--kakao-time-input-now-height", "label": "Now tag height", "group": "Size & spacing", "type": "length", "hint": "the tap target stays at least 24px" },
+    { "property": "--kakao-time-input-now-padding-x", "label": "Now tag padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-time-input-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-time-input-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-time-input-radius", "label": "Field radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-time-input-now-radius", "label": "Now tag radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-time-input-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+
+    { "property": "--kakao-time-input-duration", "label": "Border fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-time-input-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: colour" }
+  ]
+  </script>
+  <script>
+    // A one-hour window starting two hours from now, so the tag is always off.
+    (() => {
+      const h = (new Date().getHours() + 2) % 24;
+      const at = (x) => `${String(x % 24).padStart(2, '0')}:00`;
+      const field = document.getElementById('nowOut');
+      field.setAttribute('min', at(h));
+      field.setAttribute('max', at(h + 1));
+    })();
+  </script>
+</main>
+</body>
+</html>

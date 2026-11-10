@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-time-input - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="time-input.js" defer></script>
+<script src="../select/select.js" defer></script>
+<script src="../date-input/date-input.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+<style>
+  .stack { display: grid; gap: .6rem; }
+  .locale-out { margin: .5rem 0 0; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .locale-out b { color: var(--kakao-color-text, inherit); font-weight: 600; }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Time input"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Time input</h1>
+    <p><code>&lt;kakao-time-input&gt;</code> - The browser's own time field and picker, dressed as the library's other fields. It shows 12 or 24 hours as the browser and the system are set; the value is always ISO 24-hour. The sibling of <a href="../date-input/demo.html">date input</a>. Form-associated.</p>
+  </header>
+
+  <h2>Basics</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Time</h3>
+      <kakao-time-input label="Start time" value="14:30" hint="Value 14:30, drawn as 2:30 PM or 14:30"></kakao-time-input>
+    </div>
+    <div class="card">
+      <h3>Step · <code>step="900"</code></h3>
+      <kakao-time-input label="Slot" value="09:15" step="900" hint="15-minute steps: arrow keys and the picker (Chromium)"></kakao-time-input>
+    </div>
+    <div class="card">
+      <h3>Seconds · <code>step="1"</code></h3>
+      <kakao-time-input label="Lap time" value="00:01:30" step="1" hint="A step under a minute adds the seconds segment"></kakao-time-input>
+    </div>
+    <div class="card">
+      <h3>Min · max</h3>
+      <kakao-time-input id="range" label="Check-in" min="15:00" max="22:00" value="11:00" hint="Between 15:00 and 22:00"></kakao-time-input>
+      <p class="locale-out" id="rangeOut"></p>
+    </div>
+    <div class="card">
+      <h3>Over midnight · min after max</h3>
+      <kakao-time-input label="Night shift starts" min="22:00" max="06:00" value="23:30" hint="From 22:00 to 06:00"></kakao-time-input>
+    </div>
+  </div>
+
+  <h2>Now shortcut · <code>now</code></h2>
+  <p>A tag in the row under the field sets the current time in one click, rounded to <code>step</code> (without one, the minute), as a user edit (<code>input</code> and <code>change</code> fire once each). Its label follows the locale; <code>now-label</code> overrides it. Outside <code>min</code> / <code>max</code> it stays, disabled, and says why: in its title on hover and in its accessible description for keyboard and screen reader users.</p>
+  <div class="grid" id="nowGrid">
+    <div class="card">
+      <h3>To the minute</h3>
+      <kakao-time-input now label="Logged at" hint="Now in one click"></kakao-time-input>
+    </div>
+    <div class="card">
+      <h3>Quarter hours · <code>step="900"</code></h3>
+      <kakao-time-input now step="900" label="Started at" hint="Now, to the nearest quarter hour"></kakao-time-input>
+    </div>
+    <div class="card">
+      <h3>Seconds · <code>step="1"</code></h3>
+      <kakao-time-input now step="1" label="Stamp"></kakao-time-input>
+    </div>
+    <div class="card">
+      <h3>Out of range · disabled tag</h3>
+      <kakao-time-input now id="nowOut" label="Delivery window" hint="Always a window that excludes now"></kakao-time-input>
+      <template data-code>
+        <script>
+          // a one-hour window starting two hours from now, so the tag is off
+          const h = (new Date().getHours() + 2) % 24;
+          const at = (x) => String(x % 24).padStart(2, '0') + ':00';
+          const field = document.getElementById('nowOut');
+          field.setAttribute('min', at(h));
+          field.setAttribute('max', at(h + 1));
+        </script>
+      </template>
+    </div>
+    <div class="card">
+      <h3>Locale · <code>now-label</code></h3>
+      <div class="stack">
+        <kakao-time-input now lang="de-AT" label="Uhrzeit"></kakao-time-input>
+        <kakao-time-input now now-label="Use current time" label="Custom label"></kakao-time-input>
+      </div>
+    </div>
+  </div>
+  <p class="locale-out" id="nowLog">Use a tag to see its events.</p>
+
+  <h2>Beside the other fields</h2>
+  <div class="card">
+    <div class="stack" style="max-width:22rem">
+      <kakao-select label="Room" value="b" list-data='[{"value":"a","label":"Room A"},{"value":"b","label":"Room B"}]'></kakao-select>
+      <kakao-date-input label="Day" value="2026-03-04"></kakao-date-input>
+      <kakao-time-input label="Time" value="14:30"></kakao-time-input>
+    </div>
+  </div>
+
+  <h2>12 or 24 hours</h2>
+  <div class="card">
+    <p style="margin-top:0">The field passes the locale (the <code>locale</code> attribute, else the nearest <code>lang</code>) to the native input. <b>The browser still draws the field in its own format</b>, 12-hour with AM/PM or 24-hour: Chromium as the browser's language, Firefox as its language or the system's regional format, Safari as the system's region. None of them reads <code>lang</code>. What a page can format itself is shown below the field.</p>
+    <div class="toolbar">
+      <kakao-button class="loc" data-loc="en-US" label="en-US" variant="secondary" size="sm"></kakao-button>
+      <kakao-button class="loc" data-loc="en-GB" label="en-GB" variant="secondary" size="sm"></kakao-button>
+      <kakao-button class="loc" data-loc="de-AT" label="de-AT" variant="secondary" size="sm"></kakao-button>
+      <kakao-button class="loc" data-loc="ja-JP" label="ja-JP" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div id="locBox" lang="en-US" style="max-width:22rem">
+      <kakao-time-input id="locField" now label="Time" value="14:30"></kakao-time-input>
+      <p class="locale-out" id="locOut"></p>
+      <template data-code>
+        <!-- the locale attribute, else the nearest lang; the browser may still draw its own format -->
+        <kakao-time-input locale="de-AT" label="Uhrzeit" value="14:30"></kakao-time-input>
+      </template>
+    </div>
+  </div>
+
+  <h2>States</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Sizes</h3>
+      <div class="stack">
+        <kakao-time-input size="sm" label="Small" value="14:30"></kakao-time-input>
+        <kakao-time-input label="Medium" value="14:30"></kakao-time-input>
+        <kakao-time-input size="lg" label="Large" value="14:30"></kakao-time-input>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Disabled · read only · error</h3>
+      <div class="stack">
+        <kakao-time-input disabled now label="Disabled" value="14:30"></kakao-time-input>
+        <kakao-time-input readonly now label="Read only" value="14:30"></kakao-time-input>
+        <kakao-time-input label="Check-in" error="Check-in starts at 15:00." value="11:00"></kakao-time-input>
+      </div>
+    </div>
+  </div>
+
+  <h2>In a form</h2>
+  <div class="card">
+    <form id="form" style="display:grid;gap:.9rem;max-width:28rem">
+      <kakao-time-input name="arrival" label="Arrival time" required min="15:00" max="22:00" step="900" now hint="Between 15:00 and 22:00, quarter hours"></kakao-time-input>
+      <kakao-time-input name="wake" label="Wake-up call" value="07:00"></kakao-time-input>
+      <fieldset id="fs" style="border:0;margin:0;padding:0;display:grid;gap:.9rem">
+        <kakao-time-input name="late" label="Late checkout (fieldset)" value="12:00"></kakao-time-input>
+      </fieldset>
+      <div class="row">
+        <kakao-button label="Submit" type="submit"></kakao-button>
+        <kakao-button label="Reset" type="reset" variant="secondary"></kakao-button>
+        <kakao-button id="fsToggle" label="Toggle fieldset disabled" variant="secondary" data-demo-only></kakao-button>
+      </div>
+    </form>
+    <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut">Submit to see the FormData entries.</p>
+  </div>
+
+  <h2>Playground</h2>
+  <div class="card">
+    <kakao-time-input id="play" label="Playground" value="14:30" style="max-width:22rem"></kakao-time-input>
+    <div class="toolbar">
+      <kakao-button id="apiValue" label='value = "08:45"' variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiPicker" label="showPicker()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiStep" label="toggle step=1" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiDisable" label="toggle disabled" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiNow" label="toggle now" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </div>
+
+  <footer>Full reference in the header of <code>time-input.js</code>.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-time-input').then(() => {
+    const play = document.getElementById('play');
+    const log = document.getElementById('log');
+    logEvents(log, ['input', 'change'], play);
+    const show = (name) => logLine(log, name, `${play.value || '(empty)'} · ${play.valueAsNumber} ms`);
+    play.addEventListener('change', () => show('value'));
+
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+    on('apiValue', () => { play.value = '08:45'; show('value'); });
+    on('apiPicker', () => play.showPicker());
+    on('apiStep', () => { if (play.step) play.removeAttribute('step'); else play.step = '1'; });
+    on('apiDisable', () => { play.disabled = !play.disabled; });
+    on('apiNow', () => { play.toggleAttribute('now'); });
+
+    // Now shortcut: the out-of-range field gets a window that excludes now; log the events.
+    const h = (new Date().getHours() + 2) % 24;
+    const at = (x) => `${String(x % 24).padStart(2, '0')}:00`;
+    const nowOut = document.getElementById('nowOut');
+    nowOut.setAttribute('min', at(h));
+    nowOut.setAttribute('max', at(h + 1));
+    const nowLog = document.getElementById('nowLog');
+    let pending = [];
+    ['input', 'change'].forEach((type) => document.getElementById('nowGrid').addEventListener(type, (e) => {
+      pending.push(type);
+      nowLog.textContent = `${e.target.getAttribute('label')}: ${pending.join(' · ')} → ${e.target.value}`;
+      queueMicrotask(() => { pending = []; });
+    }));
+
+    // Min / max: show what the field reports.
+    const range = document.getElementById('range');
+    const rangeOut = document.getElementById('rangeOut');
+    const showRange = () => {
+      const v = range.validity;
+      rangeOut.textContent = v.valid ? 'Valid.' : `Invalid: ${range.validationMessage}`;
+    };
+    range.addEventListener('input', showRange);
+    showRange();
+
+    // 12 / 24 hours: what changes (lang on the field, our own Intl formatting) and what doesn't (the native field).
+    const box = document.getElementById('locBox');
+    const field = document.getElementById('locField');
+    const locOut = document.getElementById('locOut');
+    const render = () => {
+      const v = field.value;
+      const text = v ? new Intl.DateTimeFormat(field.locale, { timeStyle: 'short', timeZone: 'UTC' }).format(field.valueAsDate) : '(empty)';
+      const cycle = new Intl.DateTimeFormat(field.locale, { hour: 'numeric' }).resolvedOptions().hourCycle;
+      locOut.innerHTML = '';
+      locOut.append('lang ', Object.assign(document.createElement('b'), { textContent: field.locale }),
+        ' · value ', Object.assign(document.createElement('b'), { textContent: v || '(empty)' }),
+        ' · Intl: ', Object.assign(document.createElement('b'), { textContent: text }),
+        ' · ', Object.assign(document.createElement('b'), { textContent: cycle === 'h23' || cycle === 'h24' ? '24-hour' : '12-hour' }));
+    };
+    document.querySelectorAll('.loc').forEach((b) => b.addEventListener('kakao-button-action', () => {
+      box.lang = b.dataset.loc;
+      requestAnimationFrame(render);
+    }));
+    field.addEventListener('input', render);
+    render();
+
+    const form = document.getElementById('form');
+    const out = document.getElementById('formOut');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const entries = [...new FormData(form)].map(([k, v]) => `${k}=${v}`);
+      out.textContent = `Submitted: ${entries.join(' · ') || '(nothing)'}`;
+    });
+    form.addEventListener('reset', () => { out.textContent = 'Reset to the initial values.'; });
+    on('fsToggle', () => { const fs = document.getElementById('fs'); fs.disabled = !fs.disabled; });
+  });
+</script>
+</body>
+</html>
