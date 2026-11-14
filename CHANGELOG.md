@@ -8,6 +8,26 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Added
+
+- `kakao-error-page`: an error page (404, 500, 503 …) from attributes: the code
+  very large and as a diagonal pattern in the background, the heading (common
+  codes have a default), message, reference, time and more rows (`list-data`),
+  slots for actions and details; embedded in a box or `full` viewport height.
+
+### Changed
+
+- Components page: the component cards are in alphabetical order.
+- "Not built yet": Table now wraps rows on a phone; new placeholders Grid view
+  (sort, column filters, action column; built on Table) and Image (lazy load,
+  skeleton, alt text, caption; uses Skeleton).
+- Style guide: new rule "Data tables on small screens" (rows wrap into
+  label/value pairs by default, sideways scrolling is an opt-in).
+
+### Known issues
+
+- `kakao-header-bar`: the backdrop blur is lost after a theme switch (open fix).
+
 ## [0.5.0] - 2026-11-10
 
 ### Changed

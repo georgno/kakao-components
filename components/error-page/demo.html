@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-error-page - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="error-page.js" defer></script>
+<style>
+  /* The full example in a frame: the viewport height is replaced by the frame's. */
+  .full-frame {
+    --kakao-error-page-full-height: 26rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .note { color: var(--muted); font-size: 0.85rem; }
+  .details-list { margin: 0; padding-left: 1.25rem; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Error page"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Error page</h1>
+    <p><code>&lt;kakao-error-page&gt;</code> - an error page drawn from a few attributes: the status code very large and as a diagonal pattern in the background, the error's heading, a message, reference information for support and the page's actions. Embedded in a box by default, or filling the viewport with <code>full</code>.</p>
+  </header>
+
+  <h2>Code, heading, message</h2>
+  <p>Common codes come with an English heading; <code>heading</code> sets your own. The code is part of the heading, so a screen reader hears "Error 404: Page not found". The heading is an <code>h1</code> (the error is the page's main content); <code>heading-level</code> changes it when the error page sits inside other content, as on this page.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">404 · default heading</h3>
+      <kakao-error-page code="404" heading-level="3" message="The page may have moved, or the link you followed is out of date."></kakao-error-page>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Own heading · message in the default slot</h3>
+      <kakao-error-page code="403" heading="This project is private" heading-level="3">
+        Ask its owner to invite you, or <a href="#switch">switch to another account</a>.
+      </kakao-error-page>
+    </kakao-card>
+  </div>
+
+  <h2>Reference information · <code>reference</code>, <code>time</code>, <code>list-data</code></h2>
+  <p>Muted label/value rows under the message. One click selects the whole reference, ready to paste into a support request. An ISO <code>time</code> is shown in the page's language; any other text is shown as written. <code>list-data</code> adds rows as <code>[label, value]</code> pairs.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">500 · reference and time</h3>
+      <kakao-error-page code="500" heading-level="3" reference="req-7f3a9c2e" time="2026-11-15T09:42:00Z"
+        message="Something broke on our side. We have been told about it; please try again in a few minutes."></kakao-error-page>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">503 maintenance · time as a deadline</h3>
+      <kakao-error-page code="503" heading="Down for maintenance" heading-level="3" time-label="Back by" time="2026-11-15T23:00"
+        message="We are upgrading the database. Your data is safe."></kakao-error-page>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">More rows · <code>list-data</code></h3>
+      <kakao-error-page code="410" heading-level="3" message="This invoice was deleted by its owner."
+        list-data='[["Path", "/invoices/77"], ["Deleted", "3 days ago"]]'></kakao-error-page>
+    </kakao-card>
+  </div>
+
+  <h2>Actions and details · <code>slot="actions"</code>, <code>slot="details"</code></h2>
+  <p>Actions sit in a centred row that wraps; the main action first. Details take longer content below, aligned to the start.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">404 with actions</h3>
+      <kakao-error-page code="404" heading-level="3" message="We could not find that page.">
+        <kakao-button slot="actions" href="../../index.html" label="Go home"></kakao-button>
+        <kakao-button slot="actions" href="../../components.html" label="All components" variant="secondary"></kakao-button>
+      </kakao-error-page>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">429 with details</h3>
+      <kakao-error-page code="429" heading-level="3" message="You sent a lot of requests in a short time." reference="rl-20431">
+        <kakao-button slot="actions" id="retry" label="Try again"></kakao-button>
+        <div slot="details">
+          <p class="note">What you can do:</p>
+          <ul class="details-list note">
+            <li>Wait a minute before trying again.</li>
+            <li>Use the export instead of loading many pages one by one.</li>
+          </ul>
+        </div>
+      </kakao-error-page>
+    </kakao-card>
+  </div>
+
+  <h2>Embedded or full · <code>full</code></h2>
+  <p>Embedded (the default) is a framed box with a minimum height, for a panel or a card. <code>full</code> drops the frame, sits on the page background and fills the viewport height below the header bar (<code>--kakao-error-page-full-height</code>; here the frame sets it to 26rem).</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Full page</h3>
+      <div class="full-frame" data-demo-wrap>
+        <kakao-error-page full code="500" heading-level="3" reference="req-0b1d44" message="Please try again in a few minutes.">
+          <kakao-button slot="actions" href="../../index.html" label="Go home"></kakao-button>
+        </kakao-error-page>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Without pattern · <code>no-pattern</code></h2>
+  <div class="grid">
+    <kakao-card>
+      <kakao-error-page code="401" heading-level="3" no-pattern message="Sign in to see this page.">
+        <kakao-button slot="actions" label="Sign in"></kakao-button>
+      </kakao-error-page>
+    </kakao-card>
+  </div>
+
+  <h2>Playground</h2>
+  <p>One error page, driven by its attributes.</p>
+  <div class="grid">
+    <kakao-card>
+      <kakao-error-page id="play" code="404" heading-level="3" message="Change the code and watch the heading and pattern follow."></kakao-error-page>
+      <div class="row" data-demo-only>
+        <kakao-button data-set-code="404" label="404" variant="secondary" size="sm"></kakao-button>
+        <kakao-button data-set-code="500" label="500" variant="secondary" size="sm"></kakao-button>
+        <kakao-button data-set-code="503" label="503" variant="secondary" size="sm"></kakao-button>
+        <kakao-button data-set-code="Offline" label="Offline" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="play-pattern" variant="ghost" size="sm"></kakao-button>
+      </div>
+      <template data-code>
+        <script>
+          const page = document.getElementById('play');
+          page.setAttribute('code', '503'); // heading and pattern follow; set heading for your own text
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <footer>Attributes: <code>code</code>, <code>heading</code>, <code>heading-level</code> (1-6, default 1), <code>code-label</code>, <code>message</code>, <code>reference</code>, <code>reference-label</code>, <code>time</code>, <code>time-label</code>, <code>list-data</code>, <code>full</code>, <code>no-pattern</code>. Slots: default (message), <code>actions</code>, <code>details</code>. Full reference in the header of <code>error-page.js</code>.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-error-page').then(() => {
+    const play = document.getElementById('play');
+    document.querySelectorAll('[data-set-code]').forEach((b) => b.addEventListener('kakao-button-action', () => {
+      play.setAttribute('code', b.dataset.setCode);
+    }));
+    toggleButton(document.getElementById('play-pattern'), 'no-pattern', (v) => play.toggleAttribute('no-pattern', v));
+  });
+</script>
+</body>
+</html>

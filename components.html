@@ -59,6 +59,7 @@
 <script src="components/tag-input/tag-input.js" defer></script>
 <script src="components/settings-group/settings-group.js" defer></script>
 <script src="components/error-summary/error-summary.js" defer></script>
+<script src="components/error-page/error-page.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -102,6 +103,209 @@
   </header>
 
   <div class="overview">
+
+    <!-- ============================== Accordion ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Accordion</h2>
+        <code>&lt;kakao-accordion&gt;</code>
+        <a href="components/accordion/construction.html">Construction</a>
+        <a href="components/accordion/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A card that opens and closes to show any content, built on native <code>&lt;details&gt;</code>. Title, description, trailing meta and a turning chevron; the height glides open. A shared <code>name</code> keeps one open per group. Nested accordions step down to tiles and rows.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Grouped · <code>name</code></h3>
+          <div style="display:grid;gap:0.75rem">
+            <kakao-accordion name="ov-acc" heading="Can I cancel anytime?" open><p>Yes, at the end of the billing period.</p></kakao-accordion>
+            <kakao-accordion name="ov-acc" heading="Do you offer refunds?"><p>Within 14 days of purchase.</p></kakao-accordion>
+            <kakao-accordion name="ov-acc" heading="Can I change my plan?"><span slot="meta">Billing</span><p>Upgrades apply at once, downgrades at the next billing date.</p></kakao-accordion>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Nested · card, tile, row</h3>
+          <kakao-accordion heading="Account settings" description="Profile and security" open>
+            <kakao-accordion heading="Security" description="Password and sign-in" open>
+              <kakao-accordion heading="Password" open><p>Last changed 3 months ago.</p></kakao-accordion>
+              <kakao-accordion heading="Two-factor sign-in"><span slot="meta">On</span><p>Codes come from your authenticator app.</p></kakao-accordion>
+            </kakao-accordion>
+            <kakao-accordion heading="Notifications"><p>Weekly summary by email.</p></kakao-accordion>
+          </kakao-accordion>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Alert ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Alert</h2>
+        <code>&lt;kakao-alert&gt;</code>
+        <a href="components/alert/construction.html">Construction</a>
+        <a href="components/alert/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">An inline message in the page: icon, optional title, message. Four tones with the matching role (<code>status</code> or <code>alert</code>), an optional close button, and info and success alerts fade out after 8 seconds unless the pointer or focus is on them.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Tones · <code>tone</code></h3>
+          <div style="display:grid;gap:.6rem">
+            <kakao-alert duration="0">A new version is available.</kakao-alert>
+            <kakao-alert tone="success" duration="0">Settings saved.</kakao-alert>
+            <kakao-alert tone="warning" heading="Your trial ends in 3 days">Add a payment method to keep your projects.</kakao-alert>
+            <kakao-alert tone="danger" heading="Payment failed">Your card was declined.</kakao-alert>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Closable · <code>dismissible</code></h3>
+          <kakao-alert id="ov-alert-close" tone="success" dismissible duration="0">Your profile is public now.</kakao-alert>
+          <kakao-button id="ov-alert-back" label="Show it again" variant="ghost" size="sm" style="margin-top:.5rem"></kakao-button>
+        </div>
+        <div class="example">
+          <h3>Fades out · <code>duration</code></h3>
+          <div id="ov-alert-stack" style="display:grid;gap:.5rem"></div>
+          <kakao-button id="ov-alert-add" label="Save (4s alert)" variant="secondary" size="sm" style="margin-top:.5rem"></kakao-button>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Animated number ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Animated number</h2>
+        <code>&lt;kakao-animated-number&gt;</code>
+        <a href="components/animated-number/construction.html">Construction</a>
+        <a href="components/animated-number/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Odometer-style rolling digits whenever the value changes, formatted with <code>Intl.NumberFormat</code>.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Integer</h3>
+          <kakao-animated-number class="ov-rnd" value="1280" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
+        </div>
+        <div class="example">
+          <h3>2 decimals · de-DE</h3>
+          <kakao-animated-number class="ov-rnd" value="1234.5" decimals="2" locale="de-DE" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
+        </div>
+        <div class="example">
+          <h3>Sign always · slow</h3>
+          <kakao-animated-number class="ov-rnd" value="12" sign-display="always" duration="1500" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
+        </div>
+        <div class="example">
+          <h3>Try it</h3>
+          <kakao-button id="ov-rnd-btn" label="Randomize" variant="secondary" size="sm"></kakao-button>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Aside menu ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Aside menu</h2>
+        <code>&lt;kakao-aside-menu&gt;</code>
+        <a href="components/aside-menu/construction.html">Construction</a>
+        <a href="components/aside-menu/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A hidden slide-in side menu that pushes the whole page aside. Built-in hamburger button, close control, optional nav list, and focus trapping.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Default · with nav list</h3>
+          <kakao-aside-menu label="Site navigation"
+            list-data='[{"value":"home","label":"Home"},{"value":"browse","label":"Browse"},{"value":"account","label":"Account"}]'
+            selected="home"></kakao-aside-menu>
+        </div>
+        <div class="example">
+          <h3>Right · slotted content</h3>
+          <kakao-aside-menu position="right" label="Filters">
+            <nav aria-label="Filters">
+              <a href="#" onclick="return false">Genre</a>
+              <a href="#" onclick="return false">Year</a>
+              <a href="#" onclick="return false">Rating</a>
+            </nav>
+          </kakao-aside-menu>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Aside sheet ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Aside sheet</h2>
+        <code>&lt;kakao-aside-sheet&gt;</code>
+        <a href="components/aside-sheet/construction.html">Construction</a>
+        <a href="components/aside-sheet/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A card that slides in from an edge of the viewport: bottom, top, start or end (RTL-aware). Modal by default, built like the dialog; only the corners facing into the page are rounded. Opened by <code>for</code>, the <code>open</code> attribute or <code>show()</code>.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Bottom · <code>handle</code></h3>
+          <div class="row"><kakao-button id="ov-sheet-bottom" label="Share" size="sm"></kakao-button></div>
+        </div>
+        <div class="example">
+          <h3>End · footer buttons</h3>
+          <div class="row"><kakao-button id="ov-sheet-end" label="Filters" variant="secondary" size="sm"></kakao-button></div>
+        </div>
+      </div>
+      <kakao-aside-sheet for="ov-sheet-bottom" handle label="Share">
+        <h2 slot="header">Share</h2>
+        <p>Drag the handle down, press Escape or click the covered page to close it.</p>
+        <div slot="footer"><kakao-button label="Copy link" data-close="copy"></kakao-button></div>
+      </kakao-aside-sheet>
+      <kakao-aside-sheet for="ov-sheet-end" side="end" label="Filters">
+        <h2 slot="header">Filters</h2>
+        <p>The body scrolls when it is taller than the sheet; header and footer stay put.</p>
+        <div slot="footer">
+          <kakao-button label="Reset" variant="ghost" data-close="reset"></kakao-button>
+          <kakao-button label="Show results" data-close="apply"></kakao-button>
+        </div>
+      </kakao-aside-sheet>
+    </article>
+
+    <!-- ============================== Badge ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Badge</h2>
+        <code>&lt;kakao-badge&gt;</code>
+        <a href="components/badge/construction.html">Construction</a>
+        <a href="components/badge/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Small pill-shaped status label. Tones neutral, primary, success, danger and ink, plus an outline style. Not interactive; follows the theme.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Tones</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
+            <kakao-badge>Draft</kakao-badge>
+            <kakao-badge tone="primary">Proposed</kakao-badge>
+            <kakao-badge tone="success">Yes</kakao-badge>
+            <kakao-badge tone="danger">Issue</kakao-badge>
+            <kakao-badge tone="ink">Rule</kakao-badge>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Outline</h3>
+          <kakao-badge outline>Missing</kakao-badge>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Breadcrumb ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Breadcrumb</h2>
+        <code>&lt;kakao-breadcrumb&gt;</code>
+        <a href="components/breadcrumb/construction.html">Construction</a>
+        <a href="components/breadcrumb/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Where the current page sits, from title/url pairs (<code>["Title", "/url"]</code> or <code>{ title, url }</code>). Starts with a house icon or the start text, which comes from a constant; ends with the current page. Cancelable <code>breadcrumb-navigate</code> for single-page apps.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>House icon</h3>
+          <kakao-breadcrumb list-data='[["Library", "components/breadcrumb/demo.html"], ["Sci-fi", "components/breadcrumb/demo.html"], ["Arrival"]]'></kakao-breadcrumb>
+        </div>
+        <div class="example">
+          <h3>Start text · <code>start="text"</code></h3>
+          <kakao-breadcrumb start="text" list-data='[["Settings", "components/breadcrumb/demo.html"], ["Plan"]]'></kakao-breadcrumb>
+        </div>
+      </div>
+    </article>
 
     <!-- ============================== Button ============================== -->
     <article class="card">
@@ -176,486 +380,6 @@
       </div>
     </article>
 
-    <!-- ============================== Dialog ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Dialog</h2>
-        <code>&lt;kakao-dialog&gt;</code>
-        <a href="components/dialog/construction.html">Construction</a>
-        <a href="components/dialog/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Modal that covers the page and keeps focus inside. A plain fixed overlay rather than <code>&lt;dialog&gt;</code> + <code>showModal()</code>, so it behaves the same on phones, tablets and desktops.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Default · header, body, footer</h3>
-          <div class="row"><kakao-button id="ov-dialog-open" label="Open dialog" size="sm"></kakao-button></div>
-        </div>
-        <div class="example">
-          <h3>Confirm · <code>size="sm"</code> + <code>data-close</code></h3>
-          <div class="row"><kakao-button id="ov-dialog-danger" label="Delete project" variant="danger" size="sm"></kakao-button></div>
-        </div>
-      </div>
-      <kakao-dialog id="ov-dialog" label="Example dialog">
-        <h2 slot="header">Example dialog</h2>
-        <p>A modal dialog. Escape, a click on the covered page or a button with <code>data-close</code> ends it.</p>
-        <div slot="footer">
-          <kakao-button label="Cancel" variant="ghost" data-close="cancel"></kakao-button>
-          <kakao-button label="Save" data-close="save"></kakao-button>
-        </div>
-      </kakao-dialog>
-      <kakao-dialog id="ov-dialog-danger-dialog" size="sm" label="Delete project">
-        <h2 slot="header">Delete project?</h2>
-        <p>This cannot be undone.</p>
-        <div slot="footer">
-          <kakao-button label="Keep it" variant="ghost" data-close="cancel"></kakao-button>
-          <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
-        </div>
-      </kakao-dialog>
-    </article>
-
-    <!-- ============================== Aside sheet ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Aside sheet</h2>
-        <code>&lt;kakao-aside-sheet&gt;</code>
-        <a href="components/aside-sheet/construction.html">Construction</a>
-        <a href="components/aside-sheet/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">A card that slides in from an edge of the viewport: bottom, top, start or end (RTL-aware). Modal by default, built like the dialog; only the corners facing into the page are rounded. Opened by <code>for</code>, the <code>open</code> attribute or <code>show()</code>.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Bottom · <code>handle</code></h3>
-          <div class="row"><kakao-button id="ov-sheet-bottom" label="Share" size="sm"></kakao-button></div>
-        </div>
-        <div class="example">
-          <h3>End · footer buttons</h3>
-          <div class="row"><kakao-button id="ov-sheet-end" label="Filters" variant="secondary" size="sm"></kakao-button></div>
-        </div>
-      </div>
-      <kakao-aside-sheet for="ov-sheet-bottom" handle label="Share">
-        <h2 slot="header">Share</h2>
-        <p>Drag the handle down, press Escape or click the covered page to close it.</p>
-        <div slot="footer"><kakao-button label="Copy link" data-close="copy"></kakao-button></div>
-      </kakao-aside-sheet>
-      <kakao-aside-sheet for="ov-sheet-end" side="end" label="Filters">
-        <h2 slot="header">Filters</h2>
-        <p>The body scrolls when it is taller than the sheet; header and footer stay put.</p>
-        <div slot="footer">
-          <kakao-button label="Reset" variant="ghost" data-close="reset"></kakao-button>
-          <kakao-button label="Show results" data-close="apply"></kakao-button>
-        </div>
-      </kakao-aside-sheet>
-    </article>
-
-    <!-- ============================== Aside menu ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Aside menu</h2>
-        <code>&lt;kakao-aside-menu&gt;</code>
-        <a href="components/aside-menu/construction.html">Construction</a>
-        <a href="components/aside-menu/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">A hidden slide-in side menu that pushes the whole page aside. Built-in hamburger button, close control, optional nav list, and focus trapping.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Default · with nav list</h3>
-          <kakao-aside-menu label="Site navigation"
-            list-data='[{"value":"home","label":"Home"},{"value":"browse","label":"Browse"},{"value":"account","label":"Account"}]'
-            selected="home"></kakao-aside-menu>
-        </div>
-        <div class="example">
-          <h3>Right · slotted content</h3>
-          <kakao-aside-menu position="right" label="Filters">
-            <nav aria-label="Filters">
-              <a href="#" onclick="return false">Genre</a>
-              <a href="#" onclick="return false">Year</a>
-              <a href="#" onclick="return false">Rating</a>
-            </nav>
-          </kakao-aside-menu>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Header bar ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Header bar</h2>
-        <code>&lt;kakao-header-bar&gt;</code>
-        <a href="components/header-bar/construction.html">Construction</a>
-        <a href="components/header-bar/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">The page's sticky top bar: a <code>&lt;header&gt;</code> with start, title, navigation and end slots. Transparent at the top; once the page scrolls, translucent with a blur behind it (solid under reduced transparency). This page's own bar is one.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Title and tools</h3>
-          <div class="ov-bar-frame">
-            <kakao-header-bar no-scroll-watch>
-              <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
-              <span>Library</span>
-              <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
-            </kakao-header-bar>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Scrolled · <code>scrolled</code></h3>
-          <div class="ov-bar-frame ov-bar-busy">
-            <kakao-header-bar no-scroll-watch scrolled nav-label="Library sections">
-              <a slot="nav" href="components/header-bar/demo.html">Films</a>
-              <a slot="nav" href="components/header-bar/demo.html">Series</a>
-              <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
-            </kakao-header-bar>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Switch group ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Switch group</h2>
-        <code>&lt;kakao-switch-group&gt;</code>
-        <a href="components/switch-group/construction.html">Construction</a>
-        <a href="components/switch-group/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">On/off switches. Drag the thumb past an end and it squashes into the wall.</p>
-      <div class="examples">
-        <div class="example full">
-          <h3>In a row · default <code>orientation="horizontal"</code> (stacks itself when narrower than 220px)</h3>
-          <kakao-switch-group label="Preferences"
-            list-data='[{"name":"dark","label":"Dark mode"},{"name":"sound","label":"Sound","checked":true},{"name":"haptics","label":"Haptics","checked":true},{"name":"wifi","label":"Wi-Fi"}]'></kakao-switch-group>
-        </div>
-        <div class="example">
-          <h3>Stacked · <code>orientation="vertical"</code></h3>
-          <kakao-switch-group label="Notifications" orientation="vertical"
-            list-data='[{"name":"email","label":"Email","checked":true},{"name":"sms","label":"SMS"},{"name":"push","label":"Push","checked":true},{"name":"digest","label":"Digest","disabled":true}]'></kakao-switch-group>
-        </div>
-        <div class="example">
-          <h3>Async · <code>async</code></h3>
-          <kakao-switch-group id="ov-async" label="Synced settings" orientation="vertical" async
-            list-data='[{"name":"ok","label":"Saves"},{"name":"fail","label":"Server refuses"}]'></kakao-switch-group>
-        </div>
-        <div class="example">
-          <h3>Themed · <code>color-labels</code></h3>
-          <kakao-switch-group label="Privacy" orientation="vertical" color-labels
-            style="--kakao-switch-track-bg-on:#16a34a;--kakao-switch-thumb-bg:#fefce8;--kakao-switch-anim-duration:450ms;--kakao-switch-anim-easing:cubic-bezier(.34,1.56,.64,1)"
-            list-data='[{"name":"analytics","label":"Analytics"},{"name":"location","label":"Location","checked":true}]'></kakao-switch-group>
-        </div>
-        <div class="example">
-          <h3>Disabled group</h3>
-          <kakao-switch-group label="Locked" orientation="vertical" disabled
-            list-data='[{"name":"a","label":"Locked on","checked":true},{"name":"b","label":"Locked off"}]'></kakao-switch-group>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Step switch ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Step switch</h2>
-        <code>&lt;kakao-step-switch&gt;</code>
-        <a href="components/step-switch/construction.html">Construction</a>
-        <a href="components/step-switch/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">One thumb, several snapping positions. Each step is a radio button for assistive technology.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Three steps</h3>
-          <kakao-step-switch label="Quality" value="med"
-            list-data='[{"value":"low","label":"Low"},{"value":"med","label":"Medium"},{"value":"high","label":"High"}]'></kakao-step-switch>
-        </div>
-        <div class="example">
-          <h3>Five steps · color-shift</h3>
-          <kakao-step-switch label="Playback speed" value="3" color-shift
-            style="--kakao-step-switch-track-bg-off:#fbbf24;--kakao-step-switch-track-bg-on:#dc2626"
-            list-data='[{"value":"1","label":"0.5×"},{"value":"2","label":"0.75×"},{"value":"3","label":"1×"},{"value":"4","label":"1.5×"},{"value":"5","label":"2×"}]'></kakao-step-switch>
-        </div>
-        <div class="example">
-          <h3>Disabled step</h3>
-          <kakao-step-switch label="Day of the week" value="d"
-            list-data='[{"value":"a","label":"Mon"},{"value":"b","label":"Tue"},{"value":"c","label":"Wed","disabled":true},{"value":"d","label":"Thu"},{"value":"e","label":"Fri"},{"value":"f","label":"Sat"},{"value":"g","label":"Sun"}]'></kakao-step-switch>
-        </div>
-        <div class="example">
-          <h3>Large · no ticks</h3>
-          <kakao-step-switch label="Size" value="m" show-ticks="false"
-            style="--kakao-step-switch-track-height:2.25rem;--kakao-step-switch-thumb-size:1.8rem;--kakao-step-switch-track-bg:#0f766e"
-            list-data='[{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}]'></kakao-step-switch>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Slider ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Slider</h2>
-        <code>&lt;kakao-slider&gt;</code>
-        <a href="components/slider/construction.html">Construction</a>
-        <a href="components/slider/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Value slider with animated friction points per step, a linked number field and a unit badge.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Pixels · step 10</h3>
-          <kakao-slider min="0" max="200" step="10" value="60" unit="px" label="Width"></kakao-slider>
-        </div>
-        <div class="example">
-          <h3>Percent · step 1</h3>
-          <kakao-slider min="0" max="100" step="1" value="35" unit="%" label="Opacity"></kakao-slider>
-        </div>
-        <div class="example">
-          <h3>Native number field</h3>
-          <kakao-slider min="0" max="10" step="1" value="4" label="Rating" scroll-input="false"></kakao-slider>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <kakao-slider min="0" max="100" step="5" value="50" unit="€" label="Budget" disabled></kakao-slider>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Range slider ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Range slider</h2>
-        <code>&lt;kakao-range-slider&gt;</code>
-        <a href="components/range-slider/construction.html">Construction</a>
-        <a href="components/range-slider/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">The slider with two thumbs: picks a span between <code>min</code> and <code>max</code> on the same track, with the friction points, two number fields and the unit badge. <code>min-gap</code> keeps the thumbs apart. Form-associated: two entries under one <code>name</code>, low first.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Price · step 10</h3>
-          <kakao-range-slider min="0" max="200" step="10" value="40,140" unit="€" label="Price"></kakao-range-slider>
-        </div>
-        <div class="example">
-          <h3>Minimum gap · <code>min-gap</code></h3>
-          <kakao-range-slider min="18" max="80" step="1" value="25,40" min-gap="5" label="Age"></kakao-range-slider>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Number input ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Number input</h2>
-        <code>&lt;kakao-number-input&gt;</code>
-        <a href="components/number-input/construction.html">Construction</a>
-        <a href="components/number-input/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Wraps a native number input with custom stepper arrows; scroll the wheel over the arrows to step. On touch screens the arrows become 44px − / + buttons, and <code>plus</code> / <code>minus</code> / <code>grouped</code> / <code>group-position</code> decide where they sit.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Default</h3>
-          <kakao-number-input><input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity" /></kakao-number-input>
-        </div>
-        <div class="example">
-          <h3>Small · step 0.5</h3>
-          <kakao-number-input size="sm"><input type="number" min="0" max="10" step="0.5" value="2.5" aria-label="Hours" /></kakao-number-input>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <kakao-number-input><input type="number" value="42" disabled aria-label="Locked" /></kakao-number-input>
-        </div>
-        <div class="example">
-          <h3>Touch pair · <code>group-position</code> / <code>plus</code> / <code>minus</code></h3>
-          <kakao-number-input touch-steppers group-position="left"><input type="number" min="0" max="100" value="10" aria-label="Quantity, buttons on the left" /></kakao-number-input>
-        </div>
-        <div class="example">
-          <h3>Touch split · <code>grouped="false"</code></h3>
-          <kakao-number-input touch-steppers grouped="false" plus="left" minus="right"><input type="number" min="0" max="100" value="10" aria-label="Quantity, split buttons" /></kakao-number-input>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Multi dropdown ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Multi dropdown</h2>
-        <code>&lt;kakao-multi-dropdown&gt;</code>
-        <a href="components/multi-dropdown/construction.html">Construction</a>
-        <a href="components/multi-dropdown/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Separate dropdowns joined in an input group holding one value, e.g. Day · Month · Year. Segments can be “Unknown”: <code>00.00.1990</code> means sometime in 1990.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Date · unknown day &amp; month</h3>
-          <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
-        </div>
-        <div class="example">
-          <h3>Date · every part may be unknown</h3>
-          <kakao-multi-dropdown type="date" label="First visit" allow-unknown></kakao-multi-dropdown>
-        </div>
-        <div class="example">
-          <h3>Custom segments</h3>
-          <kakao-multi-dropdown label="Variant" separator=" / " allow-unknown="color"
-            list-data='[{"name":"size","label":"Size","options":["XS","S","M","L","XL"]},{"name":"color","label":"Colour","options":["black","white","sand"]}]'></kakao-multi-dropdown>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== File upload ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>File upload</h2>
-        <code>&lt;kakao-file-upload&gt;</code>
-        <a href="components/file-upload/construction.html">Construction</a>
-        <a href="components/file-upload/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Drop area with a dotted background that follows the pointer; picks and drops add to a list with thumbnails and remove buttons.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Any files · several at once</h3>
-          <kakao-file-upload label="Attachments"></kakao-file-upload>
-        </div>
-        <div class="example">
-          <h3>Images only · max 2 MB · max 4</h3>
-          <kakao-file-upload label="Photos" accept="image/*" max-size="2MB" max-files="4"></kakao-file-upload>
-        </div>
-        <div class="example full">
-          <h3>List beside the drop area · <code>horizontal</code></h3>
-          <kakao-file-upload label="Project files" horizontal></kakao-file-upload>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Animated number ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Animated number</h2>
-        <code>&lt;kakao-animated-number&gt;</code>
-        <a href="components/animated-number/construction.html">Construction</a>
-        <a href="components/animated-number/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Odometer-style rolling digits whenever the value changes, formatted with <code>Intl.NumberFormat</code>.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Integer</h3>
-          <kakao-animated-number class="ov-rnd" value="1280" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
-        </div>
-        <div class="example">
-          <h3>2 decimals · de-DE</h3>
-          <kakao-animated-number class="ov-rnd" value="1234.5" decimals="2" locale="de-DE" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
-        </div>
-        <div class="example">
-          <h3>Sign always · slow</h3>
-          <kakao-animated-number class="ov-rnd" value="12" sign-display="always" duration="1500" style="--kakao-animated-number-font-size:1.75rem"></kakao-animated-number>
-        </div>
-        <div class="example">
-          <h3>Try it</h3>
-          <kakao-button id="ov-rnd-btn" label="Randomize" variant="secondary" size="sm"></kakao-button>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Popover ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Popover</h2>
-        <code>&lt;kakao-popover&gt;</code>
-        <a href="components/popover/construction.html">Construction</a>
-        <a href="components/popover/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Popover/tooltip anchored to any element via <code>for</code>. Four placements with auto-flip.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Click · slotted content</h3>
-          <kakao-button id="ov-pop-click" label="Account" variant="secondary" size="sm"></kakao-button>
-          <kakao-popover for="ov-pop-click" trigger="click" placement="bottom">
-            <span slot="header">Account</span>
-            <div slot="content">
-              <dl><dt>Plan</dt><dd>Pro</dd><dt>Renews</dt><dd>Aug 4, 2026</dd></dl>
-            </div>
-          </kakao-popover>
-        </div>
-        <div class="example">
-          <h3>Hover · top</h3>
-          <kakao-button id="ov-pop-hover" label="Hover me" variant="secondary" size="sm"></kakao-button>
-          <kakao-popover for="ov-pop-hover" trigger="hover" placement="top">
-            <div slot="content">This action can’t be undone.</div>
-          </kakao-popover>
-        </div>
-        <div class="example">
-          <h3>list-data · right</h3>
-          <kakao-button id="ov-pop-list" label="Server status" variant="secondary" size="sm"></kakao-button>
-          <kakao-popover for="ov-pop-list" trigger="click" placement="right"
-            list-data='[{"label":"Region","value":"us-east-1"},{"label":"Status","value":"Operational"},{"label":"Latency","value":"42ms"}]'>
-            <span slot="header">Server status</span>
-          </kakao-popover>
-        </div>
-        <div class="example">
-          <h3>Themed (dark)</h3>
-          <kakao-button id="ov-pop-dark" label="Dark popover" variant="secondary" size="sm"></kakao-button>
-          <kakao-popover for="ov-pop-dark" trigger="click" placement="bottom"
-            style="--kakao-popover-bg:#111;--kakao-popover-text-color:#fff;--kakao-popover-border-color:#333;--kakao-popover-header-bg:#1c1c1c;--kakao-popover-label-color:#999;--kakao-popover-focus-ring-color:#fff">
-            <span slot="header">Theming</span>
-            <div slot="content">Colours from <code>--kakao-popover-*</code>.</div>
-          </kakao-popover>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Tabs ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Tabs</h2>
-        <code>&lt;kakao-tabs&gt;</code> + <code>&lt;kakao-tab&gt;</code>
-        <a href="components/tabs/construction.html">Construction</a>
-        <a href="components/tabs/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Segmented tabs with a bouncing thumb; each tab's <code>controls</code> shows its panel. Disabled tabs shake.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Four tabs · one disabled</h3>
-          <kakao-tabs role="tablist">
-            <kakao-tab controls="ov-tab-a1" selected>Tech</kakao-tab>
-            <kakao-tab controls="ov-tab-a2">Photos</kakao-tab>
-            <kakao-tab controls="ov-tab-a3" disabled>Travel</kakao-tab>
-            <kakao-tab controls="ov-tab-a4">Crafts</kakao-tab>
-          </kakao-tabs>
-          <p id="ov-tab-a1" role="tabpanel">Latest in Tech</p>
-          <p id="ov-tab-a2" role="tabpanel" hidden>Your Photos</p>
-          <p id="ov-tab-a3" role="tabpanel" hidden>Travel</p>
-          <p id="ov-tab-a4" role="tabpanel" hidden>Crafts &amp; DIY</p>
-        </div>
-        <div class="example">
-          <h3>Two tabs</h3>
-          <kakao-tabs role="tablist">
-            <kakao-tab controls="ov-tab-b1" selected>Monthly</kakao-tab>
-            <kakao-tab controls="ov-tab-b2">Yearly</kakao-tab>
-          </kakao-tabs>
-          <p id="ov-tab-b1" role="tabpanel">€9 / month</p>
-          <p id="ov-tab-b2" role="tabpanel" hidden>€90 / year</p>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== List ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>List</h2>
-        <code>&lt;kakao-list&gt;</code>
-        <a href="components/list/construction.html">Construction</a>
-        <a href="components/list/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Scroll list whose rows tilt in perspective at the edges and bounce at the ends.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Grouped</h3>
-          <kakao-list width="220" height="260"
-            list-data='[{"group":"Fruit","names":["Apple","Banana","Cherry","Date","Fig"]},{"group":"Herbs","names":["Basil","Dill","Mint","Thyme"]}]'></kakao-list>
-        </div>
-        <div class="example">
-          <h3>No groups · smaller tilt</h3>
-          <kakao-list width="220" height="260" groups="false" item-height="36" max-tilt="35"
-            list-data='[{"group":"","names":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]}]'></kakao-list>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <kakao-list width="220" height="260" disabled
-            list-data='[{"group":"Locked","names":["One","Two","Three","Four","Five"]}]'></kakao-list>
-        </div>
-      </div>
-    </article>
-
     <!-- ============================== Card ============================== -->
     <article class="card">
       <div class="component-head">
@@ -692,56 +416,37 @@
       </div>
     </article>
 
-    <!-- ============================== Badge ============================== -->
+    <!-- ============================== Checkbox ============================== -->
     <article class="card">
       <div class="component-head">
-        <h2>Badge</h2>
-        <code>&lt;kakao-badge&gt;</code>
-        <a href="components/badge/construction.html">Construction</a>
-        <a href="components/badge/demo.html">Open demo →</a>
+        <h2>Checkbox</h2>
+        <code>&lt;kakao-checkbox&gt;</code>
+        <a href="components/checkbox/construction.html">Construction</a>
+        <a href="components/checkbox/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Small pill-shaped status label. Tones neutral, primary, success, danger and ink, plus an outline style. Not interactive; follows the theme.</p>
-      <div class="examples">
+      <p class="component-desc">Checkbox with label, hint, indeterminate state and three sizes. Form-associated: it submits its value while checked.</p>
+      <div class="examples wide">
         <div class="example">
-          <h3>Tones</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
-            <kakao-badge>Draft</kakao-badge>
-            <kakao-badge tone="primary">Proposed</kakao-badge>
-            <kakao-badge tone="success">Yes</kakao-badge>
-            <kakao-badge tone="danger">Issue</kakao-badge>
-            <kakao-badge tone="ink">Rule</kakao-badge>
+          <h3>Unchecked · checked · indeterminate</h3>
+          <div style="display:grid;gap:.5rem">
+            <kakao-checkbox label="Send me the newsletter"></kakao-checkbox>
+            <kakao-checkbox checked label="Product updates" hint="About once a month."></kakao-checkbox>
+            <kakao-checkbox indeterminate label="Select all"></kakao-checkbox>
           </div>
         </div>
         <div class="example">
-          <h3>Outline</h3>
-          <kakao-badge outline>Missing</kakao-badge>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Color code ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Color code</h2>
-        <code>&lt;kakao-color-code&gt;</code>
-        <a href="components/color-code/construction.html">Construction</a>
-        <a href="components/color-code/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">A colour value as a badge-sized monospace label with a swatch of the colour before it. Any CSS colour (hex, <code>rgb()</code>, <code>oklch()</code>, <code>color-mix()</code>, <code>var(--…)</code>…); <code>value</code> paints a different colour than the text. Transparency shows over a checkerboard; a value that is not a colour gets an empty dashed swatch.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Values</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
-            <kakao-color-code>#4f46e5</kakao-color-code>
-            <kakao-color-code>oklch(70% 0.15 145)</kakao-color-code>
-            <kakao-color-code>rgb(0 0 0 / 40%)</kakao-color-code>
+          <h3>Sizes</h3>
+          <div style="display:grid;gap:.5rem">
+            <kakao-checkbox size="sm" checked label="Small"></kakao-checkbox>
+            <kakao-checkbox checked label="Medium"></kakao-checkbox>
+            <kakao-checkbox size="lg" checked label="Large"></kakao-checkbox>
           </div>
         </div>
         <div class="example">
-          <h3>Theme variable · not a colour</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
-            <kakao-color-code value="var(--kakao-color-ink)">ink</kakao-color-code>
-            <kakao-color-code>16px</kakao-color-code>
+          <h3>Disabled · error</h3>
+          <div style="display:grid;gap:.5rem">
+            <kakao-checkbox disabled label="Disabled"></kakao-checkbox>
+            <kakao-checkbox error="You have to accept the terms." label="I accept the terms"></kakao-checkbox>
           </div>
         </div>
       </div>
@@ -800,81 +505,6 @@
       </div>
     </article>
 
-    <!-- ============================== Breadcrumb ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Breadcrumb</h2>
-        <code>&lt;kakao-breadcrumb&gt;</code>
-        <a href="components/breadcrumb/construction.html">Construction</a>
-        <a href="components/breadcrumb/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Where the current page sits, from title/url pairs (<code>["Title", "/url"]</code> or <code>{ title, url }</code>). Starts with a house icon or the start text, which comes from a constant; ends with the current page. Cancelable <code>breadcrumb-navigate</code> for single-page apps.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>House icon</h3>
-          <kakao-breadcrumb list-data='[["Library", "components/breadcrumb/demo.html"], ["Sci-fi", "components/breadcrumb/demo.html"], ["Arrival"]]'></kakao-breadcrumb>
-        </div>
-        <div class="example">
-          <h3>Start text · <code>start="text"</code></h3>
-          <kakao-breadcrumb start="text" list-data='[["Settings", "components/breadcrumb/demo.html"], ["Plan"]]'></kakao-breadcrumb>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Text input ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Text input</h2>
-        <code>&lt;kakao-text-input&gt;</code>
-        <a href="components/text-input/construction.html">Construction</a>
-        <a href="components/text-input/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Single-line field with label, hint, error, an optional icon (a <code>slot="icon"</code> child) and a clear button, in three sizes. Form-associated: <code>name</code>, <code>value</code> and <code>required</code> go with the form.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>With label and hint</h3>
-          <kakao-text-input label="Email" type="email" name="email" placeholder="you@example.com" hint="We only use it for receipts."></kakao-text-input>
-        </div>
-        <div class="example">
-          <h3>Icon · <code>clearable</code></h3>
-          <kakao-text-input type="search" label="Search" clearable value="kakao"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></kakao-text-input>
-        </div>
-        <div class="example">
-          <h3>Error</h3>
-          <kakao-text-input label="Workspace" value="acme" error="That name is already taken."></kakao-text-input>
-        </div>
-        <div class="example">
-          <h3>Sizes</h3>
-          <div style="display:grid;gap:.5rem">
-            <kakao-text-input size="sm" value="Small"></kakao-text-input>
-            <kakao-text-input value="Medium"></kakao-text-input>
-            <kakao-text-input size="lg" value="Large"></kakao-text-input>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Password input ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Password input</h2>
-        <code>&lt;kakao-password-input&gt;</code>
-        <a href="components/password-input/construction.html">Construction</a>
-        <a href="components/password-input/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">The text input for passwords: a show / hide button in the field and a Caps Lock warning while typing. With <code>requirements</code>, a list of rules whose progress is a segmented <code>&lt;kakao-progress&gt;</code>, one segment per rule met; <code>required-strength</code> makes them block the form. Form-associated.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Sign in · show / hide</h3>
-          <kakao-password-input label="Password" placeholder="Your password"></kakao-password-input>
-        </div>
-        <div class="example">
-          <h3>New password · <code>requirements</code></h3>
-          <kakao-password-input label="New password" requirements></kakao-password-input>
-        </div>
-      </div>
-    </article>
-
     <!-- ============================== Code input ============================== -->
     <article class="card">
       <div class="component-head">
@@ -896,114 +526,29 @@
       </div>
     </article>
 
-    <!-- ============================== Tag input ============================== -->
+    <!-- ============================== Color code ============================== -->
     <article class="card">
       <div class="component-head">
-        <h2>Tag input</h2>
-        <code>&lt;kakao-tag-input&gt;</code>
-        <a href="components/tag-input/construction.html">Construction</a>
-        <a href="components/tag-input/demo.html">Open demo →</a>
+        <h2>Color code</h2>
+        <code>&lt;kakao-color-code&gt;</code>
+        <a href="components/color-code/construction.html">Construction</a>
+        <a href="components/color-code/demo.html">Open demo →</a>
       </div>
-      <p class="component-desc">Typed text becomes a <code>&lt;kakao-chip&gt;</code> on Enter or a comma; the chips wrap inside the field. Optional suggestions from <code>list-data</code>, a <code>max-tags</code> limit, duplicates refused. Form-associated: one entry per tag.</p>
-      <div class="examples wide">
+      <p class="component-desc">A colour value as a badge-sized monospace label with a swatch of the colour before it. Any CSS colour (hex, <code>rgb()</code>, <code>oklch()</code>, <code>color-mix()</code>, <code>var(--…)</code>…); <code>value</code> paints a different colour than the text. Transparency shows over a checkerboard; a value that is not a colour gets an empty dashed swatch.</p>
+      <div class="examples">
         <div class="example">
-          <h3>Enter or comma</h3>
-          <kakao-tag-input label="Keywords" value="design, tokens, theming" placeholder="Add a keyword"></kakao-tag-input>
-        </div>
-        <div class="example">
-          <h3>Suggestions · <code>list-data</code></h3>
-          <kakao-tag-input label="Labels" placeholder="Type to see suggestions"
-            list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-tag-input>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Textarea ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Textarea</h2>
-        <code>&lt;kakao-textarea&gt;</code>
-        <a href="components/textarea/construction.html">Construction</a>
-        <a href="components/textarea/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Multi-line field with label, hint, error, a character counter and optional auto-growing. Form-associated.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>With label</h3>
-          <kakao-textarea label="Message" rows="3" placeholder="Write a message…"></kakao-textarea>
-        </div>
-        <div class="example">
-          <h3>Counter · <code>maxlength</code> + <code>counter</code></h3>
-          <kakao-textarea label="Bio" maxlength="140" counter value="Design systems, mostly."></kakao-textarea>
-        </div>
-        <div class="example">
-          <h3>Auto-growing · <code>autosize</code></h3>
-          <kakao-textarea label="Notes" autosize rows="2" hint="Grows as you type."></kakao-textarea>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Checkbox ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Checkbox</h2>
-        <code>&lt;kakao-checkbox&gt;</code>
-        <a href="components/checkbox/construction.html">Construction</a>
-        <a href="components/checkbox/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Checkbox with label, hint, indeterminate state and three sizes. Form-associated: it submits its value while checked.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Unchecked · checked · indeterminate</h3>
-          <div style="display:grid;gap:.5rem">
-            <kakao-checkbox label="Send me the newsletter"></kakao-checkbox>
-            <kakao-checkbox checked label="Product updates" hint="About once a month."></kakao-checkbox>
-            <kakao-checkbox indeterminate label="Select all"></kakao-checkbox>
+          <h3>Values</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
+            <kakao-color-code>#4f46e5</kakao-color-code>
+            <kakao-color-code>oklch(70% 0.15 145)</kakao-color-code>
+            <kakao-color-code>rgb(0 0 0 / 40%)</kakao-color-code>
           </div>
         </div>
         <div class="example">
-          <h3>Sizes</h3>
-          <div style="display:grid;gap:.5rem">
-            <kakao-checkbox size="sm" checked label="Small"></kakao-checkbox>
-            <kakao-checkbox checked label="Medium"></kakao-checkbox>
-            <kakao-checkbox size="lg" checked label="Large"></kakao-checkbox>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Disabled · error</h3>
-          <div style="display:grid;gap:.5rem">
-            <kakao-checkbox disabled label="Disabled"></kakao-checkbox>
-            <kakao-checkbox error="You have to accept the terms." label="I accept the terms"></kakao-checkbox>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Radio group ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Radio group</h2>
-        <code>&lt;kakao-radio-group&gt;</code>
-        <a href="components/radio-group/construction.html">Construction</a>
-        <a href="components/radio-group/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Radio buttons from <code>list-data</code>: label, hint, error, vertical or horizontal. Form-associated: the picked value goes with the form under <code>name</code>.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Vertical</h3>
-          <kakao-radio-group label="Plan" name="plan" value="team"
-            list-data='[{"value":"solo","label":"Solo","hint":"one seat"},{"value":"team","label":"Team","hint":"up to ten people"},{"value":"enterprise","label":"Enterprise","disabled":true}]'></kakao-radio-group>
-        </div>
-        <div class="example">
-          <h3>Horizontal · <code>orientation</code></h3>
-          <kakao-radio-group label="Billing" orientation="horizontal" value="yearly"
-            list-data='[{"value":"monthly","label":"Monthly"},{"value":"yearly","label":"Yearly"}]'></kakao-radio-group>
-        </div>
-        <div class="example">
-          <h3>Error · sizes</h3>
-          <div style="display:grid;gap:.9rem">
-            <kakao-radio-group label="Required" error="Please pick one." list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
-            <kakao-radio-group size="sm" label="Small" value="b" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+          <h3>Theme variable · not a colour</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem">
+            <kakao-color-code value="var(--kakao-color-ink)">ink</kakao-color-code>
+            <kakao-color-code>16px</kakao-color-code>
           </div>
         </div>
       </div>
@@ -1031,291 +576,6 @@
           <h3>Presets · <code>list-data</code></h3>
           <kakao-color-picker label="Tag colour" value="#7c3aed"
             list-data='[{"value":"#4f46e5","label":"Indigo"},{"value":"#0d9488","label":"Teal"},{"value":"#7c3aed","label":"Violet"},{"value":"#db2777","label":"Pink"},{"value":"#d97706","label":"Amber"},{"value":"#dc2626","label":"Red"},{"value":"#18181b","label":"Ink"},{"value":"#ffffff","label":"White"}]'></kakao-color-picker>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Theme switch ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Theme switch</h2>
-        <code>&lt;kakao-theme-switch&gt;</code>
-        <a href="components/theme-switch/construction.html">Construction</a>
-        <a href="components/theme-switch/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Switches the page between colour themes with a ripple from the button. The switch toggles light and dark and reveals the new theme with a ripple; the menu and the step switch pick any of the seven themes (Light, Beige, Umber, Dark, AMOLED, Catppuccin, Forest) and both follow the pointer, cross-fading as the pointer runs down the menu or the thumb crosses a step. Remembers the choice; follows the system until then. Themes live in <code>shared/themes.css</code> and must pass <code>tools/check-themes.js</code>.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Icon only</h3>
-          <kakao-theme-switch></kakao-theme-switch>
-        </div>
-        <div class="example">
-          <h3>With label</h3>
-          <kakao-theme-switch show-label></kakao-theme-switch>
-        </div>
-        <div class="example">
-          <h3>Disabled</h3>
-          <kakao-theme-switch disabled></kakao-theme-switch>
-        </div>
-        <div class="example">
-          <h3>Dropdown · <code>kakao-button</code> menu</h3>
-          <kakao-button class="theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
-            list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
-        </div>
-        <div class="example full">
-          <h3>Step switch · <code>theme-picker</code></h3>
-          <kakao-step-switch theme-picker label="Theme" list-data='[
-            {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
-            {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
-            {"value":"forest","label":"Forest"}]'></kakao-step-switch>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Alert ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Alert</h2>
-        <code>&lt;kakao-alert&gt;</code>
-        <a href="components/alert/construction.html">Construction</a>
-        <a href="components/alert/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">An inline message in the page: icon, optional title, message. Four tones with the matching role (<code>status</code> or <code>alert</code>), an optional close button, and info and success alerts fade out after 8 seconds unless the pointer or focus is on them.</p>
-      <div class="examples wide">
-        <div class="example full">
-          <h3>Tones · <code>tone</code></h3>
-          <div style="display:grid;gap:.6rem">
-            <kakao-alert duration="0">A new version is available.</kakao-alert>
-            <kakao-alert tone="success" duration="0">Settings saved.</kakao-alert>
-            <kakao-alert tone="warning" heading="Your trial ends in 3 days">Add a payment method to keep your projects.</kakao-alert>
-            <kakao-alert tone="danger" heading="Payment failed">Your card was declined.</kakao-alert>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Closable · <code>dismissible</code></h3>
-          <kakao-alert id="ov-alert-close" tone="success" dismissible duration="0">Your profile is public now.</kakao-alert>
-          <kakao-button id="ov-alert-back" label="Show it again" variant="ghost" size="sm" style="margin-top:.5rem"></kakao-button>
-        </div>
-        <div class="example">
-          <h3>Fades out · <code>duration</code></h3>
-          <div id="ov-alert-stack" style="display:grid;gap:.5rem"></div>
-          <kakao-button id="ov-alert-add" label="Save (4s alert)" variant="secondary" size="sm" style="margin-top:.5rem"></kakao-button>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Error summary ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Error summary</h2>
-        <code>&lt;kakao-error-summary&gt;</code>
-        <a href="components/error-summary/construction.html">Construction</a>
-        <a href="components/error-summary/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">A form's errors at the top of the form, drawn as a danger alert: on submit it lists every invalid field instead of the browser's bubbles, takes focus, and each line links to its field. With <code>live</code>, fixed fields drop out as you type.</p>
-      <div class="examples wide">
-        <div class="example full">
-          <h3>Submit the empty form · <code>live</code></h3>
-          <form id="ov-summary-form" style="display:grid;gap:.75rem">
-            <kakao-error-summary live heading-level="4"></kakao-error-summary>
-            <kakao-text-input name="name" label="Full name" required></kakao-text-input>
-            <kakao-text-input name="email" type="email" label="Work email" required></kakao-text-input>
-            <kakao-checkbox name="terms" label="I accept the terms" required></kakao-checkbox>
-            <div><kakao-button type="submit" label="Create account"></kakao-button></div>
-          </form>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Toast ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Toast</h2>
-        <code>&lt;kakao-toast&gt;</code>
-        <a href="components/toast/construction.html">Construction</a>
-        <a href="components/toast/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Short messages in a corner of the viewport, stacked like cards: the newest in front, older ones behind it, fanned out while the pointer or focus is on the stack. Every toast is a <code>&lt;kakao-alert&gt;</code>; <code>KakaoToast.show()</code> adds one and returns a handle. Announced politely, never takes focus.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Tones · <code>tone</code></h3>
-          <div class="row">
-            <kakao-button data-ov-toast="success" label="Success" variant="secondary" size="sm"></kakao-button>
-            <kakao-button data-ov-toast="info" label="Info" variant="secondary" size="sm"></kakao-button>
-            <kakao-button data-ov-toast="warning" label="Warning" variant="secondary" size="sm"></kakao-button>
-            <kakao-button data-ov-toast="danger" label="Danger" variant="secondary" size="sm"></kakao-button>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Stack · <code>max</code></h3>
-          <div class="row">
-            <kakao-button id="ov-toast-burst" label="Show 4 at once" size="sm"></kakao-button>
-            <kakao-button id="ov-toast-undo" label="With an action" variant="ghost" size="sm"></kakao-button>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Progress ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Progress</h2>
-        <code>&lt;kakao-progress&gt;</code>
-        <a href="components/progress/construction.html">Construction</a>
-        <a href="components/progress/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">A progress bar split into segments, like native <code>&lt;progress&gt;</code> (<code>value</code>, <code>max</code>; no value = indeterminate). The fill moves smoothly and every segment it completes gives a short squash-and-stretch pop, once per fill. <code>role="progressbar"</code>, four tones, three sizes.</p>
-      <div class="examples wide">
-        <div class="example full">
-          <h3>Step through it · <code>value</code></h3>
-          <div style="display:grid;gap:.75rem">
-            <kakao-progress id="ov-progress" label="Uploading photos" value="0" max="8" show-value></kakao-progress>
-            <div class="row">
-              <kakao-button id="ov-progress-up" label="+ 1" size="sm"></kakao-button>
-              <kakao-button id="ov-progress-jump" label="+ 4" variant="secondary" size="sm"></kakao-button>
-              <kakao-button id="ov-progress-reset" label="Reset" variant="ghost" size="sm"></kakao-button>
-            </div>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Segments · <code>segments</code></h3>
-          <div style="display:grid;gap:1rem">
-            <kakao-progress label="One bar" segments="1" value="0.62" show-value></kakao-progress>
-            <kakao-progress label="Step 2 of 3" segments="3" value="2" max="3" show-value value-text="2 of 3"></kakao-progress>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Indeterminate · tones · <code>tone</code></h3>
-          <div style="display:grid;gap:1rem">
-            <kakao-progress label="Loading"></kakao-progress>
-            <kakao-progress tone="success" size="sm" value="1" aria-label="Done"></kakao-progress>
-            <kakao-progress tone="warning" size="sm" value="0.85" aria-label="Storage"></kakao-progress>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Meter ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Meter</h2>
-        <code>&lt;kakao-meter&gt;</code>
-        <a href="components/meter/construction.html">Construction</a>
-        <a href="components/meter/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">A gauge, like native <code>&lt;meter&gt;</code>: <code>value</code> within <code>min</code>…<code>max</code>, and <code>low</code> / <code>high</code> / <code>optimum</code> decide whether the value is good, so-so or bad, shown by the fill colour. Same bar as progress, one piece, the fill slides on change. <code>role="meter"</code>, three sizes.</p>
-      <div class="examples wide">
-        <div class="example full">
-          <h3>Storage, lower is better · <code>low</code> <code>high</code> <code>optimum</code></h3>
-          <div style="display:grid;gap:1rem">
-            <kakao-meter label="Photos" min="0" max="100" low="30" high="80" optimum="20" value="18" show-value value-text="18 GB of 100 GB"></kakao-meter>
-            <kakao-meter label="Documents" min="0" max="100" low="30" high="80" optimum="20" value="55" show-value value-text="55 GB of 100 GB"></kakao-meter>
-            <kakao-meter label="Backups" min="0" max="100" low="30" high="80" optimum="20" value="92" show-value value-text="92 GB of 100 GB"></kakao-meter>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Higher is better · <code>optimum</code></h3>
-          <div style="display:grid;gap:1rem">
-            <kakao-meter label="Battery" low="0.25" high="0.6" optimum="1" value="0.82" show-value></kakao-meter>
-            <kakao-meter label="Battery" low="0.25" high="0.6" optimum="1" value="0.18" show-value value-text="18%, low"></kakao-meter>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Sizes · <code>size</code></h3>
-          <div style="display:grid;gap:1rem">
-            <kakao-meter size="sm" value="0.45" aria-label="Small"></kakao-meter>
-            <kakao-meter value="0.45" aria-label="Medium"></kakao-meter>
-            <kakao-meter size="lg" value="0.45" aria-label="Large"></kakao-meter>
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Accordion ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Accordion</h2>
-        <code>&lt;kakao-accordion&gt;</code>
-        <a href="components/accordion/construction.html">Construction</a>
-        <a href="components/accordion/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">A card that opens and closes to show any content, built on native <code>&lt;details&gt;</code>. Title, description, trailing meta and a turning chevron; the height glides open. A shared <code>name</code> keeps one open per group. Nested accordions step down to tiles and rows.</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Grouped · <code>name</code></h3>
-          <div style="display:grid;gap:0.75rem">
-            <kakao-accordion name="ov-acc" heading="Can I cancel anytime?" open><p>Yes, at the end of the billing period.</p></kakao-accordion>
-            <kakao-accordion name="ov-acc" heading="Do you offer refunds?"><p>Within 14 days of purchase.</p></kakao-accordion>
-            <kakao-accordion name="ov-acc" heading="Can I change my plan?"><span slot="meta">Billing</span><p>Upgrades apply at once, downgrades at the next billing date.</p></kakao-accordion>
-          </div>
-        </div>
-        <div class="example">
-          <h3>Nested · card, tile, row</h3>
-          <kakao-accordion heading="Account settings" description="Profile and security" open>
-            <kakao-accordion heading="Security" description="Password and sign-in" open>
-              <kakao-accordion heading="Password" open><p>Last changed 3 months ago.</p></kakao-accordion>
-              <kakao-accordion heading="Two-factor sign-in"><span slot="meta">On</span><p>Codes come from your authenticator app.</p></kakao-accordion>
-            </kakao-accordion>
-            <kakao-accordion heading="Notifications"><p>Weekly summary by email.</p></kakao-accordion>
-          </kakao-accordion>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Settings group ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Settings group</h2>
-        <code>&lt;kakao-settings-group&gt;</code>
-        <a href="components/settings-group/construction.html">Construction</a>
-        <a href="components/settings-group/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">The settings-screen layout: a titled group of <code>&lt;kakao-setting&gt;</code> rows, label and hint on one side, the control on the other, hairlines between. The row names its control; on a narrow row the control drops below the label. Rows can also be links or whole-row buttons; the group drops its box inside a <code>the group drops its box inside a <code>&lt;kakao-card&gt;</code> or accordion.lt;kakao-cardthe group drops its box inside a <code>&lt;kakao-card&gt;</code> or accordion.gt;</code> or accordion, or with <code>variant="plain"</code> (as here, inside the page card).</p>
-      <div class="examples wide">
-        <div class="example">
-          <h3>Controls in rows</h3>
-          <kakao-settings-group variant="plain" heading="Notifications" description="How we reach you">
-            <kakao-setting label="Email digest" hint="A summary every Monday">
-              <kakao-switch-group list-data='[{"name":"digest","label":"","checked":true}]'></kakao-switch-group>
-            </kakao-setting>
-            <kakao-setting label="Language">
-              <kakao-select value="en" list-data='[{"value":"en","label":"English"},{"value":"de","label":"Deutsch"},{"value":"fr","label":"Français"}]'></kakao-select>
-            </kakao-setting>
-          </kakao-settings-group>
-        </div>
-        <div class="example">
-          <h3>Links · actions · <code>variant="danger"</code></h3>
-          <kakao-settings-group variant="plain" heading="Account">
-            <kakao-setting label="Connected accounts" href="#settings-group" value="2 accounts"></kakao-setting>
-            <kakao-setting label="Sign out everywhere" hint="Ends every session except this one" action></kakao-setting>
-            <kakao-setting label="Delete account" variant="danger" action></kakao-setting>
-          </kakao-settings-group>
-        </div>
-      </div>
-    </article>
-
-    <!-- ============================== Select ============================== -->
-    <article class="card">
-      <div class="component-head">
-        <h2>Select</h2>
-        <code>&lt;kakao-select&gt;</code>
-        <a href="components/select/construction.html">Construction</a>
-        <a href="components/select/demo.html">Open demo →</a>
-      </div>
-      <p class="component-desc">Pick one value, or several with <code>multiple</code>, from a list with a search field on top: typing filters as you go, ignoring case and accents. The field looks like the text input; the panel is the library's dropdown and stays on screen. Options come from child <code>&lt;option&gt;</code> / <code>&lt;optgroup&gt;</code> elements, <code>list-data</code> or the <code>options</code> property. Form-associated: several values become several form entries.</p>
-      <div class="examples">
-        <div class="example">
-          <h3>Single · groups</h3>
-          <kakao-select label="City" placeholder="Choose a city">
-            <optgroup label="Germany"><option>Berlin</option><option>Hamburg</option><option>München</option><option>Köln</option></optgroup>
-            <optgroup label="Austria"><option>Wien</option><option>Graz</option><option>Linz</option></optgroup>
-            <optgroup label="Switzerland"><option>Zürich</option><option>Genève</option><option>Basel</option></optgroup>
-          </kakao-select>
-        </div>
-        <div class="example">
-          <h3>Multiple · select all</h3>
-          <kakao-select multiple label="Genres" value="drama,comedy"
-            list-data='[{"value":"action","label":"Action"},{"value":"comedy","label":"Comedy"},{"value":"drama","label":"Drama"},{"value":"horror","label":"Horror"},{"value":"romance","label":"Romance"},{"value":"thriller","label":"Thriller"}]'></kakao-select>
         </div>
       </div>
     </article>
@@ -1373,6 +633,745 @@
       </div>
     </article>
 
+    <!-- ============================== Dialog ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Dialog</h2>
+        <code>&lt;kakao-dialog&gt;</code>
+        <a href="components/dialog/construction.html">Construction</a>
+        <a href="components/dialog/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Modal that covers the page and keeps focus inside. A plain fixed overlay rather than <code>&lt;dialog&gt;</code> + <code>showModal()</code>, so it behaves the same on phones, tablets and desktops.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Default · header, body, footer</h3>
+          <div class="row"><kakao-button id="ov-dialog-open" label="Open dialog" size="sm"></kakao-button></div>
+        </div>
+        <div class="example">
+          <h3>Confirm · <code>size="sm"</code> + <code>data-close</code></h3>
+          <div class="row"><kakao-button id="ov-dialog-danger" label="Delete project" variant="danger" size="sm"></kakao-button></div>
+        </div>
+      </div>
+      <kakao-dialog id="ov-dialog" label="Example dialog">
+        <h2 slot="header">Example dialog</h2>
+        <p>A modal dialog. Escape, a click on the covered page or a button with <code>data-close</code> ends it.</p>
+        <div slot="footer">
+          <kakao-button label="Cancel" variant="ghost" data-close="cancel"></kakao-button>
+          <kakao-button label="Save" data-close="save"></kakao-button>
+        </div>
+      </kakao-dialog>
+      <kakao-dialog id="ov-dialog-danger-dialog" size="sm" label="Delete project">
+        <h2 slot="header">Delete project?</h2>
+        <p>This cannot be undone.</p>
+        <div slot="footer">
+          <kakao-button label="Keep it" variant="ghost" data-close="cancel"></kakao-button>
+          <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
+        </div>
+      </kakao-dialog>
+    </article>
+
+    <!-- ============================== Error page ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Error page</h2>
+        <code>&lt;kakao-error-page&gt;</code>
+        <a href="components/error-page/construction.html">Construction</a>
+        <a href="components/error-page/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">An error page (404, 500, 503 …) from a few attributes: the code very large and as a diagonal pattern in the background, the error's heading (common codes have a default), a message, a reference and time for support, and the page's actions. Embedded in a box, or filling the viewport with <code>full</code>.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>404 · actions</h3>
+          <kakao-error-page code="404" heading-level="4" message="The page may have moved, or the link is out of date.">
+            <kakao-button slot="actions" href="index.html" label="Go home" size="sm"></kakao-button>
+          </kakao-error-page>
+        </div>
+        <div class="example">
+          <h3>503 maintenance · <code>time</code></h3>
+          <kakao-error-page code="503" heading="Down for maintenance" heading-level="4" time-label="Back by" time="2026-11-15T23:00" message="We are upgrading the database."></kakao-error-page>
+        </div>
+        <div class="example full">
+          <h3>500 · <code>reference</code> and <code>time</code></h3>
+          <kakao-error-page code="500" heading-level="4" reference="req-7f3a9c2e" time="2026-11-15T09:42:00Z" message="Something broke on our side. Please try again in a few minutes."></kakao-error-page>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Error summary ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Error summary</h2>
+        <code>&lt;kakao-error-summary&gt;</code>
+        <a href="components/error-summary/construction.html">Construction</a>
+        <a href="components/error-summary/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A form's errors at the top of the form, drawn as a danger alert: on submit it lists every invalid field instead of the browser's bubbles, takes focus, and each line links to its field. With <code>live</code>, fixed fields drop out as you type.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Submit the empty form · <code>live</code></h3>
+          <form id="ov-summary-form" style="display:grid;gap:.75rem">
+            <kakao-error-summary live heading-level="4"></kakao-error-summary>
+            <kakao-text-input name="name" label="Full name" required></kakao-text-input>
+            <kakao-text-input name="email" type="email" label="Work email" required></kakao-text-input>
+            <kakao-checkbox name="terms" label="I accept the terms" required></kakao-checkbox>
+            <div><kakao-button type="submit" label="Create account"></kakao-button></div>
+          </form>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== File upload ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>File upload</h2>
+        <code>&lt;kakao-file-upload&gt;</code>
+        <a href="components/file-upload/construction.html">Construction</a>
+        <a href="components/file-upload/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Drop area with a dotted background that follows the pointer; picks and drops add to a list with thumbnails and remove buttons.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Any files · several at once</h3>
+          <kakao-file-upload label="Attachments"></kakao-file-upload>
+        </div>
+        <div class="example">
+          <h3>Images only · max 2 MB · max 4</h3>
+          <kakao-file-upload label="Photos" accept="image/*" max-size="2MB" max-files="4"></kakao-file-upload>
+        </div>
+        <div class="example full">
+          <h3>List beside the drop area · <code>horizontal</code></h3>
+          <kakao-file-upload label="Project files" horizontal></kakao-file-upload>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Header bar ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Header bar</h2>
+        <code>&lt;kakao-header-bar&gt;</code>
+        <a href="components/header-bar/construction.html">Construction</a>
+        <a href="components/header-bar/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The page's sticky top bar: a <code>&lt;header&gt;</code> with start, title, navigation and end slots. Transparent at the top; once the page scrolls, translucent with a blur behind it (solid under reduced transparency). This page's own bar is one.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Title and tools</h3>
+          <div class="ov-bar-frame">
+            <kakao-header-bar no-scroll-watch>
+              <kakao-button slot="start" icon="fas fa-bars" icon-position="only" aria-label="Open menu" variant="ghost" size="sm"></kakao-button>
+              <span>Library</span>
+              <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
+            </kakao-header-bar>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Scrolled · <code>scrolled</code></h3>
+          <div class="ov-bar-frame ov-bar-busy">
+            <kakao-header-bar no-scroll-watch scrolled nav-label="Library sections">
+              <a slot="nav" href="components/header-bar/demo.html">Films</a>
+              <a slot="nav" href="components/header-bar/demo.html">Series</a>
+              <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
+            </kakao-header-bar>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== List ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>List</h2>
+        <code>&lt;kakao-list&gt;</code>
+        <a href="components/list/construction.html">Construction</a>
+        <a href="components/list/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Scroll list whose rows tilt in perspective at the edges and bounce at the ends.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Grouped</h3>
+          <kakao-list width="220" height="260"
+            list-data='[{"group":"Fruit","names":["Apple","Banana","Cherry","Date","Fig"]},{"group":"Herbs","names":["Basil","Dill","Mint","Thyme"]}]'></kakao-list>
+        </div>
+        <div class="example">
+          <h3>No groups · smaller tilt</h3>
+          <kakao-list width="220" height="260" groups="false" item-height="36" max-tilt="35"
+            list-data='[{"group":"","names":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]}]'></kakao-list>
+        </div>
+        <div class="example">
+          <h3>Disabled</h3>
+          <kakao-list width="220" height="260" disabled
+            list-data='[{"group":"Locked","names":["One","Two","Three","Four","Five"]}]'></kakao-list>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Meter ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Meter</h2>
+        <code>&lt;kakao-meter&gt;</code>
+        <a href="components/meter/construction.html">Construction</a>
+        <a href="components/meter/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A gauge, like native <code>&lt;meter&gt;</code>: <code>value</code> within <code>min</code>…<code>max</code>, and <code>low</code> / <code>high</code> / <code>optimum</code> decide whether the value is good, so-so or bad, shown by the fill colour. Same bar as progress, one piece, the fill slides on change. <code>role="meter"</code>, three sizes.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Storage, lower is better · <code>low</code> <code>high</code> <code>optimum</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-meter label="Photos" min="0" max="100" low="30" high="80" optimum="20" value="18" show-value value-text="18 GB of 100 GB"></kakao-meter>
+            <kakao-meter label="Documents" min="0" max="100" low="30" high="80" optimum="20" value="55" show-value value-text="55 GB of 100 GB"></kakao-meter>
+            <kakao-meter label="Backups" min="0" max="100" low="30" high="80" optimum="20" value="92" show-value value-text="92 GB of 100 GB"></kakao-meter>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Higher is better · <code>optimum</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-meter label="Battery" low="0.25" high="0.6" optimum="1" value="0.82" show-value></kakao-meter>
+            <kakao-meter label="Battery" low="0.25" high="0.6" optimum="1" value="0.18" show-value value-text="18%, low"></kakao-meter>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Sizes · <code>size</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-meter size="sm" value="0.45" aria-label="Small"></kakao-meter>
+            <kakao-meter value="0.45" aria-label="Medium"></kakao-meter>
+            <kakao-meter size="lg" value="0.45" aria-label="Large"></kakao-meter>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Multi dropdown ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Multi dropdown</h2>
+        <code>&lt;kakao-multi-dropdown&gt;</code>
+        <a href="components/multi-dropdown/construction.html">Construction</a>
+        <a href="components/multi-dropdown/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Separate dropdowns joined in an input group holding one value, e.g. Day · Month · Year. Segments can be “Unknown”: <code>00.00.1990</code> means sometime in 1990.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Date · unknown day &amp; month</h3>
+          <kakao-multi-dropdown type="date" label="Date of birth" allow-unknown="day,month" value="00.00.1990"></kakao-multi-dropdown>
+        </div>
+        <div class="example">
+          <h3>Date · every part may be unknown</h3>
+          <kakao-multi-dropdown type="date" label="First visit" allow-unknown></kakao-multi-dropdown>
+        </div>
+        <div class="example">
+          <h3>Custom segments</h3>
+          <kakao-multi-dropdown label="Variant" separator=" / " allow-unknown="color"
+            list-data='[{"name":"size","label":"Size","options":["XS","S","M","L","XL"]},{"name":"color","label":"Colour","options":["black","white","sand"]}]'></kakao-multi-dropdown>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Number input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Number input</h2>
+        <code>&lt;kakao-number-input&gt;</code>
+        <a href="components/number-input/construction.html">Construction</a>
+        <a href="components/number-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Wraps a native number input with custom stepper arrows; scroll the wheel over the arrows to step. On touch screens the arrows become 44px − / + buttons, and <code>plus</code> / <code>minus</code> / <code>grouped</code> / <code>group-position</code> decide where they sit.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Default</h3>
+          <kakao-number-input><input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity" /></kakao-number-input>
+        </div>
+        <div class="example">
+          <h3>Small · step 0.5</h3>
+          <kakao-number-input size="sm"><input type="number" min="0" max="10" step="0.5" value="2.5" aria-label="Hours" /></kakao-number-input>
+        </div>
+        <div class="example">
+          <h3>Disabled</h3>
+          <kakao-number-input><input type="number" value="42" disabled aria-label="Locked" /></kakao-number-input>
+        </div>
+        <div class="example">
+          <h3>Touch pair · <code>group-position</code> / <code>plus</code> / <code>minus</code></h3>
+          <kakao-number-input touch-steppers group-position="left"><input type="number" min="0" max="100" value="10" aria-label="Quantity, buttons on the left" /></kakao-number-input>
+        </div>
+        <div class="example">
+          <h3>Touch split · <code>grouped="false"</code></h3>
+          <kakao-number-input touch-steppers grouped="false" plus="left" minus="right"><input type="number" min="0" max="100" value="10" aria-label="Quantity, split buttons" /></kakao-number-input>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Password input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Password input</h2>
+        <code>&lt;kakao-password-input&gt;</code>
+        <a href="components/password-input/construction.html">Construction</a>
+        <a href="components/password-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The text input for passwords: a show / hide button in the field and a Caps Lock warning while typing. With <code>requirements</code>, a list of rules whose progress is a segmented <code>&lt;kakao-progress&gt;</code>, one segment per rule met; <code>required-strength</code> makes them block the form. Form-associated.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Sign in · show / hide</h3>
+          <kakao-password-input label="Password" placeholder="Your password"></kakao-password-input>
+        </div>
+        <div class="example">
+          <h3>New password · <code>requirements</code></h3>
+          <kakao-password-input label="New password" requirements></kakao-password-input>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Popover ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Popover</h2>
+        <code>&lt;kakao-popover&gt;</code>
+        <a href="components/popover/construction.html">Construction</a>
+        <a href="components/popover/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Popover/tooltip anchored to any element via <code>for</code>. Four placements with auto-flip.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Click · slotted content</h3>
+          <kakao-button id="ov-pop-click" label="Account" variant="secondary" size="sm"></kakao-button>
+          <kakao-popover for="ov-pop-click" trigger="click" placement="bottom">
+            <span slot="header">Account</span>
+            <div slot="content">
+              <dl><dt>Plan</dt><dd>Pro</dd><dt>Renews</dt><dd>Aug 4, 2026</dd></dl>
+            </div>
+          </kakao-popover>
+        </div>
+        <div class="example">
+          <h3>Hover · top</h3>
+          <kakao-button id="ov-pop-hover" label="Hover me" variant="secondary" size="sm"></kakao-button>
+          <kakao-popover for="ov-pop-hover" trigger="hover" placement="top">
+            <div slot="content">This action can’t be undone.</div>
+          </kakao-popover>
+        </div>
+        <div class="example">
+          <h3>list-data · right</h3>
+          <kakao-button id="ov-pop-list" label="Server status" variant="secondary" size="sm"></kakao-button>
+          <kakao-popover for="ov-pop-list" trigger="click" placement="right"
+            list-data='[{"label":"Region","value":"us-east-1"},{"label":"Status","value":"Operational"},{"label":"Latency","value":"42ms"}]'>
+            <span slot="header">Server status</span>
+          </kakao-popover>
+        </div>
+        <div class="example">
+          <h3>Themed (dark)</h3>
+          <kakao-button id="ov-pop-dark" label="Dark popover" variant="secondary" size="sm"></kakao-button>
+          <kakao-popover for="ov-pop-dark" trigger="click" placement="bottom"
+            style="--kakao-popover-bg:#111;--kakao-popover-text-color:#fff;--kakao-popover-border-color:#333;--kakao-popover-header-bg:#1c1c1c;--kakao-popover-label-color:#999;--kakao-popover-focus-ring-color:#fff">
+            <span slot="header">Theming</span>
+            <div slot="content">Colours from <code>--kakao-popover-*</code>.</div>
+          </kakao-popover>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Progress ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Progress</h2>
+        <code>&lt;kakao-progress&gt;</code>
+        <a href="components/progress/construction.html">Construction</a>
+        <a href="components/progress/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A progress bar split into segments, like native <code>&lt;progress&gt;</code> (<code>value</code>, <code>max</code>; no value = indeterminate). The fill moves smoothly and every segment it completes gives a short squash-and-stretch pop, once per fill. <code>role="progressbar"</code>, four tones, three sizes.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Step through it · <code>value</code></h3>
+          <div style="display:grid;gap:.75rem">
+            <kakao-progress id="ov-progress" label="Uploading photos" value="0" max="8" show-value></kakao-progress>
+            <div class="row">
+              <kakao-button id="ov-progress-up" label="+ 1" size="sm"></kakao-button>
+              <kakao-button id="ov-progress-jump" label="+ 4" variant="secondary" size="sm"></kakao-button>
+              <kakao-button id="ov-progress-reset" label="Reset" variant="ghost" size="sm"></kakao-button>
+            </div>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Segments · <code>segments</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-progress label="One bar" segments="1" value="0.62" show-value></kakao-progress>
+            <kakao-progress label="Step 2 of 3" segments="3" value="2" max="3" show-value value-text="2 of 3"></kakao-progress>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Indeterminate · tones · <code>tone</code></h3>
+          <div style="display:grid;gap:1rem">
+            <kakao-progress label="Loading"></kakao-progress>
+            <kakao-progress tone="success" size="sm" value="1" aria-label="Done"></kakao-progress>
+            <kakao-progress tone="warning" size="sm" value="0.85" aria-label="Storage"></kakao-progress>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Radio group ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Radio group</h2>
+        <code>&lt;kakao-radio-group&gt;</code>
+        <a href="components/radio-group/construction.html">Construction</a>
+        <a href="components/radio-group/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Radio buttons from <code>list-data</code>: label, hint, error, vertical or horizontal. Form-associated: the picked value goes with the form under <code>name</code>.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Vertical</h3>
+          <kakao-radio-group label="Plan" name="plan" value="team"
+            list-data='[{"value":"solo","label":"Solo","hint":"one seat"},{"value":"team","label":"Team","hint":"up to ten people"},{"value":"enterprise","label":"Enterprise","disabled":true}]'></kakao-radio-group>
+        </div>
+        <div class="example">
+          <h3>Horizontal · <code>orientation</code></h3>
+          <kakao-radio-group label="Billing" orientation="horizontal" value="yearly"
+            list-data='[{"value":"monthly","label":"Monthly"},{"value":"yearly","label":"Yearly"}]'></kakao-radio-group>
+        </div>
+        <div class="example">
+          <h3>Error · sizes</h3>
+          <div style="display:grid;gap:.9rem">
+            <kakao-radio-group label="Required" error="Please pick one." list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+            <kakao-radio-group size="sm" label="Small" value="b" list-data='[{"value":"a","label":"A"},{"value":"b","label":"B"}]'></kakao-radio-group>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Range slider ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Range slider</h2>
+        <code>&lt;kakao-range-slider&gt;</code>
+        <a href="components/range-slider/construction.html">Construction</a>
+        <a href="components/range-slider/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The slider with two thumbs: picks a span between <code>min</code> and <code>max</code> on the same track, with the friction points, two number fields and the unit badge. <code>min-gap</code> keeps the thumbs apart. Form-associated: two entries under one <code>name</code>, low first.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Price · step 10</h3>
+          <kakao-range-slider min="0" max="200" step="10" value="40,140" unit="€" label="Price"></kakao-range-slider>
+        </div>
+        <div class="example">
+          <h3>Minimum gap · <code>min-gap</code></h3>
+          <kakao-range-slider min="18" max="80" step="1" value="25,40" min-gap="5" label="Age"></kakao-range-slider>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Select ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Select</h2>
+        <code>&lt;kakao-select&gt;</code>
+        <a href="components/select/construction.html">Construction</a>
+        <a href="components/select/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Pick one value, or several with <code>multiple</code>, from a list with a search field on top: typing filters as you go, ignoring case and accents. The field looks like the text input; the panel is the library's dropdown and stays on screen. Options come from child <code>&lt;option&gt;</code> / <code>&lt;optgroup&gt;</code> elements, <code>list-data</code> or the <code>options</code> property. Form-associated: several values become several form entries.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Single · groups</h3>
+          <kakao-select label="City" placeholder="Choose a city">
+            <optgroup label="Germany"><option>Berlin</option><option>Hamburg</option><option>München</option><option>Köln</option></optgroup>
+            <optgroup label="Austria"><option>Wien</option><option>Graz</option><option>Linz</option></optgroup>
+            <optgroup label="Switzerland"><option>Zürich</option><option>Genève</option><option>Basel</option></optgroup>
+          </kakao-select>
+        </div>
+        <div class="example">
+          <h3>Multiple · select all</h3>
+          <kakao-select multiple label="Genres" value="drama,comedy"
+            list-data='[{"value":"action","label":"Action"},{"value":"comedy","label":"Comedy"},{"value":"drama","label":"Drama"},{"value":"horror","label":"Horror"},{"value":"romance","label":"Romance"},{"value":"thriller","label":"Thriller"}]'></kakao-select>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Settings group ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Settings group</h2>
+        <code>&lt;kakao-settings-group&gt;</code>
+        <a href="components/settings-group/construction.html">Construction</a>
+        <a href="components/settings-group/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The settings-screen layout: a titled group of <code>&lt;kakao-setting&gt;</code> rows, label and hint on one side, the control on the other, hairlines between. The row names its control; on a narrow row the control drops below the label. Rows can also be links or whole-row buttons; the group drops its box inside a <code>the group drops its box inside a <code>&lt;kakao-card&gt;</code> or accordion.lt;kakao-cardthe group drops its box inside a <code>&lt;kakao-card&gt;</code> or accordion.gt;</code> or accordion, or with <code>variant="plain"</code> (as here, inside the page card).</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Controls in rows</h3>
+          <kakao-settings-group variant="plain" heading="Notifications" description="How we reach you">
+            <kakao-setting label="Email digest" hint="A summary every Monday">
+              <kakao-switch-group list-data='[{"name":"digest","label":"","checked":true}]'></kakao-switch-group>
+            </kakao-setting>
+            <kakao-setting label="Language">
+              <kakao-select value="en" list-data='[{"value":"en","label":"English"},{"value":"de","label":"Deutsch"},{"value":"fr","label":"Français"}]'></kakao-select>
+            </kakao-setting>
+          </kakao-settings-group>
+        </div>
+        <div class="example">
+          <h3>Links · actions · <code>variant="danger"</code></h3>
+          <kakao-settings-group variant="plain" heading="Account">
+            <kakao-setting label="Connected accounts" href="#settings-group" value="2 accounts"></kakao-setting>
+            <kakao-setting label="Sign out everywhere" hint="Ends every session except this one" action></kakao-setting>
+            <kakao-setting label="Delete account" variant="danger" action></kakao-setting>
+          </kakao-settings-group>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Slider ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Slider</h2>
+        <code>&lt;kakao-slider&gt;</code>
+        <a href="components/slider/construction.html">Construction</a>
+        <a href="components/slider/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Value slider with animated friction points per step, a linked number field and a unit badge.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Pixels · step 10</h3>
+          <kakao-slider min="0" max="200" step="10" value="60" unit="px" label="Width"></kakao-slider>
+        </div>
+        <div class="example">
+          <h3>Percent · step 1</h3>
+          <kakao-slider min="0" max="100" step="1" value="35" unit="%" label="Opacity"></kakao-slider>
+        </div>
+        <div class="example">
+          <h3>Native number field</h3>
+          <kakao-slider min="0" max="10" step="1" value="4" label="Rating" scroll-input="false"></kakao-slider>
+        </div>
+        <div class="example">
+          <h3>Disabled</h3>
+          <kakao-slider min="0" max="100" step="5" value="50" unit="€" label="Budget" disabled></kakao-slider>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Step switch ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Step switch</h2>
+        <code>&lt;kakao-step-switch&gt;</code>
+        <a href="components/step-switch/construction.html">Construction</a>
+        <a href="components/step-switch/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">One thumb, several snapping positions. Each step is a radio button for assistive technology.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Three steps</h3>
+          <kakao-step-switch label="Quality" value="med"
+            list-data='[{"value":"low","label":"Low"},{"value":"med","label":"Medium"},{"value":"high","label":"High"}]'></kakao-step-switch>
+        </div>
+        <div class="example">
+          <h3>Five steps · color-shift</h3>
+          <kakao-step-switch label="Playback speed" value="3" color-shift
+            style="--kakao-step-switch-track-bg-off:#fbbf24;--kakao-step-switch-track-bg-on:#dc2626"
+            list-data='[{"value":"1","label":"0.5×"},{"value":"2","label":"0.75×"},{"value":"3","label":"1×"},{"value":"4","label":"1.5×"},{"value":"5","label":"2×"}]'></kakao-step-switch>
+        </div>
+        <div class="example">
+          <h3>Disabled step</h3>
+          <kakao-step-switch label="Day of the week" value="d"
+            list-data='[{"value":"a","label":"Mon"},{"value":"b","label":"Tue"},{"value":"c","label":"Wed","disabled":true},{"value":"d","label":"Thu"},{"value":"e","label":"Fri"},{"value":"f","label":"Sat"},{"value":"g","label":"Sun"}]'></kakao-step-switch>
+        </div>
+        <div class="example">
+          <h3>Large · no ticks</h3>
+          <kakao-step-switch label="Size" value="m" show-ticks="false"
+            style="--kakao-step-switch-track-height:2.25rem;--kakao-step-switch-thumb-size:1.8rem;--kakao-step-switch-track-bg:#0f766e"
+            list-data='[{"value":"s","label":"S"},{"value":"m","label":"M"},{"value":"l","label":"L"},{"value":"xl","label":"XL"}]'></kakao-step-switch>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Switch group ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Switch group</h2>
+        <code>&lt;kakao-switch-group&gt;</code>
+        <a href="components/switch-group/construction.html">Construction</a>
+        <a href="components/switch-group/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">On/off switches. Drag the thumb past an end and it squashes into the wall.</p>
+      <div class="examples">
+        <div class="example full">
+          <h3>In a row · default <code>orientation="horizontal"</code> (stacks itself when narrower than 220px)</h3>
+          <kakao-switch-group label="Preferences"
+            list-data='[{"name":"dark","label":"Dark mode"},{"name":"sound","label":"Sound","checked":true},{"name":"haptics","label":"Haptics","checked":true},{"name":"wifi","label":"Wi-Fi"}]'></kakao-switch-group>
+        </div>
+        <div class="example">
+          <h3>Stacked · <code>orientation="vertical"</code></h3>
+          <kakao-switch-group label="Notifications" orientation="vertical"
+            list-data='[{"name":"email","label":"Email","checked":true},{"name":"sms","label":"SMS"},{"name":"push","label":"Push","checked":true},{"name":"digest","label":"Digest","disabled":true}]'></kakao-switch-group>
+        </div>
+        <div class="example">
+          <h3>Async · <code>async</code></h3>
+          <kakao-switch-group id="ov-async" label="Synced settings" orientation="vertical" async
+            list-data='[{"name":"ok","label":"Saves"},{"name":"fail","label":"Server refuses"}]'></kakao-switch-group>
+        </div>
+        <div class="example">
+          <h3>Themed · <code>color-labels</code></h3>
+          <kakao-switch-group label="Privacy" orientation="vertical" color-labels
+            style="--kakao-switch-track-bg-on:#16a34a;--kakao-switch-thumb-bg:#fefce8;--kakao-switch-anim-duration:450ms;--kakao-switch-anim-easing:cubic-bezier(.34,1.56,.64,1)"
+            list-data='[{"name":"analytics","label":"Analytics"},{"name":"location","label":"Location","checked":true}]'></kakao-switch-group>
+        </div>
+        <div class="example">
+          <h3>Disabled group</h3>
+          <kakao-switch-group label="Locked" orientation="vertical" disabled
+            list-data='[{"name":"a","label":"Locked on","checked":true},{"name":"b","label":"Locked off"}]'></kakao-switch-group>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Tabs ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Tabs</h2>
+        <code>&lt;kakao-tabs&gt;</code> + <code>&lt;kakao-tab&gt;</code>
+        <a href="components/tabs/construction.html">Construction</a>
+        <a href="components/tabs/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Segmented tabs with a bouncing thumb; each tab's <code>controls</code> shows its panel. Disabled tabs shake.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Four tabs · one disabled</h3>
+          <kakao-tabs role="tablist">
+            <kakao-tab controls="ov-tab-a1" selected>Tech</kakao-tab>
+            <kakao-tab controls="ov-tab-a2">Photos</kakao-tab>
+            <kakao-tab controls="ov-tab-a3" disabled>Travel</kakao-tab>
+            <kakao-tab controls="ov-tab-a4">Crafts</kakao-tab>
+          </kakao-tabs>
+          <p id="ov-tab-a1" role="tabpanel">Latest in Tech</p>
+          <p id="ov-tab-a2" role="tabpanel" hidden>Your Photos</p>
+          <p id="ov-tab-a3" role="tabpanel" hidden>Travel</p>
+          <p id="ov-tab-a4" role="tabpanel" hidden>Crafts &amp; DIY</p>
+        </div>
+        <div class="example">
+          <h3>Two tabs</h3>
+          <kakao-tabs role="tablist">
+            <kakao-tab controls="ov-tab-b1" selected>Monthly</kakao-tab>
+            <kakao-tab controls="ov-tab-b2">Yearly</kakao-tab>
+          </kakao-tabs>
+          <p id="ov-tab-b1" role="tabpanel">€9 / month</p>
+          <p id="ov-tab-b2" role="tabpanel" hidden>€90 / year</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Tag input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Tag input</h2>
+        <code>&lt;kakao-tag-input&gt;</code>
+        <a href="components/tag-input/construction.html">Construction</a>
+        <a href="components/tag-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Typed text becomes a <code>&lt;kakao-chip&gt;</code> on Enter or a comma; the chips wrap inside the field. Optional suggestions from <code>list-data</code>, a <code>max-tags</code> limit, duplicates refused. Form-associated: one entry per tag.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Enter or comma</h3>
+          <kakao-tag-input label="Keywords" value="design, tokens, theming" placeholder="Add a keyword"></kakao-tag-input>
+        </div>
+        <div class="example">
+          <h3>Suggestions · <code>list-data</code></h3>
+          <kakao-tag-input label="Labels" placeholder="Type to see suggestions"
+            list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-tag-input>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Text input ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Text input</h2>
+        <code>&lt;kakao-text-input&gt;</code>
+        <a href="components/text-input/construction.html">Construction</a>
+        <a href="components/text-input/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Single-line field with label, hint, error, an optional icon (a <code>slot="icon"</code> child) and a clear button, in three sizes. Form-associated: <code>name</code>, <code>value</code> and <code>required</code> go with the form.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>With label and hint</h3>
+          <kakao-text-input label="Email" type="email" name="email" placeholder="you@example.com" hint="We only use it for receipts."></kakao-text-input>
+        </div>
+        <div class="example">
+          <h3>Icon · <code>clearable</code></h3>
+          <kakao-text-input type="search" label="Search" clearable value="kakao"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></kakao-text-input>
+        </div>
+        <div class="example">
+          <h3>Error</h3>
+          <kakao-text-input label="Workspace" value="acme" error="That name is already taken."></kakao-text-input>
+        </div>
+        <div class="example">
+          <h3>Sizes</h3>
+          <div style="display:grid;gap:.5rem">
+            <kakao-text-input size="sm" value="Small"></kakao-text-input>
+            <kakao-text-input value="Medium"></kakao-text-input>
+            <kakao-text-input size="lg" value="Large"></kakao-text-input>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Textarea ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Textarea</h2>
+        <code>&lt;kakao-textarea&gt;</code>
+        <a href="components/textarea/construction.html">Construction</a>
+        <a href="components/textarea/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Multi-line field with label, hint, error, a character counter and optional auto-growing. Form-associated.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>With label</h3>
+          <kakao-textarea label="Message" rows="3" placeholder="Write a message…"></kakao-textarea>
+        </div>
+        <div class="example">
+          <h3>Counter · <code>maxlength</code> + <code>counter</code></h3>
+          <kakao-textarea label="Bio" maxlength="140" counter value="Design systems, mostly."></kakao-textarea>
+        </div>
+        <div class="example">
+          <h3>Auto-growing · <code>autosize</code></h3>
+          <kakao-textarea label="Notes" autosize rows="2" hint="Grows as you type."></kakao-textarea>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Theme switch ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Theme switch</h2>
+        <code>&lt;kakao-theme-switch&gt;</code>
+        <a href="components/theme-switch/construction.html">Construction</a>
+        <a href="components/theme-switch/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Switches the page between colour themes with a ripple from the button. The switch toggles light and dark and reveals the new theme with a ripple; the menu and the step switch pick any of the seven themes (Light, Beige, Umber, Dark, AMOLED, Catppuccin, Forest) and both follow the pointer, cross-fading as the pointer runs down the menu or the thumb crosses a step. Remembers the choice; follows the system until then. Themes live in <code>shared/themes.css</code> and must pass <code>tools/check-themes.js</code>.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Icon only</h3>
+          <kakao-theme-switch></kakao-theme-switch>
+        </div>
+        <div class="example">
+          <h3>With label</h3>
+          <kakao-theme-switch show-label></kakao-theme-switch>
+        </div>
+        <div class="example">
+          <h3>Disabled</h3>
+          <kakao-theme-switch disabled></kakao-theme-switch>
+        </div>
+        <div class="example">
+          <h3>Dropdown · <code>kakao-button</code> menu</h3>
+          <kakao-button class="theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+            list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+        </div>
+        <div class="example full">
+          <h3>Step switch · <code>theme-picker</code></h3>
+          <kakao-step-switch theme-picker label="Theme" list-data='[
+            {"value":"light","label":"Light"}, {"value":"beige","label":"Beige"}, {"value":"umber","label":"Umber"},
+            {"value":"dark","label":"Dark"}, {"value":"amoled","label":"AMOLED"}, {"value":"catppuccin","label":"Catppuccin"},
+            {"value":"forest","label":"Forest"}]'></kakao-step-switch>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Time input ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1390,6 +1389,35 @@
         <div class="example">
           <h3>Now · <code>now</code></h3>
           <kakao-time-input label="Logged at" now hint="Now in one click"></kakao-time-input>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Toast ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Toast</h2>
+        <code>&lt;kakao-toast&gt;</code>
+        <a href="components/toast/construction.html">Construction</a>
+        <a href="components/toast/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Short messages in a corner of the viewport, stacked like cards: the newest in front, older ones behind it, fanned out while the pointer or focus is on the stack. Every toast is a <code>&lt;kakao-alert&gt;</code>; <code>KakaoToast.show()</code> adds one and returns a handle. Announced politely, never takes focus.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Tones · <code>tone</code></h3>
+          <div class="row">
+            <kakao-button data-ov-toast="success" label="Success" variant="secondary" size="sm"></kakao-button>
+            <kakao-button data-ov-toast="info" label="Info" variant="secondary" size="sm"></kakao-button>
+            <kakao-button data-ov-toast="warning" label="Warning" variant="secondary" size="sm"></kakao-button>
+            <kakao-button data-ov-toast="danger" label="Danger" variant="secondary" size="sm"></kakao-button>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Stack · <code>max</code></h3>
+          <div class="row">
+            <kakao-button id="ov-toast-burst" label="Show 4 at once" size="sm"></kakao-button>
+            <kakao-button id="ov-toast-undo" label="With an action" variant="ghost" size="sm"></kakao-button>
+          </div>
         </div>
       </div>
     </article>
@@ -1444,6 +1472,12 @@
     </article>
 
     <article class="card placeholder">
+      <div class="component-head"><h2>Image</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: <code>&lt;figure&gt;</code> with <code>&lt;img loading="lazy"&gt;</code> and <code>&lt;figcaption&gt;</code>. Uses Skeleton, which comes first</p>
+      <p class="placeholder-native">An image that loads lazily, shows a skeleton of its size until it has loaded, and takes alt text and an optional caption below it.</p>
+    </article>
+
+    <article class="card placeholder">
       <div class="component-head"><h2>Spinner</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: <code>&lt;progress&gt;</code> without a value</p>
       <p class="placeholder-native">On its own; today it only lives inside the button.</p>
@@ -1470,10 +1504,16 @@
     <article class="card placeholder">
       <div class="component-head"><h2>Table</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: <code>&lt;table&gt;</code></p>
-      <p class="placeholder-native">Sortable headers, row selection and a sticky header.</p>
+      <p class="placeholder-native">Sortable headers, row selection and a sticky header. On by default: on a phone each row wraps into a block of label/value pairs instead of a squeezed row.</p>
       <div class="native">
         <table style="border-collapse:collapse"><thead><tr><th style="text-align:left;padding-right:1rem">Name</th><th style="text-align:left">Size</th></tr></thead><tbody><tr><td style="padding-right:1rem">report.pdf</td><td>2 MB</td></tr><tr><td style="padding-right:1rem">photo.jpg</td><td>4 MB</td></tr></tbody></table>
       </div>
+    </article>
+
+    <article class="card placeholder">
+      <div class="component-head"><h2>Grid view</h2><kakao-badge outline>Missing</kakao-badge></div>
+      <p class="placeholder-native">Native: none. Built on Table, which comes first</p>
+      <p class="placeholder-native">A data table: a sort icon beside each heading, a filter field (search or dropdown) under each column, and an action column with buttons per row. Like Table, each row wraps into a block of label/value pairs on a phone by default.</p>
     </article>
 
     <article class="card placeholder">

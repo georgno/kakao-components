@@ -75,3 +75,18 @@ A component SHALL draw every glyph it shows on its own (checks, chevrons, spinne
 #### Scenario: Page without an icon font
 - **WHEN** a page loads a component without loading Font Awesome or any other icon font
 - **THEN** every glyph the component draws itself is visible
+
+### Requirement: Data tables on small screens
+A data table component (table, grid view) SHALL by default, on a phone-width screen, show each row as a block of label/value pairs with the column heading as the label, hiding no column. Scrolling sideways inside the frame, with the edge fade, SHALL be an opt-in for tables that need their columns side by side. Sorting, filters and the action column SHALL stay usable in the wrapped form. In the wrapped form the heading row SHALL be hidden (no sticky header) and a row's selection checkbox SHALL sit at the top of its block.
+
+#### Scenario: Phone width
+- **WHEN** a data table is shown on a phone-width screen without the opt-in
+- **THEN** each row is a block of heading/value pairs and every column's value is visible
+
+#### Scenario: Selection when wrapped
+- **WHEN** a table with row selection is wrapped on a phone
+- **THEN** no heading row is shown and each block starts with its selection checkbox
+
+#### Scenario: Opt-in scrolling
+- **WHEN** the table opts in to sideways scrolling and is too wide
+- **THEN** it scrolls inside its frame with the edge fade on each side that has more to scroll

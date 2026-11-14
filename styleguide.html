@@ -65,8 +65,9 @@
   pre .c { color: #71717a; }
 
   .table-wrap { margin-top: 0.75rem; border: 1px solid var(--line); border-radius: 14px; background: var(--card); overflow: hidden; }
-  /* The table scrolls sideways inside the frame when it is too wide, with the
-     edge fade rule: a fade only on a side with more to scroll. */
+  /* This page's reference tables scroll sideways inside the frame when too
+     wide, with the edge fade rule: a fade only on a side with more to scroll.
+     (Data tables wrap rows on a phone instead; see "Data tables on small screens".) */
   .table-scroll { overflow-x: auto; }
   .table-scroll[data-more-right] { -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--kakao-scroll-fade, 1.5rem)); mask-image: linear-gradient(to left, transparent, #000 var(--kakao-scroll-fade, 1.5rem)); }
   .table-scroll[data-more-left] { -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem)); mask-image: linear-gradient(to right, transparent, #000 var(--kakao-scroll-fade, 1.5rem)); }
@@ -737,6 +738,10 @@ KakaoComponents.meta('kakao-card');</pre>
         <p class="small">Overflowing horizontal scrollers get an edge fade. A row that scrolls sideways (the header bar's links, tabs, a step switch or switch group too wide for its space) fades out at each edge where there is more to scroll, and only there: no fade at an end it has reached, none at all when everything fits. The fade is a mask, so it works on any background and theme; its width is the main variable <code>--kakao-scroll-fade</code>.</p>
       </div>
       <div class="card">
+        <h3>Data tables on small screens <kakao-badge tone="ink">Rule</kakao-badge></h3>
+        <p class="small">On a phone, a data table (table, grid view) wraps each row into a block of label/value pairs, the column heading as the label: no squeezed row, no hidden columns. This is the default. Scrolling sideways in the frame, with the edge fade, is an opt-in for tables that only make sense with their columns side by side, like wide numeric comparisons. Sort, filters and the action column stay usable in the wrapped form. Wrapped, the heading row is hidden (each block carries its own labels), so there is no sticky header; a row's selection checkbox sits at the top of its block. The reference tables on this page are documentation, not data tables, and keep scrolling.</p>
+      </div>
+      <div class="card">
         <h3>Fixed hosts reset their margin <kakao-badge tone="ink">Rule</kakao-badge></h3>
         <p class="small">A component whose host is fixed to the viewport resets its own margin (<code>margin: 0 !important</code> on <code>:host</code>), so page spacing rules (e.g. sibling margins in a card) can't shift it. Normal page declarations beat <code>:host</code>, so only <code>!important</code> holds. Followed by dialog, aside sheet and toast.</p>
       </div>
@@ -779,7 +784,7 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>Chip</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Chip list</td><td>-</td><td>n/a</td><td>n/a</td><td class="num">-</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Breadcrumb</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>✓</td><td class="num">-</td><td>None</td></tr>
-          <tr><td>Header bar</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">-</td><td>n/a (slotted controls)</td><td class="num">-</td><td>None</td></tr>
+          <tr><td>Header bar</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">-</td><td>n/a (slotted controls)</td><td class="num">-</td><td>Backdrop blur breaks and is gone after a theme switch; fix it, or fall back gracefully to the solid bar</td></tr>
           <tr><td>Alert</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Toast</td><td>-</td><td>Inherits (alert cards)</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10 (alert)</td><td>✓ (alert close)</td><td class="num">-</td><td>Overlay drop shadow without the 1px ring: toasts have no edge, like the alerts they hold. Light themes add a contact shadow, a raised fill and a 16% tint (shared/themes.css)</td></tr>
           <tr><td>Progress</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
@@ -795,6 +800,7 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>Tag input</td><td>-</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10 field / 4 chip / 10 panel / 6 option</td><td>✓</td><td class="num">0.55</td><td>None. Tags are real chips; the panel is the select's, copied</td></tr>
           <tr><td>Range slider</td><td>C</td><td><kakao-badge tone="success">Yes</kakao-badge></td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">3</td><td>✓</td><td class="num">0.4</td><td>As slider: reads the slider's settings as fallbacks</td></tr>
           <tr><td>Settings group</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">14 (box) / 10 (row)</td><td>✓</td><td class="num">0.45</td><td>None. Plain (no box) inside kakao-card, accordion, dialog or aside sheet</td></tr>
+          <tr><td>Error page</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10 (embedded) / 0 (full)</td><td>n/a (slotted actions)</td><td class="num">-</td><td>None. Code 700 at display size in primary; background pattern of the code in primary at 7% opacity, aria-hidden, off in forced colours and print</td></tr>
           <tr><td>Error summary</td><td>-</td><td>Inherits (alert)</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10 (alert)</td><td>✓</td><td class="num">-</td><td>None. A danger alert around a field | issue list (stacks below 22rem), hairlines between rows; title, links and issues in danger mixed 72% into text (5.3:1 or more on the tint in every theme)</td></tr>
 </tbody>
       </table></div>

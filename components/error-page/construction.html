@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-error-page - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="error-page.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="error-page" data-source="error-page.js" data-title="Error page">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Embedded · 404 with actions</figcaption>
+      <kakao-error-page code="404" heading-level="2" reference="req-7f3a9c2e" time="2026-11-15T09:42:00Z" message="The page may have moved, or the link you followed is out of date.">
+        <kakao-button slot="actions" label="Go home"></kakao-button>
+        <kakao-button slot="actions" label="Try again" variant="secondary"></kakao-button>
+      </kakao-error-page>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-error-page-surface", "label": "Surface", "group": "Colour", "type": "color", "hint": "embedded box" },
+    { "property": "--kakao-error-page-full-surface", "label": "Full surface", "group": "Colour", "type": "color", "hint": "with full; transparent shows the page" },
+    { "property": "--kakao-error-page-border", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-error-page-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-error-page-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "reference rows" },
+    { "property": "--kakao-error-page-code-color", "label": "Code", "group": "Colour", "type": "color" },
+    { "property": "--kakao-error-page-pattern-color", "label": "Pattern colour", "group": "Pattern", "type": "color" },
+    { "property": "--kakao-error-page-pattern-opacity", "label": "Pattern opacity", "group": "Pattern", "type": "number", "min": 0, "max": 0.3, "step": 0.01, "hint": "keep it low: text sits on it" },
+    { "property": "--kakao-error-page-pattern-size", "label": "Pattern size", "group": "Pattern", "type": "length" },
+    { "property": "--kakao-error-page-pattern-weight", "label": "Pattern weight", "group": "Pattern", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-error-page-pattern-angle", "label": "Pattern angle", "group": "Pattern", "type": "text", "hint": "e.g. -30deg" },
+    { "property": "--kakao-error-page-pattern-gap", "label": "Pattern gap", "group": "Pattern", "type": "length", "units": ["em", "px", "rem"], "hint": "between codes in a row" },
+    { "property": "--kakao-error-page-pattern-line-height", "label": "Pattern row height", "group": "Pattern", "type": "number", "min": 1, "max": 5, "step": 0.1, "hint": "times the pattern size" },
+    { "property": "--kakao-error-page-code-size", "label": "Code size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-error-page-code-weight", "label": "Code weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-error-page-heading-size", "label": "Heading size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-error-page-heading-weight", "label": "Heading weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-error-page-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-error-page-padding", "label": "Padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-error-page-gap", "label": "Gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-error-page-max-width", "label": "Content width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-error-page-min-height", "label": "Min height", "group": "Size & spacing", "type": "length", "hint": "embedded" },
+    { "property": "--kakao-error-page-full-height", "label": "Full height", "group": "Size & spacing", "type": "length", "hint": "with full" },
+    { "property": "--kakao-error-page-radius", "label": "Radius", "group": "Shape", "type": "radius", "hint": "embedded" }
+  ]
+  </script>
+</main>
+</body>
+</html>
