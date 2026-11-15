@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-grid-view - Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../table/table.css" />
+<link rel="stylesheet" href="grid-view.css" />
+<script src="../button/button.js" defer></script>
+<script src="../pagination/pagination.js" defer></script>
+<script src="../text-input/text-input.js" defer></script>
+<script src="../select/select.js" defer></script>
+<script src="../table/table.js" defer></script>
+<script src="grid-view.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="grid-view" data-source="grid-view.css" data-title="Grid view">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Filters, actions, paging</figcaption>
+      <kakao-grid-view label="Users" page-size="3" sort="name" list-data='{
+        "columns": [
+          { "key": "name", "label": "Name", "sortable": true, "filter": true },
+          { "key": "role", "label": "Role", "filter": ["Admin", "Editor", "Viewer"] },
+          { "key": "logins", "label": "Logins", "type": "number", "sortable": true },
+          { "key": "actions", "label": "Actions", "actions": ["view", "update", "delete"] }
+        ],
+        "rows": [
+          { "id": 1, "name": "Ada Lovelace", "role": "Admin", "logins": 214 },
+          { "id": 2, "name": "Alan Turing", "role": "Editor", "logins": 37 },
+          { "id": 3, "name": "Grace Hopper", "role": "Admin", "logins": 1052 },
+          { "id": 4, "name": "Katherine Johnson", "role": "Viewer", "logins": 3 }
+        ]
+      }'></kakao-grid-view>
+    </figure>
+    <figure>
+      <figcaption>Links and native fields (server markup)</figcaption>
+      <kakao-grid-view mode="server" total-items="2" page-size="20">
+        <kakao-table label="Orders">
+          <table>
+            <thead>
+              <tr><th>Order</th><th>Status</th><th data-type="actions" data-hide-label>Actions</th></tr>
+              <tr class="filters"><td><input type="text" name="OrderSearch[number]"></td><td><select name="OrderSearch[status]"><option value="">All</option><option>Open</option><option>Paid</option></select></td><td></td></tr>
+            </thead>
+            <tbody>
+              <tr data-key="41"><td>2026-041</td><td>Paid</td><td><a href="#view-41" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8s-2.4 4.5-6.5 4.5S1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg></a></td></tr>
+              <tr data-key="42"><td>2026-042</td><td>Open</td><td><a href="#view-42" title="View"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8s-2.4 4.5-6.5 4.5S1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg></a></td></tr>
+            </tbody>
+          </table>
+        </kakao-table>
+      </kakao-grid-view>
+    </figure>
+    <figure>
+      <figcaption>Wrapped · <code>layout="stacked"</code>, filters open</figcaption>
+      <div style="max-width:22rem">
+        <kakao-grid-view id="constr-stacked" layout="stacked" label="Users, wrapped" page-size="2" list-data='{
+          "columns": [
+            { "key": "name", "label": "Name", "sortable": true, "filter": true },
+            { "key": "role", "label": "Role", "filter": ["Admin", "Editor"] },
+            { "key": "actions", "label": "Actions", "actions": ["view", "delete"] }
+          ],
+          "rows": [
+            { "id": 1, "name": "Ada Lovelace", "role": "Admin" },
+            { "id": 2, "name": "Alan Turing", "role": "Editor" },
+            { "id": 3, "name": "Grace Hopper", "role": "Admin" }
+          ]
+        }'></kakao-grid-view>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-grid-view-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-grid-view-muted", "label": "Summary and filter labels", "group": "Colour", "type": "color" },
+    { "property": "--kakao-grid-view-line", "label": "Line under the open filters", "group": "Colour", "type": "color", "hint": "wrapped form" },
+    { "property": "--kakao-grid-view-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-grid-view-danger", "label": "Danger action", "group": "Actions", "type": "color", "hint": "delete, tone danger" },
+    { "property": "--kakao-grid-view-danger-hover-bg", "label": "Danger action, hover", "group": "Actions", "type": "color" },
+    { "property": "--kakao-grid-view-action-color", "label": "Action icon", "group": "Actions", "type": "color", "hint": "links and native buttons" },
+    { "property": "--kakao-grid-view-action-hover-bg", "label": "Action, hover", "group": "Actions", "type": "color" },
+    { "property": "--kakao-grid-view-action-stacked-bg", "label": "Action fill, wrapped", "group": "Actions", "type": "color" },
+    { "property": "--kakao-grid-view-action-size", "label": "Action size", "group": "Actions", "type": "length", "units": ["px", "rem"] },
+    { "property": "--kakao-grid-view-action-radius", "label": "Action radius", "group": "Actions", "type": "radius" },
+    { "property": "--kakao-grid-view-action-icon-size", "label": "Action icon size", "group": "Actions", "type": "length", "units": ["px", "rem"] },
+    { "property": "--kakao-grid-view-action-gap", "label": "Gap between actions", "group": "Actions", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-grid-view-field-bg", "label": "Native field fill", "group": "Filters", "type": "color", "hint": "without text-input / select, and a server's own fields" },
+    { "property": "--kakao-grid-view-field-border", "label": "Native field border", "group": "Filters", "type": "color" },
+    { "property": "--kakao-grid-view-field-text", "label": "Native field text", "group": "Filters", "type": "color" },
+    { "property": "--kakao-grid-view-field-height", "label": "Native field height", "group": "Filters", "type": "length", "units": ["px", "rem"] },
+    { "property": "--kakao-grid-view-field-radius", "label": "Native field radius", "group": "Filters", "type": "radius" },
+    { "property": "--kakao-grid-view-filter-min-width", "label": "Narrowest filter", "group": "Filters", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-grid-view-toggle-bg", "label": "Filters button fill", "group": "Wrapped form", "type": "color" },
+    { "property": "--kakao-grid-view-toggle-border", "label": "Filters button border", "group": "Wrapped form", "type": "color" },
+    { "property": "--kakao-grid-view-toggle-radius", "label": "Filters button radius", "group": "Wrapped form", "type": "radius" },
+    { "property": "--kakao-grid-view-count-bg", "label": "Filter count fill", "group": "Wrapped form", "type": "color" },
+    { "property": "--kakao-grid-view-count-text", "label": "Filter count text", "group": "Wrapped form", "type": "color" },
+    { "property": "--kakao-grid-view-summary-size", "label": "Summary and label size", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-grid-view-gap", "label": "Gap around the table", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-grid-view-focus-width", "label": "Focus ring width", "group": "State", "type": "length" },
+    { "property": "--kakao-grid-view-focus-offset", "label": "Focus ring offset", "group": "State", "type": "length" },
+    { "property": "--kakao-grid-view-duration", "label": "Hover transition", "group": "State", "type": "duration" }
+  ]
+  </script>
+</main>
+<script>
+  customElements.whenDefined('kakao-grid-view').then(() => {
+    const grid = document.getElementById('constr-stacked');
+    requestAnimationFrame(() => { const toggle = grid.querySelector('.kakao-grid-view-toggle'); if (toggle) toggle.click(); });
+  });
+</script>
+</body>
+</html>

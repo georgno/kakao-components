@@ -10,6 +10,27 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-grid-view`: a data grid in the manner of Yii2's GridView, light DOM
+  (`grid-view.css`), composed of `kakao-table` and `kakao-pagination`,
+  replacing the "Grid view" placeholder. Columns from `list-data` / `columns`
+  take `filter` (a search field, or a dropdown of options with "All"; drawn as
+  `kakao-text-input` / `kakao-select` where loaded, else native fields) and
+  `actions` (built-in `view`, `update`, `delete` or your own with `label`,
+  `icon`, `url` template, `tone: "danger"`, `confirm`, `method`, `visible`;
+  icon-only small ghost `kakao-button`s, or links for url actions, each named
+  for its row). Filters, sorts (by the table's column types) and pages in the
+  browser with a debounced search (`filter-delay`), a summary ("Showing 1–20
+  of 143", filtered count), "Clear filters" and selection kept across pages;
+  or `mode="server"`: filter changes go out as GET parameters named by
+  `filter-name` (`UserSearch[{key}]`) to `filter-url`, the pager takes
+  `total-items` / `page` / `page-url`. Decorates a server-rendered table:
+  a `tr.filters` row and a `data-type="actions"` column (Yii's
+  `data-confirm` / `data-method` honoured, with a fallback without yii.js).
+  Cancelable `filter-change` and `row-action`. On a phone the rows wrap into
+  blocks, a "Filters" disclosure with a count opens the fields above them, and
+  the actions sit at the bottom of each block with their labels.
+  `KakaoGridView.texts` for the words.
+
 - `kakao-menu`: a menu of actions, shadow DOM, replacing the "Menu & context
   menu" placeholder. Items from `list-data` or `items`: strings, `"-"`
   separators, `{ group, items }` with headings, and items with `icon`,
@@ -156,6 +177,9 @@ pages (landing page, settings, demos), not the components.
 
 ### Changed
 
+- `kakao-table`: setting `rows` no longer redraws the heading row, so focus
+  on a sort button stays put in `sort-mode="server"`; heading rows after the
+  first (a grid view's filter row) are kept.
 - Components page: the component cards are in alphabetical order.
 - "Not built yet": Table now wraps rows on a phone; new placeholders Grid view
   (sort, column filters, action column; built on Table) and Image (lazy load,

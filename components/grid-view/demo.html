@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-grid-view - Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../table/table.css" />
+<link rel="stylesheet" href="grid-view.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="../skeleton/skeleton.js" defer></script>
+<script src="../empty-state/empty-state.js" defer></script>
+<script src="../pagination/pagination.js" defer></script>
+<script src="../text-input/text-input.js" defer></script>
+<script src="../select/select.js" defer></script>
+<script src="../table/table.js" defer></script>
+<script src="grid-view.js" defer></script>
+<style>
+  .phone { max-width: 22rem; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Grid view"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Grid view</h1>
+    <p><code>&lt;kakao-grid-view&gt;</code> - a data grid in the manner of Yii2’s GridView: a <code>kakao-table</code> with a filter row under its headings, an action column, a summary and a <code>kakao-pagination</code>. It filters, sorts and pages in the browser, or leaves all three to the server and sends the filters as GET parameters; it also decorates a server-rendered table where it is. On a phone each row wraps into a block of label / value pairs, the filters open from a “Filters” button and the actions sit at the bottom of each block. Light DOM: load <code>table.css</code>, <code>grid-view.css</code>, <code>table.js</code> and <code>grid-view.js</code>; pagination, text input, select and button are used where they are loaded.</p>
+  </header>
+
+  <h2>Filters, actions and paging</h2>
+  <p>A column with <code>filter</code> gets a field under its heading: <code>true</code> for a search field, a list of options for a dropdown (with “All” first). Searches ignore case and accents and filter after a short pause in typing (<code>filter-delay</code>); every change fires a cancelable <code>filter-change</code>. A column with <code>actions</code> draws icon buttons per row; each is named for its row (“Delete Ada Lovelace”), <code>delete</code> asks first, and <code>row-action</code> says which was used. <code>page-size</code> pages the filtered, sorted rows; the summary above counts them.</p>
+  <kakao-card>
+    <h3 slot="header">Users · <code>filter</code> <code>actions</code> <code>page-size</code></h3>
+    <kakao-grid-view id="users" label="Users" page-size="5" sort="name" list-data='{
+      "columns": [
+        { "key": "name", "label": "Name", "sortable": true, "filter": true },
+        { "key": "email", "label": "Email", "filter": { "type": "search", "placeholder": "Part of an address" } },
+        { "key": "role", "label": "Role", "sortable": true, "filter": ["Admin", "Editor", "Viewer"] },
+        { "key": "status", "label": "Status", "filter": [{ "value": "active", "label": "Active" }, { "value": "blocked", "label": "Blocked" }] },
+        { "key": "logins", "label": "Logins", "type": "number", "sortable": true },
+        { "key": "actions", "label": "Actions", "actions": ["view", "update", { "name": "delete", "confirm": "Delete {name}?" }] }
+      ],
+      "rows": [
+        { "id": 1, "name": "Ada Lovelace", "email": "ada@example.com", "role": "Admin", "status": "active", "logins": 214 },
+        { "id": 2, "name": "Alan Turing", "email": "alan@example.com", "role": "Editor", "status": "active", "logins": 37 },
+        { "id": 3, "name": "Grace Hopper", "email": "grace@example.com", "role": "Admin", "status": "active", "logins": 1052 },
+        { "id": 4, "name": "Katherine Johnson", "email": "katherine@example.com", "role": "Viewer", "status": "blocked", "logins": 3 },
+        { "id": 5, "name": "Edsger Dijkstra", "email": "edsger@example.com", "role": "Editor", "status": "active", "logins": 88 },
+        { "id": 6, "name": "Barbara Liskov", "email": "barbara@example.com", "role": "Viewer", "status": "active", "logins": 41 },
+        { "id": 7, "name": "Donald Knuth", "email": null, "role": "Editor", "status": "active", "logins": 590 },
+        { "id": 8, "name": "Margaret Hamilton", "email": "margaret@example.com", "role": "Admin", "status": "active", "logins": 167 },
+        { "id": 9, "name": "Kurt Gödel", "email": "kurt@example.com", "role": "Viewer", "status": "blocked", "logins": 0 },
+        { "id": 10, "name": "Hedy Lamarr", "email": "hedy@example.com", "role": "Editor", "status": "active", "logins": 75 },
+        { "id": 11, "name": "Tim Berners-Lee", "email": "tim@example.com", "role": "Viewer", "status": "active", "logins": 12 },
+        { "id": 12, "name": "Frances Allen", "email": "frances@example.com", "role": "Editor", "status": "blocked", "logins": 9 }
+      ]
+    }'></kakao-grid-view>
+    <div class="log" id="log-users" role="log" aria-label="Event log"></div>
+  </kakao-card>
+
+  <h2>Links, selection and page sizes</h2>
+  <p>An action with a <code>url</code> template is a real link (<code>{id}</code> and any <code>{key}</code> of the row filled in, URL-encoded); <code>action-url</code> gives every action a default, as Yii’s ActionColumn does. <code>tone: "danger"</code> uses the danger colour, <code>visible</code> names a row key that must be true. With <code>selectable</code> the selection is kept across pages and filters; <code>selected</code> returns every id. Sorting goes over all rows, by the table’s column types (<code>KakaoTable.types</code>).</p>
+  <kakao-card>
+    <h3 slot="header">Orders · <code>action-url</code> <code>selectable</code> <code>page-sizes</code></h3>
+    <kakao-grid-view id="orders" label="Orders" selectable striped page-size="10" page-sizes="10,20,50" sort="-total" action-url="#orders/{action}/{id}"></kakao-grid-view>
+    <div class="log" id="log-orders" role="log" aria-label="Event log"></div>
+    <template data-code>
+      <kakao-grid-view id="orders" label="Orders" selectable striped page-size="10" page-sizes="10,20,50"
+        sort="-total" action-url="/orders/{action}/{id}"></kakao-grid-view>
+      <script>
+        const grid = document.getElementById('orders');
+        grid.columns = [
+          { key: 'number', label: 'Order', sortable: true, filter: true },
+          { key: 'customer', label: 'Customer', sortable: true, filter: true },
+          { key: 'status', label: 'Status', filter: ['Open', 'Paid', 'Refunded'], render: (value) => badge(value) },
+          { key: 'total', label: 'Total (€)', type: 'number', sortable: true },
+          { key: 'actions', label: 'Actions', actions: [
+            'view',
+            { name: 'refund', label: 'Refund', icon: 'delete', tone: 'danger', visible: 'paid', confirm: 'Refund order {number}?' },
+          ] },
+        ];
+        grid.rows = await fetchOrders(); // [{ id, number, customer, status, total, paid }, …]
+        grid.selected; // ["1041", "1057"]: every page
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Loaded by the page</h2>
+  <p>With <code>mode="server"</code> the grid neither filters nor sorts nor pages. Here the page cancels <code>filter-change</code> and loads the rows itself, as it does on <code>sort-change</code> and <code>page-change</code>, with <code>loading</code> in between; <code>total-items</code> and <code>page</code> drive the summary and the pager. Search fields apply on Enter or when they lose focus.</p>
+  <kakao-card>
+    <h3 slot="header">Script-driven · <code>mode="server"</code></h3>
+    <kakao-grid-view id="remote" mode="server" label="Cities" page-size="5" total-items="0" list-data='{
+      "columns": [
+        { "key": "city", "label": "City", "sortable": true, "filter": true },
+        { "key": "country", "label": "Country", "sortable": true, "filter": ["Austria", "Denmark", "Germany", "Norway", "Sweden", "Switzerland"] },
+        { "key": "people", "label": "Population", "type": "number", "sortable": true }
+      ],
+      "rows": []
+    }'></kakao-grid-view>
+    <div class="log" id="log-remote" role="log" aria-label="Event log"></div>
+    <template data-code>
+      <script>
+        const grid = document.getElementById('remote');
+        const load = async () => {
+          grid.setAttribute('loading', '');
+          const { rows, total } = await fetchCities({ filters: grid.filters, sort: grid.sort, page: grid.page });
+          grid.rows = rows;
+          grid.setAttribute('total-items', total);
+          grid.removeAttribute('loading');
+        };
+        grid.addEventListener('filter-change', (e) => { e.preventDefault(); grid.page = 1; load(); });
+        grid.addEventListener('sort-change', () => queueMicrotask(() => { grid.page = 1; load(); }));
+        grid.addEventListener('page-change', (e) => queueMicrotask(() => { grid.page = e.detail.page; load(); }));
+        load();
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Server-rendered (Yii2)</h2>
+  <p>Without rows of its own the grid decorates the <code>kakao-table</code> written inside it, as Yii2’s GridView renders it: sorter links in the headings, a filter row (<code>tr.filters</code>) with the server’s own fields, and an action column marked <code>data-type="actions"</code> whose links keep their <code>data-confirm</code> / <code>data-method</code>. A filter change goes to <code>filter-url</code> (default: this address) as GET parameters by the fields’ names, without <code>page</code>. In this demo both events are cancelled and logged instead.</p>
+  <kakao-card>
+    <h3 slot="header">GridView markup · <code>mode="server"</code></h3>
+    <kakao-grid-view id="yii" mode="server" label="Users" total-items="43" page-size="3" page-url="#page={page}">
+      <kakao-table label="Users">
+        <table>
+          <thead>
+            <tr>
+              <th><a class="asc" href="#sort=-username" data-sort="-username">Username</a></th>
+              <th><a href="#sort=email" data-sort="email">Email</a></th>
+              <th>Status</th>
+              <th data-type="actions" data-hide-label>Actions</th>
+            </tr>
+            <tr id="w0-filters" class="filters">
+              <td><input type="text" name="UserSearch[username]" value=""></td>
+              <td><input type="text" name="UserSearch[email]" value=""></td>
+              <td><select name="UserSearch[status]"><option value="">All</option><option value="10">Active</option><option value="0">Blocked</option></select></td>
+              <td>&nbsp;</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-key="3">
+              <td>ada</td><td>ada@example.com</td><td>Active</td>
+              <td><a href="#user/view?id=3" title="View" aria-label="View" data-pjax="0"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8s-2.4 4.5-6.5 4.5S1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg></a> <a href="#user/update?id=3" title="Update" aria-label="Update" data-pjax="0"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 2.75l2.75 2.75L6 12.75l-3.25.5.5-3.25z"/></svg></a> <a href="#user/delete?id=3" title="Delete" aria-label="Delete" data-pjax="0" data-confirm="Are you sure you want to delete this item?" data-method="post"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4.25h11M6.25 4.25V2.75h3.5v1.5M3.75 4.25l.7 9h7.1l.7-9"/></svg></a></td>
+            </tr>
+            <tr data-key="8">
+              <td>alan</td><td>alan@example.com</td><td>Active</td>
+              <td><a href="#user/view?id=8" title="View" aria-label="View" data-pjax="0"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8s-2.4 4.5-6.5 4.5S1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg></a> <a href="#user/update?id=8" title="Update" aria-label="Update" data-pjax="0"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 2.75l2.75 2.75L6 12.75l-3.25.5.5-3.25z"/></svg></a> <a href="#user/delete?id=8" title="Delete" aria-label="Delete" data-pjax="0" data-confirm="Are you sure you want to delete this item?" data-method="post"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4.25h11M6.25 4.25V2.75h3.5v1.5M3.75 4.25l.7 9h7.1l.7-9"/></svg></a></td>
+            </tr>
+            <tr data-key="5">
+              <td>grace</td><td></td><td>Blocked</td>
+              <td><a href="#user/view?id=5" title="View" aria-label="View" data-pjax="0"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8s-2.4 4.5-6.5 4.5S1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg></a> <a href="#user/update?id=5" title="Update" aria-label="Update" data-pjax="0"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 2.75l2.75 2.75L6 12.75l-3.25.5.5-3.25z"/></svg></a> <a href="#user/delete?id=5" title="Delete" aria-label="Delete" data-pjax="0" data-confirm="Are you sure you want to delete this item?" data-method="post"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4.25h11M6.25 4.25V2.75h3.5v1.5M3.75 4.25l.7 9h7.1l.7-9"/></svg></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </kakao-table>
+    </kakao-grid-view>
+    <div class="log" id="log-yii" role="log" aria-label="Event log"></div>
+  </kakao-card>
+
+  <h2>On a phone</h2>
+  <p>While the table is narrower than <code>--kakao-table-stack-below</code> each row wraps into a block of label / value pairs. “Sort by” and “Filters” sit in the line above the blocks; “Filters” opens the fields there, one per line, and shows how many are set. The actions move to the bottom of each block and show their labels.</p>
+  <kakao-card>
+    <h3 slot="header">Wrapped by itself</h3>
+    <p>The users grid again, in a 22rem box.</p>
+    <div class="phone" data-demo-wrap>
+      <kakao-grid-view label="Users, wrapped" page-size="3" sort="name" list-data='{
+        "columns": [
+          { "key": "name", "label": "Name", "sortable": true, "filter": true },
+          { "key": "actions", "label": "Actions", "actions": ["view", "update", "delete"] },
+          { "key": "role", "label": "Role", "sortable": true, "filter": ["Admin", "Editor", "Viewer"] },
+          { "key": "logins", "label": "Logins", "type": "number", "sortable": true }
+        ],
+        "rows": [
+          { "id": 1, "name": "Ada Lovelace", "role": "Admin", "logins": 214 },
+          { "id": 2, "name": "Alan Turing", "role": "Editor", "logins": 37 },
+          { "id": 3, "name": "Grace Hopper", "role": "Admin", "logins": 1052 },
+          { "id": 4, "name": "Katherine Johnson", "role": "Viewer", "logins": 3 },
+          { "id": 5, "name": "Edsger Dijkstra", "role": "Editor", "logins": 88 }
+        ]
+      }'></kakao-grid-view>
+    </div>
+  </kakao-card>
+
+  <h2>Empty and loading</h2>
+  <p>The table’s empty state shows when there are no rows; while filters match nothing it says “No matches” and “Clear filters” sits in the bar. <code>loading</code> shows the table’s placeholder rows.</p>
+  <kakao-card>
+    <h3 slot="header">Nothing matches · <code>filters</code></h3>
+    <kakao-grid-view id="nomatch" label="Invoices" list-data='{
+      "columns": [
+        { "key": "number", "label": "Invoice", "filter": true },
+        { "key": "customer", "label": "Customer", "filter": true },
+        { "key": "total", "label": "Total (€)", "type": "number" }
+      ],
+      "rows": [
+        { "id": 41, "number": "2026-041", "customer": "Lovelace Ltd", "total": "1,280.00" },
+        { "id": 42, "number": "2026-042", "customer": "Hopper Inc", "total": "310.50" }
+      ]
+    }'></kakao-grid-view>
+    <template data-code>
+      <script>
+        document.getElementById('nomatch').filters = { customer: 'Babbage' };
+      </script>
+    </template>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Loading · <code>loading</code></h3>
+    <kakao-grid-view loading label="Invoices, loading" list-data='{
+      "columns": [
+        { "key": "number", "label": "Invoice", "filter": true },
+        { "key": "customer", "label": "Customer" },
+        { "key": "total", "label": "Total (€)", "type": "number" }
+      ],
+      "rows": []
+    }'></kakao-grid-view>
+  </kakao-card>
+
+  <h2>Other words</h2>
+  <p><code>KakaoGridView.texts</code> sets the words for every grid: <code>summary</code> (“Showing {from}–{to} of {total}”), <code>filtered</code>, <code>none</code>, <code>filters</code>, <code>filterLabel</code>, <code>all</code>, <code>clearFilters</code>, <code>noMatches</code>, <code>noMatchesMessage</code>, <code>actionLabel</code> (“{action} {row}”), <code>view</code>, <code>update</code>, <code>delete</code> and <code>confirmDelete</code>. The table’s and the pager’s words are their own.</p>
+  <kakao-card>
+    <div class="phone" data-demo-wrap>
+      <kakao-grid-view id="words" label="Benutzer" page-size="2" list-data='{
+        "columns": [
+          { "key": "name", "label": "Name", "sortable": true, "filter": true },
+          { "key": "actions", "label": "Aktionen", "actions": ["update", "delete"] }
+        ],
+        "rows": [{ "id": 1, "name": "Ada" }, { "id": 2, "name": "Alan" }, { "id": 3, "name": "Grace" }]
+      }'></kakao-grid-view>
+    </div>
+    <div class="actions" style="margin-top:1rem;display:flex;gap:0.5rem" data-demo-only>
+      <kakao-button id="words-de" label="German" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="words-reset" label="Built-in" variant="ghost" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        KakaoGridView.texts = {
+          summary: '{from}–{to} von {total}',
+          filtered: '(gefiltert aus {all})',
+          none: 'Keine Einträge',
+          filters: 'Filter',
+          filterLabel: '{label} filtern',
+          all: 'Alle',
+          clearFilters: 'Filter zurücksetzen',
+          noMatches: 'Keine Treffer',
+          noMatchesMessage: 'Andere Filter versuchen.',
+          update: 'Bearbeiten',
+          delete: 'Löschen',
+          confirmDelete: 'Wirklich löschen?',
+        };
+      </script>
+    </template>
+  </kakao-card>
+</main>
+<script>
+  customElements.whenDefined('kakao-grid-view').then(() => {
+    const byId = (id) => document.getElementById(id);
+    const log = (el, logEl, names) => names.forEach((name) => {
+      el.addEventListener(name, (e) => logLine(logEl, name, e.detail));
+    });
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    log(byId('users'), byId('log-users'), ['filter-change', 'row-action', 'sort-change', 'page-change']);
+
+    // orders: 64 generated rows
+    const customers = ['Lovelace Ltd', 'Hopper Inc', 'Turing GmbH', 'Liskov & Co', 'Knuth AG', 'Hamilton SE', 'Lamarr Oy', 'Allen BV'];
+    const states = ['Open', 'Paid', 'Paid', 'Refunded'];
+    const orders = Array.from({ length: 64 }, (unused, i) => {
+      const status = states[(i * 7) % states.length];
+      return {
+        id: 1041 + i,
+        number: `2026-${String(41 + i).padStart(3, '0')}`,
+        customer: customers[(i * 5) % customers.length],
+        status,
+        total: Math.round(((i * 7919) % 250000) / 10 + 20) / 10,
+        paid: status === 'Paid',
+      };
+    });
+    const badge = (value) => {
+      const node = document.createElement('kakao-badge');
+      node.setAttribute('tone', value === 'Paid' ? 'success' : value === 'Refunded' ? 'danger' : 'primary');
+      node.textContent = value;
+      return node;
+    };
+    const grid = byId('orders');
+    grid.columns = [
+      { key: 'number', label: 'Order', sortable: true, filter: true },
+      { key: 'customer', label: 'Customer', sortable: true, filter: true },
+      { key: 'status', label: 'Status', filter: ['Open', 'Paid', 'Refunded'], render: (value) => badge(value) },
+      { key: 'total', label: 'Total (€)', type: 'number', sortable: true, render: (value) => value.toLocaleString('en-GB', { minimumFractionDigits: 2 }) },
+      { key: 'actions', label: 'Actions', actions: [
+        'view',
+        { name: 'refund', label: 'Refund', icon: 'delete', tone: 'danger', visible: 'paid', confirm: 'Refund order {number}?' },
+      ] },
+    ];
+    grid.rows = orders;
+    grid.selected = ['1042', '1060'];
+    log(grid, byId('log-orders'), ['filter-change', 'row-action', 'selection-change']);
+    grid.addEventListener('row-action', (e) => { e.preventDefault(); }); // stay on the demo page
+    grid.addEventListener('selection-change', () => queueMicrotask(() => logLine(byId('log-orders'), 'grid.selected', grid.selected)));
+
+    // script-driven server mode
+    const cities = [
+      ['Vienna', 'Austria', 1982000], ['Graz', 'Austria', 292000], ['Linz', 'Austria', 207000], ['Salzburg', 'Austria', 155000],
+      ['Oslo', 'Norway', 709000], ['Bergen', 'Norway', 289000], ['Trondheim', 'Norway', 212000], ['Stavanger', 'Norway', 146000],
+      ['Berlin', 'Germany', 3677000], ['Hamburg', 'Germany', 1853000], ['Munich', 'Germany', 1488000], ['Cologne', 'Germany', 1073000],
+      ['Zurich', 'Switzerland', 421000], ['Geneva', 'Switzerland', 203000], ['Basel', 'Switzerland', 173000], ['Bern', 'Switzerland', 134000],
+      ['Copenhagen', 'Denmark', 644000], ['Aarhus', 'Denmark', 285000], ['Odense', 'Denmark', 180000],
+      ['Stockholm', 'Sweden', 975000], ['Gothenburg', 'Sweden', 583000], ['Malmö', 'Sweden', 351000], ['Uppsala', 'Sweden', 177000],
+    ].map(([city, country, people], i) => ({ id: i + 1, city, country, people }));
+    const fold = (text) => String(text).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    /** The "server": filters, sorts and pages, after a moment. */
+    const fetchCities = async ({ filters, sort, page, size }) => {
+      await wait(500);
+      let rows = cities.filter((row) => (!filters.city || fold(row.city).includes(fold(filters.city)))
+        && (!filters.country || row.country === filters.country));
+      if (sort) {
+        const desc = sort.startsWith('-');
+        const key = desc ? sort.slice(1) : sort;
+        rows.sort((a, b) => (typeof a[key] === 'number' ? a[key] - b[key] : a[key].localeCompare(b[key])) * (desc ? -1 : 1));
+      }
+      return { rows: rows.slice((page - 1) * size, page * size), total: rows.length };
+    };
+    const remote = byId('remote');
+    const load = async () => {
+      remote.setAttribute('loading', '');
+      const { rows, total } = await fetchCities({ filters: remote.filters, sort: remote.sort, page: remote.page, size: remote.pageSize });
+      remote.setAttribute('total-items', total);
+      remote.rows = rows;
+      remote.removeAttribute('loading');
+    };
+    log(remote, byId('log-remote'), ['filter-change', 'sort-change', 'page-change']);
+    remote.addEventListener('filter-change', (e) => { e.preventDefault(); remote.page = 1; load(); });
+    remote.addEventListener('sort-change', () => queueMicrotask(() => { remote.page = 1; load(); }));
+    remote.addEventListener('page-change', (e) => queueMicrotask(() => { remote.page = e.detail.page; load(); }));
+    load();
+
+    // Yii2 markup: log instead of leaving the page
+    const yii = byId('yii');
+    log(yii, byId('log-yii'), ['filter-change', 'row-action', 'sort-change']);
+    yii.addEventListener('filter-change', (e) => e.preventDefault());
+    yii.addEventListener('row-action', (e) => e.preventDefault());
+
+    byId('nomatch').filters = { customer: 'Babbage' };
+
+    byId('words-de').addEventListener('kakao-button-action', () => {
+      KakaoGridView.texts = {
+        summary: '{from}–{to} von {total}', filtered: '(gefiltert aus {all})', none: 'Keine Einträge', filters: 'Filter',
+        filterLabel: '{label} filtern', all: 'Alle', clearFilters: 'Filter zurücksetzen', noMatches: 'Keine Treffer',
+        noMatchesMessage: 'Andere Filter versuchen.', actionLabel: '{action}: {row}', view: 'Ansehen', update: 'Bearbeiten',
+        delete: 'Löschen', confirmDelete: 'Wirklich löschen?',
+      };
+    });
+    byId('words-reset').addEventListener('kakao-button-action', () => { KakaoGridView.texts = KakaoGridView.TEXTS; });
+  });
+</script>
+</body>
+</html>

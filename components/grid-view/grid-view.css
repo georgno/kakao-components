@@ -1,0 +1,356 @@
+/*
+ * kakao-grid-view styles
+ *
+ * Light DOM: the grid composes a kakao-table (table.css), whose table, filter
+ * row and action cells stay in the page. Every rule is scoped under
+ * kakao-grid-view; private values are --_gv-* so they never meet the table's
+ * or the button's own --_* names.
+ *
+ * Theming: every --kakao-grid-view-* property in the settings block below can
+ * be set on <kakao-grid-view> or any ancestor. The defaults live in that
+ * block: change them on construction.html.
+ */
+
+kakao-grid-view {
+  /* @kakao-settings:start prefix=--kakao-grid-view- (written by construction.html, edit there) */
+  --_gv-text: var(--kakao-grid-view-text, var(--kakao-color-text, #18181b));
+  --_gv-muted: var(--kakao-grid-view-muted, var(--kakao-color-muted, #62626c));
+  --_gv-line: var(--kakao-grid-view-line, var(--kakao-color-line, #e5e7eb));
+  --_gv-focus: var(--kakao-grid-view-focus, var(--kakao-color-focus, #2563eb));
+  --_gv-danger: var(--kakao-grid-view-danger, var(--kakao-color-danger, #dc2626));
+  --_gv-danger-hover-bg: var(--kakao-grid-view-danger-hover-bg, color-mix(in srgb, var(--kakao-color-danger, #dc2626) 10%, transparent));
+  --_gv-action-color: var(--kakao-grid-view-action-color, var(--kakao-color-text-soft, #3f3f46));
+  --_gv-action-hover-bg: var(--kakao-grid-view-action-hover-bg, var(--kakao-color-subtle, #f0f0f1));
+  --_gv-action-stacked-bg: var(--kakao-grid-view-action-stacked-bg, var(--kakao-color-subtle, #f0f0f1));
+  --_gv-field-bg: var(--kakao-grid-view-field-bg, var(--kakao-color-bg, #ffffff));
+  --_gv-field-border: var(--kakao-grid-view-field-border, var(--kakao-color-border, #82828b));
+  --_gv-field-text: var(--kakao-grid-view-field-text, var(--kakao-color-text, #18181b));
+  --_gv-toggle-bg: var(--kakao-grid-view-toggle-bg, var(--kakao-color-bg, #ffffff));
+  --_gv-toggle-border: var(--kakao-grid-view-toggle-border, var(--kakao-color-border, #82828b));
+  --_gv-count-bg: var(--kakao-grid-view-count-bg, var(--kakao-color-ink, #18181b));
+  --_gv-count-text: var(--kakao-grid-view-count-text, var(--kakao-color-on-ink, #fafafa));
+  --_gv-summary-size: var(--kakao-grid-view-summary-size, 0.875rem);
+  --_gv-gap: var(--kakao-grid-view-gap, 0.75rem);
+  --_gv-field-height: var(--kakao-grid-view-field-height, 36px);
+  --_gv-field-radius: var(--kakao-grid-view-field-radius, 10px);
+  --_gv-filter-min-width: var(--kakao-grid-view-filter-min-width, 5rem);
+  --_gv-action-size: var(--kakao-grid-view-action-size, 36px);
+  --_gv-action-radius: var(--kakao-grid-view-action-radius, 999px);
+  --_gv-action-icon-size: var(--kakao-grid-view-action-icon-size, 16px);
+  --_gv-action-gap: var(--kakao-grid-view-action-gap, 0.25rem);
+  --_gv-toggle-radius: var(--kakao-grid-view-toggle-radius, 10px);
+  --_gv-focus-width: var(--kakao-grid-view-focus-width, 2px);
+  --_gv-focus-offset: var(--kakao-grid-view-focus-offset, 2px);
+  --_gv-duration: var(--kakao-grid-view-duration, 120ms);
+  /* @kakao-settings:end */
+  display: block;
+  min-width: 0;
+  color: var(--_gv-text);
+}
+
+kakao-grid-view[hidden],
+kakao-grid-view [hidden] {
+  display: none !important;
+}
+
+/* ---- Bar: summary and "Clear filters" ---- */
+
+kakao-grid-view .kakao-grid-view-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  min-height: var(--_gv-field-height);
+  margin-bottom: calc(var(--_gv-gap) / 2);
+}
+kakao-grid-view .kakao-grid-view-summary {
+  margin: 0;
+  color: var(--_gv-muted);
+  font-size: var(--_gv-summary-size);
+  font-variant-numeric: tabular-nums;
+}
+kakao-grid-view .kakao-grid-view-clear {
+  margin-inline-start: auto;
+}
+kakao-grid-view button.kakao-grid-view-clear {
+  height: var(--_gv-field-height);
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: var(--_gv-toggle-radius);
+  background: none;
+  color: var(--_gv-action-color);
+  font: inherit;
+  font-size: var(--_gv-summary-size);
+  cursor: pointer;
+}
+kakao-grid-view button.kakao-grid-view-clear:hover {
+  background: var(--_gv-action-hover-bg);
+}
+
+kakao-grid-view > kakao-pagination {
+  margin-top: var(--_gv-gap);
+}
+
+/* ---- Filter row ---- */
+
+/* The line runs under the filter row, not between headings and fields. */
+kakao-grid-view kakao-table:not([data-stacked]) thead:has(> tr.kakao-grid-view-filters) > tr:first-child > th {
+  border-bottom-color: transparent;
+  padding-bottom: 0.375rem;
+}
+kakao-grid-view kakao-table:not([data-stacked]) tr.kakao-grid-view-filters > td {
+  padding-top: 0;
+  vertical-align: top;
+  font-weight: 400;
+  white-space: normal;
+}
+
+/* A field fills its cell but does not widen the column: the headings and
+   values set the column widths (contain: inline-size), down to a minimum. */
+kakao-grid-view .kakao-grid-view-filters kakao-text-input,
+kakao-grid-view .kakao-grid-view-filters kakao-select {
+  display: block;
+  min-width: var(--_gv-filter-min-width);
+}
+kakao-grid-view kakao-table:not([data-stacked]) .kakao-grid-view-filters :is(input, select, kakao-text-input, kakao-select) {
+  contain: inline-size;
+}
+
+/* Native fields: the generated fallback, and a server's own filter row. */
+kakao-grid-view .kakao-grid-view-filters input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+kakao-grid-view .kakao-grid-view-filters select {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: var(--_gv-filter-min-width);
+  height: var(--_gv-field-height);
+  margin: 0;
+  padding: 0 0.625rem;
+  border: 1px solid var(--_gv-field-border);
+  border-radius: var(--_gv-field-radius);
+  background: var(--_gv-field-bg);
+  color: var(--_gv-field-text);
+  font: inherit;
+  font-size: 0.875rem;
+}
+kakao-grid-view .kakao-grid-view-filters input:focus-visible,
+kakao-grid-view .kakao-grid-view-filters select:focus-visible {
+  outline: var(--_gv-focus-width) solid var(--_gv-focus);
+  outline-offset: var(--_gv-focus-offset);
+}
+
+/* ---- "Filters" disclosure (wrapped form only: it sits in the table's tools line) ---- */
+
+kakao-grid-view .kakao-grid-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--_gv-toggle-border);
+  border-radius: var(--_gv-toggle-radius);
+  background: var(--_gv-toggle-bg);
+  color: var(--_gv-text);
+  font: inherit;
+  cursor: pointer;
+}
+kakao-grid-view .kakao-grid-view-toggle[aria-expanded="true"] {
+  border-color: var(--_gv-text);
+  background: var(--_gv-action-hover-bg);
+}
+kakao-grid-view .kakao-grid-view-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+kakao-grid-view .kakao-grid-view-toggle:focus-visible {
+  outline: var(--_gv-focus-width) solid var(--_gv-focus);
+  outline-offset: var(--_gv-focus-offset);
+}
+kakao-grid-view .kakao-grid-view-count {
+  min-width: 1.25rem;
+  padding: 0 0.375rem;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--_gv-count-bg);
+  color: var(--_gv-count-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Action column ---- */
+
+kakao-grid-view kakao-table:not([data-stacked]) [data-type="actions"] {
+  white-space: nowrap;
+}
+kakao-grid-view kakao-table:not([data-stacked]) td[data-type="actions"] {
+  padding-block: 0.25rem;
+}
+kakao-grid-view .kakao-grid-view-actions {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--_gv-action-gap);
+  vertical-align: middle;
+}
+
+/* Links (and buttons without kakao-button): the size and shape of a small ghost icon button. */
+kakao-grid-view a.kakao-grid-view-action,
+kakao-grid-view button.kakao-grid-view-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  box-sizing: border-box;
+  min-width: var(--_gv-action-size);
+  height: var(--_gv-action-size);
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--_gv-action-radius);
+  background: none;
+  color: var(--_gv-action-color);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  line-height: 1;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--_gv-duration) ease, color var(--_gv-duration) ease;
+}
+kakao-grid-view a.kakao-grid-view-action:hover,
+kakao-grid-view button.kakao-grid-view-action:hover {
+  background: var(--_gv-action-hover-bg);
+}
+kakao-grid-view a.kakao-grid-view-action:focus-visible,
+kakao-grid-view button.kakao-grid-view-action:focus-visible {
+  outline: var(--_gv-focus-width) solid var(--_gv-focus);
+  outline-offset: 0;
+}
+kakao-grid-view .kakao-grid-view-action svg,
+kakao-grid-view .kakao-grid-view-action i {
+  flex: none;
+  width: var(--_gv-action-icon-size);
+  height: var(--_gv-action-icon-size);
+  font-size: var(--_gv-action-icon-size);
+}
+kakao-grid-view .kakao-grid-view-action[data-tone="danger"] {
+  color: var(--_gv-danger);
+}
+kakao-grid-view a.kakao-grid-view-action[data-tone="danger"]:hover,
+kakao-grid-view button.kakao-grid-view-action[data-tone="danger"]:hover {
+  background: var(--_gv-danger-hover-bg);
+}
+kakao-grid-view kakao-button.kakao-grid-view-action[data-tone="danger"] {
+  --kakao-button-ghost-text: var(--_gv-danger);
+  --kakao-button-secondary-text: var(--_gv-danger);
+  --kakao-button-ghost-hover-bg: var(--_gv-danger-hover-bg);
+}
+
+/* The label is read out from aria-label; it shows in the wrapped form. */
+kakao-grid-view .kakao-grid-view-action-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- Wrapped form ---- */
+
+/* Rows are columns of cells, so the action cell can go to the bottom of its block. */
+kakao-grid-view kakao-table[data-stacked] tbody tr {
+  display: flex;
+  flex-direction: column;
+}
+kakao-grid-view kakao-table[data-stacked] tbody td[data-type="actions"] {
+  order: 1;
+  padding-top: 0.5rem;
+}
+kakao-grid-view kakao-table[data-stacked] .kakao-grid-view-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+kakao-grid-view kakao-table[data-stacked] .kakao-grid-view-action-label {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+}
+kakao-grid-view kakao-table[data-stacked] a.kakao-grid-view-action,
+kakao-grid-view kakao-table[data-stacked] button.kakao-grid-view-action {
+  padding: 0 0.875rem;
+  border-radius: var(--_gv-toggle-radius);
+  background: var(--_gv-action-stacked-bg);
+}
+
+/* The filter row, under the tools line while "Filters" is open. */
+kakao-grid-view kakao-table[data-stacked] thead {
+  display: block;
+}
+kakao-grid-view kakao-table[data-stacked] thead > tr {
+  display: none;
+}
+kakao-grid-view[data-filters-open] kakao-table[data-stacked] thead > tr.kakao-grid-view-filters {
+  display: grid;
+  gap: 0.625rem;
+  padding: var(--_gv-gap) 0;
+  border-bottom: 1px solid var(--_gv-line);
+}
+kakao-grid-view kakao-table[data-stacked] tr.kakao-grid-view-filters > td {
+  display: block;
+  padding-block: 0;
+  border: 0;
+  white-space: normal;
+}
+kakao-grid-view kakao-table[data-stacked] tr.kakao-grid-view-filters > td[data-filter-empty],
+kakao-grid-view kakao-table[data-stacked] tr.kakao-grid-view-filters > .kakao-grid-view-spacer {
+  display: none;
+}
+kakao-grid-view kakao-table[data-stacked] tr.kakao-grid-view-filters > td[data-label]::before {
+  content: attr(data-label);
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--_gv-muted);
+  font-size: var(--_gv-summary-size);
+  font-weight: 400;
+}
+kakao-grid-view kakao-table[data-stacked] tr.kakao-grid-view-filters :is(input, select, kakao-text-input, kakao-select) {
+  min-width: 0;
+}
+
+@media (forced-colors: active) {
+  kakao-grid-view a.kakao-grid-view-action,
+  kakao-grid-view button.kakao-grid-view-action {
+    border-color: ButtonText;
+  }
+  kakao-grid-view .kakao-grid-view-count {
+    border: 1px solid CanvasText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  kakao-grid-view a.kakao-grid-view-action,
+  kakao-grid-view button.kakao-grid-view-action {
+    transition: none;
+  }
+}
+
+@media print {
+  kakao-grid-view .kakao-grid-view-filters,
+  kakao-grid-view .kakao-grid-view-actions,
+  kakao-grid-view .kakao-grid-view-clear,
+  kakao-grid-view > kakao-pagination {
+    display: none !important;
+  }
+}

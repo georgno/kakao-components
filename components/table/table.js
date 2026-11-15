@@ -115,7 +115,10 @@
  * ----------------------------------------------------------------------------
  *  columns · rows       Property form of list-data. Columns set here may also
  *                       carry render(value, row, column) returning a Node or
- *                       a text, for cells with buttons or badges.
+ *                       a text, for cells with buttons or badges. Setting
+ *                       only rows keeps the heading row (and focus in it);
+ *                       heading rows after the first (a grid view's filter
+ *                       row) are kept on every redraw.
  *  selected             Array of the selected row ids (strings). Settable.
  *  sort · loading       Attribute mirrors.
  *  stacked              True while the rows are wrapped. Read only.
@@ -430,23 +433,39 @@
     /** Draws the native table for list-data; it is then enhanced like any other. */
     _build(table) {
       const { columns, rows } = this._data;
-      const head = el('thead');
-      const headRow = el('tr');
-      columns.forEach((column) => {
-        const th = el('th');
-        th.textContent = column.label;
-        th.dataset.key = column.key;
-        if (column.type) th.dataset.type = column.type;
-        if (column.align) th.dataset.align = column.align;
-        if (column.sortable) th.dataset.sortable = '';
-        if (column.hideLabel) th.dataset.hideLabel = '';
-        if (!isBlank(column.width)) th.dataset.width = column.width;
-        headRow.append(th);
-      });
-      head.append(headRow);
+      // The <thead> is kept: its first row is drawn again only when the
+      // columns changed (focus on a sort button survives new rows), and
+      // further rows (a grid view's filters) are left as they are.
+      let head = table.tHead;
+      if (!head) head = el('thead');
+      if (this._builtColumns !== columns || !head.rows[0]) {
+        const headRow = el('tr');
+        columns.forEach((column) => {
+          const th = el('th');
+          th.textContent = column.label;
+          th.dataset.key = column.key;
+          if (column.type) th.dataset.type = column.type;
+          if (column.align) th.dataset.align = column.align;
+          if (column.sortable) th.dataset.sortable = '';
+          if (column.hideLabel) th.dataset.hideLabel = '';
+          if (!isBlank(column.width)) th.dataset.width = column.width;
+          headRow.append(th);
+        });
+        if (head.rows[0]) head.rows[0].replaceWith(headRow);
+        else head.prepend(headRow);
+        this._builtColumns = columns;
+      }
       const body = el('tbody');
       rows.forEach((row, index) => body.append(this._buildRow(row, index, columns)));
-      table.replaceChildren(head, body);
+      // Keep a server-rendered <caption> and <colgroup>s; they stay first, as HTML requires.
+      const kept = (child) => child === head || child.localName === 'caption' || child.localName === 'colgroup';
+      Array.from(table.children).forEach((child) => { if (!kept(child)) child.remove(); });
+      if (this._serverCaption && !table.caption) table.prepend(this._serverCaption.cloneNode(true));
+      if (head.parentNode !== table) {
+        const lead = Array.from(table.children).filter((child) => child !== head && kept(child)).pop();
+        if (lead) lead.after(head); else table.prepend(head);
+      }
+      table.append(body);
     }
 
     /* ------------------------------------------------------------- Render */
@@ -526,6 +545,8 @@
       if (this._data) {
         // list-data wins: a table written into the element is left where it is, hidden.
         if (!table || !table.hasAttribute('data-generated')) {
+          // A server table replaced by data hands its caption (its name) to the drawn one.
+          if (table && table.caption) this._serverCaption = table.caption.cloneNode(true);
           if (table) table.remove();
           table = el('table');
         }
