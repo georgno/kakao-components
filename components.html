@@ -63,6 +63,7 @@
 <script src="components/spinner/spinner.js" defer></script>
 <script src="components/error-summary/error-summary.js" defer></script>
 <script src="components/error-page/error-page.js" defer></script>
+<script src="components/copy-button/copy-button.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
   dl { margin: 0; font-size: 14px; }
@@ -605,6 +606,45 @@
           <h3>Inline completion</h3>
           <kakao-combobox autocomplete="both" label="Tag" placeholder="Start typing" create-label="Create tag “{text}”"
             list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-combobox>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Copy button ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Copy button</h2>
+        <code>&lt;kakao-copy-button&gt;</code>
+        <a href="components/copy-button/construction.html">Construction</a>
+        <a href="components/copy-button/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Copies a text to the clipboard and confirms it: a check and “Copied”, also announced to screen readers, then back to a copy button; a cross and “Copy failed” when the browser refuses. Copies its <code>value</code> or the text of the element named by <code>for</code> (a field's current value). Labelled or icon only, secondary or ghost, in the button's three sizes. Fires <code>copy-success</code> and <code>copy-error</code>.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Labelled · icon only</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center">
+            <kakao-copy-button value="https://example.org/invoice/42" label="Copy link"></kakao-copy-button>
+            <kakao-copy-button value="https://example.org/invoice/42" aria-label="Copy link"></kakao-copy-button>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Ghost · sizes</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;align-items:center">
+            <kakao-copy-button variant="ghost" size="sm" value="small" label="Copy"></kakao-copy-button>
+            <kakao-copy-button variant="ghost" value="medium" label="Copy"></kakao-copy-button>
+            <kakao-copy-button variant="ghost" size="lg" value="large" label="Copy"></kakao-copy-button>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Another element's text · <code>for</code></h3>
+          <div style="display:flex;gap:.5rem;align-items:center;min-width:0">
+            <code id="ov-copy-source" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">npm install kakao-components</code>
+            <kakao-copy-button for="ov-copy-source" variant="ghost" size="sm" aria-label="Copy install command"></kakao-copy-button>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Nothing to copy</h3>
+          <kakao-copy-button for="ov-copy-missing" label="Copy"></kakao-copy-button>
         </div>
       </div>
     </article>
@@ -1619,12 +1659,6 @@
       <div class="component-head"><h2>Grid view</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: none. Built on Table, which comes first</p>
       <p class="placeholder-native">A data table: a sort icon beside each heading, a filter field (search or dropdown) under each column, and an action column with buttons per row. Like Table, each row wraps into a block of label/value pairs on a phone by default.</p>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Copy button</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: none</p>
-      <p class="placeholder-native">Copies a text and confirms it; half built already for the demo code blocks.</p>
     </article>
 
     <article class="card placeholder">

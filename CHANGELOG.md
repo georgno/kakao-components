@@ -10,6 +10,14 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-copy-button`: copies a text to the clipboard and confirms it. Copies
+  `value` or the text of the element named by `for` (a field's current value);
+  labelled (`label`) or icon only, `variant` secondary or ghost, the button's
+  three sizes. Shows a check and `copied-label`, announced through a live
+  region, and resets after `reset-delay`; shows a cross and `error-label` when
+  there is nothing to copy or the browser refuses (falls back to a hidden
+  textarea first). Events `copy-success` and `copy-error`, methods `copy()` and
+  `reset()`, `slot="icon"` for an own icon.
 - `kakao-error-page`: an error page (404, 500, 503 …) from attributes: the code
   very large and as a diagonal pattern in the background, the heading (common
   codes have a default), message, reference, time and more rows (`list-data`),

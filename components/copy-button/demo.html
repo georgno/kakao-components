@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-copy-button - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="copy-button.js" defer></script>
+<style>
+  .field-row { display: flex; gap: 0.5rem; align-items: flex-end; max-width: 26rem; }
+  .field-row kakao-text-input { flex: 1 1 auto; min-width: 0; }
+  .snippet { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; max-width: 26rem; padding: 0.25rem 0.25rem 0.25rem 0.9rem; border-radius: 10px; background: var(--kakao-color-subtle, #f0f0f1); }
+  .snippet code { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0; background: none; }
+  .key-list { display: grid; gap: 0.25rem; max-width: 26rem; margin: 0; padding: 0; list-style: none; }
+  .key-list li { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+  .key-list code { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style>
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../text-input/text-input.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Copy button"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Copy button</h1>
+    <p><code>&lt;kakao-copy-button&gt;</code> - copies a text to the clipboard and confirms it: a check and "Copied", also for screen readers, then back to a copy button. Says so when the browser refuses.</p>
+  </header>
+
+  <h2>What it copies</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">A text · <code>value</code></h3>
+      <p class="muted">Without a <code>label</code> the button is icon only and is named "Copy"; <code>aria-label</code> says what is copied.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-copy-button value="npm install kakao-components" aria-label="Copy install command"></kakao-copy-button>
+        <kakao-copy-button value="https://example.org/invoice/42" label="Copy link"></kakao-copy-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Another element's text · <code>for</code></h3>
+      <p class="muted">The id of the element to copy from, read when the button is clicked.</p>
+      <div class="snippet" data-demo-wrap>
+        <code id="install">npm install kakao-components</code>
+        <kakao-copy-button for="install" variant="ghost" size="sm" aria-label="Copy install command"></kakao-copy-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">A field's value · <code>for</code></h3>
+      <p class="muted">For a field (native or a kakao input) it is the current value: change the text, then copy.</p>
+      <div class="field-row" data-demo-wrap>
+        <kakao-text-input id="share" label="Share link" value="https://example.org/s/8fK2"></kakao-text-input>
+        <kakao-copy-button for="share" aria-label="Copy share link"></kakao-copy-button>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Looks</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Variants · <code>variant</code></h3>
+      <p class="muted">Secondary (default) and ghost, the two quiet looks of the button.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-copy-button value="secondary" label="Copy"></kakao-copy-button>
+        <kakao-copy-button value="secondary"></kakao-copy-button>
+        <kakao-copy-button value="ghost" variant="ghost" label="Copy"></kakao-copy-button>
+        <kakao-copy-button value="ghost" variant="ghost"></kakao-copy-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Sizes · <code>size</code></h3>
+      <p class="muted">The button's three heights, here next to a button of each size.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-button size="sm" variant="secondary" label="Share"></kakao-button>
+        <kakao-copy-button size="sm" value="small" label="Copy"></kakao-copy-button>
+        <kakao-copy-button size="sm" value="small"></kakao-copy-button>
+      </div>
+      <div class="row" data-demo-wrap style="margin-top:.75rem">
+        <kakao-button variant="secondary" label="Share"></kakao-button>
+        <kakao-copy-button value="medium" label="Copy"></kakao-copy-button>
+        <kakao-copy-button value="medium"></kakao-copy-button>
+      </div>
+      <div class="row" data-demo-wrap style="margin-top:.75rem">
+        <kakao-button size="lg" variant="secondary" label="Share"></kakao-button>
+        <kakao-copy-button size="lg" value="large" label="Copy"></kakao-copy-button>
+        <kakao-copy-button size="lg" value="large"></kakao-copy-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Own icon · <code>slot="icon"</code></h3>
+      <p class="muted">Replaces the copy glyph. The check and the failure mark stay the component's own.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-copy-button value="https://example.org/invoice/42" label="Copy link">
+          <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+        </kakao-copy-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled · <code>disabled</code></h3>
+      <div class="row" data-demo-wrap>
+        <kakao-copy-button disabled value="x" label="Copy"></kakao-copy-button>
+        <kakao-copy-button disabled value="x"></kakao-copy-button>
+        <kakao-copy-button disabled value="x" variant="ghost" label="Copy"></kakao-copy-button>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Confirmation</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Own words · <code>copied-label</code>, <code>error-label</code></h3>
+      <p class="muted">Shown in place of the label and announced to screen readers. The button is as wide as the longer of label and copied label, so confirming does not change its size.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-copy-button value="DE89 3704 0044 0532 0130 00" label="IBAN kopieren" copied-label="Kopiert" error-label="Nicht kopiert"></kakao-copy-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">How long it stays · <code>reset-delay</code></h3>
+      <p class="muted">Milliseconds until the button is a copy button again: 1600 by default, here 4000. With 0 it stays until <code>reset()</code> is called.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-copy-button value="slow" label="Copy" reset-delay="4000"></kakao-copy-button>
+        <kakao-copy-button id="stay" value="stays" label="Copy" reset-delay="0"></kakao-copy-button>
+        <kakao-button data-demo-only size="sm" variant="ghost" label="reset()" onclick="document.getElementById('stay').reset()"></kakao-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">When it fails</h3>
+      <p class="muted">Nothing to copy (no value, or the <code>for</code> element is missing or empty) or the browser refuses: a cross, "Copy failed", and a <code>copy-error</code> event with the reason.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-copy-button for="not-on-this-page" label="Copy"></kakao-copy-button>
+        <kakao-copy-button for="not-on-this-page"></kakao-copy-button>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Events and in context</h2>
+  <div class="grid">
+    <kakao-card id="events">
+      <h3 slot="header">Events · <code>copy-success</code>, <code>copy-error</code></h3>
+      <p class="muted">Both bubble and cross shadow roots; the detail carries the text and, on failure, the reason.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-copy-button value="Hello" label="Copy “Hello”"></kakao-copy-button>
+        <kakao-copy-button label="Copy nothing"></kakao-copy-button>
+      </div>
+      <pre class="log" id="log" aria-label="Event log"></pre>
+      <template data-code>
+        <script>
+          document.addEventListener('copy-success', (event) => {
+            console.log('copied', event.detail.value);
+          });
+          document.addEventListener('copy-error', (event) => {
+            console.log('not copied', event.detail.reason); // "empty" or "failed"
+          });
+        </script>
+      </template>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">In a list of keys</h3>
+      <ul class="key-list">
+        <li><code id="key-live">pk_live_51Hx9a2eZvKYlo2C</code> <kakao-copy-button for="key-live" variant="ghost" size="sm" aria-label="Copy live key"></kakao-copy-button></li>
+        <li><code id="key-test">pk_test_4eC39HqLyjWDarjt</code> <kakao-copy-button for="key-test" variant="ghost" size="sm" aria-label="Copy test key"></kakao-copy-button></li>
+      </ul>
+    </kakao-card>
+  </div>
+</main>
+<script>
+  logEvents(document.getElementById('log'), ['copy-success', 'copy-error'], document.getElementById('events'));
+</script>
+</body>
+</html>

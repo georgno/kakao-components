@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-copy-button - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="copy-button.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .row { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="copy-button" data-source="copy-button.js" data-title="Copy button">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Secondary</figcaption>
+      <div class="row">
+        <kakao-copy-button value="Copied from the construction page" label="Copy"></kakao-copy-button>
+        <kakao-copy-button value="Copied from the construction page"></kakao-copy-button>
+        <kakao-copy-button disabled value="x" label="Copy"></kakao-copy-button>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Ghost</figcaption>
+      <div class="row">
+        <kakao-copy-button variant="ghost" value="Copied from the construction page" label="Copy"></kakao-copy-button>
+        <kakao-copy-button variant="ghost" value="Copied from the construction page"></kakao-copy-button>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Sizes</figcaption>
+      <div class="row">
+        <kakao-copy-button size="sm" value="small" label="Copy"></kakao-copy-button>
+        <kakao-copy-button size="sm" value="small"></kakao-copy-button>
+        <kakao-copy-button value="medium" label="Copy"></kakao-copy-button>
+        <kakao-copy-button size="lg" value="large" label="Copy"></kakao-copy-button>
+        <kakao-copy-button size="lg" value="large"></kakao-copy-button>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Copied and failed (held here)</figcaption>
+      <div class="row">
+        <kakao-copy-button id="shown-copied" value="stays" label="Copy" reset-delay="0"></kakao-copy-button>
+        <kakao-copy-button id="shown-copied-icon" value="stays" reset-delay="0"></kakao-copy-button>
+        <kakao-copy-button id="shown-error" label="Copy" reset-delay="0"></kakao-copy-button>
+        <kakao-copy-button id="shown-error-icon" variant="ghost" reset-delay="0"></kakao-copy-button>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-copy-button-secondary-bg", "label": "Secondary fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-copy-button-secondary-text", "label": "Secondary text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-copy-button-secondary-hover-bg", "label": "Secondary hover fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-copy-button-ghost-text", "label": "Ghost text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-copy-button-ink", "label": "Ink", "group": "Colour", "type": "color", "hint": "the ghost hover tint is mixed from it" },
+    { "property": "--kakao-copy-button-ghost-hover-mix", "label": "Ghost hover tint", "group": "Colour", "type": "percent", "hint": "ink in the ghost hover fill" },
+    { "property": "--kakao-copy-button-copied", "label": "Copied check", "group": "Colour", "type": "color" },
+    { "property": "--kakao-copy-button-error", "label": "Failure mark", "group": "Colour", "type": "color" },
+    { "property": "--kakao-copy-button-focus", "label": "Focus outline", "group": "Colour", "type": "color" },
+    { "property": "--kakao-copy-button-disabled-opacity", "label": "Disabled opacity", "group": "Colour", "type": "number" },
+    { "property": "--kakao-copy-button-sm-height", "label": "Small height", "group": "Size & spacing", "type": "length", "hint": "also the width of an icon-only button" },
+    { "property": "--kakao-copy-button-sm-padding-x", "label": "Small padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-copy-button-sm-gap", "label": "Small gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-copy-button-md-height", "label": "Medium height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-copy-button-md-padding-x", "label": "Medium padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-copy-button-md-gap", "label": "Medium gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-copy-button-lg-height", "label": "Large height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-copy-button-lg-padding-x", "label": "Large padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-copy-button-lg-gap", "label": "Large gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-copy-button-icon-size", "label": "Icon size", "group": "Size & spacing", "type": "length", "hint": "in em of the label size" },
+    { "property": "--kakao-copy-button-font", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-copy-button-label-weight", "label": "Label weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-copy-button-sm-font-size", "label": "Small font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-copy-button-md-font-size", "label": "Medium font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-copy-button-lg-font-size", "label": "Large font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-copy-button-sm-radius", "label": "Small radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-copy-button-md-radius", "label": "Medium radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-copy-button-lg-radius", "label": "Large radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-copy-button-transition", "label": "Transition", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+<script>
+  /* The last row shows the two result states without a click. Set once the
+     page has loaded: construction.js moves the preview, and a copy button
+     resets when it is taken out of the page. */
+  window.addEventListener('load', () => {
+    ['shown-copied', 'shown-copied-icon'].forEach((id) => document.getElementById(id)._finish(true, 'stays', ''));
+    ['shown-error', 'shown-error-icon'].forEach((id) => document.getElementById(id)._finish(false, '', 'empty'));
+  });
+</script>
+</body>
+</html>
