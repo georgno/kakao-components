@@ -64,6 +64,7 @@
 <script src="components/accordion/accordion.js" defer></script>
 <script src="components/select/select.js" defer></script>
 <script src="components/combobox/combobox.js" defer></script>
+<script src="components/command-palette/command-palette.js" defer></script>
 <script src="components/date-input/date-input.js" defer></script>
 <script src="components/time-input/time-input.js" defer></script>
 <script src="components/password-input/password-input.js" defer></script>
@@ -671,6 +672,28 @@
           <h3>Inline completion</h3>
           <kakao-combobox autocomplete="both" label="Tag" placeholder="Start typing" create-label="Create tag “{text}”"
             list-data='["Bug","Feature","Docs","Design","Performance","Security"]'></kakao-combobox>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Command palette ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Command palette</h2>
+        <code>&lt;kakao-command-palette&gt;</code>
+        <a href="components/command-palette/construction.html">Construction</a>
+        <a href="components/command-palette/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A search over the page's actions, opened with <kakao-kbd size="sm" keys="Mod+K"></kakao-kbd> (<code>hotkey</code>) or <code>open()</code>. Commands from <code>list-data</code> with groups, keywords, shortcuts, icons, links and a disabled state; the letters you type are highlighted, and with <code>recent</code> the last run commands come first. Enter fires <code>command-select</code> or follows the link; Escape gives focus back. A modal combobox and listbox in the top layer; a full-width sheet at the top on a phone.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Modal · <code>hotkey</code></h3>
+          <kakao-button id="cmp-palette-open" label="Open palette" variant="secondary"></kakao-button>
+          <kakao-command-palette id="cmp-palette" recent list-data='[{"id":"new","label":"New file","group":"File","shortcut":"Mod+N"},{"id":"save","label":"Save","group":"File","shortcut":"Mod+S"},{"id":"export","label":"Export as PDF","group":"File","keywords":["download"]},{"id":"kitchen","label":"Go to kitchen sink","group":"Navigation","href":"kitchen-sink.html"},{"id":"styleguide","label":"Go to style guide","group":"Navigation","href":"styleguide.html"},{"id":"sign-out","label":"Sign out","group":"Account","keywords":["logout"]}]'></kakao-command-palette>
+        </div>
+        <div class="example">
+          <h3>In place · <code>inline</code></h3>
+          <kakao-command-palette inline list-data='[{"id":"copy","label":"Copy link","group":"Share","shortcut":"Mod+Shift+C"},{"id":"email","label":"Send by email","group":"Share","keywords":["mail"]},{"id":"rename","label":"Rename","group":"Edit","shortcut":"F2"},{"id":"duplicate","label":"Duplicate","group":"Edit","shortcut":"Mod+D"}]'></kakao-command-palette>
         </div>
       </div>
     </article>
@@ -1945,16 +1968,7 @@
 
   <!-- ============================== Not built yet ============================== -->
   <h2 id="missing">Not built yet</h2>
-  <p>Placeholders: what a kakao component would replace, shown as the plain native element where there is one.</p>
-  <div class="grid">
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Command palette</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: none</p>
-      <p class="placeholder-native">A ⌘K search over the page's actions.</p>
-    </article>
-
-  </div>
+  <p>Placeholders: what a kakao component would replace, shown as the plain native element where there is one. Right now there are none: every planned component is built. A new idea starts here as a placeholder card.</p>
 
   <footer>Structure: <code>components/&lt;name&gt;/&lt;name&gt;.js</code> + <code>demo.html</code>, shared page styles in <code>shared/</code>.</footer>
 </main>
@@ -1981,6 +1995,10 @@
   // The placeholder dialog opens with showModal()
   document.getElementById('ov-dialog-open').addEventListener('kakao-button-action', () => document.getElementById('ov-dialog').open());
   document.getElementById('ov-dialog-danger').addEventListener('kakao-button-action', () => document.getElementById('ov-dialog-danger-dialog').open());
+
+  // Command palette: Mod+K or the button opens it.
+  const cmpPalette = document.getElementById('cmp-palette');
+  document.getElementById('cmp-palette-open').addEventListener('kakao-button-action', () => cmpPalette.open());
 
   // Segment buttons are exclusive: pressing one releases the others
   const segment = document.getElementById('ov-segment');

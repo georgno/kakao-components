@@ -10,6 +10,24 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-command-palette`: a search over the page's actions, shadow DOM,
+  replacing the "Command palette" placeholder. Commands from `list-data` or
+  `commands`: `{ id, label, group, keywords, shortcut, icon, href, target,
+  value, disabled }`, `icon` as inline SVG (cleaned), `shortcut` as a
+  `kakao-kbd` keycap when that is loaded. Opens on `hotkey` (default `Mod+K`,
+  `none` to turn it off), `open(query)`, `toggle()` or the `open` attribute;
+  Escape, the scrim or the hotkey close it and focus goes back. Case- and
+  accent-blind matching on label (piece or letters in order) and keywords
+  with highlighted letters, grouped results, `recent` commands in memory,
+  `empty-text`. Enter or a click closes, then fires the cancelable
+  `command-select` `{ id, value, command }` (also a KakaoComponents trigger);
+  an `href` is followed unless cancelled. The WAI-ARIA combobox pattern
+  (`aria-activedescendant` on a grouped listbox) with arrows, Home / End and
+  PageUp / PageDown; a keyboard hint row; the select's panel look on the
+  dialog's scrim, in the top layer; a full-width sheet at the top on a phone;
+  `inline` for previews. Commands come only from `list-data`: the trigger API
+  in `component-api.js` lists no components and runs no actions.
+
 - `kakao-grid-view`: a data grid in the manner of Yii2's GridView, light DOM
   (`grid-view.css`), composed of `kakao-table` and `kakao-pagination`,
   replacing the "Grid view" placeholder. Columns from `list-data` / `columns`
@@ -18,7 +36,9 @@ pages (landing page, settings, demos), not the components.
   `actions` (built-in `view`, `update`, `delete` or your own with `label`,
   `icon`, `url` template, `tone: "danger"`, `confirm`, `method`, `visible`;
   icon-only small ghost `kakao-button`s, or links for url actions, each named
-  for its row). Filters, sorts (by the table's column types) and pages in the
+  for its row). Confirmations (delete by default) open a `kakao-dialog` with
+  Cancel and the action's own button (danger for deletes) when dialog and
+  button are loaded; the browser's `confirm()` only as a fallback. Filters, sorts (by the table's column types) and pages in the
   browser with a debounced search (`filter-delay`), a summary ("Showing 1–20
   of 143", filtered count), "Clear filters" and selection kept across pages;
   or `mode="server"`: filter changes go out as GET parameters named by

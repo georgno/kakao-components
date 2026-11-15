@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-command-palette - Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../kbd/kbd.js" defer></script>
+<script src="command-palette.js" defer></script>
+<style>
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .readout { margin: 0.75rem 0 0; font-size: 0.875rem; color: var(--muted); overflow-wrap: anywhere; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Command palette"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Command palette</h1>
+    <p><code>&lt;kakao-command-palette&gt;</code> - a search over the page's actions. Press <kakao-kbd keys="Mod+K"></kakao-kbd> anywhere on this page, type a few letters, pick with the arrows and run with <kakao-kbd>Enter</kakao-kbd>.</p>
+  </header>
+
+  <h2>Hotkey</h2>
+  <p>The palette opens on <code>hotkey</code> (default <code>Mod+K</code>: Command on a Mac, Ctrl elsewhere), on <code>open()</code> and with the <code>open</code> attribute. <kakao-kbd>Esc</kakao-kbd>, the hotkey or a click on the covered page close it, and focus goes back where it was. In the palette: <kakao-kbd>Up</kakao-kbd> / <kakao-kbd>Down</kakao-kbd>, <kakao-kbd>Home</kakao-kbd> / <kakao-kbd>End</kakao-kbd>, <kakao-kbd>PageUp</kakao-kbd> / <kakao-kbd>PageDown</kakao-kbd>.</p>
+  <kakao-card>
+    <h3 slot="header">Groups, keywords, shortcuts and recent commands</h3>
+    <p>Commands come from <code>list-data</code>: <code>{ id, label, group, keywords, shortcut, icon, href, value, disabled }</code>. Try “nwf” (letters in order), “logout” (a keyword) or “théme” (accents are ignored). With <code>recent</code>, the commands you ran are listed first the next time.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="open-main" label="Open palette" variant="secondary"></kakao-button>
+      <kakao-command-palette id="main-palette" recent list-data='[
+        {"id": "new-file", "label": "New file", "group": "File", "shortcut": "Mod+N"},
+        {"id": "open-file", "label": "Open file…", "group": "File", "shortcut": "Mod+O"},
+        {"id": "save", "label": "Save", "group": "File", "shortcut": "Mod+S"},
+        {"id": "export", "label": "Export as PDF", "group": "File", "keywords": ["download", "print"]},
+        {"id": "share", "label": "Share with team", "group": "File", "disabled": true},
+        {"id": "components", "label": "Go to components", "group": "Navigation", "href": "../../components.html"},
+        {"id": "styleguide", "label": "Go to style guide", "group": "Navigation", "href": "../../styleguide.html"},
+        {"id": "theme", "label": "Change theme", "group": "Preferences", "keywords": "dark, light, colours"},
+        {"id": "language", "label": "Change language", "group": "Preferences", "keywords": ["locale"]},
+        {"id": "profile", "label": "Edit profile", "group": "Account"},
+        {"id": "sign-out", "label": "Sign out", "group": "Account", "keywords": ["logout", "exit"]}
+      ]'></kakao-command-palette>
+    </div>
+    <div class="log" id="log-main" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+  </kakao-card>
+
+  <kakao-card>
+    <h3 slot="header">Another key · <code>hotkey</code></h3>
+    <p>Any combination in kakao-kbd's notation: <code>Mod+Shift+P</code>, <code>Alt+J</code>, <code>/</code>, <code>F1</code>. A key without Ctrl, Meta or Alt is ignored while the user types in a field. <code>hotkey="none"</code> leaves only <code>open()</code>. Use one hotkey per page: every palette that has it reacts.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-kbd keys="Mod+Shift+P" data-demo-only></kakao-kbd>
+      <kakao-command-palette hotkey="Mod+Shift+P" label="Editor commands" placeholder="Run an editor command…" list-data='[
+        "Format document", "Toggle word wrap", "Fold all", "Unfold all", "Sort lines", "Join lines"
+      ]'></kakao-command-palette>
+    </div>
+  </kakao-card>
+
+  <h2>Running a command</h2>
+  <kakao-card>
+    <h3 slot="header"><code>command-select</code> and <code>href</code></h3>
+    <p><kakao-kbd>Enter</kakao-kbd> or a click runs the active command: the palette closes first, then fires <code>command-select</code> with <code>{ id, value, command }</code>. A command with <code>href</code> then goes there; <code>preventDefault()</code> stops that. Here the event is cancelled, so the links stay on this page.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="open-links" label="Go to…" variant="secondary"></kakao-button>
+      <kakao-command-palette id="links-palette" hotkey="none" label="Go to page" placeholder="Search pages…" list-data='[
+        {"id": "home", "label": "Home", "href": "../../index.html"},
+        {"id": "components", "label": "Components", "href": "../../components.html"},
+        {"id": "kitchen", "label": "Kitchen sink", "href": "../../kitchen-sink.html", "keywords": ["form"]},
+        {"id": "styleguide", "label": "Style guide", "href": "../../styleguide.html"},
+        {"id": "tokens", "label": "Main variables", "href": "../../tokens.html", "keywords": ["tokens"]}
+      ]'></kakao-command-palette>
+    </div>
+    <p class="readout" id="links-out" data-demo-only>Pick a page.</p>
+    <template data-code>
+      <script>
+        const palette = document.getElementById('links-palette');
+        document.getElementById('open-links').addEventListener('kakao-button-action', () => palette.open());
+        palette.addEventListener('command-select', (e) => {
+          e.preventDefault(); // stay on this page
+          console.log(e.detail.id, e.detail.command.href);
+        });
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>From script</h2>
+  <kakao-card>
+    <h3 slot="header"><code>commands</code>, <code>open(query)</code> and icons</h3>
+    <p><code>commands</code> sets the list as an array; <code>open(query)</code> opens with text already in the field. <code>icon</code> is inline SVG markup in <code>currentColor</code> (scripts and event attributes are removed).</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="open-script" label="open()" variant="secondary"></kakao-button>
+      <kakao-button id="open-query" label="open('user')" variant="secondary"></kakao-button>
+      <kakao-command-palette id="script-palette" hotkey="none" label="Admin"></kakao-command-palette>
+    </div>
+    <div class="log" id="log-script" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+    <template data-code>
+      <script>
+        const icon = (path) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+        const palette = document.getElementById('script-palette');
+        palette.commands = [
+          { id: 'user-add', label: 'Add user', group: 'Users', icon: icon('<path d="M8 3v10M3 8h10"/>') },
+          { id: 'user-list', label: 'List users', group: 'Users', icon: icon('<circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.6-2.4 2.6-3.7 5-3.7s4.4 1.3 5 3.7"/>') },
+          { id: 'reindex', label: 'Rebuild search index', group: 'Maintenance', icon: icon('<path d="M13 8a5 5 0 1 1-1.5-3.6"/><path d="M13 2.5v3h-3"/>') },
+          { id: 'cache', label: 'Clear cache', group: 'Maintenance', value: { scope: 'all' }, icon: icon('<path d="M2.5 4.5h11"/><path d="m4 4.5.6 8.6a1 1 0 0 0 1 .9h4.8a1 1 0 0 0 1-.9l.6-8.6"/>') },
+        ];
+        palette.open();
+        palette.open('user');
+        palette.addEventListener('command-select', (e) => console.log(e.detail.id, e.detail.value));
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Inline</h2>
+  <kakao-card>
+    <h3 slot="header">Shown in place · <code>inline</code></h3>
+    <p>For previews and help pages: always open, no scrim and no hotkey. <kakao-kbd>Esc</kakao-kbd> clears the field.</p>
+    <div data-demo-wrap>
+      <kakao-command-palette inline id="inline-palette" empty-text="Nothing found, try “copy”" list-data='[
+        {"id": "copy", "label": "Copy link", "group": "Share", "shortcut": "Mod+Shift+C"},
+        {"id": "email", "label": "Send by email", "group": "Share", "keywords": ["mail"]},
+        {"id": "rename", "label": "Rename", "group": "Edit", "shortcut": "F2"},
+        {"id": "duplicate", "label": "Duplicate", "group": "Edit", "shortcut": "Mod+D"}
+      ]'></kakao-command-palette>
+    </div>
+    <div class="log" id="log-inline" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+  </kakao-card>
+
+  <footer>Attributes: <code>list-data</code>, <code>hotkey</code>, <code>recent</code>, <code>label</code>, <code>placeholder</code>, <code>empty-text</code>, <code>no-hints</code>, <code>inline</code>, <code>open</code>. Full reference in the header of <code>command-palette.js</code>.</footer>
+</main>
+
+<script>
+  const byId = (id) => document.getElementById(id);
+  const press = (id, fn) => byId(id).addEventListener('kakao-button-action', fn);
+  const events = ['command-palette-open', 'command-select', 'command-palette-close'];
+
+  // Hotkey: links in the main palette stay on the page too.
+  const main = byId('main-palette');
+  press('open-main', () => main.open());
+  main.addEventListener('command-select', (e) => { if (e.detail.command.href) e.preventDefault(); });
+  logEvents(byId('log-main'), events, main);
+
+  // command-select and href
+  const links = byId('links-palette');
+  press('open-links', () => links.open());
+  links.addEventListener('command-select', (e) => {
+    e.preventDefault();
+    byId('links-out').textContent = `${e.detail.id} → ${e.detail.command.href} (navigation cancelled)`;
+  });
+
+  // From script
+  const icon = (path) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+  const admin = byId('script-palette');
+  admin.commands = [
+    { id: 'user-add', label: 'Add user', group: 'Users', icon: icon('<path d="M8 3v10M3 8h10"/>') },
+    { id: 'user-list', label: 'List users', group: 'Users', icon: icon('<circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.6-2.4 2.6-3.7 5-3.7s4.4 1.3 5 3.7"/>') },
+    { id: 'reindex', label: 'Rebuild search index', group: 'Maintenance', icon: icon('<path d="M13 8a5 5 0 1 1-1.5-3.6"/><path d="M13 2.5v3h-3"/>') },
+    { id: 'cache', label: 'Clear cache', group: 'Maintenance', value: { scope: 'all' }, icon: icon('<path d="M2.5 4.5h11"/><path d="m4 4.5.6 8.6a1 1 0 0 0 1 .9h4.8a1 1 0 0 0 1-.9l.6-8.6"/>') },
+  ];
+  press('open-script', () => admin.open());
+  press('open-query', () => admin.open('user'));
+  logEvents(byId('log-script'), ['command-select'], admin);
+
+  logEvents(byId('log-inline'), ['command-select'], byId('inline-palette'));
+</script>
+</body>
+</html>

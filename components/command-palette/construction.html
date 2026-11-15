@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-command-palette - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../kbd/kbd.js" defer></script>
+<script src="command-palette.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="command-palette" data-source="command-palette.js" data-title="Command palette">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Groups · icons · shortcuts · disabled (shown <code>inline</code>; type to see the highlight)</figcaption>
+      <kakao-command-palette inline list-data='[
+        {"id": "new", "label": "New file", "group": "File", "shortcut": "Mod+N", "icon": "<svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 2.5h5l3 3v8H4z\"/><path d=\"M9 2.5v3h3\"/></svg>"},
+        {"id": "save", "label": "Save", "group": "File", "shortcut": "Mod+S", "icon": "<svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 2.5v8\"/><path d=\"m4.8 7.5 3.2 3.2 3.2-3.2\"/><path d=\"M2.5 13.5h11\"/></svg>"},
+        {"id": "share", "label": "Share with team", "group": "File", "disabled": true, "icon": "<svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"4\" cy=\"8\" r=\"1.8\"/><circle cx=\"11.8\" cy=\"3.8\" r=\"1.8\"/><circle cx=\"11.8\" cy=\"12.2\" r=\"1.8\"/><path d=\"m5.6 7.1 4.6-2.4M5.6 8.9l4.6 2.4\"/></svg>"},
+        {"id": "settings", "label": "Open settings", "group": "Preferences", "shortcut": "Mod+,", "icon": "<svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 4.5h6M11.5 4.5h2M2.5 11.5h2M7.5 11.5h6\"/><circle cx=\"10\" cy=\"4.5\" r=\"1.5\"/><circle cx=\"6\" cy=\"11.5\" r=\"1.5\"/></svg>"},
+        {"id": "theme", "label": "Change theme", "group": "Preferences", "icon": "<svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8\" cy=\"8\" r=\"5.5\"/><path d=\"M8 2.5v11\"/></svg>"}
+      ]'></kakao-command-palette>
+    </figure>
+    <figure>
+      <figcaption>As a modal (scrim, top offset, hint row, fade): <kakao-kbd size="sm" keys="Mod+K"></kakao-kbd> or the button</figcaption>
+      <kakao-button id="construction-open" label="Open palette" variant="secondary"></kakao-button>
+      <kakao-command-palette id="construction-palette" recent list-data='[
+        {"id": "new", "label": "New file", "group": "File", "shortcut": "Mod+N"},
+        {"id": "save", "label": "Save", "group": "File", "shortcut": "Mod+S"},
+        {"id": "settings", "label": "Open settings", "group": "Preferences", "keywords": ["options"]},
+        {"id": "sign-out", "label": "Sign out", "group": "Account", "keywords": ["logout"]}
+      ]'></kakao-command-palette>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-command-palette-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-command-palette-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-command-palette-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "placeholder, group headings, shortcuts, hints" },
+    { "property": "--kakao-command-palette-hover-bg", "label": "Active command", "group": "Colour", "type": "color", "hint": "under the pointer or the keyboard" },
+    { "property": "--kakao-command-palette-line", "label": "Lines", "group": "Colour", "type": "color", "hint": "under the field, over the hints" },
+    { "property": "--kakao-command-palette-icon", "label": "Icon", "group": "Colour", "type": "color" },
+    { "property": "--kakao-command-palette-match", "label": "Matched letters", "group": "Colour", "type": "color" },
+    { "property": "--kakao-command-palette-focus", "label": "Focus", "group": "Colour", "type": "color", "hint": "the field's bottom edge" },
+    { "property": "--kakao-command-palette-scrim", "label": "Scrim", "group": "Colour", "type": "color", "hint": "the covered page" },
+    { "property": "--kakao-command-palette-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-command-palette-input-font-size", "label": "Field size", "group": "Typography", "type": "length", "hint": "16px or more keeps phones from zooming" },
+    { "property": "--kakao-command-palette-match-weight", "label": "Match weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-command-palette-group-size", "label": "Heading size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-command-palette-group-weight", "label": "Heading weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-command-palette-shortcut-size", "label": "Shortcut size", "group": "Typography", "type": "length", "hint": "plain text shortcuts" },
+    { "property": "--kakao-command-palette-hint-size", "label": "Hint size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-command-palette-width", "label": "Width", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "%"] },
+    { "property": "--kakao-command-palette-top", "label": "Top offset", "group": "Size & spacing", "type": "length", "units": ["vh", "px", "rem"], "hint": "above 40rem of viewport width" },
+    { "property": "--kakao-command-palette-max-height", "label": "Max height", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "vh"], "hint": "then the results scroll" },
+    { "property": "--kakao-command-palette-sheet-max-height", "label": "Sheet max height", "group": "Size & spacing", "type": "length", "units": ["vh", "rem", "px"], "hint": "the top sheet on a phone" },
+    { "property": "--kakao-command-palette-input-height", "label": "Field height", "group": "Size & spacing", "type": "length", "units": ["px", "rem"] },
+    { "property": "--kakao-command-palette-input-padding-x", "label": "Field padding", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-command-palette-padding", "label": "List padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-command-palette-option-height", "label": "Row height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-command-palette-touch-option-height", "label": "Row height (touch)", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-command-palette-option-padding-x", "label": "Row padding", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-command-palette-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "icon to label" },
+    { "property": "--kakao-command-palette-shortcut-gap", "label": "Shortcut gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "label to shortcut, at least" },
+    { "property": "--kakao-command-palette-icon-size", "label": "Icon size", "group": "Size & spacing", "type": "length", "units": ["em", "px", "rem"] },
+    { "property": "--kakao-command-palette-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-command-palette-option-radius", "label": "Row radius", "group": "Shape", "type": "radius", "hint": "radius minus list padding" },
+    { "property": "--kakao-command-palette-shadow", "label": "Shadow", "group": "Shape", "type": "shadow", "hint": "elevation level 3 (overlay)" },
+    { "property": "--kakao-command-palette-focus-width", "label": "Focus width", "group": "Shape", "type": "length" },
+    { "property": "--kakao-command-palette-z", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 1000, "step": 1, "hint": "only where the top layer is missing" },
+    { "property": "--kakao-command-palette-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+    { "property": "--kakao-command-palette-duration", "label": "Fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-command-palette-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: fades and colour" }
+  ]
+  </script>
+</main>
+<script>
+  document.getElementById('construction-open').addEventListener('kakao-button-action', () => {
+    document.getElementById('construction-palette').open();
+  });
+</script>
+</body>
+</html>
