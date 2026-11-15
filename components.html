@@ -55,6 +55,7 @@
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
 <script src="components/alert/alert.js" defer></script>
 <script src="components/toast/toast.js" defer></script>
+<script src="components/tree-view/tree-view.js" defer></script>
 <script src="components/progress/progress.js" defer></script>
 <script src="components/meter/meter.js" defer></script>
 <script src="components/accordion/accordion.js" defer></script>
@@ -1868,6 +1869,27 @@
       </div>
     </article>
 
+    <!-- ============================== Tree view ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Tree view</h2>
+        <code>&lt;kakao-tree-view&gt;</code>
+        <a href="components/tree-view/construction.html">Construction</a>
+        <a href="components/tree-view/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Nested, collapsible rows from <code>list-data</code> or a server-rendered nested <code>&lt;ul&gt;</code>: folders and files, or permission groups. One tab stop with arrow keys, Home / End and type-ahead. <code>selection</code> is single (a filled row), <code>multiple</code> (checkboxes; a parent ticks everything under it and shows a dash when only some are ticked) or <code>none</code>; with <code>name</code> the selected ids are sent with a form. Lazy nodes load their children on <code>tree-expand</code>.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Folders and files · <code>guides</code></h3>
+          <kakao-tree-view guides label="Files" list-data='[{"id":"docs","label":"Documents","icon":"folder","expanded":true,"children":[{"id":"invoices","label":"Invoices","icon":"folder","expanded":true,"children":[{"id":"inv-2025","label":"2025.pdf","icon":"file"},{"id":"inv-2026","label":"2026.pdf","icon":"file","selected":true}]},{"id":"cv","label":"CV.pdf","icon":"file"}]},{"id":"pictures","label":"Pictures","icon":"folder","children":[{"id":"portrait","label":"Portrait.jpg","icon":"file"}]},{"id":"archive","label":"Archive (locked)","icon":"lock","disabled":true}]'></kakao-tree-view>
+        </div>
+        <div class="example">
+          <h3>Permission groups · <code>selection="multiple"</code></h3>
+          <kakao-tree-view selection="multiple" label="Permissions" list-data='[{"id":"posts","label":"Posts","expanded":true,"children":[{"id":"posts.read","label":"Read","selected":true},{"id":"posts.write","label":"Write","selected":true},{"id":"posts.delete","label":"Delete"}]},{"id":"billing","label":"Billing","selected":true,"children":[{"id":"billing.view","label":"View invoices"},{"id":"billing.pay","label":"Pay"}]},{"id":"users","label":"Users","children":[{"id":"users.read","label":"Read"},{"id":"users.invite","label":"Invite"}]}]'></kakao-tree-view>
+        </div>
+      </div>
+    </article>
+
   </div>
 
   <!-- ============================== Not built yet ============================== -->
@@ -1891,15 +1913,6 @@
       <div class="component-head"><h2>Grid view</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: none. Built on Table, which comes first</p>
       <p class="placeholder-native">A data table: a sort icon beside each heading, a filter field (search or dropdown) under each column, and an action column with buttons per row. Like Table, each row wraps into a block of label/value pairs on a phone by default.</p>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Tree view</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: nested <code>&lt;details&gt;</code></p>
-      <p class="placeholder-native">Nested, collapsible rows: folders or permission groups.</p>
-      <div class="native">
-        <details><summary>Documents</summary><details style="margin-left:1rem"><summary>Invoices</summary><div style="margin-left:1rem">2026.pdf</div></details></details>
-      </div>
     </article>
 
   </div>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-tree-view - Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="tree-view.js" defer></script>
+<style>
+  .narrow { max-width: 22rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .form { display: grid; gap: 1rem; max-width: 22rem; }
+  .readout { margin: 0.75rem 0 0; font-size: 0.875rem; color: var(--muted); overflow-wrap: anywhere; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Tree view"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Tree view</h1>
+    <p><code>&lt;kakao-tree-view&gt;</code> - nested, collapsible rows: folders and files, or permission groups with checkboxes. One tab stop, arrow keys, type-ahead.</p>
+  </header>
+
+  <h2>Nodes</h2>
+  <p>Nodes come from <code>list-data</code>: <code>{ id, label, children, icon, expanded, disabled, selected }</code>. By default one node can be selected (<code>selection="single"</code>). Click a chevron to open a node, click a row to select it; a double click on a row opens it too.</p>
+  <kakao-card>
+    <h3 slot="header">Folders and files · <code>icon</code></h3>
+    <p>Icons are named glyphs: <code>folder</code>, <code>file</code>, <code>user</code>, <code>users</code>, <code>lock</code>, <code>key</code>. Leave it out for none.</p>
+    <div class="narrow" data-demo-wrap>
+      <kakao-tree-view id="files" label="Files" list-data='[
+        {"id": "docs", "label": "Documents", "icon": "folder", "expanded": true, "children": [
+          {"id": "invoices", "label": "Invoices", "icon": "folder", "expanded": true, "children": [
+            {"id": "inv-2025", "label": "2025.pdf", "icon": "file"},
+            {"id": "inv-2026", "label": "2026.pdf", "icon": "file", "selected": true}
+          ]},
+          {"id": "contracts", "label": "Contracts", "icon": "folder", "children": [
+            {"id": "lease", "label": "Lease.pdf", "icon": "file"},
+            {"id": "nda", "label": "NDA, signed by both parties.pdf", "icon": "file"}
+          ]},
+          {"id": "cv", "label": "CV.pdf", "icon": "file"}
+        ]},
+        {"id": "pictures", "label": "Pictures", "icon": "folder", "children": [
+          {"id": "holiday", "label": "Holiday", "icon": "folder", "children": [
+            {"id": "beach", "label": "Beach.jpg", "icon": "file"}
+          ]},
+          {"id": "portrait", "label": "Portrait.jpg", "icon": "file"}
+        ]},
+        {"id": "archive", "label": "Archive (locked)", "icon": "lock", "disabled": true},
+        {"id": "notes", "label": "Notes.txt", "icon": "file"}
+      ]'></kakao-tree-view>
+    </div>
+    <div class="log" id="log-files" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Labels only, with guides · <code>guides</code></h3>
+    <p>A node can be a plain string. <code>guides</code> draws a thin line down each open level.</p>
+    <div class="narrow" data-demo-wrap>
+      <kakao-tree-view guides label="Animals" list-data='[
+        {"label": "Mammals", "expanded": true, "children": [
+          {"label": "Cats", "expanded": true, "children": ["Lion", "Lynx", "Tiger"]},
+          {"label": "Whales", "children": ["Blue whale", "Orca"]}
+        ]},
+        {"label": "Birds", "children": ["Eagle", "Owl", "Wren"]},
+        "Fish"
+      ]'></kakao-tree-view>
+    </div>
+  </kakao-card>
+
+  <h2>From a nested list</h2>
+  <p>Without <code>list-data</code> the tree reads a nested <code>&lt;ul&gt;</code> inside it, so a server can render the list and it stays readable when the script does not load. Items take <code>data-id</code>, <code>data-icon</code>, <code>data-expanded</code>, <code>data-selected</code>, <code>data-disabled</code> and <code>data-lazy</code>.</p>
+  <kakao-card>
+    <h3 slot="header">Server-rendered markup</h3>
+    <div class="narrow" data-demo-wrap>
+      <kakao-tree-view label="Site map">
+        <ul>
+          <li data-id="home" data-expanded>Home
+            <ul>
+              <li data-id="products" data-expanded>Products
+                <ul>
+                  <li data-id="chocolate" data-selected>Chocolate</li>
+                  <li data-id="cocoa">Cocoa</li>
+                </ul>
+              </li>
+              <li data-id="about">About us</li>
+              <li data-id="contact">Contact</li>
+            </ul>
+          </li>
+        </ul>
+      </kakao-tree-view>
+    </div>
+  </kakao-card>
+
+  <h2>Selection</h2>
+  <p><code>selection</code> is <code>single</code> (default), <code>multiple</code> or <code>none</code>. With <code>multiple</code> every node has a checkbox: a parent ticks or clears everything under it and shows a dash while only some are ticked. With <code>none</code> the rows only open and close.</p>
+  <kakao-card>
+    <h3 slot="header">Permission groups · <code>selection="multiple"</code></h3>
+    <p>A disabled node keeps its state when its parent is ticked or cleared.</p>
+    <div class="narrow" data-demo-wrap>
+      <kakao-tree-view id="perms" selection="multiple" label="Permissions" list-data='[
+        {"id": "posts", "label": "Posts", "expanded": true, "children": [
+          {"id": "posts.read", "label": "Read", "selected": true},
+          {"id": "posts.write", "label": "Write", "selected": true},
+          {"id": "posts.delete", "label": "Delete"}
+        ]},
+        {"id": "users", "label": "Users", "expanded": true, "children": [
+          {"id": "users.read", "label": "Read", "selected": true},
+          {"id": "users.invite", "label": "Invite"},
+          {"id": "users.roles", "label": "Roles", "children": [
+            {"id": "users.roles.assign", "label": "Assign"},
+            {"id": "users.roles.edit", "label": "Edit"}
+          ]},
+          {"id": "users.delete", "label": "Delete (owner only)", "disabled": true}
+        ]},
+        {"id": "billing", "label": "Billing", "selected": true, "children": [
+          {"id": "billing.view", "label": "View invoices"},
+          {"id": "billing.pay", "label": "Pay"}
+        ]}
+      ]'></kakao-tree-view>
+    </div>
+    <p class="readout" id="perms-value" data-demo-only></p>
+    <div class="actions" style="margin-top:.75rem" data-demo-only>
+      <kakao-button id="perms-clear" label="clear()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="perms-set" label="value = ['users']" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        const perms = document.getElementById('perms');
+        perms.addEventListener('tree-select', (e) => console.log(e.detail.value));
+        perms.value;             // ["posts.read", "posts.write", "users.read", "billing", …]
+        perms.value = ['users']; // a parent's id ticks everything under it
+        perms.clear();
+      </script>
+    </template>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Rows that only open · <code>selection="none"</code></h3>
+    <p>A click anywhere on a row, Enter or Space opens and closes it.</p>
+    <div class="narrow" data-demo-wrap>
+      <kakao-tree-view selection="none" label="Help topics" list-data='[
+        {"label": "Getting started", "children": ["Install", "First steps"]},
+        {"label": "Account", "children": ["Password", "Two-factor sign-in", "Delete account"]},
+        {"label": "Billing", "children": ["Invoices", "Payment methods"]}
+      ]'></kakao-tree-view>
+    </div>
+  </kakao-card>
+
+  <h2>In a form</h2>
+  <p>With <code>name</code> the tree is a form control: every selected id is sent under that name (<code>perm[]</code> gives PHP and Yii2 an array). A fully ticked parent is sent along with its children; <code>leaves-only</code> sends only the nodes without children. A form reset brings back the initial selection.</p>
+  <kakao-card>
+    <h3 slot="header">Posting the ticked ids · <code>name</code>, <code>leaves-only</code></h3>
+    <form class="form" id="form">
+      <kakao-tree-view selection="multiple" name="perm[]" leaves-only label="Role permissions" list-data='[
+        {"id": "reports", "label": "Reports", "icon": "folder", "expanded": true, "children": [
+          {"id": "reports.view", "label": "View", "selected": true},
+          {"id": "reports.export", "label": "Export"}
+        ]},
+        {"id": "team", "label": "Team", "icon": "users", "expanded": true, "children": [
+          {"id": "team.view", "label": "View members", "selected": true},
+          {"id": "team.manage", "label": "Manage members"}
+        ]}
+      ]'></kakao-tree-view>
+      <div class="actions" data-demo-wrap>
+        <kakao-button type="submit" label="Save"></kakao-button>
+        <kakao-button type="reset" label="Reset" variant="secondary"></kakao-button>
+      </div>
+    </form>
+    <p class="readout" id="form-out" data-demo-only>Submit to see what the form sends.</p>
+  </kakao-card>
+
+  <h2>Children that load later</h2>
+  <p><code>"lazy": true</code> marks a node whose children are not known yet. Opening it fires a cancelable <code>tree-expand</code> and shows a spinner until the page calls <code>setChildren(id, nodes)</code>. Or set a <code>loadChildren</code> function that returns the nodes (or a Promise of them).</p>
+  <kakao-card>
+    <h3 slot="header">With the event · <code>tree-expand</code>, <code>setChildren()</code></h3>
+    <div class="narrow" data-demo-wrap>
+      <kakao-tree-view id="lazy" label="Remote folders" list-data='[
+        {"id": "eu", "label": "Europe", "icon": "folder", "lazy": true},
+        {"id": "asia", "label": "Asia", "icon": "folder", "lazy": true},
+        {"id": "private", "label": "Private (cannot be opened)", "icon": "lock", "lazy": true}
+      ]'></kakao-tree-view>
+    </div>
+    <div class="log" id="log-lazy" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+    <template data-code>
+      <script>
+        const lazy = document.getElementById('lazy');
+        lazy.addEventListener('tree-expand', async (e) => {
+          if (e.detail.id === 'private') { e.preventDefault(); return; } // stays closed
+          if (!e.detail.lazy) return;
+          const nodes = await fetchFolders(e.detail.id);
+          lazy.setChildren(e.detail.id, nodes);
+        });
+      </script>
+    </template>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">With a function · <code>loadChildren</code></h3>
+    <div class="narrow" data-demo-wrap>
+      <kakao-tree-view id="hook" selection="multiple" guides label="Departments" list-data='[
+        {"id": "sales", "label": "Sales", "icon": "users", "lazy": true},
+        {"id": "support", "label": "Support", "icon": "users", "lazy": true, "selected": true}
+      ]'></kakao-tree-view>
+    </div>
+    <template data-code>
+      <script>
+        document.getElementById('hook').loadChildren = (node) =>
+          fetch('/people?department=' + node.id).then((r) => r.json());
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>From script</h2>
+  <p><code>expand(id)</code>, <code>collapse(id)</code>, <code>toggle(id)</code>, <code>expandAll()</code> and <code>collapseAll()</code> open and close nodes; <code>nodes</code> replaces the tree. They drive the first tree on this page.</p>
+  <kakao-card>
+    <div class="toolbar">
+      <kakao-button id="api-expand" label="expandAll()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="api-collapse" label="collapseAll()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="api-toggle" label="toggle('pictures')" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="api-nodes" label="nodes = […]" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="api-disabled" variant="secondary" size="sm" toggle></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        const files = document.getElementById('files');
+        files.expandAll();
+        files.toggle('pictures');
+        files.nodes = [
+          { id: 'src', label: 'src', icon: 'folder', expanded: true, children: [
+            { id: 'app', label: 'app.js', icon: 'file' },
+          ] },
+        ];
+        files.toggleAttribute('disabled', true);
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Other words</h2>
+  <p><code>KakaoTreeView.texts</code> sets the words for every tree: <code>label</code> (the name when a tree has no <code>label</code> attribute) and <code>loading</code> (read out while a lazy node loads).</p>
+  <kakao-card data-no-code>
+    <div class="actions">
+      <kakao-button id="texts-de" label="Use German words" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="texts-en" label="Back to English" variant="ghost" size="sm"></kakao-button>
+    </div>
+  </kakao-card>
+
+  <footer>Attributes: <code>list-data</code>, <code>selection</code>, <code>name</code>, <code>leaves-only</code>, <code>guides</code>, <code>label</code>, <code>disabled</code>. Full reference in the header of <code>tree-view.js</code>.</footer>
+</main>
+
+<script>
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const byId = (id) => document.getElementById(id);
+  const press = (id, fn) => byId(id).addEventListener('kakao-button-action', fn);
+
+  const files = byId('files');
+  logEvents(byId('log-files'), ['tree-select', 'tree-toggle'], files);
+
+  // Multiple selection: show the value
+  const perms = byId('perms');
+  const showPerms = () => { byId('perms-value').textContent = 'value: ' + JSON.stringify(perms.value); };
+  perms.addEventListener('tree-select', showPerms);
+  press('perms-clear', () => { perms.clear(); showPerms(); });
+  press('perms-set', () => { perms.value = ['users']; showPerms(); });
+  customElements.whenDefined('kakao-tree-view').then(showPerms);
+
+  // Form
+  const form = byId('form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const pairs = Array.from(new FormData(form).entries()).map(([k, v]) => `${k}=${v}`);
+    byId('form-out').textContent = pairs.length ? 'Sent: ' + pairs.join(' & ') : 'Sent: nothing';
+  });
+  form.addEventListener('reset', () => { byId('form-out').textContent = 'Reset to the initial selection.'; });
+
+  // Lazy children, by event
+  const lazy = byId('lazy');
+  const places = {
+    eu: [{ id: 'eu-at', label: 'Austria', icon: 'folder', lazy: true }, { id: 'eu-be', label: 'Belgium.csv', icon: 'file' }],
+    asia: [{ id: 'asia-jp', label: 'Japan.csv', icon: 'file' }, { id: 'asia-kr', label: 'Korea.csv', icon: 'file' }],
+    'eu-at': [{ id: 'eu-at-vie', label: 'Vienna.csv', icon: 'file' }],
+  };
+  logEvents(byId('log-lazy'), ['tree-expand', 'tree-toggle'], lazy);
+  lazy.addEventListener('tree-expand', async (e) => {
+    if (e.detail.id === 'private') { e.preventDefault(); return; }
+    if (!e.detail.lazy) return;
+    await wait(900);
+    lazy.setChildren(e.detail.id, places[e.detail.id] || []);
+  });
+
+  // Lazy children, by function
+  byId('hook').loadChildren = async (node) => {
+    await wait(700);
+    return node.id === 'sales'
+      ? [{ id: 'ada', label: 'Ada', icon: 'user' }, { id: 'ben', label: 'Ben', icon: 'user' }]
+      : [{ id: 'cleo', label: 'Cleo', icon: 'user' }, { id: 'dev', label: 'Dev', icon: 'user' }, { id: 'eli', label: 'Eli', icon: 'user' }];
+  };
+
+  // API
+  press('api-expand', () => files.expandAll());
+  press('api-collapse', () => files.collapseAll());
+  press('api-toggle', () => files.toggle('pictures'));
+  press('api-nodes', () => {
+    files.nodes = [
+      { id: 'src', label: 'src', icon: 'folder', expanded: true, children: [
+        { id: 'app', label: 'app.js', icon: 'file' },
+        { id: 'lib', label: 'lib', icon: 'folder', children: [{ id: 'util', label: 'util.js', icon: 'file' }] },
+      ] },
+      { id: 'pictures', label: 'pictures', icon: 'folder', children: [{ id: 'logo', label: 'logo.svg', icon: 'file' }] },
+      { id: 'readme', label: 'README.md', icon: 'file' },
+    ];
+  });
+  toggleButton(byId('api-disabled'), 'disabled', (on) => files.toggleAttribute('disabled', on));
+
+  // Words
+  press('texts-de', () => { KakaoTreeView.texts = { label: 'Baum', loading: 'Wird geladen' }; });
+  press('texts-en', () => { KakaoTreeView.texts = {}; });
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-tree-view - Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="tree-view.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="tree-view" data-source="tree-view.js" data-title="Tree view">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Single selection · icons · guides</figcaption>
+      <kakao-tree-view guides label="Files" list-data='[
+        {"id": "docs", "label": "Documents", "icon": "folder", "expanded": true, "children": [
+          {"id": "invoices", "label": "Invoices", "icon": "folder", "expanded": true, "children": [
+            {"id": "inv-2025", "label": "2025.pdf", "icon": "file"},
+            {"id": "inv-2026", "label": "2026.pdf", "icon": "file", "selected": true}
+          ]},
+          {"id": "cv", "label": "CV.pdf", "icon": "file"}
+        ]},
+        {"id": "pictures", "label": "Pictures", "icon": "folder", "children": [
+          {"id": "portrait", "label": "Portrait.jpg", "icon": "file"}
+        ]},
+        {"id": "archive", "label": "Archive (locked)", "icon": "lock", "disabled": true}
+      ]'></kakao-tree-view>
+    </figure>
+    <figure>
+      <figcaption>Checkboxes · <code>selection="multiple"</code></figcaption>
+      <kakao-tree-view selection="multiple" label="Permissions" list-data='[
+        {"id": "posts", "label": "Posts", "expanded": true, "children": [
+          {"id": "posts.read", "label": "Read", "selected": true},
+          {"id": "posts.write", "label": "Write", "selected": true},
+          {"id": "posts.delete", "label": "Delete"}
+        ]},
+        {"id": "billing", "label": "Billing", "expanded": true, "selected": true, "children": [
+          {"id": "billing.view", "label": "View invoices"},
+          {"id": "billing.pay", "label": "Pay"}
+        ]},
+        {"id": "users", "label": "Users", "children": [
+          {"id": "users.read", "label": "Read"}
+        ]}
+      ]'></kakao-tree-view>
+    </figure>
+    <figure>
+      <figcaption>Disabled</figcaption>
+      <kakao-tree-view disabled label="Locked tree" list-data='[
+        {"id": "a", "label": "Projects", "icon": "folder", "expanded": true, "children": [
+          {"id": "b", "label": "Plan.pdf", "icon": "file", "selected": true},
+          {"id": "c", "label": "Budget.pdf", "icon": "file"}
+        ]}
+      ]'></kakao-tree-view>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-tree-view-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tree-view-muted", "label": "Disabled node", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tree-view-hover-bg", "label": "Row hover", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tree-view-selected-bg", "label": "Row selected", "group": "Colour", "type": "color", "hint": "single selection" },
+    { "property": "--kakao-tree-view-chevron", "label": "Chevron", "group": "Colour", "type": "color", "hint": "and the loading spinner" },
+    { "property": "--kakao-tree-view-icon", "label": "Icon", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tree-view-guide", "label": "Guide line", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tree-view-box-bg", "label": "Checkbox", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tree-view-box-border", "label": "Checkbox border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tree-view-box-checked-bg", "label": "Checkbox ticked", "group": "Colour", "type": "color", "hint": "also the dash of a partly ticked parent" },
+    { "property": "--kakao-tree-view-mark", "label": "Tick and dash", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tree-view-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+
+    { "property": "--kakao-tree-view-row-height", "label": "Row height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tree-view-touch-row-height", "label": "Row height on touch", "group": "Size & spacing", "type": "length", "hint": "coarse pointers" },
+    { "property": "--kakao-tree-view-padding-x", "label": "Row padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tree-view-gap", "label": "Gap in a row", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tree-view-indent", "label": "Indent per level", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tree-view-toggle-size", "label": "Chevron target", "group": "Size & spacing", "type": "length", "hint": "24px or more" },
+    { "property": "--kakao-tree-view-chevron-size", "label": "Chevron size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tree-view-icon-size", "label": "Icon size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tree-view-box-size", "label": "Checkbox size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tree-view-guide-width", "label": "Guide line width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tree-view-focus-width", "label": "Focus ring width", "group": "Size & spacing", "type": "length" },
+
+    { "property": "--kakao-tree-view-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-tree-view-selected-weight", "label": "Selected weight", "group": "Typography", "type": "number" },
+
+    { "property": "--kakao-tree-view-row-radius", "label": "Row radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-tree-view-box-radius", "label": "Checkbox radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-tree-view-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1 },
+    { "property": "--kakao-tree-view-duration", "label": "Chevron turn and fills", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-tree-view-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: fades and colour" }
+  ]
+  </script>
+</main>
+</body>
+</html>

@@ -10,6 +10,20 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-tree-view`: nested, collapsible rows (folders, permission groups),
+  shadow DOM. Nodes from `list-data` (`id`, `label`, `children`, `icon` as a
+  named glyph, `expanded`, `disabled`, `selected`, `lazy`), the `nodes`
+  property, or a nested `<ul>` in the element that stays a readable list
+  without the script. The WAI-ARIA tree pattern: one tab stop, Up / Down,
+  Right to open or enter, Left to close or go to the parent, Home / End,
+  type-ahead, `*`, Enter / Space. `selection` single (default), `multiple`
+  (checkboxes; parents tick everything under them and show a dash when partly
+  ticked) or `none`; `name` sends the selected ids with a form, `leaves-only`
+  leaves the parents out. Lazy nodes: a cancelable `tree-expand`, then
+  `setChildren(id, nodes)` or a `loadChildren` function, with a spinner
+  meanwhile. Events `tree-select`, `tree-toggle`; methods `expand`,
+  `collapse`, `toggle`, `expandAll`, `collapseAll`, `clear`, `refresh`;
+  `guides` draws level lines; `KakaoTreeView.texts` for the words.
 - `kakao-table`: a data table, light DOM (`table.css` with `table.js`). It
   draws a real `<table>` from `list-data` (`{ columns, rows }`; a column has
   `key`, `label`, `type` text or number, `align`, `sortable`, `width`,
