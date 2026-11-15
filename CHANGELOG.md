@@ -24,9 +24,19 @@ pages (landing page, settings, demos), not the components.
 - Style guide: new rule "Data tables on small screens" (rows wrap into
   label/value pairs by default, sideways scrolling is an opt-in).
 
+### Fixed
+
+- `kakao-header-bar`: while a theme switch animates (ripple or colour fade) the
+  scrolled bar shows its solid background instead of a translucent one without
+  the blur, and the blur is applied anew once the switch is over. It reacts to
+  two new triggers of `kakao-theme-switch`, `theme-transition-start` and
+  `theme-transition-end` (trigger API, `shared/component-api.js`).
+
 ### Known issues
 
-- `kakao-header-bar`: the backdrop blur is lost after a theme switch (open fix).
+- `kakao-header-bar`: the blur lost after a theme switch is not confirmed
+  fixed. Headless Firefox draws no `backdrop-filter`, so the return of the
+  blur still has to be checked in a real window, in every theme.
 
 ## [0.5.0] - 2026-11-10
 

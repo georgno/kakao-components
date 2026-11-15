@@ -111,6 +111,12 @@
  *
  *   KakaoComponents.on('theme-change', (detail) => { … detail.color … });
  *
+ * Two more triggers frame an animated switch (a ripple or a colour fade; none
+ * for a theme that changes at once): "theme-transition-start" right before it
+ * begins, "theme-transition-end" once it is over. Ripples that follow each
+ * other directly count as one. Components whose look can't be carried through
+ * the transition (a backdrop blur) use them to step aside for its duration.
+ *
  * ----------------------------------------------------------------------------
  * FADE (fade: true, used by the theme pickers)
  * ----------------------------------------------------------------------------
@@ -325,6 +331,22 @@
   let colorPropertiesOk = false;
   let fadeAnim = null;
 
+  /*
+   * An animated switch (ripple or fade) is announced through the trigger API:
+   * "theme-transition-start" before it begins, "theme-transition-end" when no
+   * ripple and no fade is left running.
+   */
+  let rippling = false;
+  let transitionReported = false;
+
+  function reportTransition() {
+    const active = rippling || !!fadeAnim;
+    if (active === transitionReported) return;
+    transitionReported = active;
+    if (typeof KakaoComponents === 'undefined') return;
+    KakaoComponents.emit(document.querySelector(TAG_NAME) || ROOT, active ? 'theme-transition-start' : 'theme-transition-end');
+  }
+
   function ensureColorProperties() {
     if (colorsRegistered) return colorPropertiesOk;
     colorsRegistered = true;
@@ -375,7 +397,11 @@
     if (!Object.keys(frames).length) return;
     fadeAnim = ROOT.animate(frames, { duration, easing, fill: 'none' });
     const anim = fadeAnim;
-    fadeAnim.onfinish = () => { if (fadeAnim === anim) fadeAnim = null; };
+    fadeAnim.onfinish = () => {
+      if (fadeAnim !== anim) return;
+      fadeAnim = null;
+      reportTransition();
+    };
   }
 
   /** Drop a fade at once (a snapshot reveal must not inherit a half-faded page). */
@@ -383,6 +409,7 @@
     if (!fadeAnim) return;
     fadeAnim.finish();
     fadeAnim = null;
+    reportTransition();
   }
 
   /*
@@ -436,6 +463,7 @@
     if (value !== ROOT.getAttribute(THEME_ATTR)) {
       startFade(value, options.timing || fadeTiming(document.querySelector(TAG_NAME)));
       if (queue.running) finishFade();
+      reportTransition(); // a fade began, or the one that ran was dropped
       document.querySelectorAll(TAG_NAME).forEach((el) => { if (typeof el._sync === 'function') el._sync(); });
     }
     return Promise.resolve();
@@ -499,6 +527,10 @@
     ROOT.style.setProperty('--kakao-ripple-x', `${cx}px`);
     ROOT.style.setProperty('--kakao-ripple-y', `${cy}px`);
     ROOT.style.setProperty('--kakao-ripple-feather', `${feather}px`);
+    // Announced before the snapshot is taken, so the old view already shows
+    // what components change for the transition.
+    rippling = true;
+    reportTransition();
     ROOT.classList.add(RIPPLE_CLASS);
     let transition;
     try {
@@ -508,9 +540,11 @@
       ROOT.style.removeProperty('--kakao-ripple-x');
       ROOT.style.removeProperty('--kakao-ripple-y');
       ROOT.style.removeProperty('--kakao-ripple-feather');
+      rippling = false;
       update();
       applied();
       finished();
+      reportTransition();
       return;
     }
     transition.ready.then(() => {
@@ -526,7 +560,9 @@
       ROOT.style.removeProperty('--kakao-ripple-x');
       ROOT.style.removeProperty('--kakao-ripple-y');
       ROOT.style.removeProperty('--kakao-ripple-feather');
-      finished();
+      rippling = false;
+      finished(); // may start the queued ripple: then the transition goes on
+      reportTransition();
     });
   }
 
@@ -1029,7 +1065,7 @@
 
   if (typeof KakaoComponents !== 'undefined') {
     KakaoComponents.register('kakao-theme-switch', {
-      triggers: ['theme-change'],
+      triggers: ['theme-change', 'theme-transition-start', 'theme-transition-end'],
       reactions: {
         'step-cross': 'a <kakao-step-switch theme-picker> follows the thumb',
         'kakao-button-menu-hover': 'a <kakao-button theme-picker> menu follows the pointer',

@@ -23,6 +23,7 @@ does not survive it.
 ### Modified Capabilities
 
 - `header-bar`: the scrolled look survives a theme switch.
+- `theme-switch`: announces an animated switch with `theme-transition-start` / `theme-transition-end` triggers.
 
 ## Impact
 

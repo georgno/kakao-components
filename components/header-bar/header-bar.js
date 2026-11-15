@@ -71,6 +71,13 @@
  * Solid instead of translucent under prefers-reduced-transparency and where
  * backdrop-filter is not supported; no transition under reduced motion.
  *
+ * Also solid while a theme transition runs (the theme switch's ripple or
+ * colour fade): the blur can get lost in it, and a translucent bar without
+ * the blur would show the page through. The bar reacts to the
+ * "theme-transition-start" / "theme-transition-end" triggers
+ * (shared/component-api.js) and puts the blur back afterwards. Without the
+ * trigger API on the page nothing changes.
+ *
  * Parts: bar, surface, start, center, title, nav, end.
  * ============================================================================
  */
@@ -203,11 +210,20 @@
           backdrop-filter: none;
         }
       }
+      /* While a theme transition runs: the same solid bar, at once (a fading
+         background would be translucent without the blur for a moment). */
+      :host([scrolled]) .surface[data-solid] {
+        background: var(--_scrolled-bg);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        transition: none;
+      }
       @media (prefers-reduced-motion: reduce) {
         .surface { transition: none; }
       }
       @media (forced-colors: active) {
-        :host([scrolled]) .surface {
+        :host([scrolled]) .surface,
+        :host([scrolled]) .surface[data-solid] {
           background: Canvas;
           border-bottom-color: CanvasText;
           backdrop-filter: none;
@@ -231,6 +247,7 @@
       super();
       const shadow = this.attachShadow({ mode: 'open' });
       shadow.appendChild(TEMPLATE.content.cloneNode(true));
+      this._surface = shadow.querySelector('.surface');
       this._nav = shadow.querySelector('nav');
       this._navSlot = shadow.querySelector('slot[name="nav"]');
       this._title = shadow.querySelector('.title');
@@ -260,6 +277,9 @@
           this._check();
         });
       };
+      this._solidFrame = 0;
+      this._onThemeStart = () => this._setSolid(true);
+      this._onThemeEnd = () => this._setSolid(false);
     }
 
     connectedCallback() {
@@ -271,10 +291,21 @@
         this._sizes.observe(this._nav);
         if (this._isPageBar) this._sizes.observe(this);
       }
+      if (typeof KakaoComponents !== 'undefined') {
+        KakaoComponents.on('theme-transition-start', this._onThemeStart);
+        KakaoComponents.on('theme-transition-end', this._onThemeEnd);
+      }
     }
 
     disconnectedCallback() {
       this._unwatch();
+      if (typeof KakaoComponents !== 'undefined') {
+        KakaoComponents.off('theme-transition-start', this._onThemeStart);
+        KakaoComponents.off('theme-transition-end', this._onThemeEnd);
+      }
+      cancelAnimationFrame(this._solidFrame);
+      this._solidFrame = 0;
+      this._surface.removeAttribute('data-solid');
       if (this._sizes) this._sizes.disconnect();
       cancelAnimationFrame(this._fadeFrame);
       this._fadeFrame = 0;
@@ -311,6 +342,25 @@
       if (right !== nav.hasAttribute('data-more-right')) nav.toggleAttribute('data-more-right', right);
     }
 
+    /**
+     * Solid for the length of a theme transition. The blur comes back one
+     * frame after it ended, when the transition's snapshots are gone: the
+     * backdrop-filter is then computed and painted anew.
+     */
+    _setSolid(solid) {
+      cancelAnimationFrame(this._solidFrame);
+      this._solidFrame = 0;
+      if (solid) {
+        this._surface.setAttribute('data-solid', '');
+        return;
+      }
+      if (!this._surface.hasAttribute('data-solid')) return;
+      this._solidFrame = requestAnimationFrame(() => {
+        this._solidFrame = 0;
+        this._surface.removeAttribute('data-solid');
+      });
+    }
+
     _publishHeight() {
       if (!this._isPageBar) return;
       const height = this.getBoundingClientRect().height;
@@ -336,6 +386,16 @@
       const scrolled = window.scrollY > 0;
       if (scrolled !== this.hasAttribute('scrolled')) this.toggleAttribute('scrolled', scrolled);
     }
+  }
+
+  if (typeof KakaoComponents !== 'undefined') {
+    KakaoComponents.register(TAG_NAME, {
+      triggers: [],
+      reactions: {
+        'theme-transition-start': 'solid scrolled background while the theme transition runs',
+        'theme-transition-end': 'back to the blurred, translucent background',
+      },
+    });
   }
 
   window.KakaoHeaderBar = KakaoHeaderBar;

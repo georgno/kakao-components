@@ -703,7 +703,7 @@ KakaoComponents.meta('kakao-card');</pre>
       </div>
     </div>
 
-    <p class="small muted" style="margin-top:.75rem">Live wiring: <code>&lt;kakao-theme-switch&gt;</code> emits <code>theme-change</code> with the new theme's primary colour. <code>&lt;kakao-card theme-glow&gt;</code> reacts with it: such a card without a footer button glows in that colour after a theme change (opt-in; plain cards ignore it). Its <code>theme-change</code> event carries the same <code>color</code>, so plain page listeners get it too.</p>
+    <p class="small muted" style="margin-top:.75rem">Live wiring: <code>&lt;kakao-theme-switch&gt;</code> emits <code>theme-change</code> with the new theme's primary colour. <code>&lt;kakao-card theme-glow&gt;</code> reacts with it: such a card without a footer button glows in that colour after a theme change (opt-in; plain cards ignore it). Its <code>theme-change</code> event carries the same <code>color</code>, so plain page listeners get it too. Around an animated switch it also emits <code>theme-transition-start</code> and <code>theme-transition-end</code>; <code>&lt;kakao-header-bar&gt;</code> reacts by showing its solid scrolled background in between.</p>
   </section>
 
   <!-- ================================================================ -->
@@ -784,7 +784,7 @@ KakaoComponents.meta('kakao-card');</pre>
           <tr><td>Chip</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">4</td><td>✓</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Chip list</td><td>-</td><td>n/a</td><td>n/a</td><td class="num">-</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Breadcrumb</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">6</td><td>✓</td><td class="num">-</td><td>None</td></tr>
-          <tr><td>Header bar</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">-</td><td>n/a (slotted controls)</td><td class="num">-</td><td>Backdrop blur breaks and is gone after a theme switch; fix it, or fall back gracefully to the solid bar</td></tr>
+          <tr><td>Header bar</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">-</td><td>n/a (slotted controls)</td><td class="num">-</td><td>Solid scrolled background while a theme switch runs (ripple or fade) is in place, the blur is set again afterwards; still to check in a real window that the blur is back in every theme</td></tr>
           <tr><td>Alert</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10</td><td>✓</td><td class="num">-</td><td>None</td></tr>
           <tr><td>Toast</td><td>-</td><td>Inherits (alert cards)</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">10 (alert)</td><td>✓ (alert close)</td><td class="num">-</td><td>Overlay drop shadow without the 1px ring: toasts have no edge, like the alerts they hold. Light themes add a contact shadow, a raised fill and a 16% tint (shared/themes.css)</td></tr>
           <tr><td>Progress</td><td>-</td><td>Inherits</td><td><kakao-badge tone="success">Theme</kakao-badge></td><td class="num">pill</td><td>n/a</td><td class="num">-</td><td>None</td></tr>
