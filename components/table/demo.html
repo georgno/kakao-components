@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-table - Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="table.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="../skeleton/skeleton.js" defer></script>
+<script src="../empty-state/empty-state.js" defer></script>
+<script src="../pagination/pagination.js" defer></script>
+<script src="table.js" defer></script>
+<style>
+  .stack { display: grid; gap: 1.5rem; }
+  .phone { max-width: 22rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .row-actions { display: inline-flex; gap: 0.375rem; }
+  .pager { margin-top: 1rem; }
+  /* the page's header bar is 4rem tall: the sticky heading row stops below it */
+  #sticky { --kakao-table-sticky-top: 4rem; }
+  #framed { --kakao-table-max-height: 14rem; }
+  #frame-plain { display: block; width: 100%; height: 15rem; border: 0; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Table"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Table</h1>
+    <p><code>&lt;kakao-table&gt;</code> - a data table with sortable headings, row selection and a sticky header. It draws a real <code>&lt;table&gt;</code> from <code>list-data</code>, or enhances the server-rendered table it is wrapped around. On a phone each row wraps into a block of label / value pairs, so no column is squeezed or hidden. Light DOM: load <code>table.css</code> with <code>table.js</code>.</p>
+  </header>
+
+  <h2>Columns and rows</h2>
+  <p><code>list-data</code> is <code>{ "columns": […], "rows": […] }</code>. A column has a <code>key</code> and a <code>label</code>, and may have a <code>type</code>, <code>align</code>, <code>width</code> and <code>sortable</code>. A <code>number</code> column is set in tabular figures at the end of its cell. An empty value shows “—”, which a screen reader hears as “Not set”.</p>
+  <kakao-card>
+    <h3 slot="header">From <code>list-data</code></h3>
+    <kakao-table label="Files" list-data='{
+      "columns": [
+        { "key": "name", "label": "Name" },
+        { "key": "kind", "label": "Kind" },
+        { "key": "size", "label": "Size (MB)", "type": "number" },
+        { "key": "owner", "label": "Owner" }
+      ],
+      "rows": [
+        { "id": 1, "name": "Annual report.pdf", "kind": "PDF", "size": 2.4, "owner": "Ada Lovelace" },
+        { "id": 2, "name": "Team photo.jpg", "kind": "Image", "size": 4.1, "owner": null },
+        { "id": 3, "name": "Budget 2027.xlsx", "kind": "Spreadsheet", "size": 0.3, "owner": "Grace Hopper" }
+      ]
+    }'></kakao-table>
+  </kakao-card>
+
+  <h2>Sorting</h2>
+  <p>A <code>sortable</code> column’s heading is a button with a sort icon; its <code>&lt;th&gt;</code> carries <code>aria-sort</code>. A click sorts ascending, the next descending, the third puts the rows back as written. <code>sort</code> names the sorted column the Yii2 way: <code>"name"</code> ascending, <code>"-name"</code> descending. Numbers sort as numbers, texts by the reader’s language, empty cells last. Every change fires a cancelable <code>sort-change</code>.</p>
+  <kakao-card>
+    <h3 slot="header">Sorted in the browser · <code>sort="-size"</code></h3>
+    <kakao-table id="sorting" sort="-size" label="Files, sortable" list-data='{
+      "columns": [
+        { "key": "name", "label": "Name", "sortable": true },
+        { "key": "kind", "label": "Kind", "sortable": true },
+        { "key": "size", "label": "Size (MB)", "type": "number", "sortable": true },
+        { "key": "owner", "label": "Owner" }
+      ],
+      "rows": [
+        { "id": 1, "name": "Annual report.pdf", "kind": "PDF", "size": 2.4, "owner": "Ada Lovelace" },
+        { "id": 2, "name": "Team photo.jpg", "kind": "Image", "size": 4.1, "owner": null },
+        { "id": 3, "name": "Budget 2027.xlsx", "kind": "Spreadsheet", "size": 0.3, "owner": "Grace Hopper" },
+        { "id": 4, "name": "Notes 10.txt", "kind": "Text", "size": null, "owner": "Alan Turing" },
+        { "id": 5, "name": "Notes 9.txt", "kind": "Text", "size": 12, "owner": "Alan Turing" }
+      ]
+    }'></kakao-table>
+    <div class="log" id="log-sorting" role="log" aria-label="Event log"></div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Sorted by the server · <code>sort-mode="server"</code></h3>
+    <p>The heading shows the state and fires <code>sort-change</code>; the rows stay as they are until the page sets new ones. Here a script answers after a moment, with <code>loading</code> in between.</p>
+    <kakao-table id="server" sort-mode="server" sort="name" label="People, sorted by the server" list-data='{
+      "columns": [
+        { "key": "name", "label": "Name", "sortable": true },
+        { "key": "city", "label": "City", "sortable": true },
+        { "key": "orders", "label": "Orders", "type": "number", "sortable": true }
+      ],
+      "rows": [
+        { "id": 7, "name": "Ada Lovelace", "city": "London", "orders": 12 },
+        { "id": 9, "name": "Alan Turing", "city": "Wilmslow", "orders": 3 },
+        { "id": 4, "name": "Grace Hopper", "city": "Arlington", "orders": 28 }
+      ]
+    }'></kakao-table>
+    <template data-code>
+      <script>
+        const table = document.getElementById('server');
+        table.addEventListener('sort-change', async (e) => {
+          table.loading = true;
+          table.rows = await fetchRows({ sort: e.detail.sort }); // "city", "-city" or ""
+          table.loading = false;
+        });
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Selection</h2>
+  <p><code>selectable</code> adds a checkbox to each row and “select all” to the heading row, which shows a dash while only some rows are selected. <code>selection-change</code> carries the ids of the selected rows; <code>selected</code> reads and sets them. With <code>selection-name</code> the checkboxes carry that name and the row id, so the selection is submitted with the form around the table.</p>
+  <kakao-card>
+    <h3 slot="header">Row selection · <code>selectable</code></h3>
+    <kakao-table id="selection" selectable label="Files, selectable" list-data='{
+      "columns": [
+        { "key": "name", "label": "Name", "sortable": true },
+        { "key": "kind", "label": "Kind" },
+        { "key": "size", "label": "Size (MB)", "type": "number", "sortable": true }
+      ],
+      "rows": [
+        { "id": "a1", "name": "Annual report.pdf", "kind": "PDF", "size": 2.4 },
+        { "id": "b2", "name": "Team photo.jpg", "kind": "Image", "size": 4.1, "selected": true },
+        { "id": "c3", "name": "Budget 2027.xlsx", "kind": "Spreadsheet", "size": 0.3 }
+      ]
+    }'></kakao-table>
+    <div class="actions" style="margin-top:1rem" data-demo-only>
+      <kakao-button id="select-all" label="selectAll()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="select-none" label="clearSelection()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="select-set" label='selected = ["a1", "c3"] (silent)' variant="ghost" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log-selection" role="log" aria-label="Event log"></div>
+    <template data-code>
+      <script>
+        const table = document.getElementById('selection');
+        table.addEventListener('selection-change', (e) => {
+          e.detail.selected; // ["b2", "c3"]
+        });
+        table.selected = ['a1', 'c3']; // silent
+        table.selectAll();             // fires selection-change, source "api"
+      </script>
+    </template>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">In a form · <code>selection-name="selection[]"</code></h3>
+    <form id="form" data-demo-wrap>
+      <kakao-table selectable selection-name="selection[]" dense label="Invoices to send" list-data='{
+        "columns": [
+          { "key": "number", "label": "Invoice" },
+          { "key": "customer", "label": "Customer" },
+          { "key": "total", "label": "Total (€)", "type": "number" }
+        ],
+        "rows": [
+          { "id": 2041, "number": "2026-041", "customer": "Lovelace Ltd", "total": "1,280.00", "selected": true },
+          { "id": 2042, "number": "2026-042", "customer": "Hopper Inc", "total": "310.50" },
+          { "id": 2043, "number": "2026-043", "customer": "Turing GmbH", "total": "94.00", "selected": true }
+        ]
+      }'></kakao-table>
+      <div class="actions" style="margin-top:1rem" data-demo-only>
+        <kakao-button type="submit" label="Send selected" size="sm"></kakao-button>
+      </div>
+    </form>
+    <div class="log" id="log-form" role="log" aria-label="Submitted form data"></div>
+  </kakao-card>
+
+  <h2>Forms of the table</h2>
+  <p><code>striped</code> puts every other row on a subtle fill, <code>dense</code> takes less room per row, <code>bordered</code> draws a frame and lines between the columns. They combine.</p>
+  <kakao-card>
+    <h3 slot="header">Striped · <code>striped</code></h3>
+    <kakao-table striped label="Striped" list-data='{
+      "columns": [{ "key": "city", "label": "City" }, { "key": "country", "label": "Country" }, { "key": "people", "label": "Population", "type": "number" }],
+      "rows": [["Vienna", "Austria", "1,982,000"], ["Graz", "Austria", "292,000"], ["Bergen", "Norway", "289,000"], ["Oslo", "Norway", "709,000"]]
+    }'></kakao-table>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Dense · <code>dense</code></h3>
+    <kakao-table dense label="Dense" list-data='{
+      "columns": [{ "key": "city", "label": "City" }, { "key": "country", "label": "Country" }, { "key": "people", "label": "Population", "type": "number" }],
+      "rows": [["Vienna", "Austria", "1,982,000"], ["Graz", "Austria", "292,000"], ["Bergen", "Norway", "289,000"], ["Oslo", "Norway", "709,000"]]
+    }'></kakao-table>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Bordered and striped · <code>bordered</code> <code>striped</code></h3>
+    <kakao-table bordered striped selectable label="Bordered" list-data='{
+      "columns": [{ "key": "city", "label": "City", "sortable": true }, { "key": "country", "label": "Country" }, { "key": "people", "label": "Population", "type": "number", "sortable": true }],
+      "rows": [["Vienna", "Austria", "1,982,000"], ["Graz", "Austria", "292,000"], ["Bergen", "Norway", "289,000"], ["Oslo", "Norway", "709,000"]]
+    }'></kakao-table>
+  </kakao-card>
+
+  <h2>Sticky header</h2>
+  <p>With <code>sticky-header</code> the heading row stays in view while the page scrolls past a long table. <code>--kakao-table-sticky-top</code> is where it stops, for a page with a fixed bar at the top; <code>--kakao-table-head-bg</code> is its fill, the surface the table sits on.</p>
+  <kakao-card>
+    <h3 slot="header">Sticks to the page · <code>sticky-header</code></h3>
+    <p>Scroll the page: the headings stop below the header bar.</p>
+    <kakao-table id="sticky" sticky-header striped label="Measurements"></kakao-table>
+    <template data-code>
+      <style>
+        #sticky { --kakao-table-sticky-top: 4rem; } /* the height of the page's header bar */
+      </style>
+      <kakao-table id="sticky" sticky-header striped label="Measurements" list-data='…'></kakao-table>
+    </template>
+  </kakao-card>
+
+  <h2>On a phone</h2>
+  <p>While the table is narrower than <code>--kakao-table-stack-below</code> (36rem; its own width, not the window’s) each row becomes a block of label / value pairs with the column heading as the label. The heading row is hidden, so there is no sticky header; “Sort by” and “Select all” move into a line above the blocks, and a row’s checkbox sits at the top of its block. <code>layout="stacked"</code> asks for this form at every width.</p>
+  <kakao-card>
+    <h3 slot="header">Wrapped by itself</h3>
+    <p>The same table as under Selection, in a 22rem box.</p>
+    <div class="phone" data-demo-wrap>
+      <kakao-table selectable sort="name" label="Files, wrapped" list-data='{
+        "columns": [
+          { "key": "name", "label": "Name", "sortable": true },
+          { "key": "kind", "label": "Kind" },
+          { "key": "size", "label": "Size (MB)", "type": "number", "sortable": true },
+          { "key": "owner", "label": "Owner" }
+        ],
+        "rows": [
+          { "id": 1, "name": "Annual report.pdf", "kind": "PDF", "size": 2.4, "owner": "Ada Lovelace" },
+          { "id": 2, "name": "Team photo.jpg", "kind": "Image", "size": 4.1, "owner": null, "selected": true },
+          { "id": 3, "name": "Budget 2027.xlsx", "kind": "Spreadsheet", "size": 0.3, "owner": "Grace Hopper" }
+        ]
+      }'></kakao-table>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Scrolling instead · <code>scroll</code></h3>
+    <p>For a table that only makes sense with its columns side by side, like a comparison of numbers. It never wraps: too wide for its frame, it scrolls sideways in it, with the edge fade on each side that has more. The frame takes keyboard focus so it can be scrolled with the arrow keys.</p>
+    <div class="phone" data-demo-wrap>
+      <kakao-table scroll dense label="Revenue by quarter" list-data='{
+        "columns": [
+          { "key": "region", "label": "Region" },
+          { "key": "q1", "label": "Q1", "type": "number" },
+          { "key": "q2", "label": "Q2", "type": "number" },
+          { "key": "q3", "label": "Q3", "type": "number" },
+          { "key": "q4", "label": "Q4", "type": "number" },
+          { "key": "year", "label": "Year", "type": "number" }
+        ],
+        "rows": [
+          ["North", "128,400", "131,950", "140,200", "152,780", "553,330"],
+          ["South", "98,120", "101,400", "97,860", "110,340", "407,720"],
+          ["West", "210,900", "205,330", "221,480", "240,010", "877,720"]
+        ]
+      }'></kakao-table>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Scrolling in a frame of its own · <code>scroll</code> <code>sticky-header</code></h3>
+    <p>With <code>--kakao-table-max-height</code> the frame also scrolls down, and the sticky header sticks to the frame.</p>
+    <kakao-table id="framed" scroll sticky-header bordered dense label="Measurements, framed"></kakao-table>
+    <template data-code>
+      <style>
+        #framed { --kakao-table-max-height: 14rem; }
+      </style>
+      <kakao-table id="framed" scroll sticky-header bordered dense label="Measurements" list-data='…'></kakao-table>
+    </template>
+  </kakao-card>
+
+  <h2>A table from the server</h2>
+  <p>Without <code>list-data</code> the component takes the <code>&lt;table&gt;</code> inside it and enhances it where it is: the page works before the script has loaded, and links, buttons and page scripts in the cells keep working. Columns are read from the first heading row (<code>data-type</code>, <code>data-align</code>, <code>data-sortable</code>, <code>data-width</code>, <code>data-hide-label</code>), row ids from <code>data-key</code> on the <code>&lt;tr&gt;</code>, as Yii2’s GridView writes it. A cell sorts by its text, or by <code>data-sort-value</code>.</p>
+  <kakao-card>
+    <h3 slot="header">Enhanced markup, sorted in the browser</h3>
+    <kakao-table id="native" selectable selection-name="selection[]" label="Orders">
+      <table>
+        <thead>
+          <tr>
+            <th data-sortable>Customer</th>
+            <th data-sortable>Status</th>
+            <th data-sortable data-type="number">Total (€)</th>
+            <th data-sortable>Ordered</th>
+            <th data-hide-label>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-key="1041">
+            <td><a href="#order-1041">Lovelace Ltd</a></td>
+            <td><kakao-badge tone="success">Paid</kakao-badge></td>
+            <td>1,280.00</td>
+            <td data-sort-value="2026-11-03">3 Nov 2026</td>
+            <td><span class="row-actions"><kakao-button label="View" variant="secondary" size="sm"></kakao-button><kakao-button label="Refund" variant="ghost" size="sm"></kakao-button></span></td>
+          </tr>
+          <tr data-key="1042">
+            <td><a href="#order-1042">Hopper Inc</a></td>
+            <td><kakao-badge>Open</kakao-badge></td>
+            <td>310.50</td>
+            <td data-sort-value="2026-11-12">12 Nov 2026</td>
+            <td><span class="row-actions"><kakao-button label="View" variant="secondary" size="sm"></kakao-button><kakao-button label="Refund" variant="ghost" size="sm"></kakao-button></span></td>
+          </tr>
+          <tr data-key="1043">
+            <td><a href="#order-1043">Turing GmbH</a></td>
+            <td><kakao-badge tone="danger">Overdue</kakao-badge></td>
+            <td>94.00</td>
+            <td></td>
+            <td><span class="row-actions"><kakao-button label="View" variant="secondary" size="sm"></kakao-button><kakao-button label="Refund" variant="ghost" size="sm"></kakao-button></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </kakao-table>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Yii2 sorter links</h3>
+    <p>A heading whose only content is a link is sortable through that link: it gets the icon and <code>aria-sort</code> (from the link’s class <code>asc</code> or <code>desc</code>) and stays a real link, so the server sorts. <code>sort-change</code> fires first with the link’s <code>href</code>; cancel it to load the rows yourself.</p>
+    <kakao-table id="yii" label="Users">
+      <table>
+        <thead>
+          <tr>
+            <th><a class="asc" href="#sort=-username" data-sort="-username">Username</a></th>
+            <th><a href="#sort=email" data-sort="email">Email</a></th>
+            <th data-type="number"><a href="#sort=logins" data-sort="logins">Logins</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-key="3"><td>ada</td><td>ada@example.com</td><td>214</td></tr>
+          <tr data-key="8"><td>alan</td><td>alan@example.com</td><td>37</td></tr>
+          <tr data-key="5"><td>grace</td><td></td><td>1,052</td></tr>
+        </tbody>
+      </table>
+    </kakao-table>
+    <div class="log" id="log-yii" role="log" aria-label="Event log"></div>
+  </kakao-card>
+  <kakao-card data-no-code>
+    <h3 slot="header">Before the script has loaded</h3>
+    <p>The first table again on a page that loads <code>table.css</code> but not <code>table.js</code>: a plain, styled table.</p>
+    <iframe id="frame-plain" title="The table without its script" data-demo-only></iframe>
+  </kakao-card>
+
+  <h2>Empty and loading</h2>
+  <p>A table without rows shows an empty state under its headings: a <code>kakao-empty-state</code> where that component is loaded, a plain text otherwise, with <code>empty-heading</code> and <code>empty-message</code>. Your own goes in as a child marked <code>data-table-empty</code>. While <code>loading</code> is set the rows give way to placeholder rows (<code>kakao-skeleton</code> where loaded), and the table is <code>aria-busy</code>.</p>
+  <kakao-card>
+    <h3 slot="header">No rows · <code>empty-heading</code> <code>empty-message</code></h3>
+    <kakao-table label="Invoices" empty-heading="No invoices yet" empty-message="Invoices you create appear here." list-data='{
+      "columns": [{ "key": "number", "label": "Invoice" }, { "key": "customer", "label": "Customer" }, { "key": "total", "label": "Total (€)", "type": "number" }],
+      "rows": []
+    }'></kakao-table>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Your own empty state · <code>data-table-empty</code></h3>
+    <kakao-table label="Search results" list-data='{
+      "columns": [{ "key": "number", "label": "Invoice" }, { "key": "customer", "label": "Customer" }, { "key": "total", "label": "Total (€)", "type": "number" }],
+      "rows": []
+    }'>
+      <kakao-empty-state data-table-empty hidden size="sm" heading="No results" message="Try another word, or clear the filters.">
+        <kakao-button slot="actions" label="Clear filters" variant="secondary" size="sm"></kakao-button>
+      </kakao-empty-state>
+    </kakao-table>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Loading · <code>loading</code></h3>
+    <kakao-table id="loading" loading selectable label="Files, loading" list-data='{
+      "columns": [
+        { "key": "name", "label": "Name", "sortable": true },
+        { "key": "kind", "label": "Kind" },
+        { "key": "size", "label": "Size (MB)", "type": "number" }
+      ],
+      "rows": [
+        { "id": 1, "name": "Annual report.pdf", "kind": "PDF", "size": 2.4 },
+        { "id": 2, "name": "Team photo.jpg", "kind": "Image", "size": 4.1 },
+        { "id": 3, "name": "Budget 2027.xlsx", "kind": "Spreadsheet", "size": 0.3 }
+      ]
+    }'></kakao-table>
+    <div class="actions" style="margin-top:1rem" data-demo-only>
+      <kakao-button id="loading-toggle" label="Toggle loading" variant="secondary" size="sm"></kakao-button>
+    </div>
+  </kakao-card>
+
+  <h2>With a pager</h2>
+  <p>The table does not page by itself: put a <code>kakao-pagination</code> below it and set the page’s rows when it fires <code>page-change</code>. Sorting here goes over all the rows, so the table is in <code>sort-mode="server"</code> and the script sorts before it cuts out the page.</p>
+  <kakao-card>
+    <h3 slot="header">Table and pagination</h3>
+    <kakao-table id="paged" sort-mode="server" selectable striped label="Cities"></kakao-table>
+    <kakao-pagination class="pager" id="pager" page="1" page-size="5" page-sizes="5,10,20" summary label="Cities"></kakao-pagination>
+    <template data-code>
+      <kakao-table id="paged" sort-mode="server" selectable striped label="Cities"></kakao-table>
+      <kakao-pagination id="pager" page="1" page-size="5" page-sizes="5,10,20" summary label="Cities"></kakao-pagination>
+      <script>
+        const table = document.getElementById('paged');
+        const pager = document.getElementById('pager');
+        table.columns = [
+          { key: 'city', label: 'City', sortable: true },
+          { key: 'country', label: 'Country', sortable: true },
+          { key: 'people', label: 'Population', type: 'number', sortable: true },
+        ];
+        const show = () => {
+          const sorted = sortRows(allRows, table.sort); // "", "city", "-people" …
+          pager.totalItems = sorted.length;
+          table.rows = sorted.slice(pager.from - 1, pager.to);
+        };
+        table.addEventListener('sort-change', () => queueMicrotask(() => { pager.page = 1; show(); }));
+        pager.addEventListener('page-change', () => queueMicrotask(show));
+        pager.addEventListener('page-size-change', () => queueMicrotask(show));
+        show();
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>From script</h2>
+  <p><code>columns</code> and <code>rows</code> are the property form of <code>list-data</code>. A column set from script may carry <code>render(value, row, column)</code>, which returns the cell’s content as a node or a text: badges, links, a row of buttons. <code>hideLabel</code> keeps a heading for screen readers only and leaves the wrapped cell without a label, for an action column. <code>KakaoTable.types</code> takes your own column types (<code>align</code>, <code>compare</code>, <code>format</code>).</p>
+  <kakao-card>
+    <h3 slot="header">Rendered cells and a type of your own</h3>
+    <kakao-table id="script" sort="-due" label="Tasks"></kakao-table>
+    <template data-code>
+      <kakao-table id="script" sort="-due" label="Tasks"></kakao-table>
+      <script>
+        KakaoTable.types.date = {
+          compare: (a, b) => new Date(a) - new Date(b),
+          format: (value) => new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+        };
+        const table = document.getElementById('script');
+        table.columns = [
+          { key: 'task', label: 'Task', sortable: true },
+          { key: 'state', label: 'State', render: (value) => {
+            const badge = document.createElement('kakao-badge');
+            badge.setAttribute('tone', value === 'Done' ? 'success' : 'primary');
+            badge.textContent = value;
+            return badge;
+          } },
+          { key: 'due', label: 'Due', type: 'date', sortable: true },
+          { key: 'actions', label: 'Actions', hideLabel: true, align: 'end', render: (value, row) => {
+            const button = document.createElement('kakao-button');
+            button.setAttribute('label', 'Open');
+            button.setAttribute('variant', 'secondary');
+            button.setAttribute('size', 'sm');
+            button.addEventListener('kakao-button-action', () => openTask(row.id));
+            return button;
+          } },
+        ];
+        table.rows = [
+          { id: 1, task: 'Write the spec', state: 'Done', due: '2026-11-02' },
+          { id: 2, task: 'Build the table', state: 'Doing', due: '2026-11-15' },
+          { id: 3, task: 'Plan the grid view', state: 'Doing', due: null },
+        ];
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Other words</h2>
+  <p><code>KakaoTable.texts</code> sets the words for every table: <code>sortBy</code>, <code>notSorted</code>, <code>ascending</code> and <code>descending</code> (“{label}, ascending”), <code>selectAll</code>, <code>selectRow</code> (“Select {row}”), <code>emptyHeading</code>, <code>emptyLabel</code> and <code>loading</code>.</p>
+  <kakao-card>
+    <div class="phone" data-demo-wrap>
+      <kakao-table id="words" selectable label="Dateien" list-data='{
+        "columns": [{ "key": "name", "label": "Name", "sortable": true }, { "key": "size", "label": "Größe (MB)", "type": "number", "sortable": true }],
+        "rows": [{ "id": 1, "name": "Bericht.pdf", "size": 2.4 }, { "id": 2, "name": "Foto.jpg", "size": null }]
+      }'></kakao-table>
+    </div>
+    <div class="actions" style="margin-top:1rem" data-demo-only>
+      <kakao-button id="words-de" label="German" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="words-reset" label="Built-in" variant="ghost" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        KakaoTable.texts = {
+          sortBy: 'Sortieren nach',
+          notSorted: 'Nicht sortiert',
+          ascending: '{label}, aufsteigend',
+          descending: '{label}, absteigend',
+          selectAll: 'Alle auswählen',
+          selectRow: '{row} auswählen',
+          emptyLabel: 'Nicht gesetzt',
+        };
+      </script>
+    </template>
+  </kakao-card>
+</main>
+<script>
+  customElements.whenDefined('kakao-table').then(() => {
+    const byId = (id) => document.getElementById(id);
+    const log = (el, logEl, names) => names.forEach((name) => {
+      el.addEventListener(name, (e) => logLine(logEl, name, e.detail));
+    });
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    /** Sorts plain rows by a "key" / "-key" value, numbers as numbers. */
+    const sortRows = (rows, sort) => {
+      if (!sort) return rows.slice();
+      const desc = sort.startsWith('-');
+      const key = desc ? sort.slice(1) : sort;
+      const sorted = rows.slice().sort((a, b) => (typeof a[key] === 'number' ? a[key] - b[key] : String(a[key]).localeCompare(String(b[key]))));
+      return desc ? sorted.reverse() : sorted;
+    };
+
+    log(byId('sorting'), byId('log-sorting'), ['sort-change']);
+
+    // server mode: the "server" answers after a moment
+    const server = byId('server');
+    const people = server.rows;
+    server.addEventListener('sort-change', async (e) => {
+      const sort = e.detail.sort;
+      await Promise.resolve();
+      server.loading = true;
+      await wait(700);
+      server.rows = sortRows(people, sort);
+      server.loading = false;
+    });
+
+    const selection = byId('selection');
+    log(selection, byId('log-selection'), ['selection-change']);
+    byId('select-all').addEventListener('kakao-button-action', () => selection.selectAll());
+    byId('select-none').addEventListener('kakao-button-action', () => selection.clearSelection());
+    byId('select-set').addEventListener('kakao-button-action', () => { selection.selected = ['a1', 'c3']; });
+
+    byId('form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      logLine(byId('log-form'), 'submit', { 'selection[]': new FormData(e.target).getAll('selection[]') });
+    });
+
+    // long tables for the sticky header
+    const measurements = Array.from({ length: 24 }, (unused, i) => ({
+      id: i + 1,
+      station: `Station ${String(i + 1).padStart(2, '0')}`,
+      temperature: (11 + ((i * 7) % 13) / 2).toFixed(1),
+      humidity: 48 + ((i * 11) % 37),
+      wind: i % 6 === 4 ? null : (2 + ((i * 5) % 17) / 2).toFixed(1),
+    }));
+    const measurementColumns = [
+      { key: 'station', label: 'Station', sortable: true },
+      { key: 'temperature', label: 'Temperature (°C)', type: 'number', sortable: true },
+      { key: 'humidity', label: 'Humidity (%)', type: 'number', sortable: true },
+      { key: 'wind', label: 'Wind (m/s)', type: 'number', sortable: true },
+    ];
+    ['sticky', 'framed'].forEach((id) => {
+      byId(id).columns = measurementColumns;
+      byId(id).rows = id === 'sticky' ? measurements : measurements.slice(0, 14);
+    });
+
+    const yii = byId('yii');
+    log(yii, byId('log-yii'), ['sort-change']);
+
+    byId('loading-toggle').addEventListener('kakao-button-action', () => {
+      byId('loading').loading = !byId('loading').loading;
+    });
+
+    // table and pager over 23 cities
+    const cities = [
+      ['Vienna', 'Austria', 1982000], ['Graz', 'Austria', 292000], ['Linz', 'Austria', 207000], ['Salzburg', 'Austria', 155000],
+      ['Oslo', 'Norway', 709000], ['Bergen', 'Norway', 289000], ['Trondheim', 'Norway', 212000], ['Stavanger', 'Norway', 146000],
+      ['Berlin', 'Germany', 3677000], ['Hamburg', 'Germany', 1853000], ['Munich', 'Germany', 1488000], ['Cologne', 'Germany', 1073000],
+      ['Zurich', 'Switzerland', 421000], ['Geneva', 'Switzerland', 203000], ['Basel', 'Switzerland', 173000], ['Bern', 'Switzerland', 134000],
+      ['Copenhagen', 'Denmark', 644000], ['Aarhus', 'Denmark', 285000], ['Odense', 'Denmark', 180000],
+      ['Stockholm', 'Sweden', 975000], ['Gothenburg', 'Sweden', 583000], ['Malmö', 'Sweden', 351000], ['Uppsala', 'Sweden', 177000],
+    ].map(([city, country, people], i) => ({ id: i + 1, city, country, people }));
+    const paged = byId('paged');
+    const pager = byId('pager');
+    paged.columns = [
+      { key: 'city', label: 'City', sortable: true },
+      { key: 'country', label: 'Country', sortable: true },
+      { key: 'people', label: 'Population', type: 'number', sortable: true, render: (value) => value.toLocaleString('en-GB') },
+    ];
+    const show = () => {
+      const sorted = sortRows(cities, paged.sort);
+      pager.totalItems = sorted.length;
+      paged.rows = sorted.slice(pager.from - 1, pager.to);
+    };
+    paged.addEventListener('sort-change', () => queueMicrotask(() => { pager.page = 1; show(); }));
+    customElements.whenDefined('kakao-pagination').then(() => {
+      pager.addEventListener('page-change', () => queueMicrotask(show));
+      pager.addEventListener('page-size-change', () => queueMicrotask(show));
+      show();
+    });
+
+    // rendered cells and a date type
+    KakaoTable.types.date = {
+      compare: (a, b) => new Date(a) - new Date(b),
+      format: (value) => new Date(value).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+    };
+    const script = byId('script');
+    script.columns = [
+      { key: 'task', label: 'Task', sortable: true },
+      { key: 'state', label: 'State', render: (value) => {
+        const badge = document.createElement('kakao-badge');
+        badge.setAttribute('tone', value === 'Done' ? 'success' : 'primary');
+        badge.textContent = value;
+        return badge;
+      } },
+      { key: 'due', label: 'Due', type: 'date', sortable: true },
+      { key: 'actions', label: 'Actions', hideLabel: true, align: 'end', render: () => {
+        const button = document.createElement('kakao-button');
+        button.setAttribute('label', 'Open');
+        button.setAttribute('variant', 'secondary');
+        button.setAttribute('size', 'sm');
+        return button;
+      } },
+    ];
+    script.rows = [
+      { id: 1, task: 'Write the spec', state: 'Done', due: '2026-11-02' },
+      { id: 2, task: 'Build the table', state: 'Doing', due: '2026-11-15' },
+      { id: 3, task: 'Plan the grid view', state: 'Doing', due: null },
+    ];
+
+    byId('words-de').addEventListener('kakao-button-action', () => {
+      KakaoTable.texts = { sortBy: 'Sortieren nach', notSorted: 'Nicht sortiert', ascending: '{label}, aufsteigend', descending: '{label}, absteigend', selectAll: 'Alle auswählen', selectRow: '{row} auswählen', selectRowPlain: 'Zeile auswählen', emptyHeading: 'Nichts anzuzeigen', emptyLabel: 'Nicht gesetzt', loading: 'Lädt' };
+    });
+    byId('words-reset').addEventListener('kakao-button-action', () => { KakaoTable.texts = KakaoTable.TEXTS; });
+
+    // the first server table on a page without table.js, in a frame
+    const theme = document.documentElement.getAttribute('data-kakao-theme');
+    byId('frame-plain').srcdoc = [
+      `<!DOCTYPE html><html lang="en"${theme ? ` data-kakao-theme="${theme}"` : ''}><head><meta charset="UTF-8" /><base href="${location.href}" />`,
+      '<link rel="stylesheet" href="../../shared/tokens.css" /><link rel="stylesheet" href="../../shared/font.css" /><link rel="stylesheet" href="../../shared/themes.css" /><link rel="stylesheet" href="table.css" />',
+      '<style>body { margin: 0; padding: 4px; background: transparent; font-family: var(--kakao-font-family, system-ui, sans-serif); color: var(--kakao-color-text, #18181b); } a { color: inherit; }</style></head><body>',
+      '<kakao-table><table><thead><tr><th>Customer</th><th>Status</th><th data-type="number">Total (€)</th><th>Ordered</th></tr></thead><tbody>',
+      '<tr><td><a href="#order-1041">Lovelace Ltd</a></td><td>Paid</td><td data-type="number">1,280.00</td><td>3 Nov 2026</td></tr>',
+      '<tr><td><a href="#order-1042">Hopper Inc</a></td><td>Open</td><td data-type="number">310.50</td><td>12 Nov 2026</td></tr>',
+      '<tr><td><a href="#order-1043">Turing GmbH</a></td><td>Overdue</td><td data-type="number">94.00</td><td></td></tr>',
+      '</tbody></table></kakao-table></body></html>',
+    ].join('');
+  });
+</script>
+</body>
+</html>

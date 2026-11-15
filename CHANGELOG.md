@@ -10,6 +10,25 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-table`: a data table, light DOM (`table.css` with `table.js`). It
+  draws a real `<table>` from `list-data` (`{ columns, rows }`; a column has
+  `key`, `label`, `type` text or number, `align`, `sortable`, `width`,
+  `hideLabel`), or enhances the server-rendered `<table>` it is wrapped
+  around, where a heading that is a link (Yii2's sorter) stays a link.
+  Sortable headings are buttons with own sort arrows and `aria-sort`; `sort`
+  is "name" or "-name"; a cancelable `sort-change` fires, and
+  `sort-mode="server"` leaves the rows to the page. `selectable` adds row
+  checkboxes and select all with its indeterminate state, `selection-change`
+  and `selected`; `selection-name` submits them with a form. `sticky-header`,
+  `striped`, `dense`, `bordered`; numbers tabular at the end; an empty cell
+  shows "—" read as "Not set". No rows: an empty state (`kakao-empty-state`
+  where loaded, or your own `data-table-empty` child); `loading`: placeholder
+  rows (`kakao-skeleton` where loaded) and `aria-busy`. Narrower than
+  `--kakao-table-stack-below` (36rem, its own width) each row wraps into a
+  block of label / value pairs, with "Sort by" and "Select all" above the
+  blocks; `scroll` opts in to sideways scrolling in the frame with the edge
+  fade. `columns` / `rows` properties with `render()` cells,
+  `KakaoTable.types` for own column types, `KakaoTable.texts` for the words.
 - `kakao-pagination`: page links for a long list, standing alone so a table
   or grid can put one below itself. `page` (1-based) with `total-pages`, or
   `total-items` and `page-size`; `siblings` and `boundaries` set the ellipsis

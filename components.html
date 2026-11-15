@@ -12,6 +12,7 @@
 <script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
 <link rel="stylesheet" href="components/tabs/tabs.css" />
+<link rel="stylesheet" href="components/table/table.css" />
 <link rel="stylesheet" href="shared/vendor/fontawesome/css/all.min.css" />
 <link rel="stylesheet" href="components/chip-list/chip-list.css" />
 <link rel="stylesheet" href="components/button/button.css" />
@@ -22,6 +23,7 @@
 <script src="components/stepper/stepper.js" defer></script>
 <script src="components/pagination/pagination.js" defer></script>
 <script src="components/popover/popover.js" defer></script>
+<script src="components/table/table.js" defer></script>
 <script src="components/tabs/tabs.js" defer></script>
 <script src="components/list/list.js" defer></script>
 <script src="components/button/button.js" defer></script>
@@ -1634,6 +1636,36 @@
       </div>
     </article>
 
+    <!-- ============================== Table ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Table</h2>
+        <code>&lt;kakao-table&gt;</code>
+        <a href="components/table/construction.html">Construction</a>
+        <a href="components/table/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A data table: sortable headings (<code>aria-sort</code>, <code>sort-change</code>, in the browser or by the server), row selection with select all (<code>selection-change</code>, submitted with a form), a sticky header, an empty and a loading state, <code>striped</code>, <code>dense</code> and <code>bordered</code>. Drawn from <code>list-data</code> (columns and rows), or wrapped around a server-rendered <code>&lt;table&gt;</code>, which it enhances in place. On a phone each row wraps into a block of label / value pairs; <code>scroll</code> keeps the columns and scrolls sideways instead.</p>
+      <div class="examples wide">
+        <div class="example" style="grid-column:1/-1">
+          <h3>Sortable and selectable · <code>selectable</code> <code>sort</code></h3>
+          <kakao-table selectable sort="name" label="Example files" list-data='{"columns":[{"key":"name","label":"Name","sortable":true},{"key":"kind","label":"Kind","sortable":true},{"key":"size","label":"Size (MB)","type":"number","sortable":true},{"key":"owner","label":"Owner"}],"rows":[{"id":1,"name":"Team photo.jpg","kind":"Image","size":4.1,"owner":null,"selected":true},{"id":2,"name":"Annual report.pdf","kind":"PDF","size":2.4,"owner":"Ada Lovelace"},{"id":3,"name":"Budget 2027.xlsx","kind":"Spreadsheet","size":0.3,"owner":"Grace Hopper"}]}'></kakao-table>
+        </div>
+        <div class="example" style="grid-column:1/-1">
+          <h3>Striped, dense, bordered · <code>striped</code> <code>dense</code> <code>bordered</code></h3>
+          <kakao-table striped dense bordered label="Example cities" list-data='{"columns":[{"key":"city","label":"City"},{"key":"country","label":"Country"},{"key":"people","label":"Population","type":"number"}],"rows":[["Vienna","Austria","1,982,000"],["Graz","Austria","292,000"],["Bergen","Norway","289,000"],["Oslo","Norway","709,000"]]}'></kakao-table>
+        </div>
+        <div class="example">
+          <h3>Wrapped, as on a phone · <code>layout="stacked"</code></h3>
+          <kakao-table layout="stacked" selectable label="Example files, wrapped" style="max-width:22rem" list-data='{"columns":[{"key":"name","label":"Name","sortable":true},{"key":"size","label":"Size (MB)","type":"number","sortable":true},{"key":"owner","label":"Owner"}],"rows":[{"id":1,"name":"Annual report.pdf","size":2.4,"owner":"Ada Lovelace"},{"id":2,"name":"Team photo.jpg","size":4.1,"owner":null}]}'></kakao-table>
+        </div>
+        <div class="example">
+          <h3>No rows, and loading · <code>loading</code></h3>
+          <kakao-table dense label="Example without rows" empty-heading="No invoices yet" list-data='{"columns":[{"key":"number","label":"Invoice"},{"key":"total","label":"Total (€)","type":"number"}],"rows":[]}'></kakao-table>
+          <kakao-table dense loading loading-rows="2" label="Example loading" style="margin-top:1rem" list-data='{"columns":[{"key":"number","label":"Invoice"},{"key":"total","label":"Total (€)","type":"number"}],"rows":[]}'></kakao-table>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Tabs ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1853,15 +1885,6 @@
       <div class="component-head"><h2>Command palette</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: none</p>
       <p class="placeholder-native">A ⌘K search over the page's actions.</p>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Table</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;table&gt;</code></p>
-      <p class="placeholder-native">Sortable headers, row selection and a sticky header. On by default: on a phone each row wraps into a block of label/value pairs instead of a squeezed row.</p>
-      <div class="native">
-        <table style="border-collapse:collapse"><thead><tr><th style="text-align:left;padding-right:1rem">Name</th><th style="text-align:left">Size</th></tr></thead><tbody><tr><td style="padding-right:1rem">report.pdf</td><td>2 MB</td></tr><tr><td style="padding-right:1rem">photo.jpg</td><td>4 MB</td></tr></tbody></table>
-      </div>
     </article>
 
     <article class="card placeholder">

@@ -1,0 +1,522 @@
+/*
+ * kakao-table styles
+ *
+ * Light DOM: the table, its rows and cells stay in the page, so a
+ * server-rendered <table> is styled before any script runs and page scripts
+ * keep reaching the cells. Every rule is scoped under kakao-table.
+ *
+ * Theming: every --kakao-table-* property in the settings block below can be
+ * set on <kakao-table> or any ancestor. The defaults live in that block:
+ * change them on construction.html.
+ */
+
+kakao-table {
+  /* @kakao-settings:start prefix=--kakao-table- (written by construction.html, edit there) */
+  --_text: var(--kakao-table-text, var(--kakao-color-text, #18181b));
+  --_head-color: var(--kakao-table-head-color, var(--kakao-color-text-soft, #3f3f46));
+  --_head-bg: var(--kakao-table-head-bg, var(--kakao-color-bg, #ffffff));
+  --_muted: var(--kakao-table-muted, var(--kakao-color-muted, #62626c));
+  --_line: var(--kakao-table-line, var(--kakao-color-line, #e5e7eb));
+  --_stripe-bg: var(--kakao-table-stripe-bg, var(--kakao-color-subtle, #f0f0f1));
+  --_selected-bg: var(--kakao-table-selected-bg, var(--kakao-color-subtle-strong, #e6e6e8));
+  --_selected-muted: var(--kakao-table-selected-muted, var(--kakao-color-text-soft, #3f3f46));
+  --_sort-color: var(--kakao-table-sort-color, var(--kakao-color-muted, #62626c));
+  --_sort-active-color: var(--kakao-table-sort-active-color, var(--kakao-color-text, #18181b));
+  --_box-bg: var(--kakao-table-box-bg, var(--kakao-color-bg, #ffffff));
+  --_box-border: var(--kakao-table-box-border, var(--kakao-color-border, #82828b));
+  --_box-checked-bg: var(--kakao-table-box-checked-bg, var(--kakao-color-ink, #18181b));
+  --_mark: var(--kakao-table-mark, var(--kakao-color-on-ink, #fafafa));
+  --_control-bg: var(--kakao-table-control-bg, var(--kakao-color-bg, #ffffff));
+  --_control-border: var(--kakao-table-control-border, var(--kakao-color-border, #82828b));
+  --_skeleton: var(--kakao-table-skeleton, var(--kakao-color-subtle-strong, #e6e6e8));
+  --_focus: var(--kakao-table-focus, var(--kakao-color-focus, #2563eb));
+  --_font-size: var(--kakao-table-font-size, var(--kakao-font-size, 0.95rem));
+  --_head-size: var(--kakao-table-head-size, 0.875rem);
+  --_head-weight: var(--kakao-table-head-weight, 600);
+  --_cell-padding-x: var(--kakao-table-cell-padding-x, 0.75rem);
+  --_cell-padding-y: var(--kakao-table-cell-padding-y, 0.625rem);
+  --_line-width: var(--kakao-table-line-width, 1px);
+  --_radius: var(--kakao-table-radius, 10px);
+  --_dense-font-size: var(--kakao-table-dense-font-size, 0.875rem);
+  --_dense-head-size: var(--kakao-table-dense-head-size, 0.8125rem);
+  --_dense-padding-y: var(--kakao-table-dense-padding-y, 0.3125rem);
+  --_sticky-top: var(--kakao-table-sticky-top, 0px);
+  --_max-height: var(--kakao-table-max-height, none);
+  --_scroll-fade: var(--kakao-table-scroll-fade, var(--kakao-scroll-fade, 1.5rem));
+  --_stack-below: var(--kakao-table-stack-below, 36rem);
+  --_label-width: var(--kakao-table-label-width, 7.5rem);
+  --_label-size: var(--kakao-table-label-size, 0.875rem);
+  --_label-gap: var(--kakao-table-label-gap, 0.75rem);
+  --_block-padding: var(--kakao-table-block-padding, 0.625rem);
+  --_stack-gap: var(--kakao-table-stack-gap, 0.1875rem);
+  --_box-size: var(--kakao-table-box-size, 20px);
+  --_box-radius: var(--kakao-table-box-radius, 6px);
+  --_control-radius: var(--kakao-table-control-radius, 10px);
+  --_focus-width: var(--kakao-table-focus-width, 2px);
+  --_focus-offset: var(--kakao-table-focus-offset, 2px);
+  --_duration: var(--kakao-table-duration, 120ms);
+  /* @kakao-settings:end */
+  display: block;
+  position: relative;
+  min-width: 0;
+  color: var(--_text);
+  font-size: var(--_font-size);
+  line-height: 1.45;
+}
+
+kakao-table[hidden],
+kakao-table [hidden] {
+  display: none !important;
+}
+
+kakao-table[dense] {
+  --_font-size: var(--_dense-font-size);
+  --_head-size: var(--_dense-head-size);
+  --_cell-padding-y: var(--_dense-padding-y);
+}
+
+/* ---- Frame ---- */
+
+kakao-table .kakao-table-scroll {
+  /* Holds the visually hidden texts in its cells, so they scroll with it. */
+  position: relative;
+  min-width: 0;
+}
+
+kakao-table[bordered] .kakao-table-scroll {
+  border: var(--_line-width) solid var(--_line);
+  border-radius: var(--_radius);
+  /* clip keeps the corners round without becoming a scroll container, so a
+     sticky header still sticks to the page. */
+  overflow: clip;
+}
+
+/* Opt-in: columns stay side by side and the table scrolls in its frame. */
+kakao-table[scroll] .kakao-table-scroll {
+  overflow: auto;
+  max-height: var(--_max-height);
+  -webkit-overflow-scrolling: touch;
+}
+/* Side by side means at least the width below which the rows would wrap. */
+kakao-table[scroll] table {
+  min-width: var(--_stack-below);
+}
+kakao-table[scroll] th,
+kakao-table[scroll] td {
+  overflow-wrap: normal;
+}
+
+kakao-table .kakao-table-scroll:focus-visible {
+  outline: var(--_focus-width) solid var(--_focus);
+  outline-offset: var(--_focus-offset);
+}
+
+/* Edge fade where there is more to scroll (set by syncEdgeFade). */
+kakao-table .kakao-table-scroll[data-more-left] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade));
+  mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade));
+}
+kakao-table .kakao-table-scroll[data-more-right] {
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 var(--_scroll-fade));
+  mask-image: linear-gradient(to left, transparent, #000 var(--_scroll-fade));
+}
+kakao-table .kakao-table-scroll[data-more-left][data-more-right] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade), #000 calc(100% - var(--_scroll-fade)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--_scroll-fade), #000 calc(100% - var(--_scroll-fade)), transparent);
+}
+
+/* ---- Table ---- */
+
+kakao-table table {
+  width: 100%;
+  margin: 0;
+  border-collapse: separate; /* collapsed borders do not travel with a sticky header */
+  border-spacing: 0;
+  color: inherit;
+  font: inherit;
+}
+
+kakao-table caption {
+  padding: 0 var(--_cell-padding-x) 0.5rem;
+  color: var(--_muted);
+  font-size: var(--_head-size);
+  text-align: start;
+}
+
+kakao-table th,
+kakao-table td {
+  box-sizing: border-box;
+  padding: var(--_cell-padding-y) var(--_cell-padding-x);
+  border: 0;
+  border-bottom: var(--_line-width) solid var(--_line);
+  background: transparent;
+  color: inherit;
+  font-weight: inherit;
+  text-align: start;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+
+kakao-table thead th {
+  color: var(--_head-color);
+  font-size: var(--_head-size);
+  font-weight: var(--_head-weight);
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+kakao-table tbody th {
+  font-weight: 600;
+}
+
+kakao-table tbody:last-of-type tr:last-child > * {
+  border-bottom: 0;
+}
+
+kakao-table [data-align="center"] { text-align: center; }
+kakao-table [data-align="end"] { text-align: end; }
+kakao-table [data-type="number"] { font-variant-numeric: tabular-nums; }
+/* A number column is at the end by itself, also before the script has run. */
+kakao-table:not([data-stacked]) [data-type="number"]:not([data-align]) { text-align: end; }
+kakao-table td[data-type="number"] { white-space: nowrap; }
+
+kakao-table td[data-empty] {
+  color: var(--_muted);
+}
+
+kakao-table[bordered] th + th,
+kakao-table[bordered] td + td,
+kakao-table[bordered] th + td {
+  border-inline-start: var(--_line-width) solid var(--_line);
+}
+
+kakao-table[bordered] .kakao-table-select + th,
+kakao-table[bordered] .kakao-table-select + td {
+  border-inline-start: 0;
+}
+
+kakao-table[striped] tbody tr:nth-child(even):not([data-selected]) > * {
+  background: var(--_stripe-bg);
+}
+
+kakao-table tbody tr[data-selected] > * {
+  background: var(--_selected-bg);
+}
+/* Muted text is too faint on the selected fill in some themes: labels and
+   dashes in a selected row take the soft text colour. */
+kakao-table tbody tr[data-selected] {
+  --_muted: var(--_selected-muted);
+}
+
+kakao-table[sticky-header]:not([data-stacked]) thead th {
+  position: sticky;
+  top: var(--_sticky-top);
+  z-index: 1;
+  background: var(--_head-bg);
+}
+/* Inside its own scrolling frame the header sticks to the frame's top. */
+kakao-table[sticky-header][scroll] thead th {
+  top: 0;
+}
+
+/* ---- Sortable heading ---- */
+
+kakao-table .kakao-table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  vertical-align: middle;
+  min-height: 1.75rem;
+  margin: -0.25rem -0.375rem;
+  padding: 0.125rem 0.375rem;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--_duration) ease;
+}
+/* The icon in front of a heading at the end, so the label keeps the column's edge. */
+kakao-table [data-align="end"] > .kakao-table-sort {
+  flex-direction: row-reverse;
+}
+kakao-table .kakao-table-sort:hover {
+  color: var(--_sort-active-color);
+}
+kakao-table .kakao-table-sort:focus-visible {
+  outline: var(--_focus-width) solid var(--_focus);
+  outline-offset: 0;
+}
+kakao-table .kakao-table-sort-icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  color: var(--_sort-color);
+}
+kakao-table [aria-sort="ascending"] .kakao-table-sort,
+kakao-table [aria-sort="descending"] .kakao-table-sort {
+  color: var(--_sort-active-color);
+}
+kakao-table [aria-sort="ascending"] .kakao-table-sort-icon,
+kakao-table [aria-sort="descending"] .kakao-table-sort-icon {
+  color: var(--_sort-active-color);
+}
+/* Sorted: only the arrow of the direction is left, in the middle of the icon. */
+kakao-table [aria-sort="ascending"] .kakao-table-sort-down,
+kakao-table [aria-sort="descending"] .kakao-table-sort-up {
+  display: none;
+}
+kakao-table [aria-sort="ascending"] .kakao-table-sort-up { transform: translateY(3px); }
+kakao-table [aria-sort="descending"] .kakao-table-sort-down { transform: translateY(-3px); }
+
+/* ---- Selection ---- */
+
+kakao-table .kakao-table-select {
+  width: 1%;
+  padding-inline-end: 0;
+  white-space: nowrap;
+}
+
+kakao-table .kakao-table-check {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  vertical-align: middle;
+  cursor: pointer;
+}
+kakao-table .kakao-table-check input {
+  position: absolute;
+  inset: -0.375rem;
+  width: calc(100% + 0.75rem);
+  height: calc(100% + 0.75rem);
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+kakao-table .kakao-table-box {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: var(--_box-size);
+  height: var(--_box-size);
+  border: 1px solid var(--_box-border);
+  border-radius: var(--_box-radius);
+  background: var(--_box-bg);
+  color: var(--_mark);
+  transition: background-color var(--_duration) ease, border-color var(--_duration) ease;
+}
+kakao-table .kakao-table-box svg {
+  display: none;
+  width: 72%;
+  height: 72%;
+}
+kakao-table .kakao-table-check input:checked + .kakao-table-box,
+kakao-table .kakao-table-check input:indeterminate + .kakao-table-box {
+  border-color: var(--_box-checked-bg);
+  background: var(--_box-checked-bg);
+}
+kakao-table .kakao-table-check input:checked:not(:indeterminate) + .kakao-table-box .kakao-table-tick,
+kakao-table .kakao-table-check input:indeterminate + .kakao-table-box .kakao-table-dash {
+  display: block;
+}
+kakao-table .kakao-table-check input:focus-visible + .kakao-table-box {
+  outline: var(--_focus-width) solid var(--_focus);
+  outline-offset: var(--_focus-offset);
+}
+
+/* ---- Wrapped form: each row a block of label / value pairs ---- */
+
+kakao-table[data-stacked] table,
+kakao-table[data-stacked] tbody,
+kakao-table[data-stacked] tr,
+kakao-table[data-stacked] td,
+kakao-table[data-stacked] tbody th {
+  display: block;
+}
+kakao-table[data-stacked] thead,
+kakao-table[data-stacked] colgroup {
+  display: none;
+}
+kakao-table[data-stacked] tbody tr {
+  padding-block: var(--_block-padding);
+  border-bottom: var(--_line-width) solid var(--_line);
+}
+kakao-table[data-stacked] tbody:last-of-type tr:last-child {
+  border-bottom: 0;
+}
+kakao-table[data-stacked][striped] tbody tr:nth-child(even):not([data-selected]) {
+  background: var(--_stripe-bg);
+}
+kakao-table[data-stacked] tbody tr[data-selected] {
+  background: var(--_selected-bg);
+}
+kakao-table[data-stacked] tbody tr > * {
+  /* The label floats in the padding, so a value of any content (text, links,
+     buttons) wraps beside it and a long label makes the cell taller. */
+  display: flow-root;
+  width: auto;
+  padding: var(--_stack-gap) var(--_cell-padding-x);
+  padding-inline-start: calc(var(--_cell-padding-x) + var(--_label-width) + var(--_label-gap));
+  border: 0;
+  background: none;
+  text-align: start;
+  white-space: normal;
+}
+kakao-table[data-stacked] tbody tr > *::before {
+  content: attr(data-label);
+  float: inline-start;
+  width: var(--_label-width);
+  margin-inline-start: calc(-1 * (var(--_label-width) + var(--_label-gap)));
+  color: var(--_muted);
+  font-size: var(--_label-size);
+  font-weight: 400;
+  font-variant-numeric: normal;
+  overflow-wrap: anywhere;
+}
+/* A cell without a label (the selection checkbox, an action column) takes the full width. */
+kakao-table[data-stacked] tbody tr > [data-label=""],
+kakao-table[data-stacked] tbody tr > :not([data-label]) {
+  padding-inline-start: var(--_cell-padding-x);
+}
+kakao-table[data-stacked] tbody tr > [data-label=""]::before,
+kakao-table[data-stacked] tbody tr > :not([data-label])::before {
+  content: none;
+}
+kakao-table[data-stacked] tbody td.kakao-table-select {
+  padding-bottom: 0.375rem;
+}
+
+/* Sort and select all, while the heading row is hidden. */
+kakao-table .kakao-table-tools {
+  display: none;
+}
+kakao-table[data-stacked] .kakao-table-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0 var(--_cell-padding-x) var(--_block-padding);
+  border-bottom: var(--_line-width) solid var(--_line);
+  font-size: var(--_label-size);
+}
+kakao-table .kakao-table-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  color: var(--_muted);
+}
+kakao-table .kakao-table-check.kakao-table-tool {
+  color: inherit;
+}
+kakao-table .kakao-table-tool select {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--_control-border);
+  border-radius: var(--_control-radius);
+  background: var(--_control-bg);
+  color: var(--_text);
+  font: inherit;
+}
+kakao-table .kakao-table-tool select:focus-visible {
+  outline: var(--_focus-width) solid var(--_focus);
+  outline-offset: var(--_focus-offset);
+}
+
+/* ---- Empty and loading ---- */
+
+kakao-table .kakao-table-state {
+  padding: 1.5rem var(--_cell-padding-x);
+  color: var(--_muted);
+  text-align: center;
+}
+kakao-table .kakao-table-state p {
+  margin: 0;
+}
+kakao-table .kakao-table-state b {
+  display: block;
+  color: var(--_text);
+  font-weight: 600;
+}
+
+kakao-table[loading] tbody:not(.kakao-table-loading) {
+  display: none;
+}
+kakao-table .kakao-table-bone {
+  display: block;
+  height: 0.75em;
+  margin-block: 0.35em;
+  border-radius: 999px;
+  background: var(--_skeleton);
+  animation: kakao-table-pulse 1.4s ease-in-out infinite;
+}
+kakao-table .kakao-table-loading kakao-skeleton {
+  display: block;
+}
+@keyframes kakao-table-pulse {
+  50% { opacity: 0.45; }
+}
+
+/* ---- Helpers ---- */
+
+kakao-table .kakao-table-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* Measures --kakao-table-stack-below in px; never seen, and clipped so it
+   cannot make the page scroll sideways. */
+kakao-table .kakao-table-probe {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+kakao-table .kakao-table-probe > i {
+  display: block;
+  width: var(--_stack-below);
+  height: 0;
+}
+
+@media (forced-colors: active) {
+  kakao-table .kakao-table-check input:checked + .kakao-table-box,
+  kakao-table .kakao-table-check input:indeterminate + .kakao-table-box {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+  kakao-table tbody tr[data-selected] > * {
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  kakao-table .kakao-table-sort,
+  kakao-table .kakao-table-box {
+    transition: none;
+  }
+  kakao-table .kakao-table-bone {
+    animation: none;
+  }
+}
+
+@media print {
+  kakao-table tr { break-inside: avoid; }
+  kakao-table .kakao-table-tools { display: none !important; }
+}

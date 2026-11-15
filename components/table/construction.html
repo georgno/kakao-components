@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-table - Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="table.css" />
+<script src="../button/button.js" defer></script>
+<script src="../skeleton/skeleton.js" defer></script>
+<script src="table.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="table" data-source="table.css" data-title="Table">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Sortable, selectable, striped</figcaption>
+      <kakao-table selectable striped sort="-size" label="Files" list-data='{
+        "columns": [
+          { "key": "name", "label": "Name", "sortable": true },
+          { "key": "kind", "label": "Kind", "sortable": true },
+          { "key": "size", "label": "Size (MB)", "type": "number", "sortable": true },
+          { "key": "owner", "label": "Owner" }
+        ],
+        "rows": [
+          { "id": 1, "name": "Annual report.pdf", "kind": "PDF", "size": 2.4, "owner": "Ada Lovelace" },
+          { "id": 2, "name": "Team photo.jpg", "kind": "Image", "size": 4.1, "owner": null, "selected": true },
+          { "id": 3, "name": "Budget 2027.xlsx", "kind": "Spreadsheet", "size": 0.3, "owner": "Grace Hopper" },
+          { "id": 4, "name": "Notes.txt", "kind": "Text", "size": 0.1, "owner": "Alan Turing" }
+        ]
+      }'></kakao-table>
+    </figure>
+    <figure>
+      <figcaption>Dense · bordered</figcaption>
+      <kakao-table dense bordered label="Cities" list-data='{
+        "columns": [{ "key": "city", "label": "City", "sortable": true }, { "key": "country", "label": "Country" }, { "key": "people", "label": "Population", "type": "number" }],
+        "rows": [["Vienna", "Austria", "1,982,000"], ["Graz", "Austria", "292,000"], ["Bergen", "Norway", "289,000"]]
+      }'></kakao-table>
+    </figure>
+    <figure>
+      <figcaption>Wrapped · <code>layout="stacked"</code></figcaption>
+      <div style="max-width:22rem">
+        <kakao-table layout="stacked" selectable sort="name" label="Files, wrapped" list-data='{
+          "columns": [
+            { "key": "name", "label": "Name", "sortable": true },
+            { "key": "size", "label": "Size (MB)", "type": "number", "sortable": true },
+            { "key": "owner", "label": "Owner" }
+          ],
+          "rows": [
+            { "id": 1, "name": "Annual report.pdf", "size": 2.4, "owner": "Ada Lovelace" },
+            { "id": 2, "name": "Team photo.jpg", "size": 4.1, "owner": null, "selected": true }
+          ]
+        }'></kakao-table>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Scrolling in its frame · <code>scroll</code>, and loading</figcaption>
+      <div style="display:grid;gap:1rem;max-width:22rem">
+        <kakao-table scroll dense label="Revenue by quarter" list-data='{
+          "columns": [{ "key": "region", "label": "Region" }, { "key": "q1", "label": "Q1", "type": "number" }, { "key": "q2", "label": "Q2", "type": "number" }, { "key": "q3", "label": "Q3", "type": "number" }, { "key": "q4", "label": "Q4", "type": "number" }],
+          "rows": [["North", "128,400", "131,950", "140,200", "152,780"], ["South", "98,120", "101,400", "97,860", "110,340"]]
+        }'></kakao-table>
+        <kakao-table scroll loading loading-rows="2" label="Loading" list-data='{
+          "columns": [{ "key": "name", "label": "Name" }, { "key": "size", "label": "Size (MB)", "type": "number" }],
+          "rows": []
+        }'></kakao-table>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-table-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-table-head-color", "label": "Headings", "group": "Colour", "type": "color" },
+    { "property": "--kakao-table-head-bg", "label": "Sticky heading fill", "group": "Colour", "type": "color", "hint": "the surface the table sits on" },
+    { "property": "--kakao-table-muted", "label": "Labels and empty cells", "group": "Colour", "type": "color", "hint": "wrapped labels, the dash, the caption" },
+    { "property": "--kakao-table-line", "label": "Lines", "group": "Colour", "type": "color" },
+    { "property": "--kakao-table-stripe-bg", "label": "Stripe", "group": "Colour", "type": "color" },
+    { "property": "--kakao-table-selected-bg", "label": "Selected row", "group": "Colour", "type": "color" },
+    { "property": "--kakao-table-selected-muted", "label": "Labels and empty cells, selected row", "group": "Colour", "type": "color", "hint": "muted text is too faint on the selected fill" },
+    { "property": "--kakao-table-sort-color", "label": "Sort icon", "group": "Colour", "type": "color" },
+    { "property": "--kakao-table-sort-active-color", "label": "Sorted heading", "group": "Colour", "type": "color" },
+    { "property": "--kakao-table-skeleton", "label": "Loading placeholder", "group": "Colour", "type": "color", "hint": "without kakao-skeleton" },
+    { "property": "--kakao-table-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-table-box-bg", "label": "Box", "group": "Checkbox", "type": "color" },
+    { "property": "--kakao-table-box-border", "label": "Box border", "group": "Checkbox", "type": "color" },
+    { "property": "--kakao-table-box-checked-bg", "label": "Box, checked", "group": "Checkbox", "type": "color" },
+    { "property": "--kakao-table-mark", "label": "Check mark", "group": "Checkbox", "type": "color" },
+    { "property": "--kakao-table-box-size", "label": "Box size", "group": "Checkbox", "type": "length" },
+    { "property": "--kakao-table-box-radius", "label": "Box radius", "group": "Checkbox", "type": "radius" },
+    { "property": "--kakao-table-font-size", "label": "Font size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-head-size", "label": "Heading size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-head-weight", "label": "Heading weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-table-cell-padding-x", "label": "Cell padding, sides", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-cell-padding-y", "label": "Cell padding, above and below", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-line-width", "label": "Line width", "group": "Size & spacing", "type": "length", "units": ["px", "rem"] },
+    { "property": "--kakao-table-radius", "label": "Frame radius", "group": "Size & spacing", "type": "radius", "hint": "bordered" },
+    { "property": "--kakao-table-dense-font-size", "label": "Font size", "group": "Dense", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-dense-head-size", "label": "Heading size", "group": "Dense", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-dense-padding-y", "label": "Cell padding, above and below", "group": "Dense", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-sticky-top", "label": "Sticky header offset", "group": "Sticky & scrolling", "type": "length", "hint": "the height of a fixed bar above" },
+    { "property": "--kakao-table-max-height", "label": "Frame height limit", "group": "Sticky & scrolling", "type": "text", "hint": "with scroll: the frame also scrolls down; none for no limit" },
+    { "property": "--kakao-table-scroll-fade", "label": "Edge fade", "group": "Sticky & scrolling", "type": "length", "hint": "when it scrolls sideways" },
+    { "property": "--kakao-table-stack-below", "label": "Wrap below", "group": "Wrapped form", "type": "length", "units": ["rem", "px", "em"], "hint": "a table narrower than this wraps its rows into blocks" },
+    { "property": "--kakao-table-label-width", "label": "Label column", "group": "Wrapped form", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-label-size", "label": "Label size", "group": "Wrapped form", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-label-gap", "label": "Gap between label and value", "group": "Wrapped form", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-block-padding", "label": "Block padding", "group": "Wrapped form", "type": "length", "units": ["rem", "px", "em"], "hint": "above and below each row's block" },
+    { "property": "--kakao-table-stack-gap", "label": "Gap between pairs", "group": "Wrapped form", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-table-control-bg", "label": "Sort select fill", "group": "Wrapped form", "type": "color" },
+    { "property": "--kakao-table-control-border", "label": "Sort select border", "group": "Wrapped form", "type": "color" },
+    { "property": "--kakao-table-control-radius", "label": "Sort select radius", "group": "Wrapped form", "type": "radius" },
+    { "property": "--kakao-table-focus-width", "label": "Focus ring width", "group": "State", "type": "length" },
+    { "property": "--kakao-table-focus-offset", "label": "Focus ring offset", "group": "State", "type": "length" },
+    { "property": "--kakao-table-duration", "label": "Hover transition", "group": "State", "type": "duration" }
+  ]
+  </script>
+</main>
+</body>
+</html>
