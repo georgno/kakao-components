@@ -18,6 +18,11 @@ pages (landing page, settings, demos), not the components.
   there is nothing to copy or the browser refuses (falls back to a hidden
   textarea first). Events `copy-success` and `copy-error`, methods `copy()` and
   `reset()`, `slot="icon"` for an own icon.
+- `kakao-empty-state`: the quiet block for a list, table or card with nothing
+  in it: an icon (built-in tray glyph, your own in `slot="icon"`, or
+  `no-icon`), `heading` with `heading-level` (default 3), `message` or the
+  default slot, and `slot="actions"`, centred; `size="sm"` for tight places.
+  No frame of its own: it sits on the surface around it.
 - `kakao-error-page`: an error page (404, 500, 503 …) from attributes: the code
   very large and as a diagonal pattern in the background, the heading (common
   codes have a default), message, reference, time and more rows (`list-data`),

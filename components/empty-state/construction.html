@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-empty-state - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="empty-state.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="empty-state" data-source="empty-state.js" data-title="Empty state">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default · with actions</figcaption>
+      <kakao-empty-state heading="No invoices yet" heading-level="2" message="Invoices you create appear here. You can also bring them over from a spreadsheet.">
+        <kakao-button slot="actions" label="New invoice"></kakao-button>
+        <kakao-button slot="actions" label="Import" variant="secondary"></kakao-button>
+      </kakao-empty-state>
+    </figure>
+    <figure>
+      <figcaption>Small</figcaption>
+      <kakao-empty-state size="sm" heading="No results" heading-level="2" message="Nothing matches these filters.">
+        <kakao-button slot="actions" label="Clear filters" variant="secondary" size="sm"></kakao-button>
+      </kakao-empty-state>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-empty-state-text", "label": "Heading", "group": "Colour", "type": "color" },
+    { "property": "--kakao-empty-state-muted", "label": "Message", "group": "Colour", "type": "color" },
+    { "property": "--kakao-empty-state-icon-color", "label": "Icon", "group": "Colour", "type": "color" },
+    { "property": "--kakao-empty-state-icon-surface", "label": "Icon fill", "group": "Colour", "type": "color", "hint": "the round fill behind the icon; transparent for none" },
+    { "property": "--kakao-empty-state-heading-size", "label": "Heading size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-heading-weight", "label": "Heading weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-empty-state-font-size", "label": "Font size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-icon-size", "label": "Icon size", "group": "Icon", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-icon-box-size", "label": "Icon fill size", "group": "Icon", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-icon-radius", "label": "Icon fill radius", "group": "Icon", "type": "radius" },
+    { "property": "--kakao-empty-state-padding-y", "label": "Padding top and bottom", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-padding-x", "label": "Padding sides", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "between heading and message; double above the actions and below the icon" },
+    { "property": "--kakao-empty-state-actions-gap", "label": "Actions gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "between buttons" },
+    { "property": "--kakao-empty-state-max-width", "label": "Text width", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "longest line" },
+    { "property": "--kakao-empty-state-sm-icon-size", "label": "Icon size", "group": "Small", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-sm-icon-box-size", "label": "Icon fill size", "group": "Small", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-sm-heading-size", "label": "Heading size", "group": "Small", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-sm-font-size", "label": "Font size", "group": "Small", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-sm-padding-y", "label": "Padding top and bottom", "group": "Small", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-sm-padding-x", "label": "Padding sides", "group": "Small", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-empty-state-sm-gap", "label": "Gap", "group": "Small", "type": "length", "units": ["rem", "px", "em"] }
+  ]
+  </script>
+</main>
+</body>
+</html>

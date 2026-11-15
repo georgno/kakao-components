@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-empty-state - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="empty-state.js" defer></script>
+<style>
+  /* A table whose body is empty: the empty state fills the one cell. */
+  .demo-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .demo-table th { text-align: start; font-weight: 600; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--line); }
+  .demo-table td { padding: 0; }
+  /* A panel with a fixed height: the block is centred in it by the panel. */
+  .tall-area {
+    display: grid;
+    place-items: center;
+    min-height: 18rem;
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+  }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Empty state"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Empty state</h1>
+    <p><code>&lt;kakao-empty-state&gt;</code> - the quiet block shown where content is missing: an icon, a heading, a short message and actions, centred. It has no frame of its own and sits on the surface of the card, list or table area around it. For an error that fills the page there is the <a href="../error-page/demo.html">error page</a>.</p>
+  </header>
+
+  <h2>Heading and message</h2>
+  <p>The heading is an <code>h3</code> by default, because the block usually sits in a section or card that has its own heading; <code>heading-level</code> changes it. Content in the default slot replaces <code>message</code>, for text with a link.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">From attributes</h3>
+      <kakao-empty-state heading="No invoices yet" heading-level="4" message="Invoices you create appear here."></kakao-empty-state>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Message in the default slot</h3>
+      <kakao-empty-state heading="Nothing shared with you" heading-level="4">
+        Files other people share with you show up here. <a href="#sharing">How sharing works</a>
+      </kakao-empty-state>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Message only</h3>
+      <kakao-empty-state message="No comments."></kakao-empty-state>
+    </kakao-card>
+  </div>
+
+  <h2>Actions · <code>slot="actions"</code></h2>
+  <p>Buttons or links in a centred row that wraps; the main action first. Keep it to one or two.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">One action</h3>
+      <kakao-empty-state heading="No projects yet" heading-level="4" message="A project keeps your tasks, files and people together.">
+        <kakao-button slot="actions" label="New project"></kakao-button>
+      </kakao-empty-state>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Two actions</h3>
+      <kakao-empty-state heading="No contacts" heading-level="4" message="Add people one by one, or bring them over from a spreadsheet.">
+        <kakao-button slot="actions" label="Add contact"></kakao-button>
+        <kakao-button slot="actions" label="Import a CSV file" variant="secondary"></kakao-button>
+      </kakao-empty-state>
+    </kakao-card>
+  </div>
+
+  <h2>Icon · <code>slot="icon"</code>, <code>no-icon</code></h2>
+  <p>The built-in glyph is a tray. A <code>slot="icon"</code> child replaces it: an inline SVG in <code>currentColor</code> takes the icon colour and size. <code>no-icon</code> leaves the icon out. The icon is decoration, so give it <code>aria-hidden="true"</code>.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Search</h3>
+      <kakao-empty-state heading="No results for “quartz”" heading-level="4" message="Check the spelling or try a more general word.">
+        <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+        <kakao-button slot="actions" label="Clear search" variant="secondary"></kakao-button>
+      </kakao-empty-state>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Folder</h3>
+      <kakao-empty-state heading="This folder is empty" heading-level="4" message="Drop files here or use Upload.">
+        <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7a1.5 1.5 0 0 1 1.5-1.5h4l2 2.5h8A1.5 1.5 0 0 1 20.5 9.5v8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5z"/></svg>
+      </kakao-empty-state>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Without icon</h3>
+      <kakao-empty-state no-icon heading="No notifications" heading-level="4" message="You are all caught up."></kakao-empty-state>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">A larger illustration</h3>
+      <p>Raise <code>--kakao-empty-state-icon-size</code> and <code>-icon-box-size</code>, and make <code>-icon-surface</code> transparent.</p>
+      <kakao-empty-state style="--kakao-empty-state-icon-size: 4.5rem; --kakao-empty-state-icon-box-size: 4.5rem; --kakao-empty-state-icon-surface: transparent" heading="No messages" heading-level="4" message="When someone writes to you, the conversation starts here.">
+        <svg slot="icon" viewBox="0 0 72 72" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="18" width="52" height="36" rx="5"/><path d="M11 21l25 19 25-19"/><path d="M11 52l18-17M61 52L43 35" opacity=".5"/></svg>
+      </kakao-empty-state>
+    </kakao-card>
+  </div>
+
+  <h2>Sizes · <code>size="sm"</code></h2>
+  <p>The default size is for a card or a panel. <code>sm</code> is for tight places: a table body, a popover, a small card. Smaller buttons go with it.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Default</h3>
+      <kakao-empty-state heading="No tags" heading-level="4" message="Tags help you find things again.">
+        <kakao-button slot="actions" label="Add a tag" variant="secondary"></kakao-button>
+      </kakao-empty-state>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Small</h3>
+      <kakao-empty-state size="sm" heading="No tags" heading-level="4" message="Tags help you find things again.">
+        <kakao-button slot="actions" label="Add a tag" variant="secondary" size="sm"></kakao-button>
+      </kakao-empty-state>
+    </kakao-card>
+  </div>
+
+  <h2>Where it sits</h2>
+  <p>The block is as high as its content. In a table it goes in one cell across all columns; in an area with a height of its own, the area centres it (<code>display: grid; place-items: center</code>).</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">In an empty table</h3>
+      <table class="demo-table">
+        <thead><tr><th scope="col">Invoice</th><th scope="col">Customer</th><th scope="col">Amount</th></tr></thead>
+        <tbody>
+          <tr><td colspan="3">
+            <kakao-empty-state size="sm" message="No invoices match these filters.">
+              <kakao-button slot="actions" label="Clear filters" variant="ghost" size="sm"></kakao-button>
+            </kakao-empty-state>
+          </td></tr>
+        </tbody>
+      </table>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Centred in a tall area</h3>
+      <div class="tall-area" data-demo-wrap>
+        <kakao-empty-state heading="No file selected" heading-level="4" message="Pick a file on the left to see its preview."></kakao-empty-state>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Playground</h2>
+  <p>One empty state, driven by its attributes.</p>
+  <div class="grid">
+    <kakao-card>
+      <kakao-empty-state id="play" heading="No results" heading-level="3" message="Nothing matches what you typed.">
+        <kakao-button slot="actions" label="Clear search" variant="secondary"></kakao-button>
+      </kakao-empty-state>
+      <div class="row" data-demo-only>
+        <kakao-button id="play-size" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-icon" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-heading" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-text" label="Change the text" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <template data-code>
+        <script>
+          const empty = document.getElementById('play');
+          empty.setAttribute('heading', 'No invoices yet'); // the block follows its attributes
+          empty.setAttribute('size', 'sm');
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <footer>Attributes: <code>heading</code>, <code>heading-level</code> (1-6, default 3), <code>message</code>, <code>size</code> (<code>sm</code>), <code>no-icon</code>. Slots: default (message), <code>icon</code>, <code>actions</code>. Full reference in the header of <code>empty-state.js</code>.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-empty-state').then(() => {
+    const play = document.getElementById('play');
+    const texts = [
+      ['No results', 'Nothing matches what you typed.'],
+      ['No invoices yet', 'Invoices you create appear here.'],
+      ['Inbox zero', 'New messages land here. Enjoy the quiet while it lasts.'],
+    ];
+    let at = 0;
+    let withHeading = true;
+    toggleButton(document.getElementById('play-size'), 'size="sm"', (v) => (v ? play.setAttribute('size', 'sm') : play.removeAttribute('size')));
+    toggleButton(document.getElementById('play-icon'), 'no-icon', (v) => play.toggleAttribute('no-icon', v));
+    toggleButton(document.getElementById('play-heading'), 'no heading', (v) => {
+      withHeading = !v;
+      if (v) play.removeAttribute('heading'); else play.setAttribute('heading', texts[at][0]);
+    });
+    document.getElementById('play-text').addEventListener('kakao-button-action', () => {
+      at = (at + 1) % texts.length;
+      if (withHeading) play.setAttribute('heading', texts[at][0]);
+      play.setAttribute('message', texts[at][1]);
+    });
+  });
+</script>
+</body>
+</html>

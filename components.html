@@ -63,6 +63,7 @@
 <script src="components/spinner/spinner.js" defer></script>
 <script src="components/error-summary/error-summary.js" defer></script>
 <script src="components/error-page/error-page.js" defer></script>
+<script src="components/empty-state/empty-state.js" defer></script>
 <script src="components/copy-button/copy-button.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
@@ -711,6 +712,40 @@
           <kakao-button label="Delete" variant="danger" data-close="delete"></kakao-button>
         </div>
       </kakao-dialog>
+    </article>
+
+    <!-- ============================== Empty state ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Empty state</h2>
+        <code>&lt;kakao-empty-state&gt;</code>
+        <a href="components/empty-state/construction.html">Construction</a>
+        <a href="components/empty-state/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The quiet block shown where content is missing: an icon, a heading, a short message and actions, centred on the surface of the card, list or table area around it. A built-in tray glyph or your own icon in <code>slot="icon"</code>; <code>size="sm"</code> for tight places.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Heading, message, action</h3>
+          <kakao-empty-state heading="No invoices yet" heading-level="4" message="Invoices you create appear here.">
+            <kakao-button slot="actions" label="New invoice" size="sm"></kakao-button>
+          </kakao-empty-state>
+        </div>
+        <div class="example">
+          <h3>Own icon · <code>slot="icon"</code></h3>
+          <kakao-empty-state heading="No results for “quartz”" heading-level="4" message="Check the spelling or try a more general word.">
+            <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+            <kakao-button slot="actions" label="Clear search" variant="secondary" size="sm"></kakao-button>
+          </kakao-empty-state>
+        </div>
+        <div class="example">
+          <h3>Small · <code>size="sm"</code></h3>
+          <kakao-empty-state size="sm" heading="No tags" heading-level="4" message="Tags help you find things again."></kakao-empty-state>
+        </div>
+        <div class="example">
+          <h3>Message only · <code>no-icon</code></h3>
+          <kakao-empty-state size="sm" no-icon message="No comments."></kakao-empty-state>
+        </div>
+      </div>
     </article>
 
     <!-- ============================== Error page ============================== -->
@@ -1630,12 +1665,6 @@
       <p class="placeholder-native">An image that loads lazily, shows a skeleton of its size until it has loaded, and takes alt text and an optional caption below it.</p>
     </article>
 
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Empty state</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: none</p>
-      <p class="placeholder-native">An icon, a title, a short text and an action.</p>
-    </article>
 
     <article class="card placeholder">
       <div class="component-head"><h2>Description list</h2><kakao-badge outline>Missing</kakao-badge></div>
