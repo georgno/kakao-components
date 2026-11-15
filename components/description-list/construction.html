@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-description-list - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="description-list.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="description-list" data-source="description-list.js" data-title="Description list">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default · dividers</figcaption>
+      <kakao-description-list dividers list-data='[["Plan", "Pro"], ["Renews", "1 Dec 2026"], ["Coupon", null]]'>
+        <dt>Status</dt>
+        <dd><kakao-badge tone="success">Active</kakao-badge></dd>
+      </kakao-description-list>
+    </figure>
+    <figure>
+      <figcaption>Small · stacked · two columns</figcaption>
+      <kakao-description-list size="sm" layout="stacked" columns="2" list-data='[["Created", "3 Mar 2026"], ["Updated", "12 Nov 2026"], ["Version", "2.4.0"], ["Licence", null]]'></kakao-description-list>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-description-list-text", "label": "Value", "group": "Colour", "type": "color" },
+    { "property": "--kakao-description-list-term-color", "label": "Term", "group": "Colour", "type": "color" },
+    { "property": "--kakao-description-list-empty-color", "label": "Empty value", "group": "Colour", "type": "color", "hint": "the placeholder of a value that is not set" },
+    { "property": "--kakao-description-list-line", "label": "Divider", "group": "Colour", "type": "color" },
+    { "property": "--kakao-description-list-font-size", "label": "Font size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-description-list-term-size", "label": "Term size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-description-list-term-weight", "label": "Term weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-description-list-value-weight", "label": "Value weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-description-list-term-width", "label": "Term column", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "width of the terms, side by side" },
+    { "property": "--kakao-description-list-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "between term and value, side by side" },
+    { "property": "--kakao-description-list-stack-gap", "label": "Stacked gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "between term and value, stacked" },
+    { "property": "--kakao-description-list-padding-y", "label": "Row padding", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "above and below each row" },
+    { "property": "--kakao-description-list-stack-below", "label": "Stack below", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "a row narrower than this puts the term above the value" },
+    { "property": "--kakao-description-list-divider-width", "label": "Divider width", "group": "Size & spacing", "type": "length", "units": ["px", "rem"] },
+    { "property": "--kakao-description-list-column-gap", "label": "Column gap", "group": "Columns", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-description-list-column-min-width", "label": "Column minimum", "group": "Columns", "type": "length", "units": ["rem", "px", "em"], "hint": "a column narrower than this falls away" },
+    { "property": "--kakao-description-list-sm-font-size", "label": "Font size", "group": "Small", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-description-list-sm-term-size", "label": "Term size", "group": "Small", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-description-list-sm-padding-y", "label": "Row padding", "group": "Small", "type": "length", "units": ["rem", "px", "em"] }
+  ]
+  </script>
+</main>
+</body>
+</html>

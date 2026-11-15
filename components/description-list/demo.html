@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-description-list - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="description-list.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<style>
+  /* A narrow column, to show the list stacking by itself. */
+  .narrow { max-width: 18rem; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Description list"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Description list</h1>
+    <p><code>&lt;kakao-description-list&gt;</code> - key/value rows for summary and detail screens, drawn as a real <code>&lt;dl&gt;</code>: the term muted, the value in the text colour. Term beside value where there is room, term above value where there is not.</p>
+  </header>
+
+  <h2>Rows · <code>list-data</code>, <code>&lt;dt&gt;</code> / <code>&lt;dd&gt;</code></h2>
+  <p><code>list-data</code> takes a JSON array of <code>[term, value]</code> pairs or <code>{"term", "value"}</code> objects, set as plain text. Values with markup (a badge, a link) are written as native <code>&lt;dt&gt;</code> and <code>&lt;dd&gt;</code> children. Both together: the rows from <code>list-data</code> come first.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">From <code>list-data</code></h3>
+      <kakao-description-list list-data='[["Plan", "Pro"], ["Seats", 12], ["Renews", "1 Dec 2026"], ["Billing email", "accounts@example.com"]]'></kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Objects</h3>
+      <kakao-description-list list-data='[{"term": "Order", "value": "#10482"}, {"term": "Placed", "value": "12 Nov 2026, 09:41"}, {"term": "Carrier", "value": "DHL Express"}]'></kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Native children with rich values</h3>
+      <kakao-description-list>
+        <dt>Status</dt>
+        <dd><kakao-badge tone="success">Active</kakao-badge></dd>
+        <dt>Owner</dt>
+        <dd><a href="#owner">Ada Lovelace</a></dd>
+        <dt>Repository</dt>
+        <dd><code>kakao/components</code></dd>
+        <dt>Labels</dt>
+        <dd><kakao-badge>Design</kakao-badge> <kakao-badge>Frontend</kakao-badge></dd>
+      </kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Both together</h3>
+      <kakao-description-list list-data='[["Invoice", "INV-2026-118"], ["Due", "30 Nov 2026"]]'>
+        <dt>State</dt>
+        <dd><kakao-badge tone="warning">Open</kakao-badge></dd>
+      </kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Several values, shared values</h3>
+      <p>More than one <code>&lt;dd&gt;</code> after a term (or an array as the value in <code>list-data</code>) are more values of that term. Terms that follow each other share the values.</p>
+      <kakao-description-list list-data='[["Phone", ["+49 30 1234 567", "+49 170 765 4321"]]]'>
+        <dt>Billing address</dt>
+        <dt>Shipping address</dt>
+        <dd>Lindenstraße 4, 10969 Berlin</dd>
+      </kakao-description-list>
+    </kakao-card>
+  </div>
+
+  <h2>Empty values · <code>empty-text</code></h2>
+  <p>A value that is <code>null</code>, an empty text or an empty <code>&lt;dd&gt;</code> shows a placeholder in the muted colour, a dash by default. A screen reader hears <code>empty-label</code> ("Not set") in place of the dash; a placeholder that is a word is read as it is.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Default dash</h3>
+      <kakao-description-list list-data='[["Company", "Kakao GmbH"], ["VAT number", null], ["Coupon", ""]]'>
+        <dt>Notes</dt>
+        <dd></dd>
+      </kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Own text</h3>
+      <kakao-description-list empty-text="None" list-data='[["Company", "Kakao GmbH"], ["VAT number", null], ["Coupon", ""]]'></kakao-description-list>
+    </kakao-card>
+  </div>
+
+  <h2>Layout · <code>layout="stacked"</code></h2>
+  <p>Side by side is the default: the terms in a column of their own (<code>--kakao-description-list-term-width</code>). <code>layout="stacked"</code> puts each term above its value at every width. A side-by-side list stacks by itself when a row gets narrower than <code>--kakao-description-list-stack-below</code>, as on a phone, the way a data table wraps into label/value blocks there.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Side by side</h3>
+      <kakao-description-list list-data='[["Name", "Ada Lovelace"], ["Email", "ada@example.com"], ["Role", "Administrator"]]'></kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Stacked</h3>
+      <kakao-description-list layout="stacked" list-data='[["Name", "Ada Lovelace"], ["Email", "ada@example.com"], ["Role", "Administrator"]]'></kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Side by side in a narrow column</h3>
+      <p>The same markup as the first card, in a column of 18rem: it stacks.</p>
+      <div class="narrow" data-demo-wrap>
+        <kakao-description-list list-data='[["Name", "Ada Lovelace"], ["Email", "ada@example.com"], ["Role", "Administrator"]]'></kakao-description-list>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Dividers and size · <code>dividers</code>, <code>size="sm"</code></h2>
+  <p><code>dividers</code> draws a hairline between the rows. <code>size="sm"</code> is the dense form: smaller type, less space between the rows.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Dividers</h3>
+      <kakao-description-list dividers list-data='[["Plan", "Pro"], ["Seats", 12], ["Renews", "1 Dec 2026"], ["Coupon", null]]'></kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Small</h3>
+      <kakao-description-list size="sm" list-data='[["Plan", "Pro"], ["Seats", 12], ["Renews", "1 Dec 2026"], ["Coupon", null]]'></kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Small with dividers</h3>
+      <kakao-description-list size="sm" dividers list-data='[["Plan", "Pro"], ["Seats", 12], ["Renews", "1 Dec 2026"], ["Coupon", null]]'></kakao-description-list>
+    </kakao-card>
+  </div>
+
+  <h2>Columns · <code>columns</code></h2>
+  <p>With <code>columns</code> (2, 3 or 4) the pairs fill a grid, row by row. A column falls away while it would be narrower than <code>--kakao-description-list-column-min-width</code>, so on a phone it is one column again. Stacked pairs suit a grid best.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Two columns</h3>
+      <kakao-description-list columns="2" dividers list-data='[["First name", "Ada"], ["Last name", "Lovelace"], ["Email", "ada@example.com"], ["Phone", null], ["Country", "United Kingdom"], ["Time zone", "Europe/London"]]'></kakao-description-list>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Three columns, stacked</h3>
+      <kakao-description-list columns="3" layout="stacked" list-data='[["Created", "3 Mar 2026"], ["Updated", "12 Nov 2026"], ["Version", "2.4.0"], ["Licence", "MIT"], ["Size", "48 kB"], ["Downloads", "12,480"]]'></kakao-description-list>
+    </kakao-card>
+  </div>
+
+  <h2>Values at the end · <code>align="end"</code></h2>
+  <p>For amounts in a summary: the values line up at the end of the row. A stacked list keeps them at the start.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Order summary</h3>
+      <kakao-description-list align="end" dividers label="Order summary">
+        <dt>Subtotal</dt>
+        <dd>€ 148.00</dd>
+        <dt>Shipping</dt>
+        <dd>€ 4.90</dd>
+        <dt>Discount</dt>
+        <dd></dd>
+        <dt>Total</dt>
+        <dd><strong>€ 152.90</strong></dd>
+      </kakao-description-list>
+    </kakao-card>
+  </div>
+
+  <h2>Playground</h2>
+  <p>One list, driven by its attributes and children.</p>
+  <div class="grid">
+    <kakao-card>
+      <kakao-description-list id="play" list-data='[["Plan", "Pro"], ["Seats", 12], ["Renews", "1 Dec 2026"], ["Coupon", null]]'>
+        <dt>Status</dt>
+        <dd><kakao-badge tone="success">Active</kakao-badge></dd>
+        <dt>Owner</dt>
+        <dd><a href="#owner">Ada Lovelace</a></dd>
+      </kakao-description-list>
+      <div class="row" data-demo-only>
+        <kakao-button id="play-layout" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-dividers" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-size" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-columns" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-align" variant="ghost" size="sm"></kakao-button>
+        <kakao-button id="play-add" label="Add a row" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <template data-code>
+        <script>
+          const list = document.getElementById('play');
+          list.setAttribute('list-data', JSON.stringify([['Plan', 'Team'], ['Seats', 40]]));
+          list.toggleAttribute('dividers', true);
+          // Children can be added at any time; the list follows.
+          list.insertAdjacentHTML('beforeend', '<dt>Region</dt><dd>EU West</dd>');
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <footer>Attributes: <code>list-data</code>, <code>layout</code> (<code>stacked</code>), <code>columns</code> (2-4), <code>dividers</code>, <code>size</code> (<code>sm</code>), <code>align</code> (<code>end</code>), <code>empty-text</code>, <code>empty-label</code>, <code>label</code>. Children: <code>&lt;dt&gt;</code> and <code>&lt;dd&gt;</code>. Full reference in the header of <code>description-list.js</code>.</footer>
+</main>
+<script>
+  customElements.whenDefined('kakao-description-list').then(() => {
+    const play = document.getElementById('play');
+    const flag = (name, value) => (on) => (on ? play.setAttribute(name, value) : play.removeAttribute(name));
+    toggleButton(document.getElementById('play-layout'), 'layout="stacked"', flag('layout', 'stacked'));
+    toggleButton(document.getElementById('play-dividers'), 'dividers', flag('dividers', ''));
+    toggleButton(document.getElementById('play-size'), 'size="sm"', flag('size', 'sm'));
+    toggleButton(document.getElementById('play-columns'), 'columns="2"', flag('columns', '2'));
+    toggleButton(document.getElementById('play-align'), 'align="end"', flag('align', 'end'));
+    const extra = [['Region', 'EU West'], ['Backup', ''], ['Support', 'Priority']];
+    let at = 0;
+    document.getElementById('play-add').addEventListener('kakao-button-action', () => {
+      const [term, value] = extra[at % extra.length];
+      at += 1;
+      const dt = document.createElement('dt');
+      dt.textContent = term;
+      const dd = document.createElement('dd');
+      dd.textContent = value;
+      play.append(dt, dd);
+    });
+  });
+</script>
+</body>
+</html>

@@ -18,6 +18,13 @@ pages (landing page, settings, demos), not the components.
   there is nothing to copy or the browser refuses (falls back to a hidden
   textarea first). Events `copy-success` and `copy-error`, methods `copy()` and
   `reset()`, `slot="icon"` for an own icon.
+- `kakao-description-list`: key/value rows for summary and detail screens as a
+  real `<dl>`. Rows from `list-data` (`[term, value]` pairs or `{term, value}`
+  objects) and/or native `<dt>` / `<dd>` children for values with badges and
+  links. Term beside value, stacking by itself when a row gets narrow (a
+  phone) or always with `layout="stacked"`; `columns` (2 to 4), `dividers`,
+  `size="sm"`, `align="end"` for amounts, and `empty-text` (a dash, read as
+  `empty-label`) for values that are not set.
 - `kakao-empty-state`: the quiet block for a list, table or card with nothing
   in it: an icon (built-in tray glyph, your own in `slot="icon"`, or
   `no-icon`), `heading` with `heading-level` (default 3), `message` or the

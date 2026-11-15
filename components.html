@@ -63,13 +63,15 @@
 <script src="components/spinner/spinner.js" defer></script>
 <script src="components/error-summary/error-summary.js" defer></script>
 <script src="components/error-page/error-page.js" defer></script>
+<script src="components/description-list/description-list.js" defer></script>
 <script src="components/empty-state/empty-state.js" defer></script>
 <script src="components/copy-button/copy-button.js" defer></script>
 <style>
   article.card { scroll-margin-top: 1rem; }
+  /* The plain native list in the card example; not the description list's own rows. */
   dl { margin: 0; font-size: 14px; }
-  dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
-  dd { margin: 0 0 4px; }
+  dl > dt { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
+  dl > dd { margin: 0 0 4px; }
   /* Header bar examples: in a frame, not sticky, their state set by hand. */
   .ov-bar-frame { overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
   .ov-bar-frame kakao-header-bar { position: relative; z-index: auto; }
@@ -673,6 +675,46 @@
             <kakao-date-input type="datetime-local" label="Meeting" value="2026-10-30T09:30"></kakao-date-input>
             <kakao-date-input type="month" label="Invoice month" value="2026-10" hint="A typed YYYY-MM where the browser has no month field"></kakao-date-input>
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Description list ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Description list</h2>
+        <code>&lt;kakao-description-list&gt;</code>
+        <a href="components/description-list/construction.html">Construction</a>
+        <a href="components/description-list/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Key/value rows for summary and detail screens, drawn as a real <code>&lt;dl&gt;</code>: the term muted, the value in the text colour. Rows from <code>list-data</code> or native <code>&lt;dt&gt;</code> / <code>&lt;dd&gt;</code> children with badges and links. Term beside value where there is room, above it on a phone; dividers, a dense size, columns and a placeholder for empty values.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>From <code>list-data</code> · empty value</h3>
+          <kakao-description-list list-data='[["Plan", "Pro"], ["Seats", 12], ["Renews", "1 Dec 2026"], ["Coupon", null]]'></kakao-description-list>
+        </div>
+        <div class="example">
+          <h3>Rich values · <code>dividers</code></h3>
+          <kakao-description-list dividers>
+            <dt>Status</dt>
+            <dd><kakao-badge tone="success">Active</kakao-badge></dd>
+            <dt>Owner</dt>
+            <dd><a href="#owner">Ada Lovelace</a></dd>
+            <dt>Repository</dt>
+            <dd><code>kakao/components</code></dd>
+          </kakao-description-list>
+        </div>
+        <div class="example">
+          <h3>Small · <code>align="end"</code></h3>
+          <kakao-description-list size="sm" align="end" dividers list-data='[["Subtotal", "€ 148.00"], ["Shipping", "€ 4.90"], ["Total", "€ 152.90"]]'></kakao-description-list>
+        </div>
+        <div class="example">
+          <h3>Stacked · <code>layout="stacked"</code></h3>
+          <kakao-description-list layout="stacked" list-data='[["Billing email", "accounts@example.com"], ["Address", "Lindenstraße 4, 10969 Berlin"]]'></kakao-description-list>
+        </div>
+        <div class="example full">
+          <h3>Columns · <code>columns="3"</code></h3>
+          <kakao-description-list layout="stacked" columns="3" list-data='[["Created", "3 Mar 2026"], ["Updated", "12 Nov 2026"], ["Version", "2.4.0"], ["Licence", "MIT"], ["Size", "48 kB"], ["Downloads", "12,480"]]'></kakao-description-list>
         </div>
       </div>
     </article>
@@ -1665,15 +1707,6 @@
       <p class="placeholder-native">An image that loads lazily, shows a skeleton of its size until it has loaded, and takes alt text and an optional caption below it.</p>
     </article>
 
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Description list</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;dl&gt;</code></p>
-      <p class="placeholder-native">Key/value rows for summary and detail screens.</p>
-      <div class="native">
-        <dl style="margin:0;display:grid;grid-template-columns:auto 1fr;gap:.25rem 1rem"><dt>Plan</dt><dd style="margin:0">Pro</dd><dt>Renews</dt><dd style="margin:0">1 Dec 2026</dd></dl>
-      </div>
-    </article>
 
     <article class="card placeholder">
       <div class="component-head"><h2>Table</h2><kakao-badge outline>Missing</kakao-badge></div>
