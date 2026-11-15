@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-kbd - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="kbd.js" defer></script>
+<style>
+  .keys { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; }
+  .menu { display: grid; gap: 0.15rem; max-width: 20rem; margin: 0; padding: 0; list-style: none; }
+  .menu li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.4rem 0.6rem; border-radius: 6px; }
+  .menu li:hover { background: var(--kakao-color-subtle, #f0f0f1); }
+  .on-ink { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; padding: 0.45rem 0.7rem; border-radius: 6px; background: var(--kakao-color-ink, #18181b); color: var(--kakao-color-on-ink, #fafafa); font-size: 0.85rem; }
+  .action { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
+  .prose { margin: 0; max-width: 60ch; line-height: 1.7; }
+</style>
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Kbd"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Kbd</h1>
+    <p><code>&lt;kakao-kbd&gt;</code> - keyboard keys as keycaps: a key, a combination or a sequence. Inline and not interactive; drawn the way the reader's platform writes them.</p>
+  </header>
+
+  <h2>Keys</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Single keys</h3>
+      <p class="muted">The text is the key. Anything that is not a known key name is shown as written.</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd>Esc</kakao-kbd>
+        <kakao-kbd>K</kakao-kbd>
+        <kakao-kbd>F5</kakao-kbd>
+        <kakao-kbd>Space</kakao-kbd>
+        <kakao-kbd>?</kakao-kbd>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Combination · <code>+</code></h3>
+      <p class="muted">A plus joins the keys of one combination, in the text or in <code>keys</code>. Here with <code>platform="other"</code>, so it looks the same on every machine.</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd platform="other">Ctrl+K</kakao-kbd>
+        <kakao-kbd platform="other" keys="Ctrl+Shift+P"></kakao-kbd>
+        <kakao-kbd platform="other" keys="Alt+Enter"></kakao-kbd>
+        <kakao-kbd platform="other" keys="Ctrl++"></kakao-kbd>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Sequence · a space</h3>
+      <p class="muted">A space separates keys pressed one after the other. <code>then-label</code> sets the word between them.</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd keys="G I"></kakao-kbd>
+        <kakao-kbd platform="other" keys="Ctrl+K Ctrl+S"></kakao-kbd>
+        <kakao-kbd keys="G I" then-label="dann"></kakao-kbd>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Arrows</h3>
+      <p class="muted">Arrow keys are drawn as arrows on every platform; a screen reader hears "Up arrow".</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd keys="Up"></kakao-kbd>
+        <kakao-kbd keys="Down"></kakao-kbd>
+        <kakao-kbd keys="Left"></kakao-kbd>
+        <kakao-kbd keys="Right"></kakao-kbd>
+        <kakao-kbd platform="other" keys="Shift+Up"></kakao-kbd>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Platform</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Detected · <code>Mod</code></h3>
+      <p class="muted"><code>Mod</code> is Command on a Mac and Ctrl everywhere else. Without <code>platform</code> the component asks the browser, so these follow the machine you are on.</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd keys="Mod+K"></kakao-kbd>
+        <kakao-kbd keys="Mod+Shift+P"></kakao-kbd>
+        <kakao-kbd keys="Mod+Enter"></kakao-kbd>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Mac · <code>platform="mac"</code></h3>
+      <p class="muted">Modifiers, Return, Delete and Tab as their symbols, side by side without a plus. Each symbol has its name as hidden text.</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd platform="mac" keys="Mod+K"></kakao-kbd>
+        <kakao-kbd platform="mac" keys="Mod+Shift+P"></kakao-kbd>
+        <kakao-kbd platform="mac" keys="Ctrl+Alt+Backspace"></kakao-kbd>
+        <kakao-kbd platform="mac" keys="Mod+Enter"></kakao-kbd>
+        <kakao-kbd platform="mac" keys="Shift+Tab"></kakao-kbd>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Everywhere else · <code>platform="other"</code></h3>
+      <p class="muted">The same keys as words, joined by a plus.</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd platform="other" keys="Mod+K"></kakao-kbd>
+        <kakao-kbd platform="other" keys="Mod+Shift+P"></kakao-kbd>
+        <kakao-kbd platform="other" keys="Ctrl+Alt+Backspace"></kakao-kbd>
+        <kakao-kbd platform="other" keys="Mod+Enter"></kakao-kbd>
+        <kakao-kbd platform="other" keys="Shift+Tab"></kakao-kbd>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Looks</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Sizes · <code>size</code></h3>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd platform="other" keys="Ctrl+S"></kakao-kbd>
+        <kakao-kbd platform="other" size="sm" keys="Ctrl+S"></kakao-kbd>
+        <kakao-kbd platform="mac" keys="Mod+S"></kakao-kbd>
+        <kakao-kbd platform="mac" size="sm" keys="Mod+S"></kakao-kbd>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Outline · <code>outline</code></h3>
+      <p class="muted">No fill; border and text take the surrounding text colour, so the keys work on any background, like this tooltip-style box.</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd outline platform="other" keys="Ctrl+K"></kakao-kbd>
+        <span class="on-ink">Search <kakao-kbd outline size="sm" platform="other" keys="Ctrl+K"></kakao-kbd></span>
+        <span class="on-ink">Close <kakao-kbd outline size="sm" keys="Esc"></kakao-kbd></span>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Renamed keys · <code>list-data</code></h3>
+      <p class="muted">A JSON object from key name to label, for another language. The label is also what a screen reader hears for a symbol.</p>
+      <div class="keys" data-demo-wrap>
+        <kakao-kbd platform="other" keys="Ctrl+Enter" list-data='{"ctrl": "Strg", "enter": "Eingabe"}'></kakao-kbd>
+        <kakao-kbd keys="Esc" list-data='{"esc": "Abbruch"}'></kakao-kbd>
+        <kakao-kbd platform="other" keys="Ctrl+Del" list-data='{"ctrl": "Strg", "del": "Entf"}'></kakao-kbd>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>In context</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">In a sentence</h3>
+      <p class="prose">Press <kakao-kbd size="sm" keys="Mod+K"></kakao-kbd> to open the search, move with <kakao-kbd size="sm" keys="Up"></kakao-kbd> and <kakao-kbd size="sm" keys="Down"></kakao-kbd>, pick with <kakao-kbd size="sm" keys="Enter"></kakao-kbd> and leave with <kakao-kbd size="sm">Esc</kakao-kbd>. The keys sit on the line and wrap with the text.</p>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Next to menu items</h3>
+      <ul class="menu">
+        <li><span>New file</span> <kakao-kbd size="sm" keys="Mod+N"></kakao-kbd></li>
+        <li><span>Save</span> <kakao-kbd size="sm" keys="Mod+S"></kakao-kbd></li>
+        <li><span>Command palette</span> <kakao-kbd size="sm" keys="Mod+Shift+P"></kakao-kbd></li>
+        <li><span>Go to inbox</span> <kakao-kbd size="sm" keys="G I"></kakao-kbd></li>
+      </ul>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Beside a button</h3>
+      <div class="action" data-demo-wrap>
+        <kakao-button label="Send"></kakao-button>
+        <span class="muted">or press <kakao-kbd size="sm" keys="Mod+Enter"></kakao-kbd></span>
+      </div>
+    </kakao-card>
+  </div>
+</main>
+</body>
+</html>

@@ -14,6 +14,11 @@ pages (landing page, settings, demos), not the components.
   very large and as a diagonal pattern in the background, the heading (common
   codes have a default), message, reference, time and more rows (`list-data`),
   slots for actions and details; embedded in a box or `full` viewport height.
+- `kakao-kbd`: keyboard keys as keycaps, a key, a combination (`Ctrl+K`) or a
+  sequence (`G I`), from `keys` or the text. `Mod` is Command on a Mac and Ctrl
+  elsewhere, and a Mac gets the key symbols (`platform` forces either); sizes
+  md and sm, `outline` for coloured backgrounds, `list-data` to rename keys;
+  renders nested `<kbd>` with names for the symbols.
 
 ### Changed
 

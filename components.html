@@ -58,6 +58,7 @@
 <script src="components/code-input/code-input.js" defer></script>
 <script src="components/tag-input/tag-input.js" defer></script>
 <script src="components/settings-group/settings-group.js" defer></script>
+<script src="components/kbd/kbd.js" defer></script>
 <script src="components/error-summary/error-summary.js" defer></script>
 <script src="components/error-page/error-page.js" defer></script>
 <style>
@@ -774,6 +775,48 @@
               <kakao-button slot="end" label="Sign in" variant="secondary" size="sm"></kakao-button>
             </kakao-header-bar>
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Kbd ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Kbd</h2>
+        <code>&lt;kakao-kbd&gt;</code>
+        <a href="components/kbd/construction.html">Construction</a>
+        <a href="components/kbd/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Keyboard keys as keycaps: a key, a combination (<code>Ctrl+K</code>) or a sequence (<code>G I</code>), from <code>keys</code> or the text. <code>Mod</code> is Command on a Mac and Ctrl elsewhere; a Mac gets the key symbols. Sizes md and sm, an outline style for coloured backgrounds. Inline, not interactive; renders nested <code>&lt;kbd&gt;</code>.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Words · <code>platform="other"</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center">
+            <kakao-kbd>Esc</kakao-kbd>
+            <kakao-kbd platform="other" keys="Mod+K"></kakao-kbd>
+            <kakao-kbd platform="other" keys="Ctrl+Shift+P"></kakao-kbd>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Symbols · <code>platform="mac"</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center">
+            <kakao-kbd platform="mac" keys="Mod+K"></kakao-kbd>
+            <kakao-kbd platform="mac" keys="Mod+Shift+P"></kakao-kbd>
+            <kakao-kbd keys="Up"></kakao-kbd>
+            <kakao-kbd keys="Down"></kakao-kbd>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Sequence, small, outline</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center">
+            <kakao-kbd keys="G I"></kakao-kbd>
+            <kakao-kbd size="sm" keys="Mod+S"></kakao-kbd>
+            <kakao-kbd outline keys="Mod+Enter"></kakao-kbd>
+          </div>
+        </div>
+        <div class="example">
+          <h3>In a sentence</h3>
+          <p style="margin:0;line-height:1.7">Press <kakao-kbd size="sm" keys="Mod+K"></kakao-kbd> to search, <kakao-kbd size="sm">Esc</kakao-kbd> to close.</p>
         </div>
       </div>
     </article>
@@ -1514,15 +1557,6 @@
       <div class="component-head"><h2>Grid view</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: none. Built on Table, which comes first</p>
       <p class="placeholder-native">A data table: a sort icon beside each heading, a filter field (search or dropdown) under each column, and an action column with buttons per row. Like Table, each row wraps into a block of label/value pairs on a phone by default.</p>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Kbd</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;kbd&gt;</code></p>
-      <p class="placeholder-native">Keyboard keys next to menu items and hints.</p>
-      <div class="native">
-        <span><kbd>⌘</kbd> <kbd>K</kbd></span>
-      </div>
     </article>
 
     <article class="card placeholder">

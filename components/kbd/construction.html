@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-kbd - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="kbd.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .keys { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; }
+  .on-ink { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.7rem; border-radius: 6px; background: var(--kakao-color-ink, #18181b); color: var(--kakao-color-on-ink, #fafafa); font-size: 0.85rem; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="kbd" data-source="kbd.js" data-title="Kbd">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Words and a sequence</figcaption>
+      <div class="keys">
+        <kakao-kbd>Esc</kakao-kbd>
+        <kakao-kbd platform="other" keys="Ctrl+Shift+P"></kakao-kbd>
+        <kakao-kbd keys="G I"></kakao-kbd>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Symbols</figcaption>
+      <div class="keys">
+        <kakao-kbd platform="mac" keys="Mod+Shift+P"></kakao-kbd>
+        <kakao-kbd platform="mac" keys="Ctrl+Alt+Backspace"></kakao-kbd>
+        <kakao-kbd keys="Up"></kakao-kbd>
+        <kakao-kbd keys="Down"></kakao-kbd>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Small</figcaption>
+      <div class="keys">
+        <kakao-kbd size="sm" platform="other" keys="Ctrl+S"></kakao-kbd>
+        <kakao-kbd size="sm" platform="mac" keys="Mod+S"></kakao-kbd>
+        <span>Press <kakao-kbd size="sm" platform="other" keys="Ctrl+K"></kakao-kbd> to search</span>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Outline</figcaption>
+      <div class="keys">
+        <kakao-kbd outline platform="other" keys="Ctrl+K"></kakao-kbd>
+        <span class="on-ink">Search <kakao-kbd outline size="sm" platform="other" keys="Ctrl+K"></kakao-kbd></span>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-kbd-fill", "label": "Fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-kbd-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-kbd-border", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-kbd-edge", "label": "Lower edge", "group": "Colour", "type": "color" },
+    { "property": "--kakao-kbd-separator", "label": "Separator", "group": "Colour", "type": "color", "hint": "the + and the word between steps" },
+    { "property": "--kakao-kbd-outline-mix", "label": "Outline border", "group": "Colour", "type": "percent", "hint": "text colour in the outline border" },
+    { "property": "--kakao-kbd-height", "label": "Height", "group": "Size & spacing", "type": "length", "hint": "also the smallest width" },
+    { "property": "--kakao-kbd-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-kbd-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "hint": "between keys and separators" },
+    { "property": "--kakao-kbd-edge-width", "label": "Lower edge width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-kbd-sm-height", "label": "Small height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-kbd-sm-padding-x", "label": "Small padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-kbd-font-family", "label": "Font family", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-kbd-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-kbd-sm-font-size", "label": "Small font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-kbd-font-weight", "label": "Font weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-kbd-glyph-size", "label": "Symbol size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-kbd-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-kbd-sm-radius", "label": "Small radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+</main>
+</body>
+</html>
