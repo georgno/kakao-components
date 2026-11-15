@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-skeleton - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="skeleton.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .shapes { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+  .narrow { max-width: 22rem; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="skeleton" data-source="skeleton.js" data-title="Skeleton">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Text</figcaption>
+      <div class="narrow">
+        <kakao-skeleton lines="3"></kakao-skeleton>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Circle and block</figcaption>
+      <div class="shapes">
+        <kakao-skeleton shape="circle"></kakao-skeleton>
+        <kakao-skeleton shape="circle" width="56"></kakao-skeleton>
+        <kakao-skeleton shape="block" width="160" height="96"></kakao-skeleton>
+        <kakao-skeleton shape="block" width="96" ratio="1" animation="pulse"></kakao-skeleton>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>List rows</figcaption>
+      <div class="narrow">
+        <kakao-skeleton shape="row" avatar count="3"></kakao-skeleton>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Card</figcaption>
+      <div class="narrow">
+        <kakao-skeleton shape="card" media avatar></kakao-skeleton>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-skeleton-color", "label": "Shape", "group": "Colour", "type": "color" },
+    { "property": "--kakao-skeleton-highlight", "label": "Shimmer band", "group": "Colour", "type": "color", "hint": "the light band that moves across" },
+    { "property": "--kakao-skeleton-row-line", "label": "Row line", "group": "Colour", "type": "color", "hint": "between list rows" },
+    { "property": "--kakao-skeleton-card-background", "label": "Card background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-skeleton-card-border", "label": "Card border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-skeleton-line-height", "label": "Line height", "group": "Text", "type": "length", "units": ["em", "px", "rem"], "hint": "thickness of a text line" },
+    { "property": "--kakao-skeleton-line-gap", "label": "Line gap", "group": "Text", "type": "length", "units": ["em", "px", "rem"] },
+    { "property": "--kakao-skeleton-last-line-width", "label": "Last line width", "group": "Text", "type": "length", "units": ["%", "em", "px"], "hint": "with more than one line" },
+    { "property": "--kakao-skeleton-title-height", "label": "Title height", "group": "Text", "type": "length", "units": ["em", "px", "rem"], "hint": "first line of a row or card" },
+    { "property": "--kakao-skeleton-title-width", "label": "Title width", "group": "Text", "type": "length", "units": ["%", "em", "px"] },
+    { "property": "--kakao-skeleton-circle-size", "label": "Circle size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-skeleton-block-height", "label": "Block height", "group": "Size & spacing", "type": "length", "hint": "without height and ratio" },
+    { "property": "--kakao-skeleton-row-gap", "label": "Row gap", "group": "Size & spacing", "type": "length", "hint": "between circle and lines" },
+    { "property": "--kakao-skeleton-row-padding-y", "label": "Row padding", "group": "Size & spacing", "type": "length", "hint": "above and below a list row" },
+    { "property": "--kakao-skeleton-card-padding", "label": "Card padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-skeleton-card-gap", "label": "Card gap", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-skeleton-media-ratio", "label": "Media ratio", "group": "Size & spacing", "type": "text", "hint": "of a card's media block, e.g. 16 / 9" },
+    { "property": "--kakao-skeleton-radius", "label": "Block radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-skeleton-line-radius", "label": "Line radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-skeleton-card-radius", "label": "Card radius", "group": "Shape", "type": "radius", "hint": "the media block takes this minus the card padding" },
+    { "property": "--kakao-skeleton-duration", "label": "Shimmer", "group": "Motion", "type": "duration", "hint": "one pass of the band" },
+    { "property": "--kakao-skeleton-pulse-duration", "label": "Pulse", "group": "Motion", "type": "duration", "hint": "one fade out and in" },
+    { "property": "--kakao-skeleton-pulse-opacity", "label": "Pulse opacity", "group": "Motion", "type": "number", "min": 0, "max": 1, "step": 0.05, "hint": "at the faintest point" }
+  ]
+  </script>
+</main>
+</body>
+</html>

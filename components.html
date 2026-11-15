@@ -24,6 +24,7 @@
 <script src="components/list/list.js" defer></script>
 <script src="components/button/button.js" defer></script>
 <script src="components/number-input/number-input.js" defer></script>
+<script src="components/skeleton/skeleton.js" defer></script>
 <script src="components/slider/slider.js" defer></script>
 <script src="components/range-slider/range-slider.js" defer></script>
 <script src="components/animated-number/animated-number.js" defer></script>
@@ -1161,6 +1162,38 @@
       </div>
     </article>
 
+    <!-- ============================== Skeleton ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Skeleton</h2>
+        <code>&lt;kakao-skeleton&gt;</code>
+        <a href="components/skeleton/construction.html">Construction</a>
+        <a href="components/skeleton/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A grey placeholder in the shape of content that is still loading, so the page keeps its layout. <code>shape</code>: text lines (the last one shorter), a circle, a plain block with <code>width</code>, <code>height</code>, <code>ratio</code> and <code>radius</code>, or the presets row and card. Shimmer, pulse or no <code>animation</code>; still under reduced motion. Silent for screen readers: the loading region carries <code>aria-busy</code>, or one skeleton a <code>label</code>.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Text · <code>lines</code></h3>
+          <kakao-skeleton lines="3"></kakao-skeleton>
+        </div>
+        <div class="example">
+          <h3>Circle and block · <code>shape</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center">
+            <kakao-skeleton shape="circle"></kakao-skeleton>
+            <kakao-skeleton shape="block" width="140" ratio="16/9"></kakao-skeleton>
+          </div>
+        </div>
+        <div class="example">
+          <h3>List rows · <code>shape="row"</code></h3>
+          <kakao-skeleton shape="row" avatar count="2"></kakao-skeleton>
+        </div>
+        <div class="example">
+          <h3>Card · <code>shape="card"</code></h3>
+          <kakao-skeleton shape="card" avatar lines="2" animation="pulse"></kakao-skeleton>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Slider ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1552,14 +1585,8 @@
     </article>
 
     <article class="card placeholder">
-      <div class="component-head"><h2>Skeleton</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: none</p>
-      <p class="placeholder-native">Loading placeholders shaped like card and list rows.</p>
-    </article>
-
-    <article class="card placeholder">
       <div class="component-head"><h2>Image</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;figure&gt;</code> with <code>&lt;img loading="lazy"&gt;</code> and <code>&lt;figcaption&gt;</code>. Uses Skeleton, which comes first</p>
+      <p class="placeholder-native">Native: <code>&lt;figure&gt;</code> with <code>&lt;img loading="lazy"&gt;</code> and <code>&lt;figcaption&gt;</code>. Uses Skeleton</p>
       <p class="placeholder-native">An image that loads lazily, shows a skeleton of its size until it has loaded, and takes alt text and an optional caption below it.</p>
     </article>
 

@@ -25,6 +25,12 @@ pages (landing page, settings, demos), not the components.
   ("Loading" by default) and `show-label` shows it, beside the ring or under it
   (`stacked`); `delay` keeps it invisible and silent at first so a fast load
   never flashes one. Under reduced motion it fades instead of turning.
+- `kakao-skeleton`: grey placeholders in the shape of content that is still
+  loading. `shape`: text lines (`lines`, the last one shorter), a circle, a
+  plain block (`width`, `height`, `ratio`, `radius`), and the presets row
+  (`avatar`, `count`) and card (`media`, `avatar`). `animation` is shimmer,
+  pulse or none; under reduced motion the shapes stand still. Hidden from
+  assistive technology; an optional `label` makes one skeleton a status.
 
 ### Changed
 

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-skeleton - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="skeleton.js" defer></script>
+<style>
+  .shapes { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+  .stack { display: grid; gap: 1rem; }
+  .narrow { max-width: 24rem; }
+  .text { max-width: 34rem; }
+  .text p { margin: 0; line-height: 1.45; }
+  .big { font-size: 1.5rem; }
+  .profile { display: flex; align-items: center; gap: 0.75rem; max-width: 20rem; }
+  .profile > :last-child { flex: 1; min-width: 0; }
+  .pair { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+  .region { max-width: 24rem; min-height: 11.5rem; }
+  .people { margin: 0; padding: 0; list-style: none; }
+  .people li { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0; line-height: 1.25; }
+  .people li + li { border-top: 1px solid var(--kakao-color-line, #e5e7eb); }
+  .people i { flex: none; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--kakao-color-subtle-strong, #e6e6e8); font-style: normal; font-weight: 600; font-size: 0.85rem; }
+  .people b { display: block; font-weight: 600; }
+  .people span { display: block; }
+</style>
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Skeleton"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Skeleton</h1>
+    <p><code>&lt;kakao-skeleton&gt;</code> - a grey placeholder in the shape of content that is still loading, so the page keeps its layout until the content is there. Not interactive, and silent for screen readers. For a load without a shape use the <a href="../spinner/demo.html">spinner</a>.</p>
+  </header>
+
+  <h2>Text</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Default</h3>
+      <p class="muted">No attributes: one line of text, as wide as its place.</p>
+      <div class="text" data-demo-wrap>
+        <kakao-skeleton></kakao-skeleton>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Lines · <code>lines</code></h3>
+      <p class="muted">With more than one line the last is shorter, like a paragraph.</p>
+      <div class="text" data-demo-wrap>
+        <kakao-skeleton lines="4"></kakao-skeleton>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Follows the font size</h3>
+      <p class="muted">A line is measured in em and takes the room of a line of text, so it fits a heading as well as small print. <code>width</code> shortens it.</p>
+      <div class="text stack" data-demo-wrap>
+        <kakao-skeleton class="big" width="60%"></kakao-skeleton>
+        <kakao-skeleton lines="2"></kakao-skeleton>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Circle and block</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Circle · <code>shape="circle"</code></h3>
+      <p class="muted">For an avatar. <code>width</code> is the diameter; a number is pixels.</p>
+      <div class="shapes" data-demo-wrap>
+        <kakao-skeleton shape="circle" width="24"></kakao-skeleton>
+        <kakao-skeleton shape="circle"></kakao-skeleton>
+        <kakao-skeleton shape="circle" width="64"></kakao-skeleton>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Block · <code>shape="block"</code></h3>
+      <p class="muted">A plain box, full width by default. Give it <code>width</code> and <code>height</code>, or a <code>ratio</code> so the height follows the width.</p>
+      <div class="shapes" data-demo-wrap>
+        <kakao-skeleton shape="block" width="200" height="120"></kakao-skeleton>
+        <kakao-skeleton shape="block" width="12rem" ratio="16/9"></kakao-skeleton>
+        <kakao-skeleton shape="block" width="120" ratio="1"></kakao-skeleton>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Corners · <code>radius</code></h3>
+      <p class="muted">A block has the field radius (10px). <code>radius</code> sets another: 0 for an image that bleeds to the edge, more for a large picture.</p>
+      <div class="shapes" data-demo-wrap>
+        <kakao-skeleton shape="block" width="120" height="80" radius="0"></kakao-skeleton>
+        <kakao-skeleton shape="block" width="120" height="80"></kakao-skeleton>
+        <kakao-skeleton shape="block" width="120" height="80" radius="24"></kakao-skeleton>
+        <kakao-skeleton shape="block" width="120" height="36" radius="999"></kakao-skeleton>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Put together</h3>
+      <p class="muted">The plain shapes build any layout: here a circle next to two lines.</p>
+      <div class="profile" data-demo-wrap>
+        <kakao-skeleton shape="circle" width="48"></kakao-skeleton>
+        <kakao-skeleton lines="2"></kakao-skeleton>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Presets</h2>
+  <p>Two layouts that come up all the time are built in: list rows and a card.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">List rows · <code>shape="row"</code></h3>
+      <p class="muted">A title and a line per row; <code>avatar</code> adds the circle, <code>count</code> repeats the row, <code>lines</code> sets the lines per row.</p>
+      <div class="pair" data-demo-wrap>
+        <kakao-skeleton shape="row" avatar count="3"></kakao-skeleton>
+        <kakao-skeleton shape="row" lines="1" count="4"></kakao-skeleton>
+      </div>
+    </kakao-card>
+  </div>
+  <p style="margin-top:1.25rem">A card (<code>shape="card"</code>) draws the card's frame with a title and three lines; <code>media</code> adds an image block on top, <code>avatar</code> a circle. The media block's corner is the card's radius minus its padding, at least the line radius (the nesting rule).</p>
+  <div class="pair" data-example>
+    <kakao-skeleton shape="card"></kakao-skeleton>
+    <kakao-skeleton shape="card" media avatar lines="2"></kakao-skeleton>
+  </div>
+
+  <h2>Animation</h2>
+  <p>A light band moves across by default. With reduced motion switched on in the system, every skeleton stands still.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Shimmer, pulse, none · <code>animation</code></h3>
+      <div class="pair" data-demo-wrap>
+        <kakao-skeleton shape="row" avatar></kakao-skeleton>
+        <kakao-skeleton shape="row" avatar animation="pulse"></kakao-skeleton>
+        <kakao-skeleton shape="row" avatar animation="none"></kakao-skeleton>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Screen readers</h2>
+  <p>Skeletons are decoration and say nothing. Announce the load once, on the region that is loading.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">A loading region · <code>aria-busy</code></h3>
+      <p class="muted">The region carries <code>aria-busy="true"</code> while the skeletons are in it, and loses it when the content is in. A screen reader then waits with reading the region until it is ready.</p>
+      <div class="toolbar" data-demo-only>
+        <kakao-button id="reload" label="Load again" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <section class="region" id="people" aria-label="Team" aria-busy="true">
+        <kakao-skeleton shape="row" avatar count="3"></kakao-skeleton>
+      </section>
+      <template data-code>
+        <script>
+          const region = document.getElementById('people');
+          loadPeople().then((html) => {
+            region.innerHTML = html;               // the skeleton goes, the content comes
+            region.removeAttribute('aria-busy');
+          });
+        </script>
+      </template>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">A status of its own · <code>label</code></h3>
+      <p class="muted">Where no region can say it, one skeleton takes a <code>label</code>: it then carries a status with that text. Looks the same; a screen reader hears "Loading the article". Label one skeleton, not each.</p>
+      <div class="text" data-demo-wrap>
+        <kakao-skeleton lines="3" label="Loading the article"></kakao-skeleton>
+      </div>
+    </kakao-card>
+  </div>
+</main>
+<script>
+  /* Loading region: skeleton rows for 2 seconds, then the people. */
+  (function () {
+    const region = document.getElementById('people');
+    const skeleton = region.innerHTML;
+    const people = [['AK', 'Anna Keller', 'Design'], ['JM', 'Jonas Meier', 'Engineering'], ['SO', 'Sara Okafor', 'Support']];
+    let run = 0;
+    function load() {
+      const mine = ++run;
+      region.innerHTML = skeleton;
+      region.setAttribute('aria-busy', 'true');
+      setTimeout(() => {
+        if (mine !== run) return;
+        const list = document.createElement('ul');
+        list.className = 'people';
+        for (const [initials, name, team] of people) {
+          const li = document.createElement('li');
+          const badge = document.createElement('i');
+          badge.textContent = initials;
+          badge.setAttribute('aria-hidden', 'true');
+          const text = document.createElement('div');
+          const b = document.createElement('b');
+          b.textContent = name;
+          const span = document.createElement('span');
+          span.className = 'muted';
+          span.textContent = team;
+          text.append(b, span);
+          li.append(badge, text);
+          list.append(li);
+        }
+        region.replaceChildren(list);
+        region.removeAttribute('aria-busy');
+      }, 2000);
+    }
+    document.getElementById('reload').addEventListener('kakao-button-action', load);
+    load();
+  })();
+</script>
+</body>
+</html>
