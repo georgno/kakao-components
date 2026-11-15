@@ -10,6 +10,15 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-avatar`: a person as a small round picture. Shows the image (`src`,
+  loaded lazily), the initials of `name` (or `initials`) while it loads, when
+  there is none or when it fails, and an icon (`slot="icon"` or a built-in
+  person glyph) when there is no name. Sizes xs to xl, `shape` circle or
+  square, a fill `tone` picked from the name out of the theme roles, and a
+  `status` dot (online, away, busy, offline) that differs by shape and is read
+  out (`status-label`). Events `avatar-load` and `avatar-error`.
+  `kakao-avatar-group` (same file) overlaps avatars with a ring in the surface
+  colour and shows "+N" for the rest (`max`, `total`, `more-label`).
 - `kakao-copy-button`: copies a text to the clipboard and confirms it. Copies
   `value` or the text of the element named by `for` (a field's current value);
   labelled (`label`) or icon only, `variant` secondary or ghost, the button's
@@ -105,6 +114,8 @@ pages (landing page, settings, demos), not the components.
 
 ### Site only
 
+- `shared/demo-images/`: three tiny SVG stand-in portraits for the demo pages
+  (avatar; not part of any component).
 - Demo pages: every example is a card on its own row, with its code in a
   "Code" tile at the card's foot and a Copy button in the tile's header;
   dropdown menus and popups reach past the card.

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-avatar - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="avatar.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .avatars { display: flex; flex-wrap: wrap; gap: 0.85rem 1.25rem; align-items: center; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="avatar" data-source="avatar.js" data-title="Avatar">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Sizes</figcaption>
+      <div class="avatars">
+        <kakao-avatar size="xs" name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar size="sm" name="Grace Hopper"></kakao-avatar>
+        <kakao-avatar name="Alan Turing"></kakao-avatar>
+        <kakao-avatar size="lg" name="Edsger Dijkstra"></kakao-avatar>
+        <kakao-avatar size="xl" name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar>
+        <kakao-avatar size="lg" shape="square" name="Design team"></kakao-avatar>
+        <kakao-avatar size="lg"></kakao-avatar>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Tones</figcaption>
+      <div class="avatars">
+        <kakao-avatar name="Neutral tone" tone="neutral"></kakao-avatar>
+        <kakao-avatar name="Primary tone" tone="primary"></kakao-avatar>
+        <kakao-avatar name="Success tone" tone="success"></kakao-avatar>
+        <kakao-avatar name="Warning tone" tone="warning"></kakao-avatar>
+        <kakao-avatar name="Danger tone" tone="danger"></kakao-avatar>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Status</figcaption>
+      <div class="avatars">
+        <kakao-avatar size="lg" name="Ada Lovelace" status="online"></kakao-avatar>
+        <kakao-avatar size="lg" name="Grace Hopper" status="away"></kakao-avatar>
+        <kakao-avatar size="lg" name="Alan Turing" status="busy"></kakao-avatar>
+        <kakao-avatar size="lg" name="Edsger Dijkstra" status="offline"></kakao-avatar>
+        <kakao-avatar size="sm" shape="square" name="Platform" status="online"></kakao-avatar>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Group</figcaption>
+      <div class="avatars">
+        <kakao-avatar-group max="3" label="Members">
+          <kakao-avatar name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar>
+          <kakao-avatar name="Grace Hopper"></kakao-avatar>
+          <kakao-avatar name="Alan Turing"></kakao-avatar>
+          <kakao-avatar name="Edsger Dijkstra"></kakao-avatar>
+          <kakao-avatar name="Margaret Hamilton"></kakao-avatar>
+        </kakao-avatar-group>
+        <kakao-avatar-group size="sm" shape="square" total="128">
+          <kakao-avatar name="Design team"></kakao-avatar>
+          <kakao-avatar name="Platform"></kakao-avatar>
+        </kakao-avatar-group>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-avatar-surface", "label": "Surface", "group": "Colour", "type": "color", "hint": "what a tone is mixed into for the fill" },
+    { "property": "--kakao-avatar-text", "label": "Text", "group": "Colour", "type": "color", "hint": "what a tone is mixed into for the initials" },
+    { "property": "--kakao-avatar-tint", "label": "Tint", "group": "Colour", "type": "percent", "hint": "share of the tone in the fill" },
+    { "property": "--kakao-avatar-text-mix", "label": "Text mix", "group": "Colour", "type": "percent", "hint": "share of the tone in the initials" },
+    { "property": "--kakao-avatar-neutral-bg", "label": "Neutral fill", "group": "Colour", "type": "color", "hint": "also the fill of +N" },
+    { "property": "--kakao-avatar-neutral-text", "label": "Neutral text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-avatar-primary", "label": "Primary", "group": "Colour", "type": "color" },
+    { "property": "--kakao-avatar-success", "label": "Success", "group": "Colour", "type": "color" },
+    { "property": "--kakao-avatar-warning", "label": "Warning", "group": "Colour", "type": "color" },
+    { "property": "--kakao-avatar-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-avatar-size", "label": "Size", "group": "Size & shape", "type": "length", "units": ["rem", "px", "em"], "hint": "md" },
+    { "property": "--kakao-avatar-xs-size", "label": "Extra small", "group": "Size & shape", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-avatar-sm-size", "label": "Small", "group": "Size & shape", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-avatar-lg-size", "label": "Large", "group": "Size & shape", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-avatar-xl-size", "label": "Extra large", "group": "Size & shape", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-avatar-square-radius", "label": "Square radius", "group": "Size & shape", "type": "radius", "hint": "a percentage scales with the size" },
+    { "property": "--kakao-avatar-font-scale", "label": "Initials size", "group": "Typography", "type": "number", "hint": "share of the avatar's size" },
+    { "property": "--kakao-avatar-font-weight", "label": "Font weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
+    { "property": "--kakao-avatar-icon-scale", "label": "Icon size", "group": "Typography", "type": "number", "hint": "share of the avatar's size" },
+    { "property": "--kakao-avatar-more-font-scale", "label": "+N size", "group": "Typography", "type": "number", "hint": "share of the avatar's size" },
+    { "property": "--kakao-avatar-dot-scale", "label": "Dot size", "group": "Status", "type": "number", "hint": "share of the avatar's size" },
+    { "property": "--kakao-avatar-dot-min-size", "label": "Smallest dot", "group": "Status", "type": "length", "units": ["px", "rem", "em"] },
+    { "property": "--kakao-avatar-online", "label": "Online", "group": "Status", "type": "color" },
+    { "property": "--kakao-avatar-away", "label": "Away", "group": "Status", "type": "color" },
+    { "property": "--kakao-avatar-busy", "label": "Busy", "group": "Status", "type": "color" },
+    { "property": "--kakao-avatar-offline", "label": "Offline", "group": "Status", "type": "color" },
+    { "property": "--kakao-avatar-ring-width", "label": "Ring width", "group": "Group", "type": "length", "units": ["px", "rem", "em"], "hint": "around grouped avatars and the status dot" },
+    { "property": "--kakao-avatar-ring-color", "label": "Ring", "group": "Group", "type": "color", "hint": "the colour of the surface the avatar sits on" },
+    { "property": "--kakao-avatar-group-overlap", "label": "Overlap", "group": "Group", "type": "number", "hint": "share of the size avatars overlap" },
+    { "property": "--kakao-avatar-fade-duration", "label": "Image fade", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+</body>
+</html>

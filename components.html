@@ -25,6 +25,7 @@
 <script src="components/button/button.js" defer></script>
 <script src="components/number-input/number-input.js" defer></script>
 <script src="components/skeleton/skeleton.js" defer></script>
+<script src="components/avatar/avatar.js" defer></script>
 <script src="components/slider/slider.js" defer></script>
 <script src="components/range-slider/range-slider.js" defer></script>
 <script src="components/animated-number/animated-number.js" defer></script>
@@ -264,6 +265,57 @@
           <kakao-button label="Show results" data-close="apply"></kakao-button>
         </div>
       </kakao-aside-sheet>
+    </article>
+
+    <!-- ============================== Avatar ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Avatar</h2>
+        <code>&lt;kakao-avatar&gt;</code>
+        <a href="components/avatar/construction.html">Construction</a>
+        <a href="components/avatar/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A person as a small round picture: the image (<code>src</code>, loaded lazily), the initials of <code>name</code> while it loads or when it fails, an icon when there is no name. Sizes xs to xl, circle or rounded square, a fill tone picked from the name, and a <code>status</code> dot that is read out. <code>&lt;kakao-avatar-group&gt;</code> overlaps avatars and counts the rest as "+N" (<code>max</code>, <code>total</code>).</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Image, initials, icon</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center">
+            <kakao-avatar name="Ada Lovelace" src="shared/demo-images/portrait-1.svg"></kakao-avatar>
+            <kakao-avatar name="Grace Hopper"></kakao-avatar>
+            <kakao-avatar name="Linus Torvalds"></kakao-avatar>
+            <kakao-avatar></kakao-avatar>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Sizes and shape · <code>size</code>, <code>shape</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center">
+            <kakao-avatar size="xs" name="Ada Lovelace"></kakao-avatar>
+            <kakao-avatar size="sm" name="Donald Knuth"></kakao-avatar>
+            <kakao-avatar name="Alan Turing"></kakao-avatar>
+            <kakao-avatar size="lg" name="Grace Hopper"></kakao-avatar>
+            <kakao-avatar size="lg" shape="square" name="Design team"></kakao-avatar>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Status · <code>status</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center">
+            <kakao-avatar name="Ada Lovelace" status="online"></kakao-avatar>
+            <kakao-avatar name="Grace Hopper" status="away"></kakao-avatar>
+            <kakao-avatar name="Alan Turing" status="busy"></kakao-avatar>
+            <kakao-avatar name="Donald Knuth" status="offline"></kakao-avatar>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Group · <code>max</code></h3>
+          <kakao-avatar-group max="3" label="Project members">
+            <kakao-avatar name="Ada Lovelace" src="shared/demo-images/portrait-1.svg"></kakao-avatar>
+            <kakao-avatar name="Grace Hopper"></kakao-avatar>
+            <kakao-avatar name="Linus Torvalds"></kakao-avatar>
+            <kakao-avatar name="Alan Turing"></kakao-avatar>
+            <kakao-avatar name="Donald Knuth"></kakao-avatar>
+          </kakao-avatar-group>
+        </div>
+      </div>
     </article>
 
     <!-- ============================== Badge ============================== -->
@@ -1693,12 +1745,6 @@
       <div class="native">
         <ol style="margin:0;padding-left:1.2rem"><li>Account</li><li><b>Plan</b></li><li>Payment</li></ol>
       </div>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Avatar</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;img&gt;</code></p>
-      <p class="placeholder-native">Image, initials or an icon, with a status dot; stacked in groups.</p>
     </article>
 
     <article class="card placeholder">

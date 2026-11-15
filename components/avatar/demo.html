@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-avatar - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="avatar.js" defer></script>
+<style>
+  .avatars { display: flex; flex-wrap: wrap; gap: 0.85rem 1.25rem; align-items: center; }
+  .person { display: flex; align-items: center; gap: 0.65rem; min-width: 0; }
+  .person b { display: block; font-weight: 600; }
+  .person span { display: block; color: var(--kakao-color-muted, #62626c); font-size: 0.85rem; }
+  .people { display: grid; gap: 0.75rem; margin: 0; padding: 0; list-style: none; }
+  .on-page { display: inline-flex; padding: 0.85rem 1rem; border-radius: 10px; background: var(--kakao-color-page, #f6f7f9); --kakao-avatar-ring-color: var(--kakao-color-page, #f6f7f9); }
+  .avatar-link { display: inline-flex; border-radius: 50%; }
+  .avatar-link:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+</style>
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Avatar"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Avatar</h1>
+    <p><code>&lt;kakao-avatar&gt;</code> - a person as a small round picture: the image when there is one, the initials of the name otherwise, an icon when there is no name. Optional status dot. <code>&lt;kakao-avatar-group&gt;</code> (same file) lays avatars over each other and counts the rest as "+N". Not interactive.</p>
+  </header>
+
+  <h2>Image, initials, icon</h2>
+  <p>The fallback order: the image, then an icon in <code>slot="icon"</code> if the page gave one, then the initials, then the built-in person glyph.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Image · <code>src</code>, <code>name</code></h3>
+      <p class="muted">The image loads lazily and fades in over the initials. <code>name</code> is its text alternative.</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar>
+        <kakao-avatar name="Grace Hopper" src="../../shared/demo-images/portrait-2.svg"></kakao-avatar>
+        <kakao-avatar name="Alan Turing" src="../../shared/demo-images/portrait-3.svg"></kakao-avatar>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Initials · <code>name</code></h3>
+      <p class="muted">No image: the first letter of the first and of the last word. One word gives one letter.</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar name="Jean-Luc van Damme"></kakao-avatar>
+        <kakao-avatar name="élodie"></kakao-avatar>
+        <kakao-avatar name="Øyvind Åsen"></kakao-avatar>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Image that fails</h3>
+      <p class="muted">The file does not exist: the initials stay, and an <code>avatar-error</code> event is sent.</p>
+      <kakao-avatar name="Margaret Hamilton" src="not-there.jpg"></kakao-avatar>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Own initials · <code>initials</code></h3>
+      <p class="muted">Up to three characters, shown as written.</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar name="Design team" initials="DT"></kakao-avatar>
+        <kakao-avatar name="Quality assurance" initials="QA"></kakao-avatar>
+        <kakao-avatar name="Kakao components" initials="k"></kakao-avatar>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Icon · <code>slot="icon"</code></h3>
+      <p class="muted">Without a name: the person glyph, decorative. An own icon (inline SVG in <code>currentColor</code>) is shown instead of initials; the name still names the avatar.</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar></kakao-avatar>
+        <kakao-avatar name="Build bot" shape="square">
+          <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M9 13v1.5M15 13v1.5"/></svg>
+        </kakao-avatar>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Size and shape</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Sizes · <code>size</code></h3>
+      <p class="muted">xs, sm, md (default), lg, xl. Initials, icon and dot scale with the avatar.</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar size="xs" name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar size="sm" name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar size="lg" name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar size="xl" name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar size="xl" name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Rounded square · <code>shape="square"</code></h3>
+      <p class="muted">For things that are not people: teams, projects, bots.</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar shape="square" size="sm" name="Kakao components"></kakao-avatar>
+        <kakao-avatar shape="square" name="Design team"></kakao-avatar>
+        <kakao-avatar shape="square" size="lg" name="Grace Hopper" src="../../shared/demo-images/portrait-2.svg"></kakao-avatar>
+        <kakao-avatar shape="square" size="lg" name="Platform" status="online"></kakao-avatar>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Tone</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">From the name</h3>
+      <p class="muted">The fill is one of five tones, picked from the name: the same name gets the same tone on every page. All tones are theme roles, tinted like the badge, so they follow the theme.</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar name="Grace Hopper"></kakao-avatar>
+        <kakao-avatar name="Alan Turing"></kakao-avatar>
+        <kakao-avatar name="Edsger Dijkstra"></kakao-avatar>
+        <kakao-avatar name="Margaret Hamilton"></kakao-avatar>
+        <kakao-avatar name="Linus Torvalds"></kakao-avatar>
+        <kakao-avatar name="Barbara Liskov"></kakao-avatar>
+        <kakao-avatar name="Donald Knuth"></kakao-avatar>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Chosen · <code>tone</code></h3>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar name="Neutral tone" tone="neutral"></kakao-avatar>
+        <kakao-avatar name="Primary tone" tone="primary"></kakao-avatar>
+        <kakao-avatar name="Success tone" tone="success"></kakao-avatar>
+        <kakao-avatar name="Warning tone" tone="warning"></kakao-avatar>
+        <kakao-avatar name="Danger tone" tone="danger"></kakao-avatar>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Status</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Status dot · <code>status</code></h3>
+      <p class="muted">Online is filled, away half filled, busy carries a bar, offline is an empty ring: readable without colour. A screen reader hears "Ada Lovelace, Online".</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar size="lg" name="Ada Lovelace" status="online"></kakao-avatar>
+        <kakao-avatar size="lg" name="Grace Hopper" status="away"></kakao-avatar>
+        <kakao-avatar size="lg" name="Alan Turing" status="busy"></kakao-avatar>
+        <kakao-avatar size="lg" name="Edsger Dijkstra" status="offline"></kakao-avatar>
+        <kakao-avatar name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg" status="online"></kakao-avatar>
+        <kakao-avatar size="sm" name="Grace Hopper" status="busy"></kakao-avatar>
+        <kakao-avatar size="xs" name="Alan Turing" status="away"></kakao-avatar>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Own wording · <code>status-label</code></h3>
+      <p class="muted">Looks the same; read as "Grace Hopper, In a meeting until 3".</p>
+      <kakao-avatar name="Grace Hopper" status="busy" status-label="In a meeting until 3"></kakao-avatar>
+    </kakao-card>
+  </div>
+
+  <h2>Group</h2>
+  <p><code>&lt;kakao-avatar-group&gt;</code> overlaps its avatars and draws a ring in the surface colour around each. Its <code>size</code> and <code>shape</code> apply to all of them.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Stacked</h3>
+      <kakao-avatar-group label="Reviewers">
+        <kakao-avatar name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar>
+        <kakao-avatar name="Grace Hopper"></kakao-avatar>
+        <kakao-avatar name="Alan Turing" src="../../shared/demo-images/portrait-3.svg"></kakao-avatar>
+        <kakao-avatar name="Edsger Dijkstra"></kakao-avatar>
+      </kakao-avatar-group>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Overflow · <code>max</code></h3>
+      <p class="muted">Six avatars, three shown: the rest is "+3", read as "3 more".</p>
+      <kakao-avatar-group max="3" label="Project members">
+        <kakao-avatar name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar>
+        <kakao-avatar name="Grace Hopper"></kakao-avatar>
+        <kakao-avatar name="Alan Turing"></kakao-avatar>
+        <kakao-avatar name="Edsger Dijkstra"></kakao-avatar>
+        <kakao-avatar name="Margaret Hamilton"></kakao-avatar>
+        <kakao-avatar name="Barbara Liskov"></kakao-avatar>
+      </kakao-avatar-group>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Only the first few on the page · <code>total</code></h3>
+      <p class="muted">The server sent three of 128 members; <code>total</code> makes the count right. Above 99 it shows "99+".</p>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar-group total="12" label="Team">
+          <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+          <kakao-avatar name="Grace Hopper"></kakao-avatar>
+          <kakao-avatar name="Alan Turing"></kakao-avatar>
+        </kakao-avatar-group>
+        <kakao-avatar-group total="128" label="Organisation">
+          <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+          <kakao-avatar name="Grace Hopper"></kakao-avatar>
+          <kakao-avatar name="Alan Turing"></kakao-avatar>
+        </kakao-avatar-group>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Group sizes and shape · <code>size</code>, <code>shape</code></h3>
+      <div class="avatars" data-demo-wrap>
+        <kakao-avatar-group size="xs" max="3">
+          <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+          <kakao-avatar name="Grace Hopper"></kakao-avatar>
+          <kakao-avatar name="Alan Turing"></kakao-avatar>
+          <kakao-avatar name="Edsger Dijkstra"></kakao-avatar>
+        </kakao-avatar-group>
+        <kakao-avatar-group size="sm" max="3">
+          <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+          <kakao-avatar name="Grace Hopper"></kakao-avatar>
+          <kakao-avatar name="Alan Turing"></kakao-avatar>
+          <kakao-avatar name="Edsger Dijkstra"></kakao-avatar>
+        </kakao-avatar-group>
+        <kakao-avatar-group size="lg" max="3">
+          <kakao-avatar name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar>
+          <kakao-avatar name="Grace Hopper"></kakao-avatar>
+          <kakao-avatar name="Alan Turing"></kakao-avatar>
+          <kakao-avatar name="Edsger Dijkstra"></kakao-avatar>
+        </kakao-avatar-group>
+        <kakao-avatar-group shape="square" max="3">
+          <kakao-avatar name="Design team"></kakao-avatar>
+          <kakao-avatar name="Platform"></kakao-avatar>
+          <kakao-avatar name="Kakao components"></kakao-avatar>
+          <kakao-avatar name="Support"></kakao-avatar>
+        </kakao-avatar-group>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">On another surface · <code>--kakao-avatar-ring-color</code></h3>
+      <p class="muted">The ring is the card colour by default. On another surface, set the ring colour to that surface.</p>
+      <div class="on-page" data-demo-wrap>
+        <kakao-avatar-group max="3" style="--kakao-avatar-ring-color: var(--kakao-color-page)">
+          <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+          <kakao-avatar name="Grace Hopper" src="../../shared/demo-images/portrait-2.svg"></kakao-avatar>
+          <kakao-avatar name="Alan Turing"></kakao-avatar>
+          <kakao-avatar name="Edsger Dijkstra"></kakao-avatar>
+        </kakao-avatar-group>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Changing the group</h3>
+      <p class="muted">Avatars added or removed later are counted again.</p>
+      <div class="toolbar" data-demo-only>
+        <kakao-button id="add" label="Add a member" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="remove" label="Remove one" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <kakao-avatar-group id="live" max="4" label="Members">
+        <kakao-avatar name="Ada Lovelace"></kakao-avatar>
+        <kakao-avatar name="Grace Hopper"></kakao-avatar>
+        <kakao-avatar name="Alan Turing"></kakao-avatar>
+      </kakao-avatar-group>
+    </kakao-card>
+  </div>
+
+  <h2>In context and events</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Next to the name</h3>
+      <p class="muted">The name is written beside it, so the avatar gets <code>aria-hidden="true"</code> and is not read twice.</p>
+      <ul class="people">
+        <li class="person"><kakao-avatar aria-hidden="true" name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar><div><b>Ada Lovelace</b><span>Owner</span></div></li>
+        <li class="person"><kakao-avatar aria-hidden="true" name="Grace Hopper"></kakao-avatar><div><b>Grace Hopper</b><span>Editor</span></div></li>
+        <li class="person"><kakao-avatar aria-hidden="true" name="Alan Turing"></kakao-avatar><div><b>Alan Turing</b><span>Viewer</span></div></li>
+      </ul>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">As a link</h3>
+      <p class="muted">The avatar never takes focus itself. In a link, its name becomes the link's name.</p>
+      <a class="avatar-link" href="#profile"><kakao-avatar name="Ada Lovelace" src="../../shared/demo-images/portrait-1.svg"></kakao-avatar></a>
+    </kakao-card>
+    <kakao-card id="events">
+      <h3 slot="header">Events · <code>avatar-load</code>, <code>avatar-error</code></h3>
+      <p class="muted">Both bubble and cross shadow roots; the detail carries the <code>src</code>.</p>
+      <div class="toolbar" data-demo-only>
+        <kakao-button id="good" label="Set an image" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="bad" label="Set a broken one" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="none" label="Remove it" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <kakao-avatar id="evented" size="lg" name="Barbara Liskov"></kakao-avatar>
+      <pre class="log" id="log" aria-label="Event log"></pre>
+      <template data-code>
+        <script>
+          document.addEventListener('avatar-error', (event) => {
+            console.log('no picture at', event.detail.src);
+          });
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+</main>
+<script>
+  logEvents(document.getElementById('log'), ['avatar-load', 'avatar-error'], document.getElementById('events'));
+  (function () {
+    const avatar = document.getElementById('evented');
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+    on('good', () => avatar.setAttribute('src', '../../shared/demo-images/portrait-2.svg'));
+    on('bad', () => avatar.setAttribute('src', 'not-there-' + Date.now() + '.jpg'));
+    on('none', () => avatar.removeAttribute('src'));
+
+    const group = document.getElementById('live');
+    const names = ['Edsger Dijkstra', 'Margaret Hamilton', 'Barbara Liskov', 'Donald Knuth', 'Linus Torvalds', 'Radia Perlman'];
+    let next = 0;
+    on('add', () => {
+      const el = document.createElement('kakao-avatar');
+      el.setAttribute('name', names[next++ % names.length]);
+      group.append(el);
+    });
+    on('remove', () => { if (group.lastElementChild) group.lastElementChild.remove(); });
+  })();
+</script>
+</body>
+</html>

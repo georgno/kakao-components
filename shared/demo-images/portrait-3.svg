@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <!-- Stand-in portrait for demo pages (not part of any component). -->
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#cfc3ee"/><stop offset="1" stop-color="#8b82d1"/></linearGradient></defs>
+  <rect width="96" height="96" fill="url(#g)"/>
+  <path d="M14 96c0-20 15-32 34-32s34 12 34 32Z" fill="#2f5d50"/>
+  <rect x="41" y="50" width="14" height="18" rx="6" fill="#e9c3a3"/>
+  <ellipse cx="48" cy="38" rx="15" ry="17" fill="#e9c3a3"/>
+  <path d="M33 34c0-11 6-17 15-17s15 6 15 17c-4-5-9-7-15-7s-11 2-15 7Z" fill="#b9b4ae"/>
+</svg>
