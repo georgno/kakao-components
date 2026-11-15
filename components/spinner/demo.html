@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-spinner - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="spinner.js" defer></script>
+<style>
+  .spinners { display: flex; flex-wrap: wrap; gap: 1rem 1.75rem; align-items: center; }
+  .on-ink { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.7rem; border-radius: 6px; background: var(--kakao-color-ink, #18181b); color: var(--kakao-color-on-ink, #fafafa); font-size: 0.85rem; }
+  .on-primary { color: var(--kakao-color-primary, #4f46e5); font-weight: 600; }
+  .panel { display: grid; place-items: center; min-height: 9rem; border: 1px dashed var(--kakao-color-line, #e5e7eb); border-radius: 10px; }
+  .rows { display: grid; gap: 0.15rem; max-width: 22rem; margin: 0; padding: 0; list-style: none; }
+  .rows li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.4rem 0; }
+  .prose { margin: 0; max-width: 60ch; line-height: 1.7; }
+  .slot { display: flex; align-items: center; gap: 0.75rem; min-height: 2rem; margin-top: 0.75rem; }
+</style>
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Spinner"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Spinner</h1>
+    <p><code>&lt;kakao-spinner&gt;</code> - a turning ring for a load of unknown length: the ring the button shows while it runs, on its own. Not interactive. For a load with a known amount use <a href="../progress/demo.html">progress</a>.</p>
+  </header>
+
+  <h2>Ring</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Default</h3>
+      <p class="muted">No attributes: the button's ring at 18px in the surrounding text colour, announced as "Loading".</p>
+      <kakao-spinner></kakao-spinner>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Sizes · <code>size</code></h3>
+      <div class="spinners" data-demo-wrap>
+        <kakao-spinner size="sm"></kakao-spinner>
+        <kakao-spinner></kakao-spinner>
+        <kakao-spinner size="lg"></kakao-spinner>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Text colour</h3>
+      <p class="muted">Without a tone the ring is drawn in <code>currentColor</code>, so it fits wherever text fits.</p>
+      <div class="spinners" data-demo-wrap>
+        <span class="muted"><kakao-spinner size="sm"></kakao-spinner> muted text</span>
+        <span class="on-primary"><kakao-spinner size="sm"></kakao-spinner> primary text</span>
+        <span class="on-ink"><kakao-spinner size="sm"></kakao-spinner> on ink</span>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Tones · <code>tone</code></h3>
+      <p class="muted">A tone takes a theme role instead of the text colour.</p>
+      <div class="spinners" data-demo-wrap>
+        <kakao-spinner tone="primary"></kakao-spinner>
+        <kakao-spinner tone="success"></kakao-spinner>
+        <kakao-spinner tone="warning"></kakao-spinner>
+        <kakao-spinner tone="danger"></kakao-spinner>
+        <kakao-spinner tone="muted"></kakao-spinner>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Label</h2>
+  <p><code>label</code> says what is loading. A screen reader always gets it (the spinner is a <code>role="status"</code>); <code>show-label</code> also shows it.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Hidden label · <code>label</code></h3>
+      <p class="muted">Looks like the default; a screen reader hears "Loading invoices".</p>
+      <kakao-spinner label="Loading invoices"></kakao-spinner>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Visible label · <code>show-label</code></h3>
+      <p class="muted">The label keeps the text colour, also next to a toned ring.</p>
+      <div class="spinners" data-demo-wrap>
+        <kakao-spinner show-label></kakao-spinner>
+        <kakao-spinner size="sm" show-label label="Saving draft"></kakao-spinner>
+        <kakao-spinner tone="primary" show-label label="Checking the address"></kakao-spinner>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Label below · <code>stacked</code></h3>
+      <p class="muted">For a panel that is still empty: a large ring in the middle, the label under it.</p>
+      <div class="panel" data-demo-wrap>
+        <kakao-spinner size="lg" tone="primary" stacked show-label label="Loading invoices"></kakao-spinner>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Delay</h2>
+  <p><code>delay</code> (milliseconds) keeps the spinner invisible and silent at first, so a load that finishes quickly never flashes one. It keeps its space meanwhile. The wait starts again each time <code>hidden</code> is removed.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Fast and slow loads · <code>delay="400"</code></h3>
+      <p class="muted">The fast load is done after 200 ms: no spinner. The slow one takes 2 seconds: the spinner appears after 400 ms.</p>
+      <div class="toolbar" data-demo-only>
+        <kakao-button id="fast" label="Fast load (200 ms)" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="slow" label="Slow load (2 s)" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <div class="slot" data-demo-wrap>
+        <kakao-spinner id="delayed" delay="400" show-label label="Loading results" hidden></kakao-spinner>
+        <span id="result" class="muted" data-demo-only>Nothing loaded yet.</span>
+      </div>
+      <template data-code>
+        <script>
+          const spinner = document.getElementById('delayed');
+          spinner.hidden = false;            // the 400 ms start now
+          loadResults().finally(() => { spinner.hidden = true; });
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <h2>In context</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">In a sentence</h3>
+      <p class="prose">The export is being prepared <kakao-spinner size="sm" label="Preparing the export"></kakao-spinner> and will download by itself. The ring sits on the text line and takes the text's colour.</p>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">In list rows</h3>
+      <ul class="rows">
+        <li><span>Invoices</span> <span class="muted">128</span></li>
+        <li><span>Customers</span> <kakao-spinner size="sm" tone="muted" label="Counting customers"></kakao-spinner></li>
+        <li><span>Open orders</span> <kakao-spinner size="sm" tone="muted" label="Counting open orders"></kakao-spinner></li>
+      </ul>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Same ring as the button</h3>
+      <p class="muted">A running button and a spinner at the default size show the same ring. The button announces its own state, so a spinner that only repeats it would get <code>aria-hidden="true"</code>.</p>
+      <div class="spinners" data-demo-wrap>
+        <kakao-button id="busy" label="Save changes" variant="secondary"></kakao-button>
+        <kakao-spinner show-label label="Saving"></kakao-spinner>
+      </div>
+    </kakao-card>
+  </div>
+</main>
+<script>
+  /* Delay: a pretend load that ends after 200 ms or 2 s. */
+  (function () {
+    const spinner = document.getElementById('delayed');
+    const result = document.getElementById('result');
+    let run = 0;
+    function load(ms, text) {
+      const mine = ++run;
+      result.textContent = '';
+      spinner.hidden = false;
+      setTimeout(() => {
+        if (mine !== run) return;
+        spinner.hidden = true;
+        result.textContent = text;
+      }, ms);
+    }
+    document.getElementById('fast').addEventListener('kakao-button-action', () => load(200, 'Loaded in 200 ms, no spinner shown.'));
+    document.getElementById('slow').addEventListener('kakao-button-action', () => load(2000, 'Loaded in 2 s, the spinner showed after 400 ms.'));
+  })();
+  /* The comparison button keeps running. */
+  customElements.whenDefined('kakao-button').then(() => {
+    document.getElementById('busy').run(new Promise(() => {}));
+  });
+</script>
+</body>
+</html>

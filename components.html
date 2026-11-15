@@ -59,6 +59,7 @@
 <script src="components/tag-input/tag-input.js" defer></script>
 <script src="components/settings-group/settings-group.js" defer></script>
 <script src="components/kbd/kbd.js" defer></script>
+<script src="components/spinner/spinner.js" defer></script>
 <script src="components/error-summary/error-summary.js" defer></script>
 <script src="components/error-page/error-page.js" defer></script>
 <style>
@@ -1189,6 +1190,48 @@
       </div>
     </article>
 
+    <!-- ============================== Spinner ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Spinner</h2>
+        <code>&lt;kakao-spinner&gt;</code>
+        <a href="components/spinner/construction.html">Construction</a>
+        <a href="components/spinner/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A turning ring for a load of unknown length: the ring the button shows while it runs, on its own. Sizes sm, md and lg; drawn in the text colour or a <code>tone</code>. <code>label</code> names it for screen readers (a status, "Loading" by default) and <code>show-label</code> shows it; <code>delay</code> keeps a fast load from flashing a spinner. Reduced motion: a fade instead of a turn.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Sizes · <code>size</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;align-items:center">
+            <kakao-spinner size="sm"></kakao-spinner>
+            <kakao-spinner></kakao-spinner>
+            <kakao-spinner size="lg"></kakao-spinner>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Tones · <code>tone</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;align-items:center">
+            <kakao-spinner tone="primary"></kakao-spinner>
+            <kakao-spinner tone="success"></kakao-spinner>
+            <kakao-spinner tone="warning"></kakao-spinner>
+            <kakao-spinner tone="danger"></kakao-spinner>
+            <kakao-spinner tone="muted"></kakao-spinner>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Visible label · <code>show-label</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;align-items:center">
+            <kakao-spinner show-label></kakao-spinner>
+            <kakao-spinner size="sm" show-label label="Saving draft"></kakao-spinner>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Label below · <code>stacked</code></h3>
+          <kakao-spinner size="lg" tone="primary" stacked show-label label="Loading invoices"></kakao-spinner>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Step switch ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1520,14 +1563,6 @@
       <p class="placeholder-native">An image that loads lazily, shows a skeleton of its size until it has loaded, and takes alt text and an optional caption below it.</p>
     </article>
 
-    <article class="card placeholder">
-      <div class="component-head"><h2>Spinner</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;progress&gt;</code> without a value</p>
-      <p class="placeholder-native">On its own; today it only lives inside the button.</p>
-      <div class="native">
-        <progress aria-label="Loading"></progress>
-      </div>
-    </article>
 
     <article class="card placeholder">
       <div class="component-head"><h2>Empty state</h2><kakao-badge outline>Missing</kakao-badge></div>

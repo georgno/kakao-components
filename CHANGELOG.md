@@ -19,6 +19,12 @@ pages (landing page, settings, demos), not the components.
   elsewhere, and a Mac gets the key symbols (`platform` forces either); sizes
   md and sm, `outline` for coloured backgrounds, `list-data` to rename keys;
   renders nested `<kbd>` with names for the symbols.
+- `kakao-spinner`: the button's loading ring on its own, for a load of unknown
+  length. Sizes sm, md and lg; the text colour or a `tone` (primary, success,
+  warning, danger, muted); `label` is its status text for screen readers
+  ("Loading" by default) and `show-label` shows it, beside the ring or under it
+  (`stacked`); `delay` keeps it invisible and silent at first so a fast load
+  never flashes one. Under reduced motion it fades instead of turning.
 
 ### Changed
 
@@ -31,6 +37,8 @@ pages (landing page, settings, demos), not the components.
 
 ### Fixed
 
+- `kakao-button`: the loading spinner was drawn as a closed ring, so its
+  turning could not be seen; it is now an arc (three quarters of the circle).
 - `kakao-header-bar`: while a theme switch animates (ripple or colour fade) the
   scrolled bar shows its solid background instead of a translucent one without
   the blur, and the blur is applied anew once the switch is over. It reacts to

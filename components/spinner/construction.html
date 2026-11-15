@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-spinner - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="spinner.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .spinners { display: flex; flex-wrap: wrap; gap: 1rem 1.75rem; align-items: center; }
+  .on-ink { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.7rem; border-radius: 6px; background: var(--kakao-color-ink, #18181b); color: var(--kakao-color-on-ink, #fafafa); font-size: 0.85rem; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="spinner" data-source="spinner.js" data-title="Spinner">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Sizes</figcaption>
+      <div class="spinners">
+        <kakao-spinner size="sm"></kakao-spinner>
+        <kakao-spinner></kakao-spinner>
+        <kakao-spinner size="lg"></kakao-spinner>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Tones</figcaption>
+      <div class="spinners">
+        <kakao-spinner tone="primary"></kakao-spinner>
+        <kakao-spinner tone="success"></kakao-spinner>
+        <kakao-spinner tone="warning"></kakao-spinner>
+        <kakao-spinner tone="danger"></kakao-spinner>
+        <kakao-spinner tone="muted"></kakao-spinner>
+        <span class="on-ink"><kakao-spinner size="sm"></kakao-spinner> on ink</span>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>With a label</figcaption>
+      <div class="spinners">
+        <kakao-spinner show-label></kakao-spinner>
+        <kakao-spinner size="sm" show-label label="Saving draft"></kakao-spinner>
+        <kakao-spinner size="lg" tone="primary" stacked show-label label="Loading invoices"></kakao-spinner>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Next to the button's ring</figcaption>
+      <div class="spinners">
+        <kakao-button id="busy" label="Save changes" variant="secondary"></kakao-button>
+        <kakao-spinner></kakao-spinner>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-spinner-color", "label": "Ring", "group": "Colour", "type": "color", "hint": "without a tone; currentColor follows the text" },
+    { "property": "--kakao-spinner-primary", "label": "Primary", "group": "Colour", "type": "color" },
+    { "property": "--kakao-spinner-success", "label": "Success", "group": "Colour", "type": "color" },
+    { "property": "--kakao-spinner-warning", "label": "Warning", "group": "Colour", "type": "color" },
+    { "property": "--kakao-spinner-danger", "label": "Danger", "group": "Colour", "type": "color" },
+    { "property": "--kakao-spinner-muted", "label": "Muted", "group": "Colour", "type": "color" },
+    { "property": "--kakao-spinner-ring-opacity", "label": "Ring opacity", "group": "Colour", "type": "number" },
+    { "property": "--kakao-spinner-track-opacity", "label": "Track opacity", "group": "Colour", "type": "number", "hint": "the full circle behind the arc; 0 = none" },
+    { "property": "--kakao-spinner-size", "label": "Size", "group": "Size & spacing", "type": "length", "hint": "md; the button's spinner is 18px" },
+    { "property": "--kakao-spinner-sm-size", "label": "Small size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-spinner-lg-size", "label": "Large size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-spinner-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "hint": "between ring and label" },
+    { "property": "--kakao-spinner-stroke-width", "label": "Stroke width", "group": "Shape", "type": "number", "hint": "in 24ths of the size" },
+    { "property": "--kakao-spinner-arc", "label": "Arc", "group": "Shape", "type": "number", "hint": "share of the circle that is drawn, 0 to 100" },
+    { "property": "--kakao-spinner-label-font-size", "label": "Label font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-spinner-label-font-weight", "label": "Label font weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-spinner-duration", "label": "One turn", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-spinner-pulse-duration", "label": "Pulse", "group": "Motion", "type": "duration", "hint": "one fade in and out under reduced motion" },
+    { "property": "--kakao-spinner-appear-duration", "label": "Fade in", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+<script>
+  /* A running button, so its ring can be compared with the spinner. */
+  /* Started once the construction page has moved the preview into place. */
+  window.addEventListener('load', () => {
+    customElements.whenDefined('kakao-button').then(() => {
+      setTimeout(() => document.getElementById('busy').run(new Promise(() => {})), 300);
+    });
+  });
+</script>
+</body>
+</html>

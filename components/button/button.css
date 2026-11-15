@@ -275,7 +275,8 @@ kakao-button[toggle][pressed] .kakao-button-inner {
   stroke: currentColor;
   stroke-width: 3;
   stroke-linecap: round;
-  stroke-dasharray: 56;
+  /* An arc, not a closed ring (r 9 is 56.55 around): the turning has to show. */
+  stroke-dasharray: 42 56.55;
   opacity: .9;
 }
 
