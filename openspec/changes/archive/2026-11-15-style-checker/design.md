@@ -70,8 +70,13 @@ module's shape at start-up (setup error, exit 2, if broken).
   and the rule skips it.
 - **Footer buttons:** `kakao-button` children with `slot="footer"`, or the
   `kakao-button` children of the element with `slot="footer"`, in document order.
-- **Attribute value sets:** read from one table in the helpers, kept next to the
-  components' documented values.
+- **Attribute value sets:** read from one table in the helpers (`VALUES` in
+  `tools/style-check/helpers.js`), kept next to the components' documented values.
+  Attributes documented as "anything else is the default" (empty state and
+  description list `size`, table `layout` and `sort-mode`) have no fixed set and
+  are left out.
+- **Named by the row:** a field inside a `kakao-setting` takes its name from the
+  row's label (the setting sets it at runtime), so `field-has-name` skips it.
 
 ### Report and order
 Findings are collected, then sorted (path, line, column, rule id) before printing.

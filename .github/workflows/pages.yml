@@ -24,6 +24,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The style checker (tools/style-check.js) checks every kakao placement
+      # against the styleguide's rules; an error stops the deploy.
+      - name: Style check
+        run: node tools/style-check.js
+
       # Only publish the demo pages and what they load; archive/, openspec/
       # and tools/ stay in the repo but off the site.
       - name: Assemble site
@@ -34,9 +43,6 @@ jobs:
       # Minify the copy (never the repo): no comments or extra whitespace in
       # HTML, JS and CSS. The minifiers are installed for this run only; the
       # repo keeps no package.json. Settings blocks survive line for line.
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
       - name: Minify site
         run: |
           npm install --no-save --no-package-lock html-minifier-terser@7.2.0 terser@5.51.2 clean-css@5.3.3

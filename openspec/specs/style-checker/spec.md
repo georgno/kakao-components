@@ -1,7 +1,9 @@
+# style-checker Specification
+
 ## Purpose
 A deterministic command-line checker that reads markup, finds every kakao component placement and reports where it breaks the styleguide's rules, so a violation fails a build the way a static analyser does.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Command and exit codes
 The checker SHALL run as `node tools/style-check.js [paths…]` with Node only and no installed packages. Paths SHALL be files or folders; folders SHALL be searched for files with the configured extensions (by default `.html`, `.htm`, `.php`, `.phtml`, `.twig`). With no paths, the configured default paths SHALL be used. It SHALL exit with code 0 when no error remains, 1 when at least one error remains, and 2 when it cannot run (unreadable config, unknown rule, missing path).
@@ -44,22 +46,40 @@ Each rule SHALL be one JavaScript module with an id, a default level (error or w
 - **THEN** that rule runs next to the built-in ones and its findings carry its id
 
 ### Requirement: Built-in rules
-The checker SHALL ship rules for the styleguide's decided rules that markup can show:
-- `dialog-main-button-corner`: in a dialog footer with more than one button, the main (filled) button is the one in the corner: last for right (default) and full-width footers, first for `button-position="left"`, last when centred.
-- `card-main-button-first`: in a card footer, the main button comes first.
-- `list-data-name`: a component never takes its JSON configuration in a `data` attribute.
-- `list-data-json`: a static `list-data` value is valid JSON.
-- `field-has-name`: a text input, textarea, radio group or colour picker without a `label` has an `aria-label`.
-- `icon-button-has-name`: a button with an icon and no `label` has an `aria-label`.
-- `attribute-values`: attributes with a fixed set of values (button `variant` and `size`, badge and chip `tone`, dialog `size` and `button-position`, breadcrumb `start`) use one of them.
+The checker SHALL ship rules for the styleguide's decided rules that markup can show: `dialog-main-button-corner` and `card-main-button-first` (see "Button order rules"), `list-data-name` (a component never takes its JSON configuration in a `data` attribute), `list-data-json` (a static `list-data` value is valid JSON), `field-has-name` and `icon-button-has-name` (see "Naming rules") and `attribute-values` (see "Attribute value rule").
+
+#### Scenario: JSON in data
+- **WHEN** a list has its items in a `data` attribute
+- **THEN** `list-data-name` reports it
+
+### Requirement: Button order rules
+The built-in rule `dialog-main-button-corner` SHALL report a dialog footer with more than one button whose main (filled) button is not in the corner: last for right (default) and full-width footers, first for `button-position="left"`, last when centred. The built-in rule `card-main-button-first` SHALL report a card footer whose main button is not first.
 
 #### Scenario: Main button in the wrong corner
 - **WHEN** a dialog with `button-position="left"` has a ghost Discard button first and a primary Save button second
 - **THEN** `dialog-main-button-corner` reports the dialog's footer at its line
 
+### Requirement: Naming rules
+The built-in rule `field-has-name` SHALL report a text input, textarea, radio group, colour picker or rating that has neither a `label` nor an `aria-label`, unless it sits inside a `kakao-setting` row, which names it. The built-in rule `icon-button-has-name` SHALL report a button with an icon and no `label` that has no `aria-label`.
+
+#### Scenario: Unnamed rating
+- **WHEN** a `kakao-rating` has a value but no `label` and no `aria-label`
+- **THEN** `field-has-name` reports it
+
+#### Scenario: A field named by its settings row
+- **WHEN** a `kakao-text-input` without `label` or `aria-label` sits in a `kakao-setting` row
+- **THEN** `field-has-name` reports nothing
+
+### Requirement: Attribute value rule
+The built-in rule `attribute-values` SHALL report an attribute with a fixed set of values whose static value is not one of them. The sets SHALL live in one table and cover button `variant` and `size`, badge and chip `tone`, dialog `size` and `button-position`, breadcrumb `start`, and the enumerated attributes the later components document (avatar, avatar group, copy button, image, kbd, menu, pagination, rating, skeleton, spinner, stepper, tree view).
+
 #### Scenario: Unknown tone
 - **WHEN** a badge has `tone="warning"`
 - **THEN** `attribute-values` reports that warning is not one of neutral, primary, success, danger, ink
+
+#### Scenario: A later component
+- **WHEN** a skeleton has `shape="square"`
+- **THEN** `attribute-values` reports that square is not one of text, circle, block, row, card
 
 ### Requirement: Configuration
 The checker SHALL read `kakao-style.config.json` from the working directory, or the file given with `--config`. The config SHALL be able to set: the default paths, ignored paths, the file extensions, each rule's level (`error`, `warning` or `off`), extra rule folders, and the forced-placement documentation (`forced.file`, `forced.mandatory`). Every setting SHALL have a default, so the checker also runs without a config file.
@@ -87,11 +107,21 @@ A placement whose element carries the `force` attribute SHALL NOT produce errors
 - **THEN** the checker warns that force has no effect there
 
 ### Requirement: Documenting forced placements
-When `forced.mandatory` is true, every forced placement SHALL have an entry in the documentation file (default `kakao-style.forced.md`), keyed by the element's `id` and giving a reason. A forced placement without an `id` or without an entry SHALL be an error, and so SHALL an entry whose id no longer belongs to a forced placement. When `forced.mandatory` is false (the default), the file SHALL be optional; if it exists, its reasons SHALL appear next to the matching forced placements in the report, and missing or stale entries SHALL NOT be reported.
+When `forced.mandatory` is true, every forced placement SHALL have an entry in the documentation file (default `kakao-style.forced.md`), keyed by the element's `id` and giving a reason. A forced placement without an `id` or without an entry SHALL be an error.
 
 #### Scenario: Mandatory and undocumented
 - **WHEN** `forced.mandatory` is true and a forced dialog with id `legacy-confirm` has no entry
 - **THEN** the checker reports an error asking for an entry for `legacy-confirm`
+
+### Requirement: Stale forced documentation
+When `forced.mandatory` is true, an entry whose id no longer belongs to a forced placement SHALL be an error. It SHALL be checked only on a run over the configured default paths, since a run over a few files cannot tell.
+
+#### Scenario: Placement removed
+- **WHEN** `forced.mandatory` is true and the file has a section `removed-dialog` that no forced element has as its id
+- **THEN** the checker reports an error at that section's heading
+
+### Requirement: Optional forced documentation
+When `forced.mandatory` is false (the default), the documentation file SHALL be optional. If it exists, its reasons SHALL appear next to the matching forced placements in the report, and missing or stale entries SHALL NOT be reported.
 
 #### Scenario: Optional by default
 - **WHEN** no config sets `forced.mandatory` and there is no documentation file

@@ -84,6 +84,10 @@
  *  --kakao-toast-shadow / -z-index / -motion-duration / -ease
  *  The cards themselves are alerts: --kakao-alert-* applies (set them on
  *  kakao-toast to change toasts only).
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

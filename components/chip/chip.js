@@ -46,6 +46,10 @@
  *  --kakao-chip-tint / -text-mix, tone colours, swatch size and radius
  *
  * Parts: chip, main (the <a> or <span>), swatch, label, meta, remove.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

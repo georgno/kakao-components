@@ -1,0 +1,5 @@
+{# <kakao-button label="in a comment"></kakao-button> #}
+{% if user %}
+  <kakao-badge tone="{{ user.tone }}">{{ user.name }}</kakao-badge>
+{% endif %}
+<kakao-breadcrumb list-data='{{ crumbs|json_encode }}' start="text"></kakao-breadcrumb>

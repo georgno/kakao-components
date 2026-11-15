@@ -709,7 +709,7 @@ KakaoComponents.meta('kakao-card');</pre>
   <!-- ================================================================ -->
   <section id="component-rules">
     <h2>Component rules</h2>
-    <p>Decisions that belong to one component family rather than to the whole system.</p>
+    <p>Decisions that belong to one component family rather than to the whole system. The ones markup can show are checked by the <a href="https://github.com/georgno/kakao-components/blob/main/tools/style-check.js">style checker</a>: <code>node tools/style-check.js</code> reads pages and templates (Yii2 views, Twig) and fails on a broken rule. A deliberate exception carries the <code>force</code> attribute, with its reason in <code>kakao-style.forced.md</code>.</p>
     <div class="grid">
       <div class="card">
         <h3>Status tones <kakao-badge tone="ink">Rule</kakao-badge></h3>
@@ -731,7 +731,7 @@ KakaoComponents.meta('kakao-card');</pre>
       </div>
       <div class="card">
         <h3>Naming form fields <kakao-badge tone="ink">Rule</kakao-badge></h3>
-        <p class="small">A form component with no visible label takes its accessible name from <code>aria-label</code> on the element (text input, textarea, radio group, colour picker). Use it whenever the label sits beside the field, as in the kitchen sink.</p>
+        <p class="small">A form component with no visible label takes its accessible name from <code>aria-label</code> on the element (text input, textarea, radio group, colour picker, rating). Use it whenever the label sits beside the field, as in the kitchen sink. A field in a settings row needs neither: the row's label names it.</p>
       </div>
       <div class="card">
         <h3>Edge fade on horizontal scrollers <kakao-badge tone="ink">Rule</kakao-badge></h3>

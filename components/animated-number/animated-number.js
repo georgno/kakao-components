@@ -15,6 +15,10 @@
  * CSS custom properties (on the element or any ancestor; defaults live in the
  * settings block of this file, change them on construction.html):
  *   --kakao-animated-number-font-family, --kakao-animated-number-font-size, --kakao-animated-number-font-weight, --kakao-animated-number-color, --kakao-animated-number-duration
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  */
 
 const BLANK = 10; // strip slot after the last digit: rolls a digit out of view

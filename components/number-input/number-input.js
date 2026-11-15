@@ -38,6 +38,10 @@
  *
  * The inner input keeps min, max, step, value, disabled, and class names
  * (e.g. your form framework). Changes bubble as input/change on the input.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  */
 
 class KakaoNumberInput extends HTMLElement {

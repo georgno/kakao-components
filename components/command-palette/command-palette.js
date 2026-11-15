@@ -123,6 +123,10 @@
  *  file; change them on construction.html. z-index only applies where the
  *  top layer (popover API) is missing: 65, above the dialog (60), below
  *  dropdown panels (70).
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

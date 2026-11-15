@@ -175,6 +175,10 @@
  * the sequence "</" followed by "script" in comments elsewhere in this
  * file is written as "<\/script" to avoid prematurely closing an
  * inlining <script> block.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * =====================================================================
  */
 

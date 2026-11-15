@@ -89,6 +89,10 @@
  *  --kakao-progress-sweep-duration / -sweep-ease
  *
  * Parts: head, label, value, bar, segment, fill.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

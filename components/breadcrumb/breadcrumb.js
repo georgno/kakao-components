@@ -53,6 +53,10 @@
  *  --kakao-breadcrumb-icon-size / -max-item-width
  *
  * Parts: list, item, link, current, separator, start.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

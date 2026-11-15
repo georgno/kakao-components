@@ -117,6 +117,10 @@
  *    reduced motion is asked for).
  *  - Forced colours: the boxes keep system colours, the current box the
  *    Highlight outline; the transparent field opts out so it stays invisible.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

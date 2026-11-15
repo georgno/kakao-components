@@ -109,6 +109,10 @@
  *
  *  Parts: root, label, fields, input-wrap, input, unit, step-dec, step-inc,
  *  track-area, track, fill, ticks, thumb, thumb-low, thumb-high.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

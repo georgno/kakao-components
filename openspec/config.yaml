@@ -20,7 +20,7 @@ context: |
   Components may be used in Yii2 projects (yii2-base), so form participation and
   data-* passthrough matter.
   Verification is done in the browser (Firefox is the reference); there is no
-  test suite.
+  test suite for the components (only the style checker has node:test tests).
   Colours: components never hard-code a colour the theme should change; every
   colour setting defaults to a theme role (var(--kakao-color-<role>, literal)).
   Components never reach into each other. When one has to make another react,
@@ -34,6 +34,13 @@ context: |
   text-transform: uppercase or small-caps anywhere; labels use sentence case,
   emphasis comes from weight and colour. Acronyms (PDF, URL) are written in
   capitals in the text itself.
+  Style checker: node tools/style-check.js checks every kakao placement in the
+  pages against the styleguide's decided rules (rules in tools/style-rules/,
+  tests with node --test) and must pass; the deploy runs it. Every component
+  lists the checker-only boolean force attribute in its header. A component
+  change that adds or renames an enumerated attribute value updates the value
+  table (VALUES in tools/style-check/helpers.js); a decided styleguide rule
+  that markup can show gets a rule module.
 
 # Project context (optional)
 # Add only constraints that should guide OpenSpec artifacts and workflows.

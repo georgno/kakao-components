@@ -95,6 +95,10 @@
  * shortcut: the page scroll lock is this component's own (components don't
  * share code). A dialog and a sheet closed out of order could restore each
  * other's saved overflow; nested use (open A, open B, close B, close A) works.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

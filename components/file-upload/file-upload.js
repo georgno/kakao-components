@@ -94,6 +94,10 @@
  *    moves to the next remove button (or the drop area when the list is empty).
  *  - The summary line is a polite live region; rejections use role="alert".
  *  - The pointer effects are skipped with prefers-reduced-motion.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

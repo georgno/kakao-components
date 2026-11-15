@@ -84,6 +84,10 @@
  * (like the button and number-input, the panel is light DOM). While a menu is
  * open, <html> carries data-kakao-aside-open="<position>"; the stylesheet
  * gives the <body> a matching animated margin.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  */
 
 (function () {

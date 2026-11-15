@@ -137,6 +137,10 @@
  *
  * Parts: label, field, input, toggle, caps, hint, error, strength (the
  * kakao-progress), requirements (the list), requirement (each item).
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

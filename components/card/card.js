@@ -86,6 +86,10 @@
  *  --kakao-card-glow-color              set by the page rules (override to force)
  *
  * Parts: card, glow, header, body, footer.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

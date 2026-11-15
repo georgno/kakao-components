@@ -122,6 +122,10 @@
  * ----------------------------------------------------------------------------
  *  --kakao-menu-*: defaults live in the settings block of this file; change
  *  them on construction.html.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  */
 (function () {
   'use strict';

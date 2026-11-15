@@ -160,6 +160,10 @@
  *  --kakao-grid-view-action-size / -action-radius / -action-icon-size / -action-gap
  *  --kakao-grid-view-toggle-bg / -toggle-border / -toggle-radius / -count-bg / -count-text
  *  --kakao-grid-view-focus-width / -focus-offset / -duration
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

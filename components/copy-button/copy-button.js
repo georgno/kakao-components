@@ -98,6 +98,10 @@
  *  --kakao-copy-button-disabled-opacity / -transition
  *
  * Parts: button, icon, label, status.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

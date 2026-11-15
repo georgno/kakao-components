@@ -111,6 +111,10 @@
  *    aria-multiselectable with `multiple`; "Select all" is its first option
  *    with aria-checked true / false / mixed. Groups are labelled role="group".
  *  - A polite status reports how many options match while filtering.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

@@ -194,6 +194,23 @@ pages (landing page, settings, demos), not the components.
   (`avatar`, `count`) and card (`media`, `avatar`). `animation` is shimmer,
   pulse or none; under reduced motion the shapes stand still. Hidden from
   assistive technology; an optional `label` makes one skeleton a status.
+- Style checker, `node tools/style-check.js [paths…]`: reads HTML and template
+  files (`.html`, `.php`, `.twig`, …; PHP and Twig expressions count as
+  dynamic values and are skipped), finds every `<kakao-*>` placement and checks
+  it against the styleguide's decided rules: `dialog-main-button-corner`,
+  `card-main-button-first`, `list-data-name`, `list-data-json`,
+  `field-has-name`, `icon-button-has-name` and `attribute-values`. One line per
+  finding (`path:line:column  level  rule-id  message`), the same output on
+  every run, exit code 0 / 1 (an error) / 2 (cannot run). Rules are one small
+  module each in `tools/style-rules/`; a project adds its own through
+  `ruleDirs` in `kakao-style.config.json`, which also sets paths, ignores,
+  extensions and each rule's level (`error`, `warning`, `off`). Tests:
+  `node --test`.
+- Every component accepts the boolean `force` attribute: it changes nothing
+  in the browser, and turns the checker's findings for that placement into a
+  "forced" list. A forced placement that breaks no rule gets a warning.
+  Reasons go in `kakao-style.forced.md` (`## <id>` and the reason); with
+  `forced.mandatory` every forced placement must have one.
 
 ### Changed
 
@@ -206,6 +223,12 @@ pages (landing page, settings, demos), not the components.
   skeleton, alt text, caption; uses Skeleton).
 - Style guide: new rule "Data tables on small screens" (rows wrap into
   label/value pairs by default, sideways scrolling is an opt-in).
+- This repo runs the style checker: the deploy stops on an error. Fixed
+  unlabelled fields in size examples (components page, text input and
+  textarea demos and construction pages) and a badge with the unknown tone
+  `warning` (description list demo); the two shortened `list-data='…'` code
+  samples on the table demo are forced. Demo code tiles leave out `force`.
+- Style guide, Component rules: links the style checker.
 
 ### Fixed
 

@@ -53,6 +53,10 @@
  *  Area: arrows move saturation / brightness by 1 (Shift: 10).
  *  Sliders: ← / → (or ↓ / ↑) by 1 (Shift: 10), Home / End.
  *  Escape: close and revert · Enter: close and keep · Tab moves through.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

@@ -1,0 +1,8 @@
+{
+  "paths": ["."],
+  "ignore": ["archive", "openspec", "node_modules", "shared/vendor", "tools", "_site"],
+  "extensions": [".html", ".htm", ".php", ".phtml", ".twig"],
+  "rules": {},
+  "ruleDirs": [],
+  "forced": { "file": "kakao-style.forced.md", "mandatory": true }
+}

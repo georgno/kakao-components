@@ -166,6 +166,10 @@
  *  - Visible 2px focus outline (3:1 in every theme).
  *  - With prefers-reduced-motion the theme changes at once: no ripple, no morph.
  *  - Without View Transitions support the theme also changes at once.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

@@ -41,6 +41,10 @@
  * ----------------------------------------------------------------------------
  *  input · change        native events, as a checkbox fires them
  *  checkbox-change       { checked, indeterminate, value, previous }
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

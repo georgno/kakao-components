@@ -84,6 +84,10 @@
  * <script src="slider.js"><\/script>
  * <kakao-slider min="0" max="200" step="10" value="60" unit="px" label="Width"></kakao-slider>
  * ```
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  */
 
 class KakaoSlider extends HTMLElement {

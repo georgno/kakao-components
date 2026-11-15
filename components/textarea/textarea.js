@@ -54,6 +54,10 @@
  * ----------------------------------------------------------------------------
  *  input        every keystroke (value and counter already updated)
  *  change       when the field loses focus
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

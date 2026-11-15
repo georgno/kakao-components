@@ -80,6 +80,10 @@
  *  sit concentric.
  *
  * Parts: skeleton (the whole), bone (every grey shape), card, row.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

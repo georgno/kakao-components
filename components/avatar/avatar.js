@@ -111,6 +111,10 @@
  *
  * Parts: avatar, face, initials, icon, image, status (avatar);
  *        group, more (group).
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

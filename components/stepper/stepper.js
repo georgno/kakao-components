@@ -88,6 +88,10 @@
  *  --kakao-stepper-min-step-width / -bar-height / -bar-gap / -radius
  *
  * Parts: root, summary, list, step, control, marker, label, description.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

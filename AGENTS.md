@@ -31,7 +31,7 @@ render into a shadow root (with slots where they take content).
   `kakao-accordion` tile with a small Copy `kakao-button` in its header) to each card's
   footer, so every demo page loads `card.js`, `accordion.js`, `button.js` and `button.css`.
   The code is the example's markup as written, minus its `<h3>`, `<p>` notes, `.toolbar`,
-  `.log` and `onclick`. An example whose component is itself a box (accordion, card,
+  `.log`, `onclick` and the style checker's `force`. An example whose component is itself a box (accordion, card,
   settings group) stays bare as a `data-example` element, its code tile after it.
   Mark demo-only controls `data-demo-only`, demo-only layout wrappers `data-demo-wrap`
   (see-through: their content counts as the example's own), skip a card with
@@ -52,6 +52,14 @@ render into a shadow root (with slots where they take content).
   the lede) is not edited by hand: the pre-commit hook in `.githooks/` runs
   `node tools/count-components.js --staged`, which counts the staged `components/<name>/<name>.js` and
   rewrites both. Enable it once per clone with `git config core.hooksPath .githooks`.
+- Run `node tools/style-check.js` (the style checker; tests: `node --test`) before
+  committing a page or demo change; the deploy runs it too and stops on an error.
+  Fix a finding, or put `force` and an `id` on a deliberately wrong example and give
+  the reason in `kakao-style.forced.md` (mandatory here). Its rules are
+  `tools/style-rules/*.js`; the attribute value table is `VALUES` in
+  `tools/style-check/helpers.js`: adding or renaming an enumerated value (a size,
+  tone, variant) in a component includes updating it, and a new component lists
+  `force` in its header comment.
 - Planning goes through OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
   Project rules for it are in `openspec/config.yaml`. Archive a change once its tasks are done.
 

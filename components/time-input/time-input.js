@@ -105,6 +105,10 @@
  *    disabled (out of range), the reason is its title for the mouse and,
  *    through aria-describedby, a visually hidden description for keyboard
  *    and screen reader users.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

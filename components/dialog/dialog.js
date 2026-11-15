@@ -90,6 +90,10 @@
  * shortcut: the covered page is 45% black, so on amoled (a pure #000 page) it
  * dims nothing - there the raised panel and its edge carry the separation.
  * Upgrade to a per-theme scrim if amoled needs the page to recede.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

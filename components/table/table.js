@@ -158,6 +158,10 @@
  *  --kakao-table-stack-below / -label-width / -label-size / -label-gap
  *  --kakao-table-block-padding / -stack-gap
  *  --kakao-table-box-size / -box-radius / -focus-width / -focus-offset / -duration
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

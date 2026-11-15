@@ -63,8 +63,9 @@ function toggleButton(btn, label, onChange) {
  *                   without the example's own <h3> title, <p> notes (a <p>
  *                   with a kakao- element in it is an example) and
  *                   .toolbar controls, event logs (.log), inline scripts,
- *                   inline event handler attributes (onclick) and anything
- *                   marked data-demo-only (whatever only drives the demo)
+ *                   inline event handler attributes (onclick), the style
+ *                   checker's force attribute and anything marked
+ *                   data-demo-only (whatever only drives the demo)
  *   data-demo-wrap  on a layout wrapper that only the demo needs (a row of
  *                   buttons, a form): the snippet shows its content without
  *                   it, and its children count as the example's own (a <p>
@@ -151,7 +152,7 @@ function toggleButton(btn, label, onChange) {
         }
         const name = node.localName;
         out.push(['<', 'p'], [name, 't']);
-        [...node.attributes].filter((a) => !a.name.startsWith('on')).forEach((a) => {
+        [...node.attributes].filter((a) => !a.name.startsWith('on') && a.name !== 'force').forEach((a) => {
           out.push([' ', ''], [a.name, 'a']);
           if (a.value === '') return;
           const q = a.value.includes('"') && !a.value.includes("'") ? "'" : '"';

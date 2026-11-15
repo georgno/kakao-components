@@ -53,6 +53,10 @@
  *   item-select  - { detail: { name, index } }
  *   item-action  - { detail: { name, index } } (chevron button)
  *   scroll-end   - Fired when scroll reaches top or bottom
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  */
 
 class KakaoList extends HTMLElement {

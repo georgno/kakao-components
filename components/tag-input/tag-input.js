@@ -125,6 +125,10 @@
  *
  * The panel and its rows are copied from combobox.js (components never load
  * each other's code, and each file stays inlineable): keep them in step.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

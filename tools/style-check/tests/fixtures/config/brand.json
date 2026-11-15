@@ -1,0 +1,1 @@
+{ "ruleDirs": ["../custom-rules"], "rules": { "card-main-button-first": "warning" } }

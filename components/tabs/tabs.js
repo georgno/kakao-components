@@ -1,6 +1,10 @@
 /**
  * Tab Switcher web components: <kakao-tabs> and <kakao-tab>
  * Dispatches a bubbling "tab-change" event with detail: { controls, item, url }
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  */
 (function () {
   'use strict';

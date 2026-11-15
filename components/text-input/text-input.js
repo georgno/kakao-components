@@ -84,6 +84,10 @@
  *    aria-describedby, the error sets aria-invalid.
  *  - The clear button is a labelled button and only rendered when useful.
  *  - Focus is the shared 2px ring, on the field.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

@@ -90,3 +90,10 @@ A data table component (table, grid view) SHALL by default, on a phone-width scr
 #### Scenario: Opt-in scrolling
 - **WHEN** the table opts in to sideways scrolling and is too wide
 - **THEN** it scrolls inside its frame with the edge fade on each side that has more to scroll
+
+### Requirement: Force attribute
+Every component SHALL accept a boolean `force` attribute that marks a placement as a deliberate exception to the style rules. It SHALL have no effect in the browser: no change in rendering, behaviour, events or accessibility. Each component's documentation SHALL list it.
+
+#### Scenario: No runtime effect
+- **WHEN** `force` is added to a dialog
+- **THEN** the dialog looks and behaves exactly as without it, and only the style checker treats it differently

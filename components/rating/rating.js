@@ -80,6 +80,10 @@
  *  rating-change           { value, previous }
  *  rating-preview          { value } while the pointer hovers a symbol,
  *                          { value: null } when it leaves
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

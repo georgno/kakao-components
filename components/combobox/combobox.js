@@ -127,6 +127,10 @@
  * Panel, rows, groups, option parsing and placement are copied from select.js
  * (components never load each other, and each file stays inlineable): keep the
  * two in step.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {
