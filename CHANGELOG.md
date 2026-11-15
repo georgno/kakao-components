@@ -10,6 +10,19 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-stepper`: where someone is in a multi-step flow, as an ordered list.
+  Steps from `list-data` (label, optional `description`, `value` and `state`
+  error or done), the current one from `current` (index or value; the number
+  of steps means finished). Done steps show a check, the current one is
+  `aria-current="step"`, an error step shows an exclamation mark and is read
+  as "Error". `orientation` horizontal or vertical; a horizontal stepper with
+  less than `--kakao-stepper-min-step-width` per step collapses to "Step 2 of
+  4" with the current label over a segmented bar (`collapse` auto, always,
+  never). `clickable` (done steps) or `clickable="all"` makes steps buttons
+  with arrow-key movement; they fire a cancelable `step-select`, and the
+  stepper then moves and fires `stepper-change`. Methods `next()`,
+  `previous()`, `goTo()`; words through `KakaoStepper.texts`. It shows
+  progress and is not a form control, unlike `kakao-step-switch`.
 - `kakao-image`: an image that keeps its place while it loads. Shows a
   `kakao-skeleton` block of its size (`width` and `height`, or `ratio`) until
   the file is there, then fades to the picture (no fade under reduced motion);

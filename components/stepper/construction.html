@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-stepper - Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="stepper.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="stepper" data-source="stepper.js" data-title="Stepper">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Horizontal · done, error, current, upcoming · clickable</figcaption>
+      <kakao-stepper clickable collapse="never" current="2" list-data='[
+        {"label": "Account", "description": "Name and email"},
+        {"label": "Address", "state": "error", "description": "Postcode missing"},
+        {"label": "Payment", "description": "Card or invoice"},
+        {"label": "Confirm"}
+      ]'></kakao-stepper>
+    </figure>
+    <figure>
+      <figcaption>Vertical · <code>orientation="vertical"</code></figcaption>
+      <kakao-stepper orientation="vertical" current="1" list-data='[
+        {"label": "Order placed", "description": "12 November, 09:41"},
+        {"label": "Packed", "description": "Leaves the warehouse tonight"},
+        {"label": "Delivered"}
+      ]'></kakao-stepper>
+    </figure>
+    <figure>
+      <figcaption>Compact · <code>collapse="always"</code></figcaption>
+      <div style="max-width:20rem">
+        <kakao-stepper collapse="always" clickable current="2" list-data='["Account", "Plan", "Payment", "Confirm"]'></kakao-stepper>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-stepper-done-bg", "label": "Done fill", "group": "Colour", "type": "color", "hint": "also the compact bar" },
+    { "property": "--kakao-stepper-done-mark", "label": "Done check mark", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-current-border", "label": "Current border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-current-text", "label": "Current number", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-current-bg", "label": "Current fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-upcoming-border", "label": "Upcoming border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-upcoming-text", "label": "Upcoming number", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-upcoming-bg", "label": "Upcoming fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-line", "label": "Line", "group": "Colour", "type": "color", "hint": "also the compact bar's open segments" },
+    { "property": "--kakao-stepper-line-done", "label": "Line behind the current step", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-label", "label": "Label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-label-upcoming", "label": "Upcoming label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-description", "label": "Description", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-danger", "label": "Error", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-hover-bg", "label": "Hover halo", "group": "Colour", "type": "color", "hint": "clickable steps" },
+    { "property": "--kakao-stepper-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-stepper-marker-size", "label": "Marker size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-stepper-border-width", "label": "Marker border", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-stepper-line-width", "label": "Line width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-stepper-line-gap", "label": "Gap between marker and line", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-stepper-label-gap", "label": "Gap between marker and label", "group": "Size & spacing", "type": "length", "hint": "horizontal" },
+    { "property": "--kakao-stepper-vertical-gap", "label": "Space between steps", "group": "Size & spacing", "type": "length", "hint": "vertical" },
+    { "property": "--kakao-stepper-min-step-width", "label": "Min step width", "group": "Compact form", "type": "length", "hint": "below this per step, a horizontal stepper collapses" },
+    { "property": "--kakao-stepper-bar-height", "label": "Bar height", "group": "Compact form", "type": "length" },
+    { "property": "--kakao-stepper-bar-gap", "label": "Gap between segments", "group": "Compact form", "type": "length" },
+    { "property": "--kakao-stepper-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-stepper-label-weight", "label": "Label weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-stepper-current-weight", "label": "Current label weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-stepper-description-font-size", "label": "Description size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-stepper-marker-font-size", "label": "Number size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-stepper-marker-weight", "label": "Number weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-stepper-marker-radius", "label": "Marker radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-stepper-radius", "label": "Focus ring radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+</main>
+</body>
+</html>

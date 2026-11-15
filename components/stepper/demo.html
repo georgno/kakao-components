@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-stepper - Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../step-switch/step-switch.js" defer></script>
+<script src="stepper.js" defer></script>
+<style>
+  .stack { display: grid; gap: 1.5rem; }
+  .narrow { max-width: 20rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .compare { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); align-items: start; }
+  .compare p { margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--muted); }
+  .wizard-panel { margin: 1.25rem 0 0; padding: 1rem; border-radius: 10px; background: var(--kakao-color-subtle, #f0f0f1); }
+  .wizard-panel h4 { margin: 0 0 0.25rem; font-size: 1rem; }
+  .wizard-panel p { margin: 0; color: var(--muted); font-size: 0.875rem; }
+  .wizard-panel:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Stepper"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Stepper</h1>
+    <p><code>&lt;kakao-stepper&gt;</code> - where someone is in a multi-step flow: numbered steps that are done, current or upcoming. It shows progress; the page owns the step content.</p>
+  </header>
+
+  <h2>Steps and the current one</h2>
+  <p>Steps come from <code>list-data</code>, the current one from <code>current</code> (a 0-based index). Steps before it get a check mark, steps after it stay outlined. A screen reader hears an ordered list with "Done" on finished steps and the current step marked.</p>
+  <kakao-card>
+    <h3 slot="header">Labels only</h3>
+    <kakao-stepper current="1" list-data='["Account", "Plan", "Payment", "Confirm"]'></kakao-stepper>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">With descriptions, current by value</h3>
+    <p><code>current</code> also takes the <code>value</code> of a step that has one.</p>
+    <kakao-stepper current="payment" list-data='[
+      {"value": "cart", "label": "Cart", "description": "3 items"},
+      {"value": "address", "label": "Address", "description": "Where it goes"},
+      {"value": "payment", "label": "Payment", "description": "Card or invoice"},
+      {"value": "review", "label": "Review"}
+    ]'></kakao-stepper>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Start, middle and finished</h3>
+    <p>A <code>current</code> equal to the number of steps means the flow is finished: every step is done.</p>
+    <div class="stack" data-demo-wrap>
+      <kakao-stepper current="0" list-data='["Upload", "Map columns", "Import"]'></kakao-stepper>
+      <kakao-stepper current="2" list-data='["Upload", "Map columns", "Import"]'></kakao-stepper>
+      <kakao-stepper current="3" list-data='["Upload", "Map columns", "Import"]'></kakao-stepper>
+    </div>
+  </kakao-card>
+
+  <h2>Step states</h2>
+  <p><code>"state": "error"</code> marks a step as failed: danger colour, an exclamation mark, and the word "Error" for screen readers. <code>"state": "done"</code> marks a step as done wherever it sits, for a step that was skipped or prefilled.</p>
+  <kakao-card>
+    <h3 slot="header">An error behind and one on the current step</h3>
+    <div class="stack" data-demo-wrap>
+      <kakao-stepper current="2" list-data='[
+        {"label": "Account"},
+        {"label": "Address", "state": "error", "description": "Postcode missing"},
+        {"label": "Payment"},
+        {"label": "Confirm"}
+      ]'></kakao-stepper>
+      <kakao-stepper current="1" list-data='[
+        {"label": "Account"},
+        {"label": "Payment", "state": "error", "description": "Card declined"},
+        {"label": "Confirm"}
+      ]'></kakao-stepper>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">A step done ahead of time</h3>
+    <kakao-stepper current="1" list-data='[
+      {"label": "Account"},
+      {"label": "Plan"},
+      {"label": "Payment", "state": "done", "description": "Card on file"},
+      {"label": "Confirm"}
+    ]'></kakao-stepper>
+  </kakao-card>
+
+  <h2>Vertical</h2>
+  <p><code>orientation="vertical"</code> puts the markers in a column with the labels beside them. It suits a side column and longer descriptions.</p>
+  <kakao-card>
+    <div class="narrow" data-demo-wrap>
+      <kakao-stepper orientation="vertical" current="2" list-data='[
+        {"label": "Order placed", "description": "12 November, 09:41"},
+        {"label": "Packed", "description": "Left the warehouse the same evening"},
+        {"label": "On its way", "description": "With the carrier, expected on Thursday"},
+        {"label": "Delivered"}
+      ]'></kakao-stepper>
+    </div>
+  </kakao-card>
+
+  <h2>Narrow spaces</h2>
+  <p>A horizontal stepper needs room for its labels. When a step would get less than <code>--kakao-stepper-min-step-width</code> (6rem), it collapses to one line, "Step 2 of 4" with the current label, over a bar with a segment per step. It goes by the stepper's own width, not the window's, so it also collapses in a narrow column. On a phone this keeps the form in view; a vertical list would push it down. Screen readers still get the whole list.</p>
+  <kakao-card>
+    <h3 slot="header">Collapses by itself · <code>collapse="auto"</code> (default)</h3>
+    <p>The same stepper in a 20rem box.</p>
+    <div class="narrow" data-demo-wrap>
+      <kakao-stepper current="1" list-data='["Account", "Plan", "Payment", "Confirm"]'></kakao-stepper>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Always compact, or never</h3>
+    <div class="stack" data-demo-wrap>
+      <kakao-stepper collapse="always" current="2" list-data='[
+        {"label": "Cart"},
+        {"label": "Address"},
+        {"label": "Payment", "description": "Card or invoice"},
+        {"label": "Review"},
+        {"label": "Done"}
+      ]'></kakao-stepper>
+      <kakao-stepper collapse="always" current="1" list-data='[{"label": "Account"}, {"label": "Payment", "state": "error"}, {"label": "Confirm"}]'></kakao-stepper>
+      <div class="narrow" data-demo-wrap>
+        <kakao-stepper collapse="never" current="1" list-data='["Account", "Plan", "Payment", "Confirm"]'></kakao-stepper>
+      </div>
+    </div>
+  </kakao-card>
+
+  <h2>Clickable steps</h2>
+  <p>By default nothing in a stepper is focusable. With <code>clickable</code> the steps before the current one become buttons; with <code>clickable="all"</code> every step but the current one. A button fires a cancelable <code>step-select</code>; unless it is cancelled the stepper moves there and fires <code>stepper-change</code>. Tab to a step, Enter or Space to pick it; the arrow keys, Home and End move between the buttons.</p>
+  <kakao-card>
+    <h3 slot="header">Back to finished steps · <code>clickable</code></h3>
+    <kakao-stepper id="back" clickable current="2" list-data='["Account", "Plan", "Payment", "Confirm"]'></kakao-stepper>
+    <div class="actions" style="margin-top:1rem" data-demo-only>
+      <kakao-button id="back-reset" label="Back to step 3" variant="ghost" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log-back" role="log" aria-label="Event log" style="margin-top:.75rem"></div>
+    <template data-code>
+      <script>
+        document.getElementById('back').addEventListener('stepper-change', (e) => {
+          showStep(e.detail.index); // the page shows that step's content
+        });
+      </script>
+    </template>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Any step, checked first · <code>clickable="all"</code></h3>
+    <p>This page cancels a jump of more than one step forward, the way a wizard would that validates each step.</p>
+    <kakao-stepper id="all" clickable="all" current="plan" list-data='[
+      {"value": "account", "label": "Account"},
+      {"value": "plan", "label": "Plan"},
+      {"value": "payment", "label": "Payment"},
+      {"value": "confirm", "label": "Confirm"}
+    ]'></kakao-stepper>
+    <div class="log" id="log-all" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+    <template data-code>
+      <script>
+        document.getElementById('all').addEventListener('step-select', (e) => {
+          // only one step forward at a time; going back is always fine
+          if (e.detail.index > e.detail.previousIndex + 1) e.preventDefault();
+        });
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>A small wizard</h2>
+  <p><code>next()</code>, <code>previous()</code> and <code>goTo(indexOrValue)</code> move the stepper from script; <code>next()</code> on the last step finishes the flow. The page shows the content for <code>stepper-change</code> and moves focus to it.</p>
+  <kakao-card>
+    <kakao-stepper id="wizard" clickable current="0" label="Sign-up progress" list-data='[
+      {"label": "Account", "description": "Name and email"},
+      {"label": "Plan", "description": "Pick what fits"},
+      {"label": "Payment", "description": "Card or invoice"}
+    ]'></kakao-stepper>
+    <div class="wizard-panel" id="wizard-panel" tabindex="-1" data-demo-only>
+      <h4 id="wizard-title"></h4>
+      <p id="wizard-text"></p>
+    </div>
+    <div class="actions" style="margin-top:1rem" data-demo-only>
+      <kakao-button id="wizard-prev" label="Back" variant="secondary"></kakao-button>
+      <kakao-button id="wizard-next" label="Continue"></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        const wizard = document.getElementById('wizard');
+        backButton.addEventListener('kakao-button-action', () => wizard.previous());
+        continueButton.addEventListener('kakao-button-action', () => wizard.next());
+        wizard.addEventListener('stepper-change', (e) => {
+          showStep(e.detail.index); // e.detail: { index, value, label, previousIndex, source }
+        });
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Stepper or step switch?</h2>
+  <p>The names are close, the jobs are not. A <a href="../step-switch/demo.html">step switch</a> is a form control: a thumb that picks one of several values, like a radio group. A stepper picks nothing: it is a list that says how far along a flow is.</p>
+  <kakao-card data-no-code>
+    <div class="compare" data-demo-wrap>
+      <div>
+        <p><b>Stepper</b> · progress through a flow, an ordered list with a current step.</p>
+        <kakao-stepper current="1" list-data='["Draft", "Review", "Publish"]'></kakao-stepper>
+      </div>
+      <div>
+        <p><b>Step switch</b> · a setting with a value, a radio group with a thumb to drag.</p>
+        <kakao-step-switch label="Visibility" value="team"
+          list-data='[{"value":"me","label":"Only me"},{"value":"team","label":"Team"},{"value":"all","label":"Everyone"}]'></kakao-step-switch>
+      </div>
+    </div>
+  </kakao-card>
+
+  <h2>Other words</h2>
+  <p><code>KakaoStepper.texts</code> sets the words for every stepper: <code>done</code> and <code>error</code> (read by screen readers), <code>summary</code> and <code>complete</code> (the compact line).</p>
+  <kakao-card>
+    <kakao-stepper id="words" collapse="always" current="1" list-data='["Konto", "Tarif", "Zahlung"]'></kakao-stepper>
+    <div class="actions" style="margin-top:1rem" data-demo-only>
+      <kakao-button id="words-de" label="German" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="words-reset" label="Built-in" variant="ghost" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        KakaoStepper.texts = {
+          done: 'Erledigt',
+          error: 'Fehler',
+          summary: 'Schritt {current} von {total}',
+          complete: 'Alle {total} Schritte erledigt',
+        };
+      </script>
+    </template>
+  </kakao-card>
+</main>
+<script>
+  customElements.whenDefined('kakao-stepper').then(() => {
+    const byId = (id) => document.getElementById(id);
+
+    const back = byId('back');
+    ['step-select', 'stepper-change'].forEach((name) => {
+      back.addEventListener(name, (e) => logLine(byId('log-back'), name, e.detail));
+    });
+    byId('back-reset').addEventListener('kakao-button-action', () => back.goTo(2));
+
+    const all = byId('all');
+    all.addEventListener('step-select', (e) => {
+      const blocked = e.detail.index > e.detail.previousIndex + 1;
+      if (blocked) e.preventDefault();
+      logLine(byId('log-all'), blocked ? 'step-select (cancelled)' : 'step-select', e.detail);
+    });
+    all.addEventListener('stepper-change', (e) => logLine(byId('log-all'), 'stepper-change', e.detail));
+
+    const wizard = byId('wizard');
+    const prev = byId('wizard-prev');
+    const next = byId('wizard-next');
+    const pages = [
+      ['Your account', 'Here the page would ask for a name and an email address.'],
+      ['Your plan', 'Here the page would list the plans to pick from.'],
+      ['Payment', 'Here the page would take a card or an invoice address.'],
+    ];
+    const show = (focus) => {
+      const index = wizard.current;
+      const page = pages[index] || ['All set', 'Every step is done. "Start again" goes back to the first one.'];
+      byId('wizard-title').textContent = page[0];
+      byId('wizard-text').textContent = page[1];
+      prev.toggleAttribute('disabled', index === 0);
+      next.setAttribute('label', index >= pages.length ? 'Start again' : index === pages.length - 1 ? 'Finish' : 'Continue');
+      if (focus) byId('wizard-panel').focus();
+    };
+    prev.addEventListener('kakao-button-action', () => wizard.previous());
+    next.addEventListener('kakao-button-action', () => {
+      if (wizard.current >= pages.length) wizard.goTo(0);
+      else wizard.next();
+    });
+    wizard.addEventListener('stepper-change', () => show(true));
+    show(false);
+
+    byId('words-de').addEventListener('kakao-button-action', () => {
+      KakaoStepper.texts = { done: 'Erledigt', error: 'Fehler', summary: 'Schritt {current} von {total}', complete: 'Alle {total} Schritte erledigt' };
+    });
+    byId('words-reset').addEventListener('kakao-button-action', () => { KakaoStepper.texts = KakaoStepper.TEXTS; });
+  });
+</script>
+</body>
+</html>

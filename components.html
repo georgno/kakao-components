@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
+<script src="components/stepper/stepper.js" defer></script>
 <script src="components/popover/popover.js" defer></script>
 <script src="components/tabs/tabs.js" defer></script>
 <script src="components/list/list.js" defer></script>
@@ -1535,6 +1536,35 @@
       </div>
     </article>
 
+    <!-- ============================== Stepper ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Stepper</h2>
+        <code>&lt;kakao-stepper&gt;</code>
+        <a href="components/stepper/construction.html">Construction</a>
+        <a href="components/stepper/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Where someone is in a multi-step flow: an ordered list of steps that are done, current or upcoming (or failed), from <code>list-data</code> and <code>current</code>. Horizontal or vertical; a horizontal one that gets too narrow collapses to “Step 2 of 4” over a segmented bar. With <code>clickable</code> the steps are buttons that fire <code>step-select</code>; <code>next()</code>, <code>previous()</code> and <code>goTo()</code> move it. Not a form control: to pick one of several values, use the step switch.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Done, current, upcoming</h3>
+          <kakao-stepper current="1" list-data='["Account", "Plan", "Payment", "Confirm"]'></kakao-stepper>
+        </div>
+        <div class="example">
+          <h3>Clickable, with an error · <code>clickable</code></h3>
+          <kakao-stepper clickable current="2" list-data='[{"label":"Cart"},{"label":"Address","state":"error","description":"Postcode missing"},{"label":"Payment"},{"label":"Review"}]'></kakao-stepper>
+        </div>
+        <div class="example">
+          <h3>Vertical · <code>orientation="vertical"</code></h3>
+          <kakao-stepper orientation="vertical" current="2" list-data='[{"label":"Order placed","description":"12 November, 09:41"},{"label":"Packed"},{"label":"On its way","description":"Expected on Thursday"},{"label":"Delivered"}]'></kakao-stepper>
+        </div>
+        <div class="example">
+          <h3>Compact · <code>collapse="always"</code></h3>
+          <kakao-stepper collapse="always" current="2" list-data='[{"label":"Cart"},{"label":"Address"},{"label":"Payment","description":"Card or invoice"},{"label":"Review"}]'></kakao-stepper>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Switch group ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1801,15 +1831,6 @@
       <p class="placeholder-native">Page links, plus a compact “1–20 of 143” form.</p>
       <div class="native">
         <nav aria-label="Pages"><a href="#missing">‹ Previous</a> · <a href="#missing">1</a> · <b>2</b> · <a href="#missing">3</a> · <a href="#missing">Next ›</a></nav>
-      </div>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Stepper</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;ol&gt;</code></p>
-      <p class="placeholder-native">Numbered steps of a wizard: done, current, upcoming.</p>
-      <div class="native">
-        <ol style="margin:0;padding-left:1.2rem"><li>Account</li><li><b>Plan</b></li><li>Payment</li></ol>
       </div>
     </article>
 
