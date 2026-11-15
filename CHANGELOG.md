@@ -10,6 +10,18 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-menu`: a menu of actions, shadow DOM, replacing the "Menu & context
+  menu" placeholder. Items from `list-data` or `items`: strings, `"-"`
+  separators, `{ group, items }` with headings, and items with `icon`,
+  `shortcut` (a `kakao-kbd` keycap when that is loaded, else text), `disabled`,
+  `tone: "danger"`, `type: "checkbox" | "radio"` with `checked`, `href` links
+  and `children` submenus. Opens from a trigger (`for`), as a context menu
+  (`context-for`: right-click, long-press, Shift+F10, the Menu key), by script
+  (`open(anchor)`, `openAt(x, y)`) or `inline`. WAI-ARIA menu keys with
+  type-ahead; `placement` with flipping; submenus open under their item when
+  there is no room beside (phones). Events `menu-select` (cancelable),
+  `menu-open`, `menu-close`. The select's panel look (level 3 with its ring).
+
 - `kakao-tree-view`: nested, collapsible rows (folders, permission groups),
   shadow DOM. Nodes from `list-data` (`id`, `label`, `children`, `icon` as a
   named glyph, `expanded`, `disabled`, `selected`, `lazy`), the `nodes`

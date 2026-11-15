@@ -56,6 +56,7 @@
 <script src="components/alert/alert.js" defer></script>
 <script src="components/toast/toast.js" defer></script>
 <script src="components/tree-view/tree-view.js" defer></script>
+<script src="components/menu/menu.js" defer></script>
 <script src="components/progress/progress.js" defer></script>
 <script src="components/meter/meter.js" defer></script>
 <script src="components/accordion/accordion.js" defer></script>
@@ -1060,6 +1061,33 @@
       </div>
     </article>
 
+    <!-- ============================== Menu ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Menu</h2>
+        <code>&lt;kakao-menu&gt;</code>
+        <a href="components/menu/construction.html">Construction</a>
+        <a href="components/menu/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A menu of actions from any trigger (<code>for</code>), by script or as a context menu (<code>context-for</code>: right-click, long-press, <kakao-kbd size="sm" keys="Shift+F10"></kakao-kbd>). Groups, separators, icons, shortcuts, check and radio items, links and submenus; the WAI-ARIA menu keys. For a simple pick-one dropdown, <code>&lt;kakao-button list-data&gt;</code> is enough.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>From a trigger · <code>for</code></h3>
+          <kakao-button id="cmp-menu-trigger" label="Actions" variant="secondary"></kakao-button>
+          <kakao-menu for="cmp-menu-trigger" list-data='[{"label":"Rename","value":"rename","icon":"edit","shortcut":"F2"},{"label":"Duplicate","value":"duplicate","icon":"copy","shortcut":"Mod+D"},{"label":"Share","icon":"share","children":[{"label":"Copy link","value":"link","icon":"link"},{"label":"Email","value":"email"}]},{"label":"Archive","value":"archive","icon":"archive","disabled":true},"-",{"label":"Delete","value":"delete","icon":"trash","tone":"danger"}]'></kakao-menu>
+        </div>
+        <div class="example">
+          <h3>Context menu · <code>context-for</code></h3>
+          <div id="cmp-menu-area" tabindex="0" style="display:grid;place-items:center;min-height:6rem;padding:1rem;border:1px dashed var(--kakao-color-border, #82828b);border-radius:10px;color:var(--kakao-color-muted, #62626c);text-align:center;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none">Right-click or long-press here</div>
+          <kakao-menu context-for="cmp-menu-area" label="Canvas" list-data='[{"label":"Cut","value":"cut","icon":"cut","shortcut":"Mod+X"},{"label":"Copy","value":"copy","icon":"copy","shortcut":"Mod+C"},{"label":"Paste","value":"paste","icon":"paste","shortcut":"Mod+V"}]'></kakao-menu>
+        </div>
+        <div class="example">
+          <h3>Groups, check and radio · <code>inline</code></h3>
+          <kakao-menu inline label="View" list-data='[{"label":"Show sidebar","value":"sidebar","type":"checkbox","checked":true},"-",{"group":"Density","items":[{"label":"Compact","value":"compact","type":"radio"},{"label":"Comfortable","value":"comfortable","type":"radio","checked":true}]}]'></kakao-menu>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Meter ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1896,12 +1924,6 @@
   <h2 id="missing">Not built yet</h2>
   <p>Placeholders: what a kakao component would replace, shown as the plain native element where there is one.</p>
   <div class="grid">
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Menu &amp; context menu</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: none. Today: <code>&lt;kakao-button list-data&gt;</code> for simple menus</p>
-      <p class="placeholder-native">Groups, separators, shortcuts and submenus, opened from any trigger or by right-click.</p>
-    </article>
 
     <article class="card placeholder">
       <div class="component-head"><h2>Command palette</h2><kakao-badge outline>Missing</kakao-badge></div>

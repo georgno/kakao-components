@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-menu - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../kbd/kbd.js" defer></script>
+<script src="menu.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="menu" data-source="menu.js" data-title="Menu">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Icons · shortcuts · submenu · danger (shown <code>inline</code>)</figcaption>
+      <kakao-menu inline label="File" list-data='[
+        {"label": "Rename", "value": "rename", "icon": "edit", "shortcut": "F2"},
+        {"label": "Duplicate", "value": "duplicate", "icon": "copy", "shortcut": "Mod+D"},
+        {"label": "Share", "icon": "share", "children": [
+          {"label": "Copy link", "value": "share-link", "icon": "link"},
+          {"label": "Email", "value": "share-email"}
+        ]},
+        {"label": "Archive", "value": "archive", "icon": "archive", "disabled": true},
+        "-",
+        {"label": "Delete", "value": "delete", "icon": "trash", "shortcut": "Del", "tone": "danger"}
+      ]'></kakao-menu>
+    </figure>
+    <figure>
+      <figcaption>Groups · checkbox and radio items</figcaption>
+      <kakao-menu inline label="View" list-data='[
+        {"label": "Show sidebar", "value": "sidebar", "type": "checkbox", "checked": true},
+        {"label": "Show hidden files", "value": "hidden", "type": "checkbox"},
+        "-",
+        {"group": "Density", "items": [
+          {"label": "Compact", "value": "compact", "type": "radio"},
+          {"label": "Comfortable", "value": "comfortable", "type": "radio", "checked": true},
+          {"label": "Spacious", "value": "spacious", "type": "radio"}
+        ]}
+      ]'></kakao-menu>
+    </figure>
+    <figure>
+      <figcaption>From a trigger (offset, fade)</figcaption>
+      <kakao-button id="construction-trigger" label="Actions" variant="secondary"></kakao-button>
+      <kakao-menu for="construction-trigger" list-data='[
+        {"label": "Open", "value": "open"},
+        {"label": "Move to", "children": ["Inbox", "Projects", "Archive"]},
+        "-",
+        {"label": "Delete", "value": "delete", "tone": "danger"}
+      ]'></kakao-menu>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-menu-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-menu-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-menu-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "headings, shortcuts, submenu arrow" },
+    { "property": "--kakao-menu-hover-bg", "label": "Active item", "group": "Colour", "type": "color", "hint": "under the pointer or the keyboard" },
+    { "property": "--kakao-menu-line", "label": "Separator", "group": "Colour", "type": "color" },
+    { "property": "--kakao-menu-icon", "label": "Icon", "group": "Colour", "type": "color" },
+    { "property": "--kakao-menu-check", "label": "Check mark", "group": "Colour", "type": "color" },
+    { "property": "--kakao-menu-danger", "label": "Danger item", "group": "Colour", "type": "color" },
+    { "property": "--kakao-menu-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-menu-font", "label": "Font", "group": "Typography", "type": "font" },
+    { "property": "--kakao-menu-checked-weight", "label": "Checked weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-menu-heading-size", "label": "Heading size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-menu-heading-weight", "label": "Heading weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-menu-shortcut-size", "label": "Shortcut size", "group": "Typography", "type": "length", "hint": "plain text shortcuts" },
+    { "property": "--kakao-menu-padding", "label": "Padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-menu-offset", "label": "Offset", "group": "Size & spacing", "type": "length", "units": ["px"], "hint": "gap to the trigger" },
+    { "property": "--kakao-menu-sub-offset", "label": "Submenu offset", "group": "Size & spacing", "type": "length", "units": ["px"], "hint": "gap to the parent menu" },
+    { "property": "--kakao-menu-min-width", "label": "Min width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-menu-max-width", "label": "Max width", "group": "Size & spacing", "type": "length", "hint": "longer labels wrap" },
+    { "property": "--kakao-menu-max-height", "label": "Max height", "group": "Size & spacing", "type": "length", "hint": "then the menu scrolls" },
+    { "property": "--kakao-menu-item-height", "label": "Item height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-menu-touch-item-height", "label": "Item height (touch)", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-menu-item-padding-x", "label": "Item padding", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-menu-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "hint": "icon to label" },
+    { "property": "--kakao-menu-shortcut-gap", "label": "Shortcut gap", "group": "Size & spacing", "type": "length", "hint": "label to shortcut or arrow, at least" },
+    { "property": "--kakao-menu-icon-size", "label": "Icon size", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-menu-separator-margin", "label": "Separator margin", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-menu-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-menu-item-radius", "label": "Item radius", "group": "Shape", "type": "radius", "hint": "radius minus padding" },
+    { "property": "--kakao-menu-shadow", "label": "Shadow", "group": "Shape", "type": "shadow", "hint": "elevation level 3 (overlay)" },
+    { "property": "--kakao-menu-focus-width", "label": "Focus ring width", "group": "Shape", "type": "length" },
+    { "property": "--kakao-menu-z", "label": "Z-index", "group": "Shape", "type": "number", "min": 0, "max": 1000, "step": 1, "hint": "only where the top layer is missing" },
+    { "property": "--kakao-menu-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+    { "property": "--kakao-menu-duration", "label": "Fade", "group": "Motion", "type": "duration" },
+    { "property": "--kakao-menu-ease", "label": "Easing", "group": "Motion", "type": "easing", "hint": "standard: fades and colour" }
+  ]
+  </script>
+</main>
+</body>
+</html>

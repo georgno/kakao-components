@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-menu - Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../kbd/kbd.js" defer></script>
+<script src="menu.js" defer></script>
+<style>
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .spread { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: space-between; }
+  .target {
+    display: grid;
+    place-items: center;
+    min-height: 8rem;
+    padding: 1rem;
+    border: 1px dashed var(--kakao-color-border, #82828b);
+    border-radius: 10px;
+    color: var(--kakao-color-muted, #62626c);
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .target:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+  .files { display: grid; gap: 0.25rem; max-width: 22rem; margin: 0; padding: 0; list-style: none; }
+  .files li {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    background: var(--kakao-color-subtle, #f0f0f1);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .files li:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+  .readout { margin: 0.75rem 0 0; font-size: 0.875rem; color: var(--muted); overflow-wrap: anywhere; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Menu"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Menu</h1>
+    <p><code>&lt;kakao-menu&gt;</code> - a menu of actions, opened from any trigger or as a context menu on right-click. Groups, separators, icons, shortcuts, check and radio items, links and submenus. For a simple pick-one dropdown, <code>&lt;kakao-button list-data&gt;</code> is enough.</p>
+  </header>
+
+  <h2>From a trigger</h2>
+  <p><code>for</code> names the trigger by id. A click opens and closes the menu; <kakao-kbd>Down</kakao-kbd> or <kakao-kbd>Up</kakao-kbd> on the trigger opens it on the first or last item. In the menu: arrows, <kakao-kbd>Home</kakao-kbd> / <kakao-kbd>End</kakao-kbd>, a letter to jump, <kakao-kbd>Enter</kakao-kbd> to pick, <kakao-kbd>Esc</kakao-kbd> to close.</p>
+  <kakao-card>
+    <h3 slot="header">Icons, shortcuts, a separator and a danger item</h3>
+    <p>Items come from <code>list-data</code>: <code>{ label, value, icon, shortcut, disabled, tone }</code>; <code>"-"</code> is a separator. Shortcuts are drawn by <code>&lt;kakao-kbd&gt;</code> when it is loaded, else as plain text. They are hints: the menu does not bind the keys.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="file-actions" label="Actions" variant="secondary"></kakao-button>
+      <kakao-menu id="file-menu" for="file-actions" list-data='[
+        {"label": "Rename", "value": "rename", "icon": "edit", "shortcut": "F2"},
+        {"label": "Duplicate", "value": "duplicate", "icon": "copy", "shortcut": "Mod+D"},
+        {"label": "Download", "value": "download", "icon": "download"},
+        {"label": "Archive", "value": "archive", "icon": "archive", "disabled": true},
+        "-",
+        {"label": "Delete", "value": "delete", "icon": "trash", "shortcut": "Del", "tone": "danger"}
+      ]'></kakao-menu>
+    </div>
+    <div class="log" id="log-file" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Labels only</h3>
+    <p>An item can be a plain string; its value is then the label. Any element can be the trigger.</p>
+    <div class="actions" data-demo-wrap>
+      <a href="#" id="sort-link" onclick="return false">Sort by</a>
+      <kakao-menu for="sort-link" list-data='["Name", "Date changed", "Size", "Kind"]'></kakao-menu>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Placement · <code>placement</code></h3>
+    <p><code>bottom-start</code> (default), <code>bottom-end</code>, <code>top-start</code> or <code>top-end</code>. The menu flips to the other side when there is no room, and always stays inside the viewport.</p>
+    <div class="spread" data-demo-wrap>
+      <kakao-button id="place-start" label="Bottom start" variant="secondary"></kakao-button>
+      <kakao-menu for="place-start" list-data='["Profile", "Settings", "Sign out"]'></kakao-menu>
+      <kakao-button id="place-top" label="Top start" variant="secondary"></kakao-button>
+      <kakao-menu for="place-top" placement="top-start" list-data='["Profile", "Settings", "Sign out"]'></kakao-menu>
+      <kakao-button id="place-end" label="Bottom end" variant="secondary"></kakao-button>
+      <kakao-menu for="place-end" placement="bottom-end" list-data='["Profile", "Settings", "Sign out"]'></kakao-menu>
+    </div>
+  </kakao-card>
+
+  <h2>Groups</h2>
+  <kakao-card>
+    <h3 slot="header">Headings · <code>{ group, items }</code></h3>
+    <p>A group puts a heading over its items and is announced with it. Leave the heading out for a group without one.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="account" label="Account" variant="secondary"></kakao-button>
+      <kakao-menu for="account" list-data='[
+        {"group": "Ada Lovelace", "items": [
+          {"label": "Profile", "value": "profile", "icon": "user"},
+          {"label": "Settings", "value": "settings", "icon": "settings", "shortcut": "Mod+,"}
+        ]},
+        "-",
+        {"group": "Team", "items": [
+          {"label": "Invite people", "value": "invite", "icon": "plus"},
+          {"label": "Shared files", "value": "shared", "icon": "folder"}
+        ]},
+        "-",
+        {"label": "Sign out", "value": "sign-out", "icon": "logout"}
+      ]'></kakao-menu>
+    </div>
+  </kakao-card>
+
+  <h2>Check and radio items</h2>
+  <kakao-card>
+    <h3 slot="header"><code>type: "checkbox"</code> and <code>type: "radio"</code> · <code>keep-open</code></h3>
+    <p>A checkbox item turns on and off; of the radio items in one group, one is on. <code>menu-select</code> reports the new state as <code>checked</code>. With <code>keep-open</code> these items do not close the menu.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="view" label="View" variant="secondary"></kakao-button>
+      <kakao-menu id="view-menu" for="view" keep-open list-data='[
+        {"label": "Show sidebar", "value": "sidebar", "type": "checkbox", "checked": true, "shortcut": "Mod+B"},
+        {"label": "Show hidden files", "value": "hidden", "type": "checkbox"},
+        "-",
+        {"group": "Density", "items": [
+          {"label": "Compact", "value": "compact", "type": "radio"},
+          {"label": "Comfortable", "value": "comfortable", "type": "radio", "checked": true},
+          {"label": "Spacious", "value": "spacious", "type": "radio"}
+        ]}
+      ]'></kakao-menu>
+    </div>
+    <div class="log" id="log-view" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+  </kakao-card>
+
+  <h2>Submenus</h2>
+  <kakao-card>
+    <h3 slot="header"><code>children</code></h3>
+    <p>An item with <code>children</code> opens a submenu: on hover, on click, with <kakao-kbd>Right</kakao-kbd> or <kakao-kbd>Enter</kakao-kbd>. <kakao-kbd>Left</kakao-kbd> or <kakao-kbd>Esc</kakao-kbd> goes back. It opens to the right, else to the left; with room on neither side (a phone) it opens under its item.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="doc" label="Document" variant="secondary"></kakao-button>
+      <kakao-menu id="doc-menu" for="doc" list-data='[
+        {"label": "Open", "value": "open", "shortcut": "Mod+O"},
+        {"label": "Share", "icon": "share", "children": [
+          {"label": "Copy link", "value": "share-link", "icon": "link"},
+          {"label": "Email", "value": "share-email"},
+          {"label": "Export as", "children": [
+            {"label": "PDF", "value": "export-pdf"},
+            {"label": "Word", "value": "export-word"},
+            {"label": "Plain text", "value": "export-text"}
+          ]}
+        ]},
+        {"label": "Move to", "icon": "folder", "children": ["Inbox", "Projects", "Archive"]},
+        "-",
+        {"label": "Delete", "value": "delete", "icon": "trash", "tone": "danger"}
+      ]'></kakao-menu>
+    </div>
+    <div class="log" id="log-doc" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+  </kakao-card>
+
+  <h2>Links</h2>
+  <kakao-card>
+    <h3 slot="header"><code>href</code></h3>
+    <p>An item with <code>href</code> is a real link (with optional <code>target</code>), so it can be opened in a new tab.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="help" label="Help" variant="secondary"></kakao-button>
+      <kakao-menu for="help" list-data='[
+        {"label": "Components", "href": "../../components.html"},
+        {"label": "Style guide", "href": "../../styleguide.html"},
+        "-",
+        {"label": "Menu pattern (WAI-ARIA)", "icon": "external", "href": "https://www.w3.org/WAI/ARIA/apg/patterns/menubar/", "target": "_blank"}
+      ]'></kakao-menu>
+    </div>
+  </kakao-card>
+
+  <h2>Context menu</h2>
+  <p><code>context-for</code> names an element whose context menu this is. It opens at the pointer on right-click, on a long press on touch, and under the focused element with <kakao-kbd>Shift+F10</kakao-kbd> or the Menu key.</p>
+  <kakao-card>
+    <h3 slot="header">An area · <code>context-for</code></h3>
+    <div data-demo-wrap>
+      <div class="target" id="canvas" tabindex="0">Right-click, long-press, or focus and press Shift+F10</div>
+      <kakao-menu id="canvas-menu" context-for="canvas" label="Canvas" list-data='[
+        {"label": "Cut", "value": "cut", "icon": "cut", "shortcut": "Mod+X"},
+        {"label": "Copy", "value": "copy", "icon": "copy", "shortcut": "Mod+C"},
+        {"label": "Paste", "value": "paste", "icon": "paste", "shortcut": "Mod+V"},
+        "-",
+        {"label": "Arrange", "children": ["Bring to front", "Send to back"]},
+        {"label": "Refresh", "value": "refresh", "icon": "refresh"}
+      ]'></kakao-menu>
+    </div>
+    <div class="log" id="log-canvas" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">One menu for several rows</h3>
+    <p>The context element can be a list: <code>menu-open</code> is the moment to note which row the menu is for.</p>
+    <div data-demo-wrap>
+      <ul class="files" id="rows">
+        <li tabindex="0">Budget 2026.xlsx</li>
+        <li tabindex="0">Contract.pdf</li>
+        <li tabindex="0">Notes.txt</li>
+      </ul>
+      <kakao-menu id="rows-menu" context-for="rows" label="File" list-data='[
+        {"label": "Open", "value": "open"},
+        {"label": "Rename", "value": "rename", "icon": "edit"},
+        {"label": "Delete", "value": "delete", "icon": "trash", "tone": "danger"}
+      ]'></kakao-menu>
+    </div>
+    <p class="readout" id="rows-out" data-demo-only>Pick an action on a row.</p>
+    <template data-code>
+      <script>
+        const rows = document.getElementById('rows');
+        const menu = document.getElementById('rows-menu');
+        let row = null;
+        rows.addEventListener('contextmenu', (e) => { row = e.target.closest('li'); });
+        rows.addEventListener('keydown', (e) => { row = e.target.closest('li'); });
+        menu.addEventListener('menu-select', (e) => console.log(e.detail.value, row.textContent));
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>From script</h2>
+  <kakao-card>
+    <h3 slot="header"><code>open(anchor)</code>, <code>openAt(x, y)</code>, <code>close()</code>, <code>items</code></h3>
+    <p>Without <code>for</code> the menu is opened by script: against any element, or at a point in the viewport. <code>items</code> sets the entries as an array. Cancel <code>menu-select</code> to keep the menu open.</p>
+    <div class="actions" data-demo-wrap>
+      <kakao-button id="api-anchor" label="open(this button)" variant="secondary"></kakao-button>
+      <kakao-button id="api-point" label="openAt(120, 160)" variant="secondary"></kakao-button>
+      <kakao-menu id="api-menu" label="Insert"></kakao-menu>
+    </div>
+    <div class="log" id="log-api" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+    <template data-code>
+      <script>
+        const menu = document.getElementById('api-menu');
+        menu.items = [
+          { label: 'Table', value: 'table' },
+          { label: 'Image', value: 'image' },
+          { label: 'Keep open', value: 'stay' },
+        ];
+        menu.open(document.getElementById('api-anchor'));
+        menu.openAt(120, 160);
+        menu.addEventListener('menu-select', (e) => {
+          if (e.detail.value === 'stay') e.preventDefault(); // the menu stays open
+        });
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Inline</h2>
+  <kakao-card>
+    <h3 slot="header">Always shown · <code>inline</code></h3>
+    <p>The menu sits in the page, one tab stop with the same keys. Submenus still open beside it.</p>
+    <div data-demo-wrap>
+      <kakao-menu inline label="Message" list-data='[
+        {"label": "Reply", "value": "reply", "shortcut": "R"},
+        {"label": "Forward", "value": "forward", "shortcut": "F"},
+        {"label": "Label as", "children": ["Work", "Private", "Later"]},
+        "-",
+        {"label": "Mark as unread", "value": "unread", "type": "checkbox"},
+        {"label": "Delete", "value": "delete", "tone": "danger"}
+      ]'></kakao-menu>
+    </div>
+  </kakao-card>
+
+  <footer>Attributes: <code>list-data</code>, <code>for</code>, <code>context-for</code>, <code>placement</code>, <code>label</code>, <code>keep-open</code>, <code>inline</code>, <code>disabled</code>, <code>open</code>. Full reference in the header of <code>menu.js</code>.</footer>
+</main>
+
+<script>
+  const byId = (id) => document.getElementById(id);
+  const press = (id, fn) => byId(id).addEventListener('kakao-button-action', fn);
+  const events = ['menu-open', 'menu-select', 'menu-close'];
+
+  logEvents(byId('log-file'), events, byId('file-menu'));
+  logEvents(byId('log-view'), ['menu-select'], byId('view-menu'));
+  logEvents(byId('log-doc'), ['menu-select'], byId('doc-menu'));
+  logEvents(byId('log-canvas'), events, byId('canvas-menu'));
+
+  // One menu for several rows
+  const rows = byId('rows');
+  let row = null;
+  rows.addEventListener('contextmenu', (e) => { row = e.target.closest('li'); });
+  rows.addEventListener('keydown', (e) => { row = e.target.closest('li'); });
+  rows.addEventListener('pointerdown', (e) => { row = e.target.closest('li'); });
+  byId('rows-menu').addEventListener('menu-select', (e) => {
+    byId('rows-out').textContent = `${e.detail.value}: ${row ? row.textContent : 'no row'}`;
+  });
+
+  // From script
+  const api = byId('api-menu');
+  api.items = [
+    { label: 'Table', value: 'table' },
+    { label: 'Image', value: 'image' },
+    { label: 'Keep open', value: 'stay' },
+  ];
+  press('api-anchor', () => api.open(byId('api-anchor')));
+  press('api-point', () => api.openAt(120, 160));
+  api.addEventListener('menu-select', (e) => { if (e.detail.value === 'stay') e.preventDefault(); });
+  logEvents(byId('log-api'), events, api);
+</script>
+</body>
+</html>
