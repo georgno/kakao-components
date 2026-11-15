@@ -8,6 +8,8 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-15
+
 ### Added
 
 - `kakao-command-palette`: a search over the page's actions, shadow DOM,
@@ -764,7 +766,8 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/georgno/kakao-components/compare/v0.5.0...v0.8.0
 [0.5.0]: https://github.com/georgno/kakao-components/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/georgno/kakao-components/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/georgno/kakao-components/compare/v0.2.2...v0.3.0
