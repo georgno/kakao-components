@@ -10,6 +10,23 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-pagination`: page links for a long list, standing alone so a table
+  or grid can put one below itself. `page` (1-based) with `total-pages`, or
+  `total-items` and `page-size`; `siblings` and `boundaries` set the ellipsis
+  window, which keeps the same number of slots on every page. With `url`
+  ("?page={page}&per-page={page-size}") every control is a real link, for
+  server-rendered pages; without it they are buttons. Both fire a composed,
+  cancelable `page-change` (`{ page, previous, pageSize, source }`).
+  Previous / next, optional `first-last`, a navigation landmark with a
+  `label`, `aria-current="page"`. A compact form ("21–40 of 143" or "Page 2
+  of 8" with previous / next) shows when the numbers do not fit the element's
+  own width (`collapse` auto, always, never), and for an open-ended pager
+  without a total (`last` marks the end). `summary` shows the range in the
+  full form too; `page-sizes` adds a "Rows per page" select (native, or a
+  `kakao-select` where it is loaded) that fires `page-size-change`. Sizes
+  `sm` / `md` / `lg` at 36 / 44 / 52px, `disabled`, `hide-single`, methods
+  `next()`, `previous()`, `first()`, `last()`, `goTo()`, words through
+  `KakaoPagination.texts`.
 - `kakao-stepper`: where someone is in a multi-step flow, as an ordered list.
   Steps from `list-data` (label, optional `description`, `value` and `state`
   error or done), the current one from `current` (index or value; the number

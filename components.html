@@ -20,6 +20,7 @@
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
 <script src="components/stepper/stepper.js" defer></script>
+<script src="components/pagination/pagination.js" defer></script>
 <script src="components/popover/popover.js" defer></script>
 <script src="components/tabs/tabs.js" defer></script>
 <script src="components/list/list.js" defer></script>
@@ -1151,6 +1152,35 @@
       </div>
     </article>
 
+    <!-- ============================== Pagination ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Pagination</h2>
+        <code>&lt;kakao-pagination&gt;</code>
+        <a href="components/pagination/construction.html">Construction</a>
+        <a href="components/pagination/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Page links for a long list: previous and next, the page numbers with an ellipsis window (<code>siblings</code>, <code>boundaries</code>), from <code>page</code> and <code>total-pages</code> or <code>total-items</code> with <code>page-size</code>. With <code>url="?page={page}"</code> the controls are real links for server-rendered pages; without it they are buttons that fire a cancelable <code>page-change</code>. Falls back to a compact “21–40 of 143” form with previous and next when it gets too narrow. Optional page-size select; three sizes at the button heights.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Buttons · <code>page-change</code></h3>
+          <kakao-pagination size="sm" page="3" total-pages="12" label="Example pages"></kakao-pagination>
+        </div>
+        <div class="example">
+          <h3>Links, first and last · <code>url</code> <code>first-last</code></h3>
+          <kakao-pagination size="sm" page="7" total-pages="40" siblings="0" first-last url="#page={page}" label="Example links"></kakao-pagination>
+        </div>
+        <div class="example">
+          <h3>Summary and page size · <code>summary</code> <code>page-sizes</code></h3>
+          <kakao-pagination size="sm" page="2" total-items="143" page-size="20" page-sizes="10,20,50" summary label="Example with page size"></kakao-pagination>
+        </div>
+        <div class="example">
+          <h3>Compact · <code>collapse="always"</code></h3>
+          <kakao-pagination collapse="always" page="2" total-items="143" page-size="20" label="Example compact"></kakao-pagination>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Password input ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1823,15 +1853,6 @@
       <div class="component-head"><h2>Command palette</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: none</p>
       <p class="placeholder-native">A ⌘K search over the page's actions.</p>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Pagination</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: links</p>
-      <p class="placeholder-native">Page links, plus a compact “1–20 of 143” form.</p>
-      <div class="native">
-        <nav aria-label="Pages"><a href="#missing">‹ Previous</a> · <a href="#missing">1</a> · <b>2</b> · <a href="#missing">3</a> · <a href="#missing">Next ›</a></nav>
-      </div>
     </article>
 
     <article class="card placeholder">

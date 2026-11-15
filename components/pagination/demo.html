@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-pagination - Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="pagination.js" defer></script>
+<style>
+  .stack { display: grid; gap: 1.25rem; }
+  .narrow { max-width: 20rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .rows { margin: 0 0 1rem; padding: 0; list-style: none; border-radius: 10px; background: var(--kakao-color-subtle, #f0f0f1); font-size: 0.875rem; }
+  .rows li { padding: 0.5rem 0.875rem; }
+  .rows li + li { border-top: 1px solid var(--kakao-color-line, #e5e7eb); }
+  .rows:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+  #select-frame { display: block; width: 100%; height: 13rem; border: 0; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Pagination"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Pagination</h1>
+    <p><code>&lt;kakao-pagination&gt;</code> - page links for a long list: previous and next, the page numbers with an ellipsis window, and a compact “1–20 of 143” form it falls back to when it gets narrow. It stands alone; a table or grid puts one below itself.</p>
+  </header>
+
+  <h2>Pages</h2>
+  <p>The current page comes from <code>page</code> (1-based), the number of pages from <code>total-pages</code>, or from <code>total-items</code> and <code>page-size</code>. Without <code>url</code> the controls are buttons: the pager fires <code>page-change</code> and moves. A screen reader finds a navigation landmark, hears “Page 3” on each number and “current page” on the current one.</p>
+  <kakao-card>
+    <h3 slot="header">From a page count</h3>
+    <kakao-pagination id="basic" page="3" total-pages="12"></kakao-pagination>
+    <div class="log" id="log-basic" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+    <template data-code>
+      <script>
+        document.getElementById('basic').addEventListener('page-change', (e) => {
+          loadPage(e.detail.page); // e.detail: { page, previous, pageSize, source }
+        });
+      </script>
+    </template>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">From an item count · <code>total-items</code> and <code>page-size</code></h3>
+    <p>143 items at 20 per page are 8 pages. <code>summary</code> adds the range in front.</p>
+    <kakao-pagination page="2" total-items="143" page-size="20" summary></kakao-pagination>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Few pages, and first and last · <code>first-last</code></h3>
+    <div class="stack" data-demo-wrap>
+      <kakao-pagination page="2" total-pages="5" label="Few pages"></kakao-pagination>
+      <kakao-pagination page="7" total-pages="40" first-last label="With first and last"></kakao-pagination>
+    </div>
+  </kakao-card>
+
+  <h2>The ellipsis window</h2>
+  <p><code>siblings</code> is the number of pages on each side of the current one, <code>boundaries</code> the number always shown at the start and the end (both default to 1). The number of slots is the same on every page, so the pager keeps its width while paging; a gap that would hide one single page shows that page instead.</p>
+  <kakao-card>
+    <h3 slot="header">Start, middle and end</h3>
+    <div class="stack" data-demo-wrap>
+      <kakao-pagination page="1" total-pages="20" label="At the start"></kakao-pagination>
+      <kakao-pagination page="10" total-pages="20" label="In the middle"></kakao-pagination>
+      <kakao-pagination page="20" total-pages="20" label="At the end"></kakao-pagination>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Wider and narrower windows</h3>
+    <div class="stack" data-demo-wrap>
+      <kakao-pagination page="10" total-pages="20" siblings="2" boundaries="2" label="Two siblings, two boundaries"></kakao-pagination>
+      <kakao-pagination page="10" total-pages="20" siblings="1" boundaries="0" label="No boundaries"></kakao-pagination>
+      <kakao-pagination page="10" total-pages="20" siblings="0" label="No siblings"></kakao-pagination>
+    </div>
+  </kakao-card>
+
+  <h2>Real links</h2>
+  <p>With <code>url</code> every control is an <code>&lt;a href&gt;</code>: <code>{page}</code> in the template becomes the page number, <code>{page-size}</code> the page size. A server-rendered page (Yii2’s <code>?page=2&amp;per-page=20</code>) pages without a script of its own, links open in a new tab, and previous and next carry <code>rel</code>. <code>page-change</code> still fires first; cancel it to stop the navigation and route it yourself.</p>
+  <kakao-card>
+    <h3 slot="header">Links · <code>url="#page={page}"</code></h3>
+    <p>This demo uses a fragment so the page stays put; watch the address bar.</p>
+    <kakao-pagination id="links" page="4" total-pages="9" url="#page={page}"></kakao-pagination>
+    <div class="log" id="log-links" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Yii2 style, with the page size in the link</h3>
+    <kakao-pagination page="2" total-items="143" page-size="20" url="?page={page}&amp;per-page={page-size}" summary label="Yii2 style"></kakao-pagination>
+  </kakao-card>
+
+  <h2>Compact</h2>
+  <p>The compact form is the summary with previous and next: “21–40 of 143” when the item count is known, “Page 2 of 8” from a page count. <code>collapse="always"</code> asks for it. By default (<code>collapse="auto"</code>) a pager whose numbers do not fit its own width becomes compact by itself, so on a phone it never scrolls sideways; it goes by the element’s width, not the window’s. <code>collapse="never"</code> lets the numbers wrap instead.</p>
+  <kakao-card>
+    <h3 slot="header">Always compact · <code>collapse="always"</code></h3>
+    <div class="stack" data-demo-wrap>
+      <kakao-pagination collapse="always" page="2" total-items="143" page-size="20" label="Compact, items"></kakao-pagination>
+      <kakao-pagination collapse="always" page="2" total-pages="8" label="Compact, pages"></kakao-pagination>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Collapses by itself</h3>
+    <p>The same pager in a 20rem box.</p>
+    <div class="narrow" data-demo-wrap>
+      <kakao-pagination page="10" total-pages="20" label="In a narrow box"></kakao-pagination>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Never · <code>collapse="never"</code></h3>
+    <div class="narrow" data-demo-wrap>
+      <kakao-pagination collapse="never" size="sm" page="10" total-pages="20" label="Wrapping"></kakao-pagination>
+    </div>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">Open-ended · no total</h3>
+    <p>Without a total the pager is compact and next stays available, until the page sets <code>last</code> on the last page it finds.</p>
+    <kakao-pagination id="open" page="3" label="Open-ended"></kakao-pagination>
+    <template data-code>
+      <script>
+        const pager = document.getElementById('open');
+        pager.addEventListener('page-change', async (e) => {
+          const rows = await loadPage(e.detail.page);
+          pager.toggleAttribute('last', rows.length < 20); // nothing after this page
+        });
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Page size</h2>
+  <p><code>page-sizes</code> adds a “Rows per page” select. Picking a size fires a cancelable <code>page-size-change</code> with the new size and the page that keeps the first visible row in view; the pager takes both. It is a native select here, and a <code>kakao-select</code> on pages that load <code>select.js</code>.</p>
+  <kakao-card>
+    <h3 slot="header">A list with its pager</h3>
+    <ol class="rows" id="rows" tabindex="-1" aria-label="Entries" data-demo-only></ol>
+    <kakao-pagination id="grid" page="1" total-items="143" page-size="10" page-sizes="10,20,50" summary label="Entries"></kakao-pagination>
+    <div class="log" id="log-grid" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+    <template data-code>
+      <script>
+        const pager = document.getElementById('grid');
+        pager.addEventListener('page-change', (e) => showRows(e.detail.page, e.detail.pageSize));
+        pager.addEventListener('page-size-change', (e) => showRows(e.detail.page, e.detail.pageSize));
+      </script>
+    </template>
+  </kakao-card>
+  <kakao-card data-no-code>
+    <h3 slot="header">With <code>select.js</code> loaded</h3>
+    <p>The same markup on a page that also loads the select: the pager uses it for the page size.</p>
+    <iframe id="select-frame" title="Pagination with kakao-select" data-demo-only></iframe>
+  </kakao-card>
+
+  <h2>Sizes</h2>
+  <p><code>size</code> follows the button heights: <code>sm</code> 36px, <code>md</code> 44px (default) and <code>lg</code> 52px, so a pager lines up with the buttons and fields beside it.</p>
+  <kakao-card>
+    <div class="stack" data-demo-wrap>
+      <kakao-pagination size="sm" page="3" total-items="143" page-size="20" page-sizes="20,50" summary label="Small"></kakao-pagination>
+      <kakao-pagination page="3" total-items="143" page-size="20" page-sizes="20,50" summary label="Medium"></kakao-pagination>
+      <kakao-pagination size="lg" page="3" total-items="143" page-size="20" page-sizes="20,50" summary label="Large"></kakao-pagination>
+    </div>
+  </kakao-card>
+
+  <h2>States</h2>
+  <p><code>disabled</code> keeps every control from being activated, for the moment rows are loading. <code>hide-single</code> renders nothing while there is only one page.</p>
+  <kakao-card>
+    <h3 slot="header">Disabled while loading</h3>
+    <kakao-pagination id="loading" page="2" total-pages="8" label="Loading example"></kakao-pagination>
+    <template data-code>
+      <script>
+        const pager = document.getElementById('loading');
+        pager.addEventListener('page-change', async (e) => {
+          pager.disabled = true;   // or toggleAttribute('disabled', true)
+          await loadPage(e.detail.page);
+          pager.disabled = false;
+        });
+      </script>
+    </template>
+  </kakao-card>
+  <kakao-card>
+    <h3 slot="header">One page · <code>hide-single</code></h3>
+    <p>The first pager has one page and shows its controls unavailable; the second has <code>hide-single</code> and is not there.</p>
+    <div class="stack" data-demo-wrap>
+      <kakao-pagination page="1" total-pages="1" label="One page"></kakao-pagination>
+      <kakao-pagination page="1" total-pages="1" hide-single label="One page, hidden"></kakao-pagination>
+    </div>
+  </kakao-card>
+
+  <h2>From script</h2>
+  <p><code>next()</code>, <code>previous()</code>, <code>first()</code>, <code>last()</code> and <code>goTo(page)</code> move the pager and fire <code>page-change</code> with <code>source: "api"</code>. Setting <code>page</code>, <code>pageSize</code>, <code>totalItems</code> or <code>totalPages</code> (or their attributes) is silent.</p>
+  <kakao-card>
+    <kakao-pagination id="api" page="5" total-pages="30" label="Script example"></kakao-pagination>
+    <div class="actions" style="margin-top:1rem" data-demo-only>
+      <kakao-button id="api-first" label="first()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="api-prev" label="previous()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="api-next" label="next()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="api-goto" label="goTo(17)" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="api-silent" label="page = 5 (silent)" variant="ghost" size="sm"></kakao-button>
+    </div>
+    <div class="log" id="log-api" role="log" aria-label="Event log" style="margin-top:.75rem"></div>
+    <template data-code>
+      <script>
+        const pager = document.querySelector('kakao-pagination');
+        pager.next();        // true: the page changed, page-change fired
+        pager.goTo(17);
+        pager.page = 5;      // silent
+        pager.totalItems = 310;
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Other words</h2>
+  <p><code>KakaoPagination.texts</code> sets the words for every pager: the labels of the controls, <code>range</code> (“{from}–{to} of {total}”), <code>pageOf</code>, <code>pageOnly</code>, <code>empty</code> and <code>pageSize</code>. <code>label</code> names one pager’s landmark.</p>
+  <kakao-card>
+    <kakao-pagination id="words" page="2" total-items="143" page-size="20" page-sizes="20,50" summary label="Seiten"></kakao-pagination>
+    <div class="actions" style="margin-top:1rem" data-demo-only>
+      <kakao-button id="words-de" label="German" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="words-reset" label="Built-in" variant="ghost" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        KakaoPagination.texts = {
+          previous: 'Vorherige Seite',
+          next: 'Nächste Seite',
+          page: 'Seite {page}',
+          range: '{from}–{to} von {total}',
+          pageSize: 'Zeilen pro Seite',
+        };
+      </script>
+    </template>
+  </kakao-card>
+</main>
+<script>
+  customElements.whenDefined('kakao-pagination').then(() => {
+    const byId = (id) => document.getElementById(id);
+    const log = (el, logEl, names) => names.forEach((name) => {
+      el.addEventListener(name, (e) => logLine(logEl, name, e.detail));
+    });
+
+    log(byId('basic'), byId('log-basic'), ['page-change']);
+    log(byId('links'), byId('log-links'), ['page-change']);
+
+    // a list of 143 made-up entries behind the pager
+    const grid = byId('grid');
+    const rows = byId('rows');
+    const showRows = () => {
+      rows.replaceChildren();
+      rows.start = grid.from;
+      for (let n = grid.from; n <= Math.min(grid.to, grid.from + 4); n += 1) {
+        const li = document.createElement('li');
+        li.textContent = `Entry ${n}`;
+        rows.append(li);
+      }
+      if (grid.to - grid.from > 4) {
+        const li = document.createElement('li');
+        li.textContent = `… up to entry ${grid.to}`;
+        rows.append(li);
+      }
+    };
+    log(grid, byId('log-grid'), ['page-change', 'page-size-change']);
+    grid.addEventListener('page-change', () => queueMicrotask(showRows));
+    grid.addEventListener('page-size-change', () => queueMicrotask(showRows));
+    showRows();
+
+    // open-ended: page 6 is the last one
+    const open = byId('open');
+    open.addEventListener('page-change', () => queueMicrotask(() => open.toggleAttribute('last', open.page >= 6)));
+
+    // loading: disabled for a moment after every change
+    const loading = byId('loading');
+    loading.addEventListener('page-change', () => {
+      queueMicrotask(() => {
+        loading.setAttribute('disabled', '');
+        setTimeout(() => loading.removeAttribute('disabled'), 900);
+      });
+    });
+
+    const api = byId('api');
+    log(api, byId('log-api'), ['page-change']);
+    byId('api-first').addEventListener('kakao-button-action', () => api.first());
+    byId('api-prev').addEventListener('kakao-button-action', () => api.previous());
+    byId('api-next').addEventListener('kakao-button-action', () => api.next());
+    byId('api-goto').addEventListener('kakao-button-action', () => api.goTo(17));
+    byId('api-silent').addEventListener('kakao-button-action', () => { api.page = 5; });
+
+    byId('words-de').addEventListener('kakao-button-action', () => {
+      KakaoPagination.texts = { label: 'Seiten', previous: 'Vorherige Seite', next: 'Nächste Seite', first: 'Erste Seite', last: 'Letzte Seite', page: 'Seite {page}', range: '{from}–{to} von {total}', pageOf: 'Seite {page} von {total}', pageSize: 'Zeilen pro Seite' };
+    });
+    byId('words-reset').addEventListener('kakao-button-action', () => { KakaoPagination.texts = KakaoPagination.TEXTS; });
+
+    // the same pager on a page that loads select.js, in a frame so this page keeps showing the native select
+    const tag = (name, attrs) => `<${name} ${attrs}></${name}>`;
+    const theme = document.documentElement.getAttribute('data-theme');
+    byId('select-frame').srcdoc = [
+      `<!DOCTYPE html><html lang="en"${theme ? ` data-theme="${theme}"` : ''}><head><meta charset="UTF-8" /><base href="${location.href}" />`,
+      '<link rel="stylesheet" href="../../shared/tokens.css" /><link rel="stylesheet" href="../../shared/font.css" /><link rel="stylesheet" href="../../shared/themes.css" />',
+      tag('script', 'src="../select/select.js"'), tag('script', 'src="pagination.js"'),
+      '<style>body { margin: 0; padding: 4px; background: transparent; font-family: var(--kakao-font-family, system-ui, sans-serif); }</style></head><body>',
+      tag('kakao-pagination', 'page="1" total-items="143" page-size="20" page-sizes="10,20,50" summary'),
+      '</body></html>',
+    ].join('');
+  });
+</script>
+</body>
+</html>

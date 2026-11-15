@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-pagination - Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="pagination.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="pagination" data-source="pagination.js" data-title="Pagination">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Full form · summary, page-size select, first and last</figcaption>
+      <kakao-pagination collapse="never" page="7" total-items="790" page-size="20" page-sizes="10,20,50" summary first-last label="Full form"></kakao-pagination>
+    </figure>
+    <figure>
+      <figcaption>Sizes · <code>sm</code>, <code>md</code>, <code>lg</code></figcaption>
+      <div style="display:grid;gap:0.75rem">
+        <kakao-pagination size="sm" page="1" total-pages="9" label="Small"></kakao-pagination>
+        <kakao-pagination page="5" total-pages="9" label="Medium"></kakao-pagination>
+        <kakao-pagination size="lg" page="9" total-pages="9" label="Large"></kakao-pagination>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Compact · <code>collapse="always"</code>, and disabled</figcaption>
+      <div style="display:grid;gap:0.75rem">
+        <kakao-pagination collapse="always" page="2" total-items="143" page-size="20" label="Compact"></kakao-pagination>
+        <kakao-pagination disabled page="2" total-pages="8" label="Disabled"></kakao-pagination>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-pagination-text", "label": "Text and icons", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-hover-bg", "label": "Hover fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-current-bg", "label": "Current page fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-current-text", "label": "Current page text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-gap-color", "label": "Ellipsis", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-summary", "label": "Summary and select label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-select-bg", "label": "Select fill", "group": "Colour", "type": "color", "hint": "the native select" },
+    { "property": "--kakao-pagination-select-border", "label": "Select border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-select-text", "label": "Select text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-pagination-height", "label": "Height (md)", "group": "Sizes", "type": "length", "hint": "also the least width of a control" },
+    { "property": "--kakao-pagination-radius", "label": "Radius (md)", "group": "Sizes", "type": "radius" },
+    { "property": "--kakao-pagination-font-size", "label": "Font size (md)", "group": "Sizes", "type": "length" },
+    { "property": "--kakao-pagination-sm-height", "label": "Height (sm)", "group": "Sizes", "type": "length" },
+    { "property": "--kakao-pagination-sm-radius", "label": "Radius (sm)", "group": "Sizes", "type": "radius" },
+    { "property": "--kakao-pagination-sm-font-size", "label": "Font size (sm)", "group": "Sizes", "type": "length" },
+    { "property": "--kakao-pagination-lg-height", "label": "Height (lg)", "group": "Sizes", "type": "length" },
+    { "property": "--kakao-pagination-lg-radius", "label": "Radius (lg)", "group": "Sizes", "type": "radius" },
+    { "property": "--kakao-pagination-lg-font-size", "label": "Font size (lg)", "group": "Sizes", "type": "length" },
+    { "property": "--kakao-pagination-padding-x", "label": "Side padding of a control", "group": "Spacing", "type": "length", "hint": "for numbers wider than the height" },
+    { "property": "--kakao-pagination-gap", "label": "Gap between controls", "group": "Spacing", "type": "length" },
+    { "property": "--kakao-pagination-section-gap", "label": "Gap between summary, select and pages", "group": "Spacing", "type": "length" },
+    { "property": "--kakao-pagination-icon-size", "label": "Chevron size", "group": "Spacing", "type": "length" },
+    { "property": "--kakao-pagination-select-width", "label": "Select width", "group": "Spacing", "type": "length" },
+    { "property": "--kakao-pagination-select-radius", "label": "Select radius", "group": "Spacing", "type": "radius", "hint": "the native select" },
+    { "property": "--kakao-pagination-weight", "label": "Number weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-pagination-current-weight", "label": "Current page weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-pagination-summary-font-size", "label": "Summary size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-pagination-disabled-opacity", "label": "Disabled opacity", "group": "State", "type": "number", "min": 0, "max": 1, "step": 0.05 },
+    { "property": "--kakao-pagination-transition", "label": "Hover transition", "group": "State", "type": "duration" }
+  ]
+  </script>
+</main>
+</body>
+</html>
