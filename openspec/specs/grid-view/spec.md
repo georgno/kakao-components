@@ -68,7 +68,7 @@ A column with `actions` SHALL draw one control per action and row: a built-in na
 - **THEN** it is a link to "/user/view?id=7"
 
 ### Requirement: Row action event and confirmation
-Activating an action SHALL fire a bubbling, cancelable `row-action` `{ action, id, row, href }`; cancelling it SHALL stop a link from being followed. An action with `confirm` (the built-in `delete` by default) SHALL ask first and do nothing when declined. With yii.js on the page the grid SHALL write `data-confirm` and `data-method` and leave both to Yii; without it, a link with a `method` other than GET SHALL be submitted as a POST form carrying Yii's CSRF parameter when the page has one.
+Activating an action SHALL fire a bubbling, cancelable `row-action` `{ action, id, row, href }`; cancelling it SHALL stop a link from being followed. An action with `confirm` (the built-in `delete` by default) SHALL ask first and do nothing when declined. The question SHALL be asked in a `kakao-dialog` (title, the question, Cancel and the action's own label as the main button, in the danger variant for a danger or delete action) whenever `kakao-dialog` and `kakao-button` are defined, and only otherwise with the browser's `confirm()`; after a confirmed plain link the grid SHALL follow it itself. With yii.js on the page the grid SHALL write `data-confirm` and `data-method` and leave both to Yii; without it, a link with a `method` other than GET SHALL be submitted as a POST form carrying Yii's CSRF parameter when the page has one.
 
 #### Scenario: Event action
 - **WHEN** the user activates "Delete" on row 7 and confirms
@@ -139,7 +139,7 @@ When the table is wrapped (data tables on small screens), the grid SHALL add a "
 - **THEN** the actions still sit at the bottom of each block
 
 ### Requirement: Words
-`KakaoGridView.texts` SHALL hold the words: `summary`, `filtered`, `none`, `filters`, `filterLabel`, `all`, `clearFilters`, `noMatches`, `noMatchesMessage`, `actionLabel`, `view`, `update`, `delete`, `confirmDelete`; setting it SHALL redraw every grid.
+`KakaoGridView.texts` SHALL hold the words: `summary`, `filtered`, `none`, `filters`, `filterLabel`, `all`, `clearFilters`, `noMatches`, `noMatchesMessage`, `actionLabel`, `view`, `update`, `delete`, `confirmDelete`, `confirmTitle`, `cancel`; setting it SHALL redraw every grid.
 
 #### Scenario: German
 - **WHEN** a script sets `KakaoGridView.texts = { filters: "Filter" }`

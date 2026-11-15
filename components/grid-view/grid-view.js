@@ -130,7 +130,11 @@
  *  KakaoGridView.texts  The words: { summary, filtered, none, filters,
  *                       filterLabel, all, clearFilters, noMatches,
  *                       noMatchesMessage, actionLabel, view, update, delete,
- *                       confirmDelete }.
+ *                       confirmDelete, confirmTitle, cancel }.
+ *
+ *  Confirmations use a kakao-dialog (title confirmTitle, the action's question,
+ *  Cancel and the action's own label, danger for a danger action) when
+ *  dialog.js and button.js are on the page; otherwise the browser's confirm().
  *
  * ----------------------------------------------------------------------------
  * EVENTS (bubble, composed)
@@ -184,6 +188,8 @@
     update: 'Edit',
     delete: 'Delete',
     confirmDelete: 'Delete this item?',
+    confirmTitle: 'Are you sure?',
+    cancel: 'Cancel',
   };
 
   /** Attributes a created table takes from the grid. */
@@ -323,6 +329,7 @@
       this.removeEventListener('click', this._onClick);
       this._stackObserver.disconnect();
       clearTimeout(this._timer);
+      if (this._confirmDialog) { this._confirmDialog.remove(); this._confirmDialog = null; }
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -1064,7 +1071,7 @@
         const method = href && action.method && String(action.method).toLowerCase() !== 'get' ? String(action.method).toLowerCase() : '';
         // Yii's own script sends data-method links; the grid asks first.
         if (method && window.yii) control.dataset.method = method;
-        this._actionInfo.set(control, { action: action.name, id, row: given && row, confirm, method, href });
+        this._actionInfo.set(control, { action: action.name, id, row: given && row, confirm, method, href, label, tone: action.tone || '' });
         box.append(control);
       });
       return box;
@@ -1134,6 +1141,9 @@
           confirm: window.yii ? '' : control.getAttribute('data-confirm') || '',
           method: window.yii ? '' : (control.getAttribute('data-method') || '').toLowerCase(),
           href: href || null,
+          // The dialog's main button: the link's own name; a delete link is a danger action.
+          label: control.getAttribute('title') || control.getAttribute('aria-label') || '',
+          tone: /delete/i.test(control.dataset.action || control.getAttribute('href') || '') ? 'danger' : '',
         };
         if (info.method === 'get') info.method = '';
       }
@@ -1141,21 +1151,77 @@
         event.preventDefault();
         event.stopPropagation(); // Yii's document handler must not send it either
       };
-      if (info.confirm && !window.confirm(info.confirm)) {
+      if (info.confirm) {
+        // Ask first; the click itself never proceeds, the answer continues it.
         stop();
+        this._ask(info).then((yes) => { if (yes) this._run(info, control); });
         return;
       }
+      if (!this._run(info, control, true)) stop();
+    }
+
+    /**
+     * Fires row-action and does what the action means. `inClick`: still inside
+     * the click, so a plain link may simply be followed. Returns false when the
+     * click must not proceed.
+     */
+    _run(info, control, inClick = false) {
       const go = this.dispatchEvent(new CustomEvent('row-action', {
         detail: { action: info.action, id: info.id, row: info.row, href: info.href }, bubbles: true, composed: true, cancelable: true,
       }));
-      if (!go) {
-        stop();
-        return;
-      }
+      if (!go) return false;
       if (info.method && info.href) {
-        stop();
         this._send(info.href, info.method);
+        return false;
       }
+      if (!inClick) {
+        // After a confirmation: follow the link ourselves (respecting its target).
+        if (info.href) {
+          const target = control.getAttribute('target');
+          if (target && target !== '_self') window.open(info.href, target);
+          else window.location.assign(info.href);
+        }
+      }
+      return true;
+    }
+
+    /** The confirmation: our dialog when it is on the page, else the browser's. */
+    _ask(info) {
+      const texts = KakaoGridView.texts;
+      if (!customElements.get('kakao-dialog') || !customElements.get('kakao-button')) {
+        return Promise.resolve(window.confirm(info.confirm));
+      }
+      let dialog = this._confirmDialog;
+      if (!dialog || !dialog.isConnected) {
+        dialog = el('kakao-dialog');
+        dialog.setAttribute('size', 'sm');
+        dialog.dataset.gridConfirm = '';
+        const heading = el('h2');
+        heading.slot = 'header';
+        const message = el('p');
+        const footer = el('div');
+        footer.slot = 'footer';
+        const cancel = el('kakao-button');
+        cancel.setAttribute('variant', 'secondary');
+        cancel.dataset.close = 'cancel';
+        const ok = el('kakao-button');
+        ok.dataset.close = 'confirm';
+        footer.append(cancel, ok);
+        dialog.append(heading, message, footer);
+        document.body.append(dialog);
+        this._confirmDialog = dialog;
+      }
+      const [heading, message, footer] = dialog.children;
+      const [cancel, ok] = footer.children;
+      heading.textContent = texts.confirmTitle;
+      message.textContent = info.confirm;
+      cancel.setAttribute('label', texts.cancel);
+      ok.setAttribute('label', info.label || texts.delete);
+      ok.setAttribute('variant', info.tone === 'danger' || info.action === 'delete' ? 'danger' : 'primary');
+      return new Promise((resolve) => {
+        dialog.addEventListener('dialog-close', (e) => resolve(e.detail && e.detail.returnValue === 'confirm'), { once: true });
+        dialog.open();
+      });
     }
 
     /** A link with a method other than GET, without yii.js: a POST form with Yii's CSRF field. */
