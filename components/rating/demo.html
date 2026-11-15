@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-rating - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+    <script src="rating.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Rating"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Rating</h1>
+    <p><code>&lt;kakao-rating&gt;</code> - Stars to pick a rating, or to show one. Radio buttons underneath: arrow keys, Home and End work, and a screen reader hears "4 of 5". Form-associated: the value goes with the form under its name.</p>
+  </header>
+
+  <h2>Basic</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Pick a rating · <code>label</code> + <code>value</code></h3>
+      <p class="small" style="margin:0 0 .75rem;color:var(--muted);font-size:.85rem">Hover to preview, click to pick. With the keyboard: Tab into it, then the arrow keys, Home or End.</p>
+      <kakao-rating id="r1" label="Your rating" name="stars" value="3"></kakao-rating>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Half steps · <code>step="0.5"</code></h3>
+      <kakao-rating label="Quality" step="0.5" value="3.5" show-value></kakao-rating>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Clearable · <code>clearable</code></h3>
+      <p class="small" style="margin:0 0 .75rem;color:var(--muted);font-size:.85rem">Click the current rating again, or press Delete or Backspace, to remove it.</p>
+      <kakao-rating label="Would you recommend us?" clearable value="4" hint="Optional"></kakao-rating>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Other lengths · <code>max</code></h3>
+      <div data-demo-wrap style="display:grid;gap:1rem">
+        <kakao-rating label="Three" max="3" value="2"></kakao-rating>
+        <kakao-rating label="Ten" max="10" value="7" show-value></kakao-rating>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Display</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Read-only · <code>readonly</code></h3>
+      <p class="small" style="margin:0 0 .75rem;color:var(--muted);font-size:.85rem">One image for a screen reader ("Average rating: 4.3 of 5"), no tab stop. Any fraction is drawn exactly.</p>
+      <div data-demo-wrap style="display:grid;gap:.75rem">
+        <kakao-rating readonly value="4.3" show-value aria-label="Average rating"></kakao-rating>
+        <kakao-rating readonly value="2" size="sm" aria-label="Rating"></kakao-rating>
+        <kakao-rating readonly size="sm" show-value value-text="{value} out of {max} (128 reviews)" value="4.5" aria-label="Rating"></kakao-rating>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Sizes · <code>size</code></h3>
+      <div data-demo-wrap style="display:grid;gap:1rem">
+        <kakao-rating size="sm" label="Small" value="4"></kakao-rating>
+        <kakao-rating label="Medium" value="4"></kakao-rating>
+        <kakao-rating size="lg" label="Large" value="4"></kakao-rating>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Disabled · error</h3>
+      <div data-demo-wrap style="display:grid;gap:1rem">
+        <kakao-rating disabled label="Disabled" value="2"></kakao-rating>
+        <kakao-rating label="Required" error="Please choose a rating."></kakao-rating>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Own text · <code>value-text</code></h3>
+      <p class="small" style="margin:0 0 .75rem;color:var(--muted);font-size:.85rem">The pattern names every option for a screen reader and is the text beside the symbols.</p>
+      <kakao-rating label="Bewertung" value="4" show-value value-text="{value} von {max} Sternen"></kakao-rating>
+    </kakao-card>
+  </div>
+
+  <h2>Another symbol</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Inline SVG · <code>slot="symbol"</code></h3>
+      <p class="small" style="margin:0 0 .75rem;color:var(--muted);font-size:.85rem">The symbol is copied into every position. Without an own empty symbol, the empty positions show it in grey, in the empty colour (kept at 3:1 or more).</p>
+      <kakao-rating label="Loved it?" value="3" style="--kakao-rating-fill: var(--kakao-color-danger, #dc2626)">
+        <svg slot="symbol" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>
+      </kakao-rating>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Own empty symbol · <code>slot="symbol-empty"</code></h3>
+      <kakao-rating label="Loved it?" value="2" step="0.5" style="--kakao-rating-fill: var(--kakao-color-danger, #dc2626)">
+        <svg slot="symbol" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>
+        <svg slot="symbol-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>
+      </kakao-rating>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">A text character</h3>
+      <kakao-rating label="Spiciness" max="4" value="2" size="lg" value-text="{value} of {max} chillies"><span slot="symbol">🌶️</span></kakao-rating>
+    </kakao-card>
+  </div>
+
+  <h2>In a form</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header"><code>name</code> + <code>required</code> · reset</h3>
+      <form id="form1" data-demo-wrap style="display:grid;gap:.75rem">
+        <kakao-rating name="stars" label="Overall" required></kakao-rating>
+        <kakao-rating name="service" label="Service" step="0.5" value="2.5" clearable></kakao-rating>
+        <div class="row" data-demo-wrap>
+          <kakao-button label="Submit" type="submit"></kakao-button>
+          <kakao-button label="Reset" type="reset" variant="secondary"></kakao-button>
+        </div>
+      </form>
+      <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem" id="formOut1">Submit to see the submitted values.</p>
+    </kakao-card>
+  </div>
+
+  <h2>Playground</h2>
+  <kakao-card>
+    <div class="toolbar" style="margin-top:0">
+      <kakao-button id="apiSet" label="value = 5" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiClear" label="clear()" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiHalf" label="toggle half steps" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="apiReadonly" label="toggle readonly" variant="secondary" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        const rating = document.getElementById('r1');
+        rating.value = 5;
+        rating.clear();
+        rating.setAttribute('step', '0.5');
+        rating.readOnly = true;
+        rating.addEventListener('rating-change', (e) => console.log(e.detail.value, e.detail.previous));
+        rating.addEventListener('rating-preview', (e) => console.log(e.detail.value));
+      </script>
+    </template>
+    <p class="small" style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Events of the first rating on this page:</p>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </kakao-card>
+
+  <footer>Full reference in the header of <code>rating.js</code>.</footer>
+</main>
+<script>
+  const r1 = document.getElementById('r1');
+  const log = document.getElementById('log');
+  logEvents(log, ['change', 'rating-change', 'rating-preview'], r1);
+  const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+  on('apiSet', () => { r1.value = 5; });
+  on('apiClear', () => { r1.clear(); });
+  on('apiHalf', () => {
+    if (r1.getAttribute('step') === '0.5') r1.removeAttribute('step');
+    else r1.setAttribute('step', '0.5');
+  });
+  on('apiReadonly', () => { r1.readOnly = !r1.readOnly; });
+  const form = document.getElementById('form1');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    document.getElementById('formOut1').textContent =
+      `Submitted: stars="${data.get('stars') || ''}", service="${data.get('service') || ''}"`;
+  });
+</script>
+</body>
+</html>

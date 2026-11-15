@@ -28,6 +28,7 @@
 <script src="components/avatar/avatar.js" defer></script>
 <script src="components/slider/slider.js" defer></script>
 <script src="components/range-slider/range-slider.js" defer></script>
+<script src="components/rating/rating.js" defer></script>
 <script src="components/animated-number/animated-number.js" defer></script>
 <script src="components/file-upload/file-upload.js" defer></script>
 <script src="components/multi-dropdown/multi-dropdown.js" defer></script>
@@ -1273,6 +1274,37 @@
       </div>
     </article>
 
+    <!-- ============================== Rating ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Rating</h2>
+        <code>&lt;kakao-rating&gt;</code>
+        <a href="components/rating/construction.html">Construction</a>
+        <a href="components/rating/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Stars to pick a rating or to show one, with half steps, another symbol and a read-only form. Radio buttons underneath, so the arrow keys work. Form-associated: the value goes with the form under <code>name</code>.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Pick · <code>clearable</code></h3>
+          <kakao-rating label="Your rating" name="stars" value="3" clearable></kakao-rating>
+        </div>
+        <div class="example">
+          <h3>Half steps · <code>step="0.5"</code></h3>
+          <kakao-rating label="Quality" step="0.5" value="3.5" show-value></kakao-rating>
+        </div>
+        <div class="example">
+          <h3>Read-only · sizes · own symbol</h3>
+          <div style="display:grid;gap:.9rem">
+            <kakao-rating readonly value="4.3" show-value aria-label="Average rating"></kakao-rating>
+            <kakao-rating size="sm" readonly value="2" aria-label="Rating"></kakao-rating>
+            <kakao-rating size="lg" value="2" aria-label="Loved it?" style="--kakao-rating-fill: var(--kakao-color-danger, #dc2626)">
+              <svg slot="symbol" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>
+            </kakao-rating>
+          </div>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Select ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1767,12 +1799,6 @@
       <div class="component-head"><h2>Grid view</h2><kakao-badge outline>Missing</kakao-badge></div>
       <p class="placeholder-native">Native: none. Built on Table, which comes first</p>
       <p class="placeholder-native">A data table: a sort icon beside each heading, a filter field (search or dropdown) under each column, and an action column with buttons per row. Like Table, each row wraps into a block of label/value pairs on a phone by default.</p>
-    </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Rating</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: radio buttons</p>
-      <p class="placeholder-native">Stars (or another symbol), usable from the keyboard.</p>
     </article>
 
     <article class="card placeholder">

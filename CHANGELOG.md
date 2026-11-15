@@ -48,6 +48,14 @@ pages (landing page, settings, demos), not the components.
   elsewhere, and a Mac gets the key symbols (`platform` forces either); sizes
   md and sm, `outline` for coloured backgrounds, `list-data` to rename keys;
   renders nested `<kbd>` with names for the symbols.
+- `kakao-rating`: stars to pick a rating or to show one. `max` symbols (5),
+  half steps with `step="0.5"`, `clearable` (pick the current value again, or
+  Delete / Backspace), `readonly` as one image named "4 of 5" that draws any
+  fraction, `show-value` and a `value-text` pattern, three sizes, `label`,
+  `hint`, `error`. Radio buttons underneath: one tab stop, arrow keys, Home and
+  End. Form-associated (`name`, `required`, reset and restore). Own symbol
+  through `slot="symbol"` and `slot="symbol-empty"`. Events `input`, `change`,
+  `rating-change` and `rating-preview` (hover).
 - `kakao-spinner`: the button's loading ring on its own, for a load of unknown
   length. Sizes sm, md and lg; the text colour or a `tone` (primary, success,
   warning, danger, muted); `label` is its status text for screen readers

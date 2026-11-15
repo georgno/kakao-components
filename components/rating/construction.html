@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-rating - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+    <script src="rating.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="rating" data-source="rating.js" data-title="Rating">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Pick</figcaption>
+      <kakao-rating label="Your rating" value="3"></kakao-rating>
+    </figure>
+    <figure>
+      <figcaption>Half steps, value text</figcaption>
+      <kakao-rating label="Quality" step="0.5" value="3.5" show-value hint="Optional"></kakao-rating>
+    </figure>
+    <figure>
+      <figcaption>Read-only</figcaption>
+      <kakao-rating readonly value="4.3" show-value aria-label="Average rating"></kakao-rating>
+    </figure>
+    <figure>
+      <figcaption>Sizes</figcaption>
+      <div style="display:grid;gap:.75rem">
+        <kakao-rating size="sm" value="4" aria-label="Small"></kakao-rating>
+        <kakao-rating size="lg" value="4" aria-label="Large"></kakao-rating>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Own symbol</figcaption>
+      <kakao-rating value="2" aria-label="Hearts">
+        <svg slot="symbol" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>
+      </kakao-rating>
+    </figure>
+    <figure>
+      <figcaption>Disabled · error</figcaption>
+      <div style="display:grid;gap:.75rem">
+        <kakao-rating disabled label="Disabled" value="2"></kakao-rating>
+        <kakao-rating label="Required" error="Please choose a rating."></kakao-rating>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+    [
+      {"property": "--kakao-rating-fill", "label": "Filled symbol", "group": "Colour", "type": "color"},
+      {"property": "--kakao-rating-empty", "label": "Empty symbol", "group": "Colour", "type": "color"},
+      {"property": "--kakao-rating-empty-fill", "label": "Empty symbol inside", "group": "Colour", "type": "color", "hint": "built-in star only"},
+      {"property": "--kakao-rating-text", "label": "Text", "group": "Colour", "type": "color"},
+      {"property": "--kakao-rating-muted", "label": "Muted text", "group": "Colour", "type": "color", "hint": "value text, hint"},
+      {"property": "--kakao-rating-focus", "label": "Focus", "group": "Colour", "type": "color"},
+      {"property": "--kakao-rating-danger", "label": "Danger", "group": "Colour", "type": "color"},
+      {"property": "--kakao-rating-font", "label": "Font", "group": "Typography", "type": "font"},
+      {"property": "--kakao-rating-label-weight", "label": "Label weight", "group": "Typography", "type": "number"},
+      {"property": "--kakao-rating-size", "label": "Symbol size", "group": "Size & spacing", "type": "length"},
+      {"property": "--kakao-rating-sm-size", "label": "Symbol size, small", "group": "Size & spacing", "type": "length"},
+      {"property": "--kakao-rating-lg-size", "label": "Symbol size, large", "group": "Size & spacing", "type": "length"},
+      {"property": "--kakao-rating-gap", "label": "Gap between symbols", "group": "Size & spacing", "type": "length"},
+      {"property": "--kakao-rating-value-gap", "label": "Gap to the value text", "group": "Size & spacing", "type": "length"},
+      {"property": "--kakao-rating-focus-width", "label": "Focus width", "group": "Size & spacing", "type": "number"},
+      {"property": "--kakao-rating-focus-offset", "label": "Focus offset", "group": "Size & spacing", "type": "number"},
+      {"property": "--kakao-rating-radius", "label": "Focus ring radius", "group": "Shape", "type": "radius"},
+      {"property": "--kakao-rating-hover-scale", "label": "Hover scale", "group": "Effects", "type": "number"},
+      {"property": "--kakao-rating-symbol-empty-opacity", "label": "Own symbol, empty opacity", "group": "Effects", "type": "number", "hint": "when no symbol-empty is slotted; below 1 can drop under 3:1"},
+      {"property": "--kakao-rating-disabled-opacity", "label": "Disabled opacity", "group": "Effects", "type": "number"}
+    ]
+  </script>
+</main>
+</body>
+</html>
