@@ -10,6 +10,16 @@ pages (landing page, settings, demos), not the components.
 
 ### Added
 
+- `kakao-image`: an image that keeps its place while it loads. Shows a
+  `kakao-skeleton` block of its size (`width` and `height`, or `ratio`) until
+  the file is there, then fades to the picture (no fade under reduced motion);
+  a plain block where `skeleton.js` is not loaded. Loads lazily (`loading`
+  lazy or eager), takes `alt` (empty for a decorative image), an optional
+  `caption` or `slot="caption"` (figure and figcaption), `fit` cover or
+  contain, `radius`, and passes `srcset` and `sizes` on. When the file fails
+  the frame shows a muted icon and the alt text. Events `image-load` and
+  `image-error`, method `reload()`, property `state`. New demo images
+  (`shared/demo-images/landscape-*.svg`, `tall-1.svg`).
 - `kakao-avatar`: a person as a small round picture. Shows the image (`src`,
   loaded lazily), the initials of `name` (or `initials`) while it loads, when
   there is none or when it fails, and an icon (`slot="icon"` or a built-in

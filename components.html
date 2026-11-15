@@ -25,6 +25,7 @@
 <script src="components/button/button.js" defer></script>
 <script src="components/number-input/number-input.js" defer></script>
 <script src="components/skeleton/skeleton.js" defer></script>
+<script src="components/image/image.js" defer></script>
 <script src="components/avatar/avatar.js" defer></script>
 <script src="components/slider/slider.js" defer></script>
 <script src="components/range-slider/range-slider.js" defer></script>
@@ -951,6 +952,39 @@
       </div>
     </article>
 
+    <!-- ============================== Image ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Image</h2>
+        <code>&lt;kakao-image&gt;</code>
+        <a href="components/image/construction.html">Construction</a>
+        <a href="components/image/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">An image that keeps its place while it loads: a skeleton of its size (<code>width</code> and <code>height</code>, or <code>ratio</code>) until the file is there, then the picture fades in. Loads lazily (<code>loading</code>), takes the <code>alt</code> text and an optional <code>caption</code> (figure and figcaption), <code>fit</code> cover or contain, <code>radius</code>, <code>srcset</code> and <code>sizes</code>. When the file fails, the frame shows a muted icon and the alt text. Events <code>image-load</code> and <code>image-error</code>.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>With caption · <code>caption</code></h3>
+          <kakao-image src="shared/demo-images/landscape-1.svg" alt="Green hills in front of blue mountains under a low sun" width="320" height="180" caption="The valley in the morning."></kakao-image>
+        </div>
+        <div class="example">
+          <h3>Ratio, fit and corners · <code>ratio</code>, <code>fit</code>, <code>radius</code></h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:flex-start">
+            <kakao-image src="shared/demo-images/landscape-2.svg" alt="Sunset over the sea" width="72" ratio="1"></kakao-image>
+            <kakao-image src="shared/demo-images/tall-1.svg" alt="A tree on a meadow" width="72" ratio="1" fit="contain" style="--kakao-image-background: var(--kakao-color-subtle, #f0f0f1)"></kakao-image>
+            <kakao-image src="shared/demo-images/portrait-1.svg" alt="Portrait of a person" width="72" ratio="1" radius="999"></kakao-image>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Still loading (no <code>src</code> yet)</h3>
+          <kakao-image alt="Sunset over the sea" width="320" height="180"></kakao-image>
+        </div>
+        <div class="example">
+          <h3>Failed</h3>
+          <kakao-image src="not-there.jpg" alt="Floor plan of the second storey" width="320" height="180"></kakao-image>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Kbd ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1778,13 +1812,6 @@
         <ol style="margin:0;padding-left:1.2rem"><li>Account</li><li><b>Plan</b></li><li>Payment</li></ol>
       </div>
     </article>
-
-    <article class="card placeholder">
-      <div class="component-head"><h2>Image</h2><kakao-badge outline>Missing</kakao-badge></div>
-      <p class="placeholder-native">Native: <code>&lt;figure&gt;</code> with <code>&lt;img loading="lazy"&gt;</code> and <code>&lt;figcaption&gt;</code>. Uses Skeleton</p>
-      <p class="placeholder-native">An image that loads lazily, shows a skeleton of its size until it has loaded, and takes alt text and an optional caption below it.</p>
-    </article>
-
 
     <article class="card placeholder">
       <div class="component-head"><h2>Table</h2><kakao-badge outline>Missing</kakao-badge></div>

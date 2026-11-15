@@ -17,7 +17,7 @@ The demo pages that show what exists: an overview of all components, one demo pa
 - **THEN** that component's construction page opens
 
 #### Scenario: Prerequisite named
-- **WHEN** a planned component builds on another planned one (Grid view on Table, Image on Skeleton)
+- **WHEN** a planned component builds on another planned one (Grid view on Table)
 - **THEN** its placeholder says which one comes first
 
 ### Requirement: Demo pages

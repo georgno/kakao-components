@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 360" width="240" height="360">
+  <!-- Stand-in tall picture (a tree) for demo pages (not part of any component). -->
+  <rect width="240" height="360" fill="#dcebd3"/>
+  <rect x="108" y="200" width="24" height="120" rx="6" fill="#7a5a3c"/>
+  <circle cx="120" cy="150" r="78" fill="#4f8a63"/>
+  <circle cx="84" cy="190" r="44" fill="#5d9a71"/>
+  <circle cx="160" cy="186" r="48" fill="#427a55"/>
+  <rect y="316" width="240" height="44" fill="#9fc48e"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <!-- Stand-in landscape for demo pages (not part of any component). -->
+  <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ec5ea"/><stop offset="1" stop-color="#fbe3c2"/></linearGradient></defs>
+  <rect width="640" height="360" fill="url(#s)"/>
+  <circle cx="470" cy="110" r="42" fill="#fff3d6"/>
+  <path d="M0 250 150 120l90 80 70-50 130 100 200-90v200H0Z" fill="#6f8fb3"/>
+  <path d="M0 290c90-50 190-50 290-10s230 30 350-30v110H0Z" fill="#4f8a63"/>
+  <path d="M0 330c120-40 260-30 380-5s180 10 260-15v50H0Z" fill="#356b4c"/>
+</svg>

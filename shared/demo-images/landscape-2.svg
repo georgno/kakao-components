@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" width="480" height="360">
+  <!-- Stand-in sea view for demo pages (not part of any component). -->
+  <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7b58c"/><stop offset="1" stop-color="#f9e0b8"/></linearGradient></defs>
+  <rect width="480" height="360" fill="url(#s)"/>
+  <circle cx="240" cy="200" r="54" fill="#fff0cf"/>
+  <rect y="200" width="480" height="160" fill="#2f6f8f"/>
+  <path d="M150 232h180M110 262h260M170 292h140" stroke="#f9e0b8" stroke-width="6" stroke-linecap="round" opacity=".6"/>
+  <path d="M0 360V300c40-30 90-40 130-10l40 70Z" fill="#274257"/>
+</svg>

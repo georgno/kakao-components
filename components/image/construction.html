@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-image - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../skeleton/skeleton.js" defer></script>
+<script src="image.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .images { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: flex-start; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="image" data-source="image.js" data-title="Image">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Loaded · with caption</figcaption>
+      <kakao-image src="../../shared/demo-images/landscape-1.svg" alt="Green hills in front of blue mountains" width="320" height="180" caption="The valley in the morning."></kakao-image>
+    </figure>
+    <figure>
+      <figcaption>Loading (no src yet)</figcaption>
+      <kakao-image alt="Sunset over the sea" width="320" height="180" caption="Waits as a skeleton."></kakao-image>
+    </figure>
+    <figure>
+      <figcaption>Failed</figcaption>
+      <kakao-image src="not-there.jpg" alt="Floor plan of the second storey" width="320" height="180" caption="The alt text is shown."></kakao-image>
+    </figure>
+    <figure>
+      <figcaption>Contain · no size given</figcaption>
+      <div class="images">
+        <kakao-image src="../../shared/demo-images/tall-1.svg" alt="A tree on a meadow" width="200" ratio="16/9" fit="contain"></kakao-image>
+        <kakao-image alt="" width="200"></kakao-image>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-image-background", "label": "Behind the image", "group": "Colour", "type": "color", "hint": "seen with fit=\"contain\" and through transparent images" },
+    { "property": "--kakao-image-placeholder-color", "label": "Placeholder", "group": "Colour", "type": "color", "hint": "the plain block where kakao-skeleton is not loaded; the skeleton has its own settings" },
+    { "property": "--kakao-image-error-background", "label": "Error fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-image-error-color", "label": "Error icon and text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-image-caption-color", "label": "Caption", "group": "Colour", "type": "color" },
+    { "property": "--kakao-image-radius", "label": "Radius", "group": "Shape", "type": "radius", "hint": "the radius attribute sets another per image" },
+    { "property": "--kakao-image-placeholder-height", "label": "Placeholder height", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "while loading, without height and ratio" },
+    { "property": "--kakao-image-error-icon-size", "label": "Error icon size", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-image-caption-gap", "label": "Caption gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "between image and caption" },
+    { "property": "--kakao-image-error-font-size", "label": "Error text size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-image-caption-size", "label": "Caption size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-image-caption-align", "label": "Caption alignment", "group": "Typography", "type": "text", "hint": "start, center or end" },
+    { "property": "--kakao-image-fade-duration", "label": "Fade", "group": "Motion", "type": "duration", "hint": "from skeleton to image; none under reduced motion" }
+  ]
+  </script>
+</main>
+</body>
+</html>

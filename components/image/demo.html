@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-image - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../skeleton/skeleton.js" defer></script>
+<script src="image.js" defer></script>
+<style>
+  .images { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: flex-start; }
+  .medium { max-width: 30rem; }
+  .gallery { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); max-width: 40rem; }
+  .letterbox { --kakao-image-background: var(--kakao-color-subtle, #f0f0f1); }
+  .image-link { display: block; max-width: 20rem; border-radius: 10px; }
+  .image-link:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }
+</style>
+<script src="../button/button.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Image"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Image</h1>
+    <p><code>&lt;kakao-image&gt;</code> - an image that keeps its place while it loads: a <a href="../skeleton/demo.html">skeleton</a> of its size until the file is there, then the picture fades in. Loads lazily, takes the alt text and an optional caption. Not interactive. Load <code>skeleton.js</code> with it; without it the placeholder is a plain still block.</p>
+  </header>
+
+  <h2>Image, alt text, caption</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Image · <code>src</code>, <code>alt</code></h3>
+      <p class="muted"><code>alt</code> says what the picture shows, for people who cannot see it. <code>width</code> and <code>height</code> are the size of the file, as on <code>&lt;img&gt;</code>: the space is reserved, and the image scales down with its place.</p>
+      <kakao-image src="../../shared/demo-images/landscape-1.svg" alt="Green hills in front of blue mountains under a low sun" width="480" height="270"></kakao-image>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Caption · <code>caption</code></h3>
+      <p class="muted">The text below the image. With a caption the whole is a figure with a figcaption; the caption is as wide as the image.</p>
+      <kakao-image src="../../shared/demo-images/landscape-2.svg" alt="The sun setting over a calm sea, a dark rock in front" width="360" height="270" caption="Evening at the coast, seen from the rocks."></kakao-image>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Caption with markup · <code>slot="caption"</code></h3>
+      <p class="muted">Content in the slot replaces the attribute, for a link or a credit.</p>
+      <kakao-image src="../../shared/demo-images/landscape-1.svg" alt="Green hills in front of blue mountains" width="360" ratio="16/9">
+        <span slot="caption">The valley in the morning. Picture: <a href="#credits">demo images</a></span>
+      </kakao-image>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Decorative · <code>alt=""</code></h3>
+      <p class="muted">An image that adds nothing to the text around it gets an empty <code>alt</code>: assistive technology skips it. Every image that carries meaning needs a real text.</p>
+      <kakao-image src="../../shared/demo-images/tall-1.svg" alt="" width="120" height="180"></kakao-image>
+    </kakao-card>
+  </div>
+
+  <h2>Reserving the space</h2>
+  <p>Say how large the image will be, and the page does not jump when it arrives: either <code>width</code> and <code>height</code>, or a <code>ratio</code>.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Ratio · <code>ratio</code></h3>
+      <p class="muted">The frame is as wide as its place (or as <code>width</code>) and takes its height from the ratio. The image fills it.</p>
+      <div class="gallery" data-demo-wrap>
+        <kakao-image src="../../shared/demo-images/landscape-1.svg" alt="Hills and mountains" ratio="16/9"></kakao-image>
+        <kakao-image src="../../shared/demo-images/landscape-2.svg" alt="Sunset over the sea" ratio="4/3"></kakao-image>
+        <kakao-image src="../../shared/demo-images/tall-1.svg" alt="A tree on a meadow" ratio="1"></kakao-image>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Width and height · <code>width</code>, <code>height</code></h3>
+      <p class="muted">A number is pixels, anything else a CSS length. Two numbers give the ratio and scale down together; a CSS height stays as it is.</p>
+      <div class="images" data-demo-wrap>
+        <kakao-image src="../../shared/demo-images/landscape-2.svg" alt="Sunset over the sea" width="200" height="150"></kakao-image>
+        <kakao-image src="../../shared/demo-images/landscape-1.svg" alt="Hills and mountains" width="14rem" height="6rem"></kakao-image>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">No size given</h3>
+      <p class="muted">Without height and ratio the skeleton has a fixed height (12rem), and the image then takes its own size. The content below moves, so give a size where you know it.</p>
+      <div class="toolbar" data-demo-only>
+        <kakao-button id="unsized-again" label="Load again, slowly" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <kakao-image id="unsized" src="../../shared/demo-images/portrait-2.svg" alt="Portrait of a person with dark hair"></kakao-image>
+    </kakao-card>
+  </div>
+
+  <h2>Fit and corners</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Cover and contain · <code>fit</code></h3>
+      <p class="muted">A tall picture in a wide frame. <code>cover</code> (default) fills the frame and cuts the rest; <code>contain</code> shows the whole picture. The free space is transparent unless <code>--kakao-image-background</code> is set, as here.</p>
+      <div class="gallery letterbox" data-demo-wrap>
+        <kakao-image src="../../shared/demo-images/tall-1.svg" alt="A tree on a meadow" ratio="16/9" caption="cover"></kakao-image>
+        <kakao-image src="../../shared/demo-images/tall-1.svg" alt="A tree on a meadow" ratio="16/9" fit="contain" caption="contain"></kakao-image>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Corners · <code>radius</code></h3>
+      <p class="muted">The default is the field radius (10px). 0 for an image that bleeds to the edge, more for a large picture, 999 with a ratio of 1 for a circle.</p>
+      <div class="images" data-demo-wrap>
+        <kakao-image src="../../shared/demo-images/landscape-1.svg" alt="Hills and mountains" width="140" ratio="4/3" radius="0"></kakao-image>
+        <kakao-image src="../../shared/demo-images/landscape-1.svg" alt="Hills and mountains" width="140" ratio="4/3"></kakao-image>
+        <kakao-image src="../../shared/demo-images/landscape-1.svg" alt="Hills and mountains" width="140" ratio="4/3" radius="24"></kakao-image>
+        <kakao-image src="../../shared/demo-images/portrait-1.svg" alt="Portrait of a person" width="105" ratio="1" radius="999"></kakao-image>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Loading</h2>
+  <p>The image loads when it comes near the viewport (<code>loading="lazy"</code>, the default). Until the file is there the frame shows a skeleton; the picture then fades in over it. With reduced motion switched on in the system there is no fade and the skeleton stands still.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">A slow image</h3>
+      <p class="muted">These files load at once, so the skeleton is hardly seen. The button takes the <code>src</code> away and sets it again two seconds later: an image without <code>src</code> waits as a skeleton.</p>
+      <div class="toolbar" data-demo-only>
+        <kakao-button id="slow-again" label="Load again, slowly" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <div class="medium" data-demo-wrap>
+        <kakao-image id="slow" src="../../shared/demo-images/landscape-1.svg" alt="Green hills in front of blue mountains" ratio="16/9" caption="The valley in the morning."></kakao-image>
+      </div>
+      <template data-code>
+        <script>
+          const image = document.getElementById('slow');
+          image.removeAttribute('src');               // back to the skeleton
+          lookUpPicture().then((url) => {
+            image.setAttribute('src', url);           // loads, then fades in
+          });
+        </script>
+      </template>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">At once · <code>loading="eager"</code></h3>
+      <p class="muted">For the image at the top of a page, which should not wait for the viewport check.</p>
+      <kakao-image src="../../shared/demo-images/landscape-2.svg" alt="Sunset over the sea" width="240" height="180" loading="eager"></kakao-image>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Several files · <code>srcset</code>, <code>sizes</code></h3>
+      <p class="muted">Both are passed on to the <code>&lt;img&gt;</code>, so the browser picks the file for the screen. (The demo names the same file twice.)</p>
+      <div class="medium" data-demo-wrap>
+        <kakao-image src="../../shared/demo-images/landscape-1.svg" srcset="../../shared/demo-images/landscape-1.svg 640w, ../../shared/demo-images/landscape-1.svg?large 1280w" sizes="(min-width: 40rem) 30rem, 100vw" alt="Green hills in front of blue mountains" ratio="16/9"></kakao-image>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>When the image fails</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Error state</h3>
+      <p class="muted">The file does not exist: the frame keeps its size and shows a muted icon with the alt text. A decorative image (<code>alt=""</code>) shows the icon only. The caption stays.</p>
+      <div class="images" data-demo-wrap>
+        <kakao-image src="not-there.jpg" alt="Floor plan of the second storey" width="280" height="180" caption="Second storey"></kakao-image>
+        <kakao-image src="not-there.jpg" alt="" width="180" height="180"></kakao-image>
+      </div>
+    </kakao-card>
+    <kakao-card id="events">
+      <h3 slot="header">Events and <code>reload()</code> · <code>image-load</code>, <code>image-error</code></h3>
+      <p class="muted">Both events bubble and cross shadow roots; the detail carries the <code>src</code>, and on a load the file's own size. <code>reload()</code> tries again, <code>state</code> says where the image is.</p>
+      <div class="toolbar" data-demo-only>
+        <kakao-button id="good" label="Set an image" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="bad" label="Set a broken one" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="retry" label="reload()" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <kakao-image id="evented" src="../../shared/demo-images/landscape-2.svg" alt="Sunset over the sea" width="280" ratio="4/3"></kakao-image>
+      <pre class="log" id="log" aria-label="Event log"></pre>
+      <template data-code>
+        <script>
+          document.addEventListener('image-error', (event) => {
+            console.log('no picture at', event.detail.src);
+            event.target.reload();                    // or report it
+          });
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <h2>As a link</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">In a link</h3>
+      <p class="muted">The image never takes focus itself. In a link, its alt text becomes the link's name.</p>
+      <a class="image-link" href="#valley"><kakao-image src="../../shared/demo-images/landscape-1.svg" alt="The valley: open the album" ratio="16/9"></kakao-image></a>
+    </kakao-card>
+  </div>
+</main>
+<script>
+  logEvents(document.getElementById('log'), ['image-load', 'image-error'], document.getElementById('events'));
+  (function () {
+    const on = (id, fn) => document.getElementById(id).addEventListener('kakao-button-action', fn);
+
+    /* Takes the src away (the skeleton shows) and sets it again after two seconds. */
+    function slowly(image) {
+      const src = image.getAttribute('src').split('?')[0];
+      let run = 0;
+      return () => {
+        const mine = ++run;
+        image.removeAttribute('src');
+        setTimeout(() => {
+          if (mine === run) image.setAttribute('src', src + '?' + Date.now());
+        }, 2000);
+      };
+    }
+    on('slow-again', slowly(document.getElementById('slow')));
+    on('unsized-again', slowly(document.getElementById('unsized')));
+
+    const evented = document.getElementById('evented');
+    on('good', () => evented.setAttribute('src', '../../shared/demo-images/landscape-1.svg?' + Date.now()));
+    on('bad', () => evented.setAttribute('src', 'not-there-' + Date.now() + '.jpg'));
+    on('retry', () => evented.reload());
+  })();
+</script>
+</body>
+</html>
