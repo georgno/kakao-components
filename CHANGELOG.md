@@ -8,6 +8,8 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-16
+
 ### Added
 
 - `kakao-toc`: "On this page" for long pages, with a built-in scrollspy.
@@ -15,12 +17,13 @@ pages (landing page, settings, demos), not the components.
   selector), nested by level, and gives headings without an id a stable
   slug; or takes hand-written entries from `list-data` or a nested list of
   links. Marks the section being read with `aria-current="location"` (the
-  last one at the bottom of the page) and a rounded marker bar that stretches
-  (and thins) over to the next entry and settles at its size, follows added or retitled headings,
-  hash changes and back / forward. A click scrolls smoothly (instantly
-  under reduced motion), pushes the hash and focuses the heading. `sticky`
-  for a sidebar, `nested="active"`, `collapse="auto|always|never"` folds it
-  behind a toggle that shows the current section. Fires `toc-change` and
+  last one at the bottom of the page) and a rounded marker bar that
+  stretches (and thins) over to the next entry and settles at its size;
+  follows added or retitled headings, hash changes and back / forward. A
+  click scrolls smoothly (instantly under reduced motion), pushes the hash
+  and focuses the heading. `sticky` for a sidebar, `nested="active"`,
+  `collapse="auto|always|never"` folds it behind a toggle that shows the
+  current section. Fires `toc-change` and
   the `section-change` trigger.
 
 - `kakao-tooltip`: a small themed label next to a control, shadow DOM, so
@@ -63,12 +66,10 @@ pages (landing page, settings, demos), not the components.
 
 - Radius scale decided: new main variables `--kakao-radius-xs` (4px),
   `-sm` (6px), `-md` (10px), `-lg` (14px) and `-pill` (999px) in
-  `tokens.css`, editable on the main-variables page. Every component radius
-  setting whose default is on the scale now defaults to its token with the
-  same literal fallback (`var(--kakao-radius-sm, 6px)`).
-
-- Every corner on the radius scale: the remaining fixed radii move to the
-  nearest step and follow its token (a tie goes to the larger step, a
+  `tokens.css`, editable on the main-variables page. Every component corner
+  now sits on the scale and defaults to its token with the literal as
+  fallback (`var(--kakao-radius-sm, 6px)`). Fixed radii that were off the
+  scale moved to the nearest step (a tie goes to the larger step, a
   hairline to xs), so some corners change visibly. Button, copy button and
   pagination 11 / 13 / 15px → 10 / 14 / 14px (so a dialog corner holding a
   md button is 34px); aside menu and number input 8 → 10px, number input
@@ -90,7 +91,11 @@ pages (landing page, settings, demos), not the components.
 - Construction, demo and settings-dialog chrome follows the radius scale
   (8 → 10px, 12 → 14px, 5 → 6px, 3 → 4px). Styleguide: Shape no longer
   names outliers, the audit's radius column matches the code, and a new
-  component rule "Button titles show as tooltips".
+  component rule "Button titles show as tooltips". The motion rule names
+  the toc marker as an exception to the spring curve (a long track would
+  make the overshoot fly past the list).
+
+- Components page: a jump to a `#` link stops below the sticky page bar.
 
 ## [0.8.0] - 2026-11-15
 
@@ -850,7 +855,8 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/georgno/kakao-components/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/georgno/kakao-components/compare/v0.5.0...v0.8.0
 [0.5.0]: https://github.com/georgno/kakao-components/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/georgno/kakao-components/compare/v0.3.0...v0.4.0
