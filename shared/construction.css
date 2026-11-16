@@ -64,7 +64,7 @@ code {
   margin-top: 1rem;
   padding: 0.75rem 1rem;
   border: 1px solid #fcd34d;
-  border-radius: 10px;
+  border-radius: var(--kakao-radius-md, 10px);
   background: #fffbeb;
   font-size: 0.85rem;
   color: #92400e;
@@ -89,7 +89,7 @@ code {
   top: calc(var(--page-bar-height) + 1rem); /* below the sticky page bar */
   min-width: 0;
   border: 1px solid var(--kakao-color-line, #e5e7eb);
-  border-radius: 14px;
+  border-radius: var(--kakao-radius-lg, 14px);
   padding: 3rem 2rem 2rem;
   background: var(--kakao-color-bg, #ffffff);
   color: var(--kakao-color-text, #111827);
@@ -137,7 +137,7 @@ code {
   /* Our own components, tuned through their settings to fit the dense table */
   --kakao-button-sm-height: 30px;
   --kakao-button-sm-padding-x: 10px;
-  --kakao-button-sm-radius: 8px;
+  --kakao-button-sm-radius: var(--kakao-radius-md, 10px);
   --kakao-button-sm-font-size: 12.5px;
   --kakao-button-sm-gap: 5px;
   --kakao-button-md-font-size: 13px; /* menu items */
@@ -149,7 +149,7 @@ code {
 .construction-panel {
   min-width: 0;
   border: 1px solid var(--kakao-color-line, #e5e7eb);
-  border-radius: 14px;
+  border-radius: var(--kakao-radius-lg, 14px);
   background: var(--kakao-color-bg, #ffffff);
   padding: 0.75rem;
 }
@@ -159,7 +159,7 @@ code {
   margin-bottom: 0.5rem;
   padding: 0.45rem 0.65rem;
   border: 1px solid var(--kakao-color-border, #d1d5db);
-  border-radius: 8px;
+  border-radius: var(--kakao-radius-md, 10px);
   background: var(--kakao-color-bg, #ffffff);
   color: inherit;
   font: inherit;
@@ -183,7 +183,7 @@ code {
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.25rem 0.3rem 0.6rem;
-  border-radius: 8px;
+  border-radius: var(--kakao-radius-md, 10px);
   position: relative;
 }
 .construction-row:hover { background: var(--kakao-color-subtle, #f9fafb); }
@@ -215,7 +215,7 @@ code {
   height: 30px;
   padding: 0 0.45rem;
   border: 1px solid var(--kakao-color-border, #d1d5db);
-  border-radius: 6px;
+  border-radius: var(--kakao-radius-sm, 6px);
   background: var(--kakao-color-bg, #fff);
   color: inherit;
   font: inherit;
@@ -230,7 +230,7 @@ code {
 .construction-control kakao-color-picker {
   flex: none;
   --kakao-color-picker-swatch-size: 26px;
-  --kakao-color-picker-swatch-radius: 6px;
+  --kakao-color-picker-swatch-radius: var(--kakao-radius-sm, 6px);
 }
 .construction-suffix { font-size: 0.8rem; color: var(--kakao-color-muted, #6b7280); }
 
@@ -255,11 +255,11 @@ code {
 .construction-chip {
   flex: 1;
   --kakao-chip-height: 30px;
-  --kakao-chip-radius: 8px;
+  --kakao-chip-radius: var(--kakao-radius-md, 10px);
   --kakao-chip-font-size: 0.82rem;
   --kakao-chip-font-weight: 500;
   --kakao-chip-swatch-size: 0.85rem;
-  --kakao-chip-swatch-radius: 3px;
+  --kakao-chip-swatch-radius: var(--kakao-radius-xs, 4px);
 }
 .construction-chip.is-follow { --kakao-chip-bg: var(--kakao-color-subtle, #f3f4f6); --kakao-chip-text: var(--kakao-color-text-soft, #374151); }
 .construction-chip::part(meta) { font-size: 0.72rem; }

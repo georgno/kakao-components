@@ -34,17 +34,17 @@ kakao-button,
   --_sm-height: var(--kakao-button-sm-height, 36px);
   --_sm-padding-x: var(--kakao-button-sm-padding-x, 16px);
   --_sm-font-size: var(--kakao-button-sm-font-size, 13px);
-  --_sm-radius: var(--kakao-button-sm-radius, 11px);
+  --_sm-radius: var(--kakao-button-sm-radius, var(--kakao-radius-md, 10px));
   --_sm-gap: var(--kakao-button-sm-gap, 6px);
   --_md-height: var(--kakao-button-md-height, 44px);
   --_md-padding-x: var(--kakao-button-md-padding-x, 22px);
   --_md-font-size: var(--kakao-button-md-font-size, 14.5px);
-  --_md-radius: var(--kakao-button-md-radius, 13px);
+  --_md-radius: var(--kakao-button-md-radius, var(--kakao-radius-lg, 14px));
   --_md-gap: var(--kakao-button-md-gap, 8px);
   --_lg-height: var(--kakao-button-lg-height, 52px);
   --_lg-padding-x: var(--kakao-button-lg-padding-x, 28px);
   --_lg-font-size: var(--kakao-button-lg-font-size, 16px);
-  --_lg-radius: var(--kakao-button-lg-radius, 15px);
+  --_lg-radius: var(--kakao-button-lg-radius, var(--kakao-radius-lg, 14px));
   --_lg-gap: var(--kakao-button-lg-gap, 10px);
   --_label-weight: var(--kakao-button-label-weight, 550);
   --_focus-ring-width: var(--kakao-button-focus-ring-width, 4px);
@@ -406,7 +406,7 @@ kakao-button[no-chevron] .kakao-button-chevron {
 kakao-button[data-menu][icon-position="only"]:not([no-chevron]) .kakao-button-inner {
   width: auto;
   padding: 0 0.85em 0 0.95em;
-  border-radius: 999px;
+  border-radius: var(--kakao-radius-pill, 999px);
 }
 
 .kakao-button-menu {

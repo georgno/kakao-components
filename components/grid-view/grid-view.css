@@ -173,7 +173,7 @@ kakao-grid-view .kakao-grid-view-count {
   min-width: 1.25rem;
   padding: 0 0.375rem;
   box-sizing: border-box;
-  border-radius: 999px;
+  border-radius: var(--kakao-radius-pill, 999px);
   background: var(--_gv-count-bg);
   color: var(--_gv-count-text);
   font-size: 0.75rem;

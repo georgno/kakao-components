@@ -243,7 +243,7 @@
         content: "";
         width: 2px;
         height: 1.1em;
-        border-radius: 1px;
+        border-radius: var(--kakao-radius-xs, 4px);
         background: var(--_text);
         animation: blink 1.06s steps(1, end) infinite;
       }
@@ -254,7 +254,7 @@
         width: 0.6em;
         height: 2px;
         margin: 0 max(0px, calc(var(--_group-gap) - var(--_gap)));
-        border-radius: 1px;
+        border-radius: var(--kakao-radius-xs, 4px);
         background: var(--_muted);
         font-size: var(--_char-size);
       }

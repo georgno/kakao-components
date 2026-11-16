@@ -62,7 +62,7 @@
       gap: 0.8rem;
       padding: 1rem 1.1rem;
       border: 1px solid var(--kakao-color-line, #e5e7eb);
-      border-radius: 14px;
+      border-radius: var(--kakao-radius-lg, 14px);
       background: var(--kakao-color-page, #fff);
       color: var(--kakao-color-text, #18181b);
     }
@@ -79,7 +79,7 @@
       gap: 0.1rem;
       padding: 0.7rem 0.85rem;
       border: 1px solid var(--kakao-color-line, #e5e7eb);
-      border-radius: 10px;
+      border-radius: var(--kakao-radius-md, 10px);
       color: inherit;
       text-decoration: none;
     }

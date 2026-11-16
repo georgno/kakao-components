@@ -157,13 +157,13 @@
         --_select-border: var(--kakao-pagination-select-border, var(--kakao-color-field-border, #ececef));
         --_select-text: var(--kakao-pagination-select-text, var(--kakao-color-text, #18181b));
         --_height: var(--kakao-pagination-height, 44px);
-        --_radius: var(--kakao-pagination-radius, 13px);
+        --_radius: var(--kakao-pagination-radius, var(--kakao-radius-lg, 14px));
         --_font-size: var(--kakao-pagination-font-size, 14.5px);
         --_sm-height: var(--kakao-pagination-sm-height, 36px);
-        --_sm-radius: var(--kakao-pagination-sm-radius, 11px);
+        --_sm-radius: var(--kakao-pagination-sm-radius, var(--kakao-radius-md, 10px));
         --_sm-font-size: var(--kakao-pagination-sm-font-size, 13px);
         --_lg-height: var(--kakao-pagination-lg-height, 52px);
-        --_lg-radius: var(--kakao-pagination-lg-radius, 15px);
+        --_lg-radius: var(--kakao-pagination-lg-radius, var(--kakao-radius-lg, 14px));
         --_lg-font-size: var(--kakao-pagination-lg-font-size, 16px);
         --_padding-x: var(--kakao-pagination-padding-x, 0.5em);
         --_weight: var(--kakao-pagination-weight, 500);

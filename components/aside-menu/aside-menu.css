@@ -22,7 +22,7 @@ kakao-aside-menu {
   --_subtle: var(--kakao-aside-subtle, var(--kakao-color-subtle, #f0f0f1));
   --_subtle-strong: var(--kakao-aside-subtle-strong, var(--kakao-color-subtle-strong, #e6e6e8));
   --_focus: var(--kakao-aside-focus, var(--kakao-color-focus, #2563eb));
-  --_radius: var(--kakao-aside-radius, var(--kakao-radius, 8px));
+  --_radius: var(--kakao-aside-radius, var(--kakao-radius-md, 10px));
   --_duration: var(--kakao-aside-duration, var(--kakao-motion-duration, 320ms));
   --_easing: var(--kakao-aside-easing, cubic-bezier(0.22, 1, 0.36, 1));
   --_z-index: var(--kakao-aside-z-index, 40);

@@ -230,7 +230,7 @@ kakao-table .kakao-table-sort {
   margin: -0.25rem -0.375rem;
   padding: 0.125rem 0.375rem;
   border: 0;
-  border-radius: 6px;
+  border-radius: var(--kakao-radius-sm, 6px);
   background: none;
   color: inherit;
   font: inherit;
@@ -456,7 +456,7 @@ kakao-table .kakao-table-bone {
   display: block;
   height: 0.75em;
   margin-block: 0.35em;
-  border-radius: 999px;
+  border-radius: var(--kakao-radius-pill, 999px);
   background: var(--_skeleton);
   animation: kakao-table-pulse 1.4s ease-in-out infinite;
 }

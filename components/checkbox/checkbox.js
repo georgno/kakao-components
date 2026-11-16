@@ -82,8 +82,8 @@
         color: var(--_text);
       }
       :host([hidden]) { display: none; }
-      :host([size="sm"]) { --_box-size: var(--kakao-checkbox-sm-box-size, 16px); --_box-radius: var(--kakao-checkbox-sm-box-radius, 5px); font-size: 0.875rem; }
-      :host([size="lg"]) { --_box-size: var(--kakao-checkbox-lg-box-size, 24px); --_box-radius: var(--kakao-checkbox-lg-box-radius, 7px); font-size: 1rem; }
+      :host([size="sm"]) { --_box-size: var(--kakao-checkbox-sm-box-size, 16px); --_box-radius: var(--kakao-checkbox-sm-box-radius, var(--kakao-radius-sm, 6px)); font-size: 0.875rem; }
+      :host([size="lg"]) { --_box-size: var(--kakao-checkbox-lg-box-size, 24px); --_box-radius: var(--kakao-checkbox-lg-box-radius, var(--kakao-radius-sm, 6px)); font-size: 1rem; }
       :host([disabled]) { opacity: var(--_disabled-opacity); }
 
       .wrap {

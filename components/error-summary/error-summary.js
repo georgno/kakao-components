@@ -166,7 +166,7 @@
       }
       :host([hidden]) { display: none; }
 
-      .box { display: block; border-radius: var(--kakao-alert-radius, 10px); }
+      .box { display: block; border-radius: var(--kakao-alert-radius, var(--kakao-radius-md, 10px)); }
       .box[hidden] { display: none; }
       .box:focus { outline: none; }
       .box:focus-visible { outline: 2px solid var(--_focus); outline-offset: 2px; }
@@ -222,7 +222,7 @@
         text-decoration: underline;
         text-decoration-thickness: 1px;
         text-underline-offset: 0.18em;
-        border-radius: 2px;
+        border-radius: var(--kakao-radius-xs, 4px);
       }
       .list a:hover { text-decoration-thickness: 2px; }
       .list a:focus-visible { outline: 2px solid var(--_focus); outline-offset: 2px; }

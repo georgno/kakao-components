@@ -11,7 +11,7 @@
   --muted: var(--kakao-color-muted, #6b7280);
   --accent: var(--kakao-color-primary, #4f46e5);
   --code-bg: var(--kakao-color-subtle, #eef0f4);
-  --radius: 14px;
+  --radius: var(--kakao-radius-lg, 14px);
 }
 
 * { box-sizing: border-box; }
@@ -48,7 +48,7 @@ code {
   font: 0.85em ui-monospace, "SF Mono", Menlo, monospace;
   background: var(--code-bg);
   padding: 0.1em 0.4em;
-  border-radius: 5px;
+  border-radius: var(--kakao-radius-sm, 6px);
 }
 
 h2 {
@@ -211,7 +211,7 @@ footer { margin-top: 3rem; color: var(--muted); font-size: 0.85rem; }
 kakao-card > .demo-code[slot="footer"] { display: block; flex: 1 1 100%; margin: 0; }
 [data-example] > .demo-code { margin-top: 1rem; }
 [data-example]:is(.grid, .stack) > .demo-code { margin-top: 0; } /* the gap spaces it */
-.demo-code code:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; border-radius: 4px; }
+.demo-code code:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; border-radius: var(--kakao-radius-xs, 4px); }
 .demo-code pre {
   margin: 0;
   padding: 0.25rem 0;
@@ -332,7 +332,7 @@ html[data-kakao-aside-open='right'] kakao-header-bar {
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 999px;
+  border-radius: var(--kakao-radius-pill, 999px);
   background: var(--kakao-color-subtle, #f0f0f1);
   color: var(--kakao-color-text, #18181b);
   font-size: 1.05rem;

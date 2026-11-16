@@ -159,7 +159,7 @@
         --_stepper-hover-color: var(--kakao-range-slider-stepper-hover-color, var(--kakao-slider-stepper-hover-color, var(--kakao-color-text, #111)));
         --_stepper-active-bg: var(--kakao-range-slider-stepper-active-bg, var(--kakao-slider-stepper-active-bg, var(--kakao-color-subtle-strong, #e0e0e0)));
         --_touch-step-size: var(--kakao-range-slider-touch-step-size, var(--kakao-slider-touch-step-size, 44px));
-        --_touch-radius: var(--kakao-range-slider-touch-radius, var(--kakao-slider-touch-radius, 10px));
+        --_touch-radius: var(--kakao-range-slider-touch-radius, var(--kakao-slider-touch-radius, var(--kakao-radius-md, 10px)));
         /* @kakao-settings:end */
         display: block;
         font-family: var(--_font-family);
@@ -217,7 +217,7 @@
         display: flex;
         align-items: stretch;
         border: 1px solid var(--_input-border);
-        border-radius: 3px;
+        border-radius: var(--kakao-radius-xs, 4px);
         background: var(--_input-bg);
         overflow: hidden;
       }
@@ -402,7 +402,7 @@
         height: var(--_track-height);
         transform: translateY(-50%) translateY(-5px);
         background: var(--_track-bg);
-        border-radius: 1px;
+        border-radius: var(--kakao-radius-xs, 4px);
         pointer-events: none;
       }
 
@@ -414,7 +414,7 @@
         left: 0%;
         width: 0%;
         background: var(--_accent);
-        border-radius: 1px;
+        border-radius: var(--kakao-radius-xs, 4px);
         transition:
           left  var(--_transition-speed) linear,
           width var(--_transition-speed) linear;

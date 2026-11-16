@@ -20,7 +20,7 @@
  *   --_track-bg-on: var(--kakao-switch-track-bg-on, var(--kakao-color-primary, #4f46e5));
  *   /* @kakao-settings:end *\/
  *
- * In shared/tokens.css the lines are plain declarations: --kakao-radius: 8px;
+ * In shared/tokens.css the lines are plain declarations: --kakao-radius-md: 10px;
  * Only the text between the two markers is ever rewritten.
  *
  * ----------------------------------------------------------------------------

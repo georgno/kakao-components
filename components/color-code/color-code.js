@@ -81,7 +81,7 @@
         --_fill: var(--kakao-color-code-fill, var(--kakao-color-subtle, #f0f0f1));
         --_text: var(--kakao-color-code-text, var(--kakao-color-text, #18181b));
         --_swatch-size: var(--kakao-color-code-swatch-size, 0.625rem);
-        --_swatch-radius: var(--kakao-color-code-swatch-radius, 2px);
+        --_swatch-radius: var(--kakao-color-code-swatch-radius, var(--kakao-radius-xs, 4px));
         --_ring: var(--kakao-color-code-ring, color-mix(in srgb, var(--kakao-color-text, #18181b) 24%, transparent));
         --_checker: var(--kakao-color-code-checker, var(--kakao-color-subtle-strong, #e6e6e8));
         --_checker-bg: var(--kakao-color-code-checker-bg, var(--kakao-color-bg, #ffffff));

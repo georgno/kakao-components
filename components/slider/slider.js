@@ -256,7 +256,7 @@ class KakaoSlider extends HTMLElement {
           display: flex;
           align-items: stretch;
           border: 1px solid var(--_input-border);
-          border-radius: 3px;
+          border-radius: var(--kakao-radius-xs, 4px);
           background: var(--_input-bg);
           overflow: hidden;
           /* no box-shadow */
@@ -459,7 +459,7 @@ class KakaoSlider extends HTMLElement {
           /* nudge up to sit above the tick row */
           transform: translateY(-50%) translateY(-5px);
           background: var(--_track-bg);
-          border-radius: 1px;
+          border-radius: var(--kakao-radius-xs, 4px);
           overflow: visible; /* ticks overflow below */
           pointer-events: none;
         }
@@ -469,7 +469,7 @@ class KakaoSlider extends HTMLElement {
           position: absolute;
           inset: 0 auto 0 0;
           background: var(--_accent);
-          border-radius: 1px;
+          border-radius: var(--kakao-radius-xs, 4px);
           width: 0%;
           transition: width var(--_transition-speed) linear;
           will-change: width;

@@ -82,7 +82,7 @@
         --_ink: var(--kakao-chip-ink, var(--kakao-color-ink, #18181b));
         --_on-ink: var(--kakao-chip-on-ink, var(--kakao-color-on-ink, #fafafa));
         --_swatch-size: var(--kakao-chip-swatch-size, 0.75rem);
-        --_swatch-radius: var(--kakao-chip-swatch-radius, 2px);
+        --_swatch-radius: var(--kakao-chip-swatch-radius, var(--kakao-radius-xs, 4px));
         /* @kakao-settings:end */
         display: inline-flex;
         vertical-align: middle;

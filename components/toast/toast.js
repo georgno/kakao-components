@@ -156,7 +156,7 @@
         bottom: 0;
         margin: 0;
         pointer-events: auto;
-        border-radius: var(--kakao-alert-radius, 10px);
+        border-radius: var(--kakao-alert-radius, var(--kakao-radius-md, 10px));
         box-shadow: var(--_shadow);
         transform-origin: 50% 0;
         transform:

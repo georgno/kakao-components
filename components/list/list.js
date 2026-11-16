@@ -195,13 +195,13 @@ class KakaoList extends HTMLElement {
           position: absolute; top: 0; right: 0;
           width: ${sb}px; height: 100%;
           background: var(--_scrollbar-track);
-          border-radius: 6px;
+          border-radius: var(--kakao-radius-sm, 6px);
         }
         .scrollbar-thumb {
           position: absolute; right: 2px;
           width: ${sb - 4}px;
           background: var(--_scrollbar-thumb);
-          border-radius: 4px;
+          border-radius: var(--kakao-radius-xs, 4px);
           cursor: pointer;
           transition: background 0.15s;
           user-select: none;
@@ -254,7 +254,7 @@ class KakaoList extends HTMLElement {
         .item-action {
           margin-left: auto; color: var(--_action-color); font-size: 16px;
           padding: 8px; line-height: 1; background: none; border: none;
-          cursor: pointer; border-radius: 4px; font-family: inherit;
+          cursor: pointer; border-radius: var(--kakao-radius-xs, 4px); font-family: inherit;
         }
         .item-action:hover { color: var(--_action-hover-color); }
         .item-action:focus-visible { outline: 2px solid var(--_focus-color); outline-offset: 2px; }

@@ -17,7 +17,7 @@ kakao-number-input {
   --_arrow-hover-bg: var(--kakao-number-input-arrow-hover-bg, var(--kakao-color-subtle, #e9ecef));
   --_arrow-hover-color: var(--kakao-number-input-arrow-hover-color, var(--kakao-color-text, #212529));
   --_arrow-active-bg: var(--kakao-number-input-arrow-active-bg, var(--kakao-color-subtle-strong, #ced4da));
-  --_input-radius: var(--kakao-number-input-input-radius, var(--kakao-radius, 8px));
+  --_input-radius: var(--kakao-number-input-input-radius, var(--kakao-radius-md, 10px));
   --_font-size: var(--kakao-number-input-font-size, inherit);
   --_input-border: var(--kakao-number-input-input-border, var(--kakao-color-field-border, #ececef));
   --_input-bg: var(--kakao-number-input-input-bg, var(--kakao-color-bg, #fff));
@@ -31,7 +31,7 @@ kakao-number-input {
   --_sm-font-size: var(--kakao-number-input-sm-font-size, 0.875rem);
   --_sm-arrow-size: var(--kakao-number-input-sm-arrow-size, 7px);
   --_touch-size: var(--kakao-number-input-touch-size, 44px);
-  --_touch-radius: var(--kakao-number-input-touch-radius, 12px);
+  --_touch-radius: var(--kakao-number-input-touch-radius, var(--kakao-radius-lg, 14px));
   --_touch-glyph-size: var(--kakao-number-input-touch-glyph-size, 20px);
   --_focus-width: var(--kakao-number-input-focus-width, 2px);
   --_focus-offset: var(--kakao-number-input-focus-offset, 2px);
@@ -189,7 +189,7 @@ kakao-number-input[data-touch] .kakao-number-input-arrows span {
   touch-action: manipulation;
   pointer-events: auto;
   border: 1px solid var(--_arrow-border);
-  border-radius: 10px;
+  border-radius: var(--kakao-radius-md, 10px);
   background: var(--_input-bg);
   color: var(--_arrow-color);
 }

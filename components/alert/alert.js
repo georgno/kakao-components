@@ -191,7 +191,7 @@
         margin: 0 calc(var(--_padding-x) * -0.35) 0 0;
         padding: 0;
         border: 0;
-        border-radius: 6px;
+        border-radius: var(--kakao-radius-sm, 6px);
         background: transparent;
         color: inherit;
         font: inherit;

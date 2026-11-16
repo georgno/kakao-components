@@ -195,7 +195,7 @@
         inset-inline-start: calc(50% + var(--_marker-size) / 2 + var(--_line-gap));
         width: calc(100% - var(--_marker-size) - var(--_line-gap) * 2);
         height: var(--_line-width);
-        border-radius: 999px;
+        border-radius: var(--kakao-radius-pill, 999px);
         background: var(--_line);
       }
       .step.is-passed::after { background: var(--_line-done); }
@@ -323,7 +323,7 @@
         width: 100%;
         height: var(--_bar-height);
         border: 0;
-        border-radius: 999px;
+        border-radius: var(--kakao-radius-pill, 999px);
         background: var(--_line);
         font-size: 0;
       }

@@ -65,8 +65,32 @@ pages (landing page, settings, demos), not the components.
   `-sm` (6px), `-md` (10px), `-lg` (14px) and `-pill` (999px) in
   `tokens.css`, editable on the main-variables page. Every component radius
   setting whose default is on the scale now defaults to its token with the
-  same literal fallback (`var(--kakao-radius-sm, 6px)`), so no corner
-  changes; the popover's 4px stays literal (an outlier, not an xs corner).
+  same literal fallback (`var(--kakao-radius-sm, 6px)`).
+
+- Every corner on the radius scale: the remaining fixed radii move to the
+  nearest step and follow its token (a tie goes to the larger step, a
+  hairline to xs), so some corners change visibly. Button, copy button and
+  pagination 11 / 13 / 15px → 10 / 14 / 14px (so a dialog corner holding a
+  md button is 34px); aside menu and number input 8 → 10px, number input
+  touch 12 → 14px; select and tree-view box 5 → 6px; checkbox sm 5 and lg
+  7 → 6px; file-upload thumb 7 → 6px, file badge 9 → 10px, icon button
+  8 → 10px, type tag 3 → 4px; colour-picker swatch 7 → 6px, area, preview
+  and tool buttons 8 → 10px; slider and range-slider input 3 → 4px, track
+  1 → 4px; code-input caret and separator 1 → 4px; chip and colour-code
+  swatch 2 → 4px; error-summary link focus 2 → 4px. The popover's 4px is
+  now the xs step (`--kakao-radius-xs`), no longer an exception.
+
+### Removed
+
+- `--kakao-radius` (8px) main variable: superseded by the radius scale.
+  A page that still sets it breaks nothing; the value is no longer read.
+
+### Site only
+
+- Construction, demo and settings-dialog chrome follows the radius scale
+  (8 → 10px, 12 → 14px, 5 → 6px, 3 → 4px). Styleguide: Shape no longer
+  names outliers, the audit's radius column matches the code, and a new
+  component rule "Button titles show as tooltips".
 
 ## [0.8.0] - 2026-11-15
 

@@ -177,7 +177,7 @@
         --_option-radius: var(--kakao-select-option-radius, var(--kakao-radius-sm, 6px));
         --_search-height: var(--kakao-select-search-height, 36px);
         --_box-size: var(--kakao-select-box-size, 18px);
-        --_box-radius: var(--kakao-select-box-radius, 5px);
+        --_box-radius: var(--kakao-select-box-radius, var(--kakao-radius-sm, 6px));
         --_duration: var(--kakao-select-duration, 150ms);
         --_ease: var(--kakao-select-ease, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
         /* @kakao-settings:end */

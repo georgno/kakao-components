@@ -328,7 +328,7 @@
         content: "";
         width: var(--_handle-width);
         height: var(--_handle-height);
-        border-radius: 999px;
+        border-radius: var(--kakao-radius-pill, 999px);
         background: var(--_handle-color);
       }
       :host([handle][data-edge="bottom"]) .header-box { touch-action: none; user-select: none; }

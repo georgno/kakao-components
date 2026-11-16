@@ -212,7 +212,7 @@
         --_font-family: var(--kakao-popover-font-family, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));
         --_font-size: var(--kakao-popover-font-size, 14px);
         --_label-font-size: var(--kakao-popover-label-font-size, 12px);
-        --_radius: var(--kakao-popover-radius, 4px);
+        --_radius: var(--kakao-popover-radius, var(--kakao-radius-xs, 4px));
         --_spacing: var(--kakao-popover-spacing, 8px);
         --_max-width: var(--kakao-popover-max-width, 280px);
         --_z-index: var(--kakao-popover-z-index, 1000);

@@ -262,7 +262,7 @@
         align-items: center;
         height: var(--_chip-height);
         padding: 0 0.45rem;
-        border-radius: 4px;
+        border-radius: var(--kakao-radius-xs, 4px);
         background: var(--kakao-color-subtle-strong, #e6e6e8);
         font-size: 0.75rem;
         font-weight: 600;

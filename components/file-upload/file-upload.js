@@ -220,7 +220,7 @@
         --_item-padding: var(--kakao-file-upload-item-padding, 0.45rem 0.5rem 0.45rem 0.45rem);
         --_item-radius: var(--kakao-file-upload-item-radius, var(--kakao-radius-md, 10px));
         --_thumb-size: var(--kakao-file-upload-thumb-size, 2.5rem);
-        --_thumb-radius: var(--kakao-file-upload-thumb-radius, 7px);
+        --_thumb-radius: var(--kakao-file-upload-thumb-radius, var(--kakao-radius-sm, 6px));
         --_type-color: var(--kakao-file-upload-type-color, var(--kakao-color-muted, #6b7280));
         --_type-image: var(--kakao-file-upload-type-image, #0d9488);
         --_type-pdf: var(--kakao-file-upload-type-pdf, #dc2626);
@@ -341,7 +341,7 @@
         color: var(--_text);
         background: var(--_bg);
         border: 1px solid var(--_border);
-        border-radius: 9px;
+        border-radius: var(--kakao-radius-md, 10px);
         padding: 0.4rem 0.9rem;
         cursor: pointer;
       }
@@ -408,7 +408,7 @@
         color: var(--_muted);
         background: none;
         border: none;
-        border-radius: 4px;
+        border-radius: var(--kakao-radius-xs, 4px);
         text-decoration: underline;
         text-underline-offset: 2px;
         cursor: pointer;
@@ -483,7 +483,7 @@
         bottom: 0.45rem;
         transform: translateX(-50%);
         padding: 0.12rem 0.22rem;
-        border-radius: 3px;
+        border-radius: var(--kakao-radius-xs, 4px);
         background: var(--_cat);
         color: var(--_type-tag-text);
         font: 700 0.45rem/1 var(--kakao-font-family, system-ui, sans-serif);
@@ -509,7 +509,7 @@
         color: var(--_muted);
         background: none;
         border: none;
-        border-radius: 8px;
+        border-radius: var(--kakao-radius-md, 10px);
         cursor: pointer;
         transition: background-color 120ms ease, color 120ms ease;
       }
