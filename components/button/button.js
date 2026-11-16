@@ -24,7 +24,10 @@
  *                   font (Font Awesome is not part of the library). A slotted icon
  *                   wins over it.
  *   icon-position   left (default with a label), right, or only (default without one;
- *                   give it an aria-label or a label, which then names the button).
+ *                   give it an aria-label or a label, which then names the button
+ *                   and is shown as its hover tooltip).
+ *   title           Hover tooltip. An icon-only button defaults it to its name;
+ *                   title="" turns that off.
  *
  * Menu (dropdown) form - works with every variant and size:
  *   list-data       JSON array of items (never "data"):
@@ -606,11 +609,7 @@
       }
       this._btn.disabled = this.hasAttribute('disabled');
 
-      if (this.hasAttribute('title')) {
-        this._btn.setAttribute('title', this.getAttribute('title'));
-      } else {
-        this._btn.removeAttribute('title');
-      }
+      this._syncTitle();
 
       // Expose href on the native button so Yii handleAction can read it
       if (this.hasAttribute('href')) {
@@ -656,6 +655,20 @@
       });
     }
 
+    // Hover tooltip on the inner <button>. An own title wins (title="" turns the
+    // tooltip off); an icon-only button otherwise shows its accessible name, since
+    // the label is hidden and aria-label alone shows nothing on hover.
+    _syncTitle() {
+      const own = this.getAttribute('title');
+      const tip = own !== null ? own
+        : (this.getAttribute('icon-position') === 'only' ? this._btn.getAttribute('aria-label') || '' : '');
+      if (tip) {
+        this._btn.setAttribute('title', tip);
+      } else {
+        this._btn.removeAttribute('title');
+      }
+    }
+
     _syncFromAttributes() {
       const iconPos = this.getAttribute('icon-position') || (this.getAttribute('label') ? 'left' : 'only');
       const labelText = this.getAttribute('label') || '';
@@ -682,6 +695,7 @@
       } else {
         this._btn.removeAttribute('aria-label');
       }
+      this._syncTitle();
 
       this._btn.disabled = this.hasAttribute('disabled');
       if (this.hasAttribute('toggle')) {

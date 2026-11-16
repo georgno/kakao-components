@@ -8,6 +8,13 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Changed
+
+- `kakao-button`: an icon-only button shows its name (`label` or
+  `aria-label`) as a hover tooltip (`title` on the inner `<button>`). Before,
+  the name reached screen readers only and hovering showed nothing. An own
+  `title` still wins; `title=""` turns the tooltip off.
+
 ## [0.8.0] - 2026-11-15
 
 ### Added
