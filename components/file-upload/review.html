@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>kakao-file-upload - How the code works</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="file-upload.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../toc/toc.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+<style>
+  /* This page only: long-form prose with code excerpts. */
+  .doc p, .doc li { max-width: 68ch; }
+  .doc h2 { margin-top: 3rem; }
+  .doc h3 { margin: 1.75rem 0 0.25rem; font-size: 1rem; }
+  .doc ul, .doc ol { padding-left: 1.25rem; }
+  .doc li + li { margin-top: 0.35rem; }
+
+  .src {
+    margin: 0.75rem 0 1rem;
+    padding: 0.85rem 1rem;
+    overflow-x: auto;
+    background: var(--code-bg);
+    border-radius: var(--kakao-radius-md, 10px);
+    color: var(--ink);
+    font: 0.8rem/1.6 ui-monospace, "SF Mono", Menlo, monospace;
+    scrollbar-width: thin;
+  }
+  .src code { padding: 0; background: none; font: inherit; }
+  .src .c { color: var(--muted); font-style: italic; }
+  .where { display: block; margin-top: -0.5rem; margin-bottom: 1rem; color: var(--muted); font-size: 0.82rem; }
+
+  /* The flow diagram: three entry points that meet in _add(). */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0 1.25rem;
+    font-size: 0.85rem;
+  }
+  .flow .step {
+    padding: 0.7rem 0.8rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--kakao-radius-md, 10px);
+  }
+  .flow .step b { display: block; margin-bottom: 0.2rem; }
+  .flow .step span { color: var(--muted); }
+  .flow .join {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+  .flow .core {
+    grid-column: 1 / -1;
+    background: color-mix(in srgb, var(--accent) 8%, var(--card));
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  }
+  @media (max-width: 40rem) {
+    .flow { grid-template-columns: 1fr; }
+  }
+
+  .facts { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; margin: 0.75rem 0 1rem; font-size: 0.92rem; }
+  .facts dt { font-weight: 600; }
+  .facts dd { margin: 0; color: var(--muted); }
+  @media (max-width: 40rem) {
+    .facts { grid-template-columns: 1fr; }
+    .facts dd { margin-bottom: 0.4rem; }
+  }
+
+  .doc kakao-toc { margin: 0 -0.75rem 1rem; }
+  .doc kakao-card { margin: 1rem 0; }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main class="doc" id="doc">
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["File upload", "demo.html"], ["How the code works"]]'></kakao-breadcrumb>
+    </div>
+    <h1>How the file upload works</h1>
+    <p>A walk through <code>components/file-upload/file-upload.js</code>: how a file gets from the user's desktop into the list, into the form, and out again.</p>
+  </header>
+
+  <kakao-toc for="doc" levels="2" heading="On this page" label="On this page" collapse="always"></kakao-toc>
+
+  <h2 id="shape">The shape of the file</h2>
+  <p>The whole component is one file of about 1,000 lines, with no dependencies. It is wrapped in an IIFE that returns early when <code>kakao-file-upload</code> is already defined, so loading the script twice is harmless. Inside, top to bottom:</p>
+  <dl class="facts">
+    <dt>Helpers</dt><dd><code>formatBytes</code>, <code>parseSize</code>, <code>extOf</code>, <code>categoryOf</code>, <code>matchesAccept</code>, <code>fileKey</code>: small pure functions with no DOM access.</dd>
+    <dt>Template</dt><dd>One <code>&lt;template&gt;</code> holding the shadow root's <code>&lt;style&gt;</code> and markup, cloned for every instance.</dd>
+    <dt>Class</dt><dd><code>KakaoFileUpload extends HTMLElement</code>: lifecycle, public API, the add/remove logic, rendering, and the pointer and drag handlers.</dd>
+  </dl>
+  <p>It renders into a shadow root, so page CSS cannot reach inside. Theming still works because custom properties (<code>--kakao-*</code>) inherit through the shadow boundary.</p>
+
+  <h2 id="markup">What's inside the shadow root</h2>
+  <pre class="src"><code>.root                     <span class="c">size container (for the horizontal fallback)</span>
+  .label                  <span class="c">the label attribute's text</span>
+  .layout
+    .pick
+      .drop               <span class="c">the dotted drop area, clickable</span>
+        .drop-icon
+        .drop-text        <span class="c">"Drop files here, or"</span>
+        &lt;slot name="button"&gt; <span class="c">Browse button (fallback &lt;button&gt; inside)</span>
+        .drop-hint        <span class="c">built from accept / max-size</span>
+      &lt;input type="file" hidden&gt;
+      .message            <span class="c">role="alert": why files were not added</span>
+    .files
+      .summary            <span class="c">"3 files · 2.4 MB" + Clear all</span>
+      ul.list             <span class="c">one li.item per file</span></code></pre>
+  <p>The real <code>&lt;input type="file"&gt;</code> is hidden and never shown. It is only used to open the operating system's file dialog. The list of files is <em>not</em> the input's <code>files</code>; the component keeps its own array, which is what lets every pick add to the list instead of replacing it.</p>
+
+  <h2 id="state">The state it keeps</h2>
+  <p>Everything the component knows lives in a handful of fields set in the constructor:</p>
+  <pre class="src"><code>this._entries = [];     <span class="c">// [{ id, file, url }]: the list, in order</span>
+this._nextId = 1;       <span class="c">// stable id per entry, used to find rows</span>
+this._pending = [];     <span class="c">// API calls made before the element was connected</span>
+this._dragDepth = 0;    <span class="c">// counts dragenter/dragleave pairs</span>
+this._raf = 0;          <span class="c">// pending animation frame for the spotlight</span>
+this._pointer = null;   <span class="c">// last pointer position, applied in that frame</span>
+this._formDisabled = false; <span class="c">// set by a disabled &lt;fieldset&gt;</span></code></pre>
+  <p>Each entry holds the <code>File</code> itself, a numeric <code>id</code> (indexes shift on removal, ids don't) and, for images only, an object URL (<code>blob:…</code>) used as the thumbnail's <code>src</code>.</p>
+
+  <h2 id="lifecycle">Lifecycle</h2>
+  <h3>Constructor</h3>
+  <p>Attaches the shadow root, clones the template, calls <code>attachInternals()</code> (for form support, see below), caches every element it will touch, and binds the event handlers once so the same function references can be removed later.</p>
+  <h3>connectedCallback</h3>
+  <ol>
+    <li>Adds the listeners: click, pointer and drag events on <code>.drop</code>, <code>change</code> on the input, a click on the list (one delegated listener for all remove buttons) and on Clear all.</li>
+    <li>Syncs the label, the hidden input's <code>accept</code>/<code>multiple</code> and the disabled state, then renders the (empty) list.</li>
+    <li>Sets up the Browse button (see <a href="#button">the browse button</a>).</li>
+    <li>Runs the queued calls. <code>addFiles()</code>, <code>removeFile()</code> and <code>clear()</code> push themselves onto <code>_pending</code> when called before the element is in the document, so a script can fill the component before it's attached.</li>
+  </ol>
+  <h3>disconnectedCallback</h3>
+  <p>Removes every listener and cancels a pending animation frame. Object URLs are deliberately kept, because a disconnect is often just the element moving to another spot in the DOM.</p>
+  <h3>attributeChangedCallback</h3>
+  <p>Ignored until connected. <code>label</code>, <code>hint</code>, <code>accept</code> and <code>max-size</code> resync the label, hint and input; <code>multiple</code> resyncs the input; <code>disabled</code> resyncs the disabled state; <code>name</code> rewrites the form value. <code>max-files</code> needs no sync: it is read fresh each time files are added.</p>
+
+  <h2 id="adding">Three ways in, one way through</h2>
+  <p>Files can arrive three ways, and all of them end up in the same method, <code>_add(files, rejected)</code>:</p>
+  <div class="flow">
+    <div class="step"><b>Browse</b><span>click on the drop area → <code>open()</code> → <code>input.click()</code> → <code>change</code> → <code>_onInputChange</code></span></div>
+    <div class="step"><b>Drop</b><span><code>drop</code> event → <code>_onDrop</code> sorts files from folders</span></div>
+    <div class="step"><b>Script</b><span><code>el.addFiles(fileList)</code></span></div>
+    <div class="join" aria-hidden="true">↓</div>
+    <div class="step core"><b><code>_add(files, rejected)</code></b><span>single mode? replace · check each file · keep the ones that pass · render · update form value · fire <code>file-reject</code> and <code>files-change</code></span></div>
+  </div>
+
+  <h3>Browse</h3>
+  <p>The click handler sits on the whole <code>.drop</code> area, so clicking anywhere in it (including the Browse button, whose click bubbles up through the slot) opens the dialog. <code>open()</code> checks the disabled state and calls <code>click()</code> on the hidden input. When the user confirms, <code>_onInputChange</code> passes the picked files to <code>_add</code> and then resets the input:</p>
+  <pre class="src"><code>_onInputChange() {
+  this._add(Array.from(this._inputEl.files || []), []);
+  this._inputEl.value = ''; <span class="c">// so picking the same file again still fires change</span>
+}</code></pre>
+  <span class="where">file-upload.js, lines 981–984</span>
+
+  <h3>Drop</h3>
+  <p><code>_onDrop</code> prefers <code>dataTransfer.items</code> over <code>dataTransfer.files</code>, because only items can tell a folder from a file. For each item it asks <code>webkitGetAsEntry()</code>; a directory goes straight into <code>rejected</code> with reason <code>"folder"</code>, a file goes into the list to check. Browsers without <code>items</code> fall back to the plain <code>files</code> list.</p>
+  <pre class="src"><code>items.forEach((item) =&gt; {
+  if (item.kind !== 'file') return;            <span class="c">// dragged text, links…</span>
+  const entry = item.webkitGetAsEntry?.();
+  const file = item.getAsFile();
+  if (entry &amp;&amp; entry.isDirectory) rejected.push({ file: null, name, reason: 'folder' });
+  else if (file) files.push(file);
+});
+this._add(files, rejected);</code></pre>
+  <span class="where">file-upload.js, lines 1043–1067 (shortened)</span>
+
+  <h3>Script</h3>
+  <p><code>addFiles(fileList)</code> accepts a <code>FileList</code> or an array, turns it into an array and calls <code>_add</code> with the same rules a pick gets.</p>
+
+  <h2 id="rules">The rules in _add()</h2>
+  <p>This is the heart of the component (lines 825–870). In order:</p>
+  <ol>
+    <li><strong>Single mode.</strong> When <code>multiple</code> is off, only the first new file is kept, and every current entry is dropped (its object URL revoked, its file noted as removed).</li>
+    <li><strong>Read the rules once:</strong> <code>accept</code>, <code>parseSize(max-size)</code> (a missing or unreadable value means <code>Infinity</code>), <code>max-files</code>, and a <code>Set</code> of keys for the files already in the list.</li>
+    <li><strong>Check each file</strong>, first failure wins:
+      <pre class="src"><code>if (!matchesAccept(file, accept))       reason = 'type';
+else if (file.size &gt; maxSize)           reason = 'size';
+else if (keys.has(fileKey(file)))       reason = 'duplicate';
+else if (this._entries.length &gt;= maxFiles) reason = 'max-files';</code></pre>
+    </li>
+    <li><strong>Keep the ones that pass:</strong> give them an id, create an object URL if the file is an image, push the entry and add its key to the set (so the same file twice in one drop is caught too).</li>
+    <li><strong>Report rejections:</strong> one <code>file-reject</code> event per file, and a single line in the <code>role="alert"</code> message, at most three names plus "and N more".</li>
+    <li><strong>If anything changed</strong>: render with the new ids (so only those rows play the entry animation), update the form value, and fire <code>files-change</code> with <code>{ files, added, removed }</code>.</li>
+  </ol>
+
+  <h3>How the checks decide</h3>
+  <dl class="facts">
+    <dt><code>matchesAccept</code></dt><dd>Splits <code>accept</code> on commas. <code>.pdf</code> matches the end of the file name, <code>image/*</code> the start of the MIME type, anything else the exact MIME type. The file dialog already filters by <code>accept</code>, but drops don't, which is why the component checks again.</dd>
+    <dt><code>parseSize</code></dt><dd>Reads <code>"5MB"</code>, <code>"500 kb"</code> or plain bytes, in powers of 1024.</dd>
+    <dt><code>fileKey</code></dt><dd><code>name|size|lastModified</code>. The browser gives no path, so this is the best available "same file" test.</dd>
+    <dt><code>max-files</code></dt><dd>Counted against the list as it grows during the loop, so a drop of 5 files into a list with 1 free slot keeps the first and rejects the rest.</dd>
+  </dl>
+
+  <h2 id="removing">Removing files</h2>
+  <p><code>removeFile(index)</code>, a row's remove button and <code>clear()</code> all go through <code>_remove(entries)</code>:</p>
+  <ol>
+    <li>It remembers the index of the first removed row and whether focus was inside the component, <em>before</em> anything changes, because the focused button is about to disappear.</li>
+    <li>It adds <code>is-removing</code> to the rows, which plays a 180&nbsp;ms slide-out (<code>REMOVE_MS</code>) and turns off pointer events so the row can't be clicked twice.</li>
+    <li>After that delay (or at once with reduced motion), <code>finish()</code> revokes the object URLs, filters the entries, re-renders, updates the form value and fires <code>files-change</code> with the removed files.</li>
+    <li>If focus was inside, <code>_restoreFocus</code> moves it to the remove button now at the same index, else the last one, else the drop area.</li>
+  </ol>
+  <p>The remove buttons don't each have a listener; one click listener on the <code>&lt;ul&gt;</code> uses <code>closest('.remove')</code> and the button's <code>data-id</code> to find the entry.</p>
+
+  <h2 id="render">Rendering the list</h2>
+  <p><code>_render(newIds)</code> is a full rebuild: it empties the <code>&lt;ul&gt;</code> and creates one <code>&lt;li&gt;</code> per entry with three parts:</p>
+  <dl class="facts">
+    <dt>Thumbnail</dt><dd>For images, an <code>&lt;img&gt;</code> on the entry's object URL. Otherwise a page icon with the extension on a small tag. <code>categoryOf</code> sorts files into image, video, audio, pdf, archive, text or file, from the MIME type and, for archives, the extension. The category sets <code>data-cat</code>, and CSS maps it to a colour (<code>--kakao-file-upload-type-*</code>).</dd>
+    <dt>Info</dt><dd>The file name (cut with an ellipsis, full name in <code>title</code>) and a meta line: size from <code>formatBytes</code> and the extension.</dd>
+    <dt>Remove</dt><dd>A button named "Remove <i>file name</i>".</dd>
+  </dl>
+  <p>Then it updates the summary line ("3 files · 2.4 MB", a polite live region), hides it when the list is empty, and hides Clear all for fewer than two files. Text is always set with <code>textContent</code>, never HTML, so file names can't inject markup.</p>
+  <p>A full rebuild is simple and fine for the dozens of files a form normally gets. Object URLs are created once per entry, not per render, so images don't decode again.</p>
+
+  <h2 id="form">Taking part in a form</h2>
+  <p>The class's static <code>formAssociated</code> getter returns <code>true</code> and keeps an <code>ElementInternals</code> object. That gives three things without a hidden input in the page:</p>
+  <ul>
+    <li><strong>Submission.</strong> <code>_syncFormValue</code> builds a <code>FormData</code> with every file appended under the <code>name</code> attribute and hands it to <code>setFormValue</code>. A normal form submit (or <code>new FormData(form)</code>) then includes all files. No name or no files means <code>setFormValue(null)</code>.</li>
+    <li><strong>Reset.</strong> <code>formResetCallback</code> calls <code>clear()</code>.</li>
+    <li><strong>Disabled fieldset.</strong> <code>formDisabledCallback</code> stores the flag in <code>_formDisabled</code>; <code>_isDisabled()</code> checks it alongside the element's own <code>disabled</code> attribute.</li>
+  </ul>
+  <p>The form value is rewritten after every add, remove and <code>name</code> change.</p>
+
+  <h2 id="drop-area">The drop area: dots, spotlight and drag state</h2>
+  <h3>Two layers of dots</h3>
+  <p>The dotted background is pure CSS on two pseudo-elements of <code>.drop</code>. <code>::before</code> is a repeating <code>radial-gradient</code> of small dots. <code>::after</code> is the same grid with slightly bigger, tinted dots, cut down by a radial <code>mask-image</code> centred on <code>--_mx</code> / <code>--_my</code>. Where the mask is opaque the tinted dots show, so they appear only around the pointer.</p>
+  <h3>Following the pointer</h3>
+  <p><code>pointermove</code> doesn't write styles directly. It stores the position and asks for one animation frame; any further moves in that frame just overwrite the stored position. The frame then converts it into coordinates relative to the drop area and sets the two custom properties:</p>
+  <pre class="src"><code>_trackPointer(clientX, clientY) {
+  this._pointer = { x: clientX, y: clientY };
+  if (this._raf) return;                 <span class="c">// a frame is already booked</span>
+  this._raf = requestAnimationFrame(() =&gt; {
+    this._raf = 0;
+    const r = this._dropEl.getBoundingClientRect();
+    this._dropEl.style.setProperty('--_mx', `${this._pointer.x - r.left}px`);
+    this._dropEl.style.setProperty('--_my', `${this._pointer.y - r.top}px`);
+  });
+}</code></pre>
+  <span class="where">file-upload.js, lines 1007–1020 (shortened)</span>
+  <p>That keeps it to at most one style write per frame. The class <code>is-pointer</code> fades the spotlight layer in; <code>pointerleave</code> removes it. With <code>prefers-reduced-motion</code> the handler returns early and no spotlight is drawn.</p>
+  <h3>Drag over</h3>
+  <ul>
+    <li><code>dragover</code> must call <code>preventDefault()</code>, or the browser won't fire <code>drop</code> on the element. It also sets <code>dropEffect = 'copy'</code> and feeds the same spotlight, with a bigger radius while dragging.</li>
+    <li><code>dragenter</code> and <code>dragleave</code> fire again for every child element the drag crosses. Toggling the highlight on each would make it flicker, so <code>_dragDepth</code> counts enters minus leaves and the <code>is-dragover</code> class only goes when it is back to zero. <code>drop</code> resets the counter.</li>
+  </ul>
+
+  <h2 id="button">The browse button</h2>
+  <p>The keyboard way in is a "Browse files" button. The shadow root ships a plain fallback <code>&lt;button&gt;</code> inside <code>&lt;slot name="button"&gt;</code>. In <code>_ensureButton</code>, the component waits for <code>customElements.whenDefined('kakao-button')</code> and then appends a <code>&lt;kakao-button slot="button"&gt;</code> to its own <em>light</em> DOM. Since it is slotted, it replaces the fallback, and since it lives in the light DOM, the page's <code>button.css</code> styles it like every other button.</p>
+  <p>It skips all of this when the page has already put its own <code>[slot="button"]</code> element inside. Its own button carries a private <code>_kakaoAuto</code> flag, so <code>_syncLabel</code> only rewrites the <code>aria-label</code> ("Browse files for <i>label</i>") on the button it created, never on one the page provided.</p>
+
+  <h2 id="styling">How the styles are set up</h2>
+  <p>Every value in the <code>@kakao-settings</code> block resolves in three steps, for example:</p>
+  <pre class="src"><code>--_accent: var(--kakao-file-upload-accent,   <span class="c">/* 1. per-component override */</span>
+             var(--kakao-color-primary,      <span class="c">/* 2. the theme token */</span>
+             #4f46e5));                      <span class="c">/* 3. hard fallback */</span></code></pre>
+  <p>The rest of the CSS only reads the private <code>--_*</code> names. The block between the <code>@kakao-settings</code> markers is written by <code>construction.html</code>, not by hand. The horizontal layout uses a container query on <code>.root</code>, so it falls back to stacked when the component itself is narrower than 34rem, whatever the viewport.</p>
+
+  <h2 id="try">Try it</h2>
+  <p>A live instance with the events it fires. Accepts images and PDFs up to 2&nbsp;MB, at most 4 files.</p>
+  <kakao-card>
+    <h3 slot="header">Events</h3>
+    <kakao-file-upload id="live" name="files" label="Attachments" accept="image/*,.pdf" max-size="2MB" max-files="4"></kakao-file-upload>
+    <div class="log" id="log" role="log" aria-label="Event log"></div>
+  </kakao-card>
+
+  <h2 id="notes">Review notes</h2>
+  <p>Things noticed while reading the code. None of them is fixed here.</p>
+  <ol>
+    <li><strong>Single mode loses the current file when the new one is rejected.</strong> With <code>multiple="false"</code>, <code>_add</code> empties the list <em>before</em> checking the new file. Dropping a file of the wrong type, or one that's too big, removes the file that was there and fires <code>files-change</code> with it as removed. Checking first and replacing only when the new file passes would keep it.</li>
+    <li><strong>Focus can get lost.</strong> <code>_restoreFocus</code> falls back to <code>this._dropEl.focus()</code> when the last file is removed, but <code>.drop</code> has no <code>tabindex</code>, so the call does nothing and focus drops to the page. Focusing the browse button instead would match the header comment's intent.</li>
+    <li><strong>Dropping on a disabled field opens the file.</strong> When disabled, <code>dragenter</code>/<code>dragover</code> return without <code>preventDefault()</code>, so the browser handles the drop itself and navigates to the dropped file, leaving the page. Calling <code>preventDefault()</code> and setting <code>dropEffect = 'none'</code> would block it.</li>
+    <li><strong>Thumbnail tint is mixed with white.</strong> <code>.thumb</code> uses <code>color-mix(… 10%, #fff)</code>, so type icons sit on a light square in the amoled theme. Mixing with <code>var(--_bg)</code> would follow the theme.</li>
+    <li><strong>Clear during a removal.</strong> If <code>clear()</code> runs within the 180&nbsp;ms a row is animating out, that file is listed as removed in two <code>files-change</code> events. Rare, but listeners that count removals would be off by one.</li>
+  </ol>
+</main>
+<script>
+  customElements.whenDefined('kakao-file-upload').then(() => {
+    const el = document.getElementById('live');
+    const log = document.getElementById('log');
+    const write = (html) => {
+      const line = document.createElement('div');
+      line.innerHTML = html;
+      log.prepend(line);
+    };
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    el.addEventListener('files-change', (e) => {
+      const { files, added, removed } = e.detail;
+      write(`<b>files-change</b> ${files.length} in list · added ${added.length} · removed ${removed.length}`);
+    });
+    el.addEventListener('file-reject', (e) => {
+      write(`<b>file-reject</b> ${esc(e.detail.name)}: ${esc(e.detail.reason)}`);
+    });
+  });
+</script>
+</body>
+</html>
