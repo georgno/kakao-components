@@ -92,7 +92,7 @@
         --_height: var(--kakao-meter-height, 8px);
         --_sm-height: var(--kakao-meter-sm-height, 4px);
         --_lg-height: var(--kakao-meter-lg-height, 12px);
-        --_radius: var(--kakao-meter-radius, 999px);
+        --_radius: var(--kakao-meter-radius, var(--kakao-radius-pill, 999px));
         --_font-size: var(--kakao-meter-font-size, 0.875rem);
         --_sm-font-size: var(--kakao-meter-sm-font-size, 0.8125rem);
         --_lg-font-size: var(--kakao-meter-lg-font-size, 0.9375rem);

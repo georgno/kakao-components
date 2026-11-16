@@ -374,8 +374,8 @@
         --_gap: var(--kakao-command-palette-gap, 0.55rem);
         --_shortcut-gap: var(--kakao-command-palette-shortcut-gap, 1.5rem);
         --_icon-size: var(--kakao-command-palette-icon-size, 1.1em);
-        --_radius: var(--kakao-command-palette-radius, 10px);
-        --_option-radius: var(--kakao-command-palette-option-radius, 6px);
+        --_radius: var(--kakao-command-palette-radius, var(--kakao-radius-md, 10px));
+        --_option-radius: var(--kakao-command-palette-option-radius, var(--kakao-radius-sm, 6px));
         --_shadow: var(--kakao-command-palette-shadow, 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent));
         --_focus-width: var(--kakao-command-palette-focus-width, 2px);
         --_z: var(--kakao-command-palette-z, 65);

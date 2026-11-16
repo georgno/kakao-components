@@ -164,11 +164,11 @@
         --_height: var(--kakao-kbd-height, 1.5rem);
         --_padding-x: var(--kakao-kbd-padding-x, 0.4rem);
         --_font-size: var(--kakao-kbd-font-size, 0.75rem);
-        --_radius: var(--kakao-kbd-radius, 6px);
+        --_radius: var(--kakao-kbd-radius, var(--kakao-radius-sm, 6px));
         --_sm-height: var(--kakao-kbd-sm-height, 1.25rem);
         --_sm-padding-x: var(--kakao-kbd-sm-padding-x, 0.3rem);
         --_sm-font-size: var(--kakao-kbd-sm-font-size, 0.6875rem);
-        --_sm-radius: var(--kakao-kbd-sm-radius, 4px);
+        --_sm-radius: var(--kakao-kbd-sm-radius, var(--kakao-radius-xs, 4px));
         --_font-family: var(--kakao-kbd-font-family, inherit);
         --_font-weight: var(--kakao-kbd-font-weight, 600);
         --_glyph-size: var(--kakao-kbd-glyph-size, 1.1em);

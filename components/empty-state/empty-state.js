@@ -85,7 +85,7 @@
         --_icon-surface: var(--kakao-empty-state-icon-surface, var(--kakao-color-subtle, #f0f0f1));
         --_icon-size: var(--kakao-empty-state-icon-size, 1.5rem);
         --_icon-box-size: var(--kakao-empty-state-icon-box-size, 3rem);
-        --_icon-radius: var(--kakao-empty-state-icon-radius, 999px);
+        --_icon-radius: var(--kakao-empty-state-icon-radius, var(--kakao-radius-pill, 999px));
         --_heading-size: var(--kakao-empty-state-heading-size, 1.0625rem);
         --_heading-weight: var(--kakao-empty-state-heading-weight, 600);
         --_font-size: var(--kakao-empty-state-font-size, var(--kakao-font-size, 0.95rem));

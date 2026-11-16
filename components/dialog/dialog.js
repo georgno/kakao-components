@@ -160,7 +160,7 @@
         --_scrim: var(--kakao-dialog-scrim, rgb(0 0 0 / .45));
         --_bg: var(--kakao-dialog-bg, var(--kakao-color-raised, #ffffff));
         --_text: var(--kakao-dialog-text, var(--kakao-color-text, #18181b));
-        --_radius: var(--kakao-dialog-radius, 14px);
+        --_radius: var(--kakao-dialog-radius, var(--kakao-radius-lg, 14px));
         --_padding: var(--kakao-dialog-padding, 1.25rem);
         --_gap: var(--kakao-dialog-gap, 0.75rem);
         --_footer-gap: var(--kakao-dialog-footer-gap, 0.5rem);

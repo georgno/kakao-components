@@ -80,7 +80,7 @@
         --_danger: var(--kakao-textarea-danger, var(--kakao-color-danger, #dc2626));
         --_font: var(--kakao-textarea-font, 0.95rem/1.5 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_padding: var(--kakao-textarea-padding, 10px 12px);
-        --_radius: var(--kakao-textarea-radius, 10px);
+        --_radius: var(--kakao-textarea-radius, var(--kakao-radius-md, 10px));
         --_min-height: var(--kakao-textarea-min-height, 88px);
         --_max-height: var(--kakao-textarea-max-height, 18rem);
         --_label-gap: var(--kakao-textarea-label-gap, 6px);

@@ -167,7 +167,7 @@
         --_focus: var(--kakao-settings-group-focus, var(--kakao-color-focus, #2563eb));
         --_line: var(--kakao-settings-group-line, color-mix(in srgb, var(--kakao-color-text, #18181b) 12%, transparent));
         --_hover: var(--kakao-settings-group-hover, color-mix(in srgb, var(--kakao-color-text, #18181b) 4.5%, transparent));
-        --_radius: var(--kakao-settings-group-radius, 14px);
+        --_radius: var(--kakao-settings-group-radius, var(--kakao-radius-lg, 14px));
         --_padding: var(--kakao-settings-group-padding, 4px);
         --_header-gap: var(--kakao-settings-group-header-gap, 0.625rem);
         --_title-size: var(--kakao-settings-group-title-size, 1rem);
@@ -176,7 +176,7 @@
         --_row-padding-x: var(--kakao-settings-group-row-padding-x, 1rem);
         --_row-padding-y: var(--kakao-settings-group-row-padding-y, 0.75rem);
         --_row-min-height: var(--kakao-settings-group-row-min-height, 3.25rem);
-        --_row-radius: var(--kakao-settings-group-row-radius, 10px);
+        --_row-radius: var(--kakao-settings-group-row-radius, var(--kakao-radius-md, 10px));
         --_gap: var(--kakao-settings-group-gap, 1rem);
         --_label-size: var(--kakao-settings-group-label-size, 0.9375rem);
         --_label-weight: var(--kakao-settings-group-label-weight, 500);

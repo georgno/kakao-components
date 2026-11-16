@@ -162,7 +162,7 @@
         --_icon-size: var(--kakao-tree-view-icon-size, 1.125rem);
         --_box-size: var(--kakao-tree-view-box-size, 18px);
         --_box-radius: var(--kakao-tree-view-box-radius, 5px);
-        --_row-radius: var(--kakao-tree-view-row-radius, 6px);
+        --_row-radius: var(--kakao-tree-view-row-radius, var(--kakao-radius-sm, 6px));
         --_guide-width: var(--kakao-tree-view-guide-width, 1px);
         --_focus-width: var(--kakao-tree-view-focus-width, 2px);
         --_disabled-opacity: var(--kakao-tree-view-disabled-opacity, 0.55);

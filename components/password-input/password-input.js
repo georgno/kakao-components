@@ -193,8 +193,8 @@
         --_list-offset: var(--kakao-password-input-list-offset, 8px);
         --_list-gap: var(--kakao-password-input-list-gap, 4px);
         --_list-min-column: var(--kakao-password-input-list-min-column, 11rem);
-        --_radius: var(--kakao-password-input-radius, 10px);
-        --_toggle-radius: var(--kakao-password-input-toggle-radius, 6px);
+        --_radius: var(--kakao-password-input-radius, var(--kakao-radius-md, 10px));
+        --_toggle-radius: var(--kakao-password-input-toggle-radius, var(--kakao-radius-sm, 6px));
         --_focus-width: var(--kakao-password-input-focus-width, 2px);
         --_focus-offset: var(--kakao-password-input-focus-offset, 2px);
         --_disabled-opacity: var(--kakao-password-input-disabled-opacity, 0.55);

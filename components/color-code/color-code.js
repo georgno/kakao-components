@@ -71,7 +71,7 @@
     <style>
       :host {
         /* @kakao-settings:start prefix=--kakao-color-code- (written by construction.html, edit there) */
-        --_radius: var(--kakao-color-code-radius, 999px);
+        --_radius: var(--kakao-color-code-radius, var(--kakao-radius-pill, 999px));
         --_padding-y: var(--kakao-color-code-padding-y, 0.05rem);
         --_padding-x: var(--kakao-color-code-padding-x, 0.5rem);
         --_gap: var(--kakao-color-code-gap, 0.35rem);

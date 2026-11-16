@@ -145,7 +145,7 @@
         --_message-gap: var(--kakao-time-input-message-gap, 5px);
         --_icon-size: var(--kakao-time-input-icon-size, 1em);
         --_moz-nudge: var(--kakao-time-input-moz-nudge, -0.36em);
-        --_radius: var(--kakao-time-input-radius, 10px);
+        --_radius: var(--kakao-time-input-radius, var(--kakao-radius-md, 10px));
         --_focus-width: var(--kakao-time-input-focus-width, 2px);
         --_focus-offset: var(--kakao-time-input-focus-offset, 2px);
         --_disabled-opacity: var(--kakao-time-input-disabled-opacity, 0.55);
@@ -157,7 +157,7 @@
         --_now-padding-x: var(--kakao-time-input-now-padding-x, 0.4rem);
         --_now-font-size: var(--kakao-time-input-now-font-size, 0.78rem);
         --_now-font-weight: var(--kakao-time-input-now-font-weight, 600);
-        --_now-radius: var(--kakao-time-input-now-radius, 4px);
+        --_now-radius: var(--kakao-time-input-now-radius, var(--kakao-radius-xs, 4px));
         /* @kakao-settings:end */
         display: block;
         font: var(--_font);

@@ -115,7 +115,7 @@
         --_lg-size: var(--kakao-rating-lg-size, 32px);
         --_gap: var(--kakao-rating-gap, 4px);
         --_value-gap: var(--kakao-rating-value-gap, 10px);
-        --_radius: var(--kakao-rating-radius, 6px);
+        --_radius: var(--kakao-rating-radius, var(--kakao-radius-sm, 6px));
         --_hover-scale: var(--kakao-rating-hover-scale, 1.12);
         --_symbol-empty-opacity: var(--kakao-rating-symbol-empty-opacity, 1);
         --_focus-width: var(--kakao-rating-focus-width, 2px);

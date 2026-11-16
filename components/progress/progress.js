@@ -115,7 +115,7 @@
         --_sm-height: var(--kakao-progress-sm-height, 4px);
         --_lg-height: var(--kakao-progress-lg-height, 12px);
         --_gap: var(--kakao-progress-gap, 4px);
-        --_radius: var(--kakao-progress-radius, 999px);
+        --_radius: var(--kakao-progress-radius, var(--kakao-radius-pill, 999px));
         --_font-size: var(--kakao-progress-font-size, 0.875rem);
         --_sm-font-size: var(--kakao-progress-sm-font-size, 0.8125rem);
         --_lg-font-size: var(--kakao-progress-lg-font-size, 0.9375rem);

@@ -107,7 +107,7 @@
     <style>
       :host {
         /* @kakao-settings:start prefix=--kakao-alert- (written by construction.html, edit there) */
-        --_radius: var(--kakao-alert-radius, 10px);
+        --_radius: var(--kakao-alert-radius, var(--kakao-radius-md, 10px));
         --_padding-y: var(--kakao-alert-padding-y, 0.75rem);
         --_padding-x: var(--kakao-alert-padding-x, 0.875rem);
         --_gap: var(--kakao-alert-gap, 0.625rem);

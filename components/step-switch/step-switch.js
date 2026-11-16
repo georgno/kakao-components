@@ -241,7 +241,7 @@
         /* @kakao-settings:start prefix=--kakao-step-switch- (written by construction.html, edit there) */
         --_track-width: var(--kakao-step-switch-track-width, min(100%, 18rem));
         --_track-height: var(--kakao-step-switch-track-height, 1.75rem);
-        --_track-radius: var(--kakao-step-switch-track-radius, 999px);
+        --_track-radius: var(--kakao-step-switch-track-radius, var(--kakao-radius-pill, 999px));
         --_track-bg: var(--kakao-step-switch-track-bg, var(--kakao-color-border, #6b7280));
         --_track-bg-off: var(--kakao-step-switch-track-bg-off, var(--kakao-color-border, #d1d5db));
         --_track-bg-on: var(--kakao-step-switch-track-bg-on, var(--kakao-color-primary, #4f46e5));

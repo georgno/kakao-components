@@ -165,7 +165,7 @@
         --_line: var(--kakao-aside-sheet-line, var(--kakao-color-line, #e5e7eb));
         --_handle-color: var(--kakao-aside-sheet-handle-color, var(--kakao-color-border, #82828b));
         --_focus: var(--kakao-aside-sheet-focus, var(--kakao-color-focus, #2563eb));
-        --_radius: var(--kakao-aside-sheet-radius, 14px);
+        --_radius: var(--kakao-aside-sheet-radius, var(--kakao-radius-lg, 14px));
         --_padding: var(--kakao-aside-sheet-padding, 1.25rem);
         --_gap: var(--kakao-aside-sheet-gap, 0.75rem);
         --_footer-gap: var(--kakao-aside-sheet-footer-gap, 0.5rem);
@@ -176,7 +176,7 @@
         --_handle-width: var(--kakao-aside-sheet-handle-width, 2.25rem);
         --_handle-height: var(--kakao-aside-sheet-handle-height, 4px);
         --_close-size: var(--kakao-aside-sheet-close-size, 2rem);
-        --_close-radius: var(--kakao-aside-sheet-close-radius, 6px);
+        --_close-radius: var(--kakao-aside-sheet-close-radius, var(--kakao-radius-sm, 6px));
         --_shadow: var(--kakao-aside-sheet-shadow, 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent));
         --_z: var(--kakao-aside-sheet-z, 50);
         --_title-size: var(--kakao-aside-sheet-title-size, 1.125rem);

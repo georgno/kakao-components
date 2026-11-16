@@ -120,11 +120,18 @@ A dedicated element SHALL offer `show()` and `hide()`; `KakaoTooltip.show(anchor
 - **THEN** the label "Copied" appears next to `el` with `reason: "api"`
 
 ### Requirement: Theming and motion
-The label's colours SHALL come from theme roles (ink background, on-ink text) through `--kakao-tooltip-*` properties in the component's settings block, so every theme gives it readable contrast. It SHALL fade in briefly, and appear without motion when the user prefers reduced motion. Text SHALL never be set in capitals. In forced-colours mode it SHALL keep a visible border.
+The label's colours SHALL come from theme roles (ink background, on-ink text) through `--kakao-tooltip-*` properties in the component's settings block, so every theme gives it readable contrast. It SHALL take elevation level 3 (the overlay shadow with its 1px ring, as menus and popovers) and the `sm` radius step (`--kakao-radius-sm`). It SHALL fade in over the `fast` duration step (150ms), and appear without motion when the user prefers reduced motion. Text SHALL never be set in capitals. In forced-colours mode it SHALL keep a visible border and drop the shadow.
 
 #### Scenario: Dark theme
 - **WHEN** the page switches to a dark theme
 - **THEN** the label takes that theme's ink and on-ink colours
+
+### Requirement: Buttons with a title
+With the tooltip script loaded, every `kakao-button` with a title SHALL show it as the themed tooltip: an own `title` on any button (labelled or icon-only) and the name of an icon-only button (see the button spec).
+
+#### Scenario: Labelled button
+- **WHEN** `<kakao-button label="Publish" title="Visible to everyone in the team">` gets keyboard focus
+- **THEN** the themed label "Visible to everyone in the team" appears, and no native tooltip
 
 ### Requirement: Inline sample
 With the boolean `inline` attribute, a `<kakao-tooltip>` SHALL draw its label in the text flow, always visible and tied to no anchor, for previews and documentation.

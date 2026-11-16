@@ -36,7 +36,7 @@ kakao-table {
   --_cell-padding-x: var(--kakao-table-cell-padding-x, 0.75rem);
   --_cell-padding-y: var(--kakao-table-cell-padding-y, 0.625rem);
   --_line-width: var(--kakao-table-line-width, 1px);
-  --_radius: var(--kakao-table-radius, 10px);
+  --_radius: var(--kakao-table-radius, var(--kakao-radius-md, 10px));
   --_dense-font-size: var(--kakao-table-dense-font-size, 0.875rem);
   --_dense-head-size: var(--kakao-table-dense-head-size, 0.8125rem);
   --_dense-padding-y: var(--kakao-table-dense-padding-y, 0.3125rem);
@@ -50,8 +50,8 @@ kakao-table {
   --_block-padding: var(--kakao-table-block-padding, 0.625rem);
   --_stack-gap: var(--kakao-table-stack-gap, 0.1875rem);
   --_box-size: var(--kakao-table-box-size, 20px);
-  --_box-radius: var(--kakao-table-box-radius, 6px);
-  --_control-radius: var(--kakao-table-control-radius, 10px);
+  --_box-radius: var(--kakao-table-box-radius, var(--kakao-radius-sm, 6px));
+  --_control-radius: var(--kakao-table-control-radius, var(--kakao-radius-md, 10px));
   --_focus-width: var(--kakao-table-focus-width, 2px);
   --_focus-offset: var(--kakao-table-focus-offset, 2px);
   --_duration: var(--kakao-table-duration, 120ms);

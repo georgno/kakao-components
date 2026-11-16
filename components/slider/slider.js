@@ -215,7 +215,7 @@ class KakaoSlider extends HTMLElement {
           --_stepper-hover-color: var(--kakao-slider-stepper-hover-color, var(--kakao-color-text, #111));
           --_stepper-active-bg: var(--kakao-slider-stepper-active-bg, var(--kakao-color-subtle-strong, #e0e0e0));
           --_touch-step-size: var(--kakao-slider-touch-step-size, 44px);
-          --_touch-radius: var(--kakao-slider-touch-radius, 10px);
+          --_touch-radius: var(--kakao-slider-touch-radius, var(--kakao-radius-md, 10px));
           /* @kakao-settings:end */
           display: block;
           font-family: var(--_font-family);

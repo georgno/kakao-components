@@ -115,7 +115,7 @@
         --_text: var(--kakao-accordion-text, var(--kakao-color-text, #18181b));
         --_muted: var(--kakao-accordion-muted, var(--kakao-color-muted, #62626c));
         --_focus: var(--kakao-accordion-focus, var(--kakao-color-focus, #2563eb));
-        --_radius: var(--kakao-accordion-radius, 14px);
+        --_radius: var(--kakao-accordion-radius, var(--kakao-radius-lg, 14px));
         --_padding-x: var(--kakao-accordion-padding-x, 1.25rem);
         --_padding-y: var(--kakao-accordion-padding-y, 1rem);
         --_gap: var(--kakao-accordion-gap, 0.75rem);
@@ -124,7 +124,7 @@
         --_description-size: var(--kakao-accordion-description-size, 0.875rem);
         --_chevron-size: var(--kakao-accordion-chevron-size, 1rem);
         --_tile-bg: var(--kakao-accordion-tile-bg, var(--kakao-color-subtle, #f0f0f1));
-        --_tile-radius: var(--kakao-accordion-tile-radius, 10px);
+        --_tile-radius: var(--kakao-accordion-tile-radius, var(--kakao-radius-md, 10px));
         --_tile-padding-x: var(--kakao-accordion-tile-padding-x, 1rem);
         --_tile-padding-y: var(--kakao-accordion-tile-padding-y, 0.75rem);
         --_row-line: var(--kakao-accordion-row-line, color-mix(in srgb, var(--kakao-color-text, #18181b) 12%, transparent));
@@ -163,7 +163,7 @@
       }
       .frame[data-look="row"] {
         --_l-bg: transparent;
-        --_l-radius: 6px;
+        --_l-radius: var(--kakao-radius-sm, 6px);
         --_l-px: 0px;
         --_l-py: var(--_row-padding-y);
         --_l-title: var(--_nested-title-size);

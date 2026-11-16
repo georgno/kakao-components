@@ -39,7 +39,9 @@ pages (landing page, settings, demos), not the components.
   shows. Never the accessible name; `aria-describedby` only when the text
   adds to the name. `inline` draws a static sample. Events `tooltip-show` /
   `tooltip-hide`, the `tooltip-ready` trigger, `show()` / `hide()`,
-  `KakaoTooltip.show/hide/delays`.
+  `KakaoTooltip.show/hide/delays`. Elevation level 3 (the overlay shadow
+  with its 1px ring, as menus), the `sm` radius, a 150ms fade (the `fast`
+  step).
 
 ### Changed
 
@@ -55,7 +57,16 @@ pages (landing page, settings, demos), not the components.
   loaded (before or after the button, through its `tooltip-ready` trigger)
   the same text goes to `data-tooltip` on the inner `<button>` instead of
   `title`, so the themed label shows it, also on focus and long-press, and
-  the native one does not; a `data-tooltip` on the host wins.
+  the native one does not; a `data-tooltip` on the host wins. This applies
+  to every button with a title, not only icon-only ones: an own `title` on
+  a labelled button shows as the themed tooltip too.
+
+- Radius scale decided: new main variables `--kakao-radius-xs` (4px),
+  `-sm` (6px), `-md` (10px), `-lg` (14px) and `-pill` (999px) in
+  `tokens.css`, editable on the main-variables page. Every component radius
+  setting whose default is on the scale now defaults to its token with the
+  same literal fallback (`var(--kakao-radius-sm, 6px)`), so no corner
+  changes; the popover's 4px stays literal (an outlier, not an xs corner).
 
 ## [0.8.0] - 2026-11-15
 

@@ -619,7 +619,7 @@
       :host {
         /* @kakao-settings:start prefix=--kakao-theme-switch- (written by construction.html, edit there) */
         --_size: var(--kakao-theme-switch-size, 40px);
-        --_radius: var(--kakao-theme-switch-radius, 999px);
+        --_radius: var(--kakao-theme-switch-radius, var(--kakao-radius-pill, 999px));
         --_padding-x: var(--kakao-theme-switch-padding-x, 14px);
         --_gap: var(--kakao-theme-switch-gap, 8px);
         --_icon-size: var(--kakao-theme-switch-icon-size, 20px);

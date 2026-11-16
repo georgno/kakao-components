@@ -132,9 +132,9 @@
         --_gap: var(--kakao-toc-gap, 0.125rem);
         --_padding-x: var(--kakao-toc-padding-x, 0.75rem);
         --_padding-y: var(--kakao-toc-padding-y, 0.3125rem);
-        --_radius: var(--kakao-toc-radius, 6px);
+        --_radius: var(--kakao-toc-radius, var(--kakao-radius-sm, 6px));
         --_marker-width: var(--kakao-toc-marker-width, 5px);
-        --_marker-radius: var(--kakao-toc-marker-radius, 999px);
+        --_marker-radius: var(--kakao-toc-marker-radius, var(--kakao-radius-pill, 999px));
         --_marker-stretch-width: var(--kakao-toc-marker-stretch-width, 3px);
         --_anim-duration: var(--kakao-toc-anim-duration, 200ms);
         --_anim-easing: var(--kakao-toc-anim-easing, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));

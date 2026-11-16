@@ -171,11 +171,11 @@
         --_label-gap: var(--kakao-combobox-label-gap, 6px);
         --_message-gap: var(--kakao-combobox-message-gap, 5px);
         --_chevron-size: var(--kakao-combobox-chevron-size, 0.9em);
-        --_radius: var(--kakao-combobox-radius, 10px);
+        --_radius: var(--kakao-combobox-radius, var(--kakao-radius-md, 10px));
         --_focus-width: var(--kakao-combobox-focus-width, 2px);
         --_focus-offset: var(--kakao-combobox-focus-offset, 2px);
         --_disabled-opacity: var(--kakao-combobox-disabled-opacity, 0.55);
-        --_panel-radius: var(--kakao-combobox-panel-radius, 10px);
+        --_panel-radius: var(--kakao-combobox-panel-radius, var(--kakao-radius-md, 10px));
         --_panel-padding: var(--kakao-combobox-panel-padding, 4px);
         --_panel-offset: var(--kakao-combobox-panel-offset, 6px);
         --_panel-height: var(--kakao-combobox-panel-height, 20rem);
@@ -183,7 +183,7 @@
         --_panel-shadow: var(--kakao-combobox-panel-shadow, 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent));
         --_z: var(--kakao-combobox-z, 70);
         --_option-height: var(--kakao-combobox-option-height, 36px);
-        --_option-radius: var(--kakao-combobox-option-radius, 6px);
+        --_option-radius: var(--kakao-combobox-option-radius, var(--kakao-radius-sm, 6px));
         --_duration: var(--kakao-combobox-duration, 150ms);
         --_ease: var(--kakao-combobox-ease, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
         /* @kakao-settings:end */

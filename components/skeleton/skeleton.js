@@ -149,12 +149,12 @@
         /* @kakao-settings:start prefix=--kakao-skeleton- (written by construction.html, edit there) */
         --_color: var(--kakao-skeleton-color, var(--kakao-color-subtle-strong, #e6e6e8));
         --_highlight: var(--kakao-skeleton-highlight, var(--kakao-color-subtle, #f0f0f1));
-        --_radius: var(--kakao-skeleton-radius, 10px);
+        --_radius: var(--kakao-skeleton-radius, var(--kakao-radius-md, 10px));
         --_block-height: var(--kakao-skeleton-block-height, 6rem);
         --_circle-size: var(--kakao-skeleton-circle-size, 2.5rem);
         --_line-height: var(--kakao-skeleton-line-height, 0.8em);
         --_line-gap: var(--kakao-skeleton-line-gap, 0.65em);
-        --_line-radius: var(--kakao-skeleton-line-radius, 4px);
+        --_line-radius: var(--kakao-skeleton-line-radius, var(--kakao-radius-xs, 4px));
         --_last-line-width: var(--kakao-skeleton-last-line-width, 60%);
         --_title-height: var(--kakao-skeleton-title-height, 1em);
         --_title-width: var(--kakao-skeleton-title-width, 45%);
@@ -163,7 +163,7 @@
         --_row-line: var(--kakao-skeleton-row-line, var(--kakao-color-line, #e5e7eb));
         --_card-background: var(--kakao-skeleton-card-background, var(--kakao-color-bg, #ffffff));
         --_card-border: var(--kakao-skeleton-card-border, var(--kakao-color-line, #e5e7eb));
-        --_card-radius: var(--kakao-skeleton-card-radius, 14px);
+        --_card-radius: var(--kakao-skeleton-card-radius, var(--kakao-radius-lg, 14px));
         --_card-padding: var(--kakao-skeleton-card-padding, 1.25rem);
         --_card-gap: var(--kakao-skeleton-card-gap, 1rem);
         --_media-ratio: var(--kakao-skeleton-media-ratio, 16 / 9);

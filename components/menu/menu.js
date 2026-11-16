@@ -186,7 +186,7 @@
         --_heading-size: var(--kakao-menu-heading-size, 0.78rem);
         --_heading-weight: var(--kakao-menu-heading-weight, 600);
         --_shortcut-size: var(--kakao-menu-shortcut-size, 0.8rem);
-        --_radius: var(--kakao-menu-radius, 10px);
+        --_radius: var(--kakao-menu-radius, var(--kakao-radius-md, 10px));
         --_padding: var(--kakao-menu-padding, 4px);
         --_offset: var(--kakao-menu-offset, 6px);
         --_sub-offset: var(--kakao-menu-sub-offset, 4px);
@@ -197,7 +197,7 @@
         --_z: var(--kakao-menu-z, 70);
         --_item-height: var(--kakao-menu-item-height, 36px);
         --_touch-item-height: var(--kakao-menu-touch-item-height, 44px);
-        --_item-radius: var(--kakao-menu-item-radius, 6px);
+        --_item-radius: var(--kakao-menu-item-radius, var(--kakao-radius-sm, 6px));
         --_item-padding-x: var(--kakao-menu-item-padding-x, 0.6rem);
         --_gap: var(--kakao-menu-gap, 0.55rem);
         --_shortcut-gap: var(--kakao-menu-shortcut-gap, 1.5rem);

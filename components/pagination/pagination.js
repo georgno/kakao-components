@@ -173,7 +173,7 @@
         --_gap: var(--kakao-pagination-gap, 2px);
         --_section-gap: var(--kakao-pagination-section-gap, 1rem);
         --_select-width: var(--kakao-pagination-select-width, 5.5rem);
-        --_select-radius: var(--kakao-pagination-select-radius, 10px);
+        --_select-radius: var(--kakao-pagination-select-radius, var(--kakao-radius-md, 10px));
         --_disabled-opacity: var(--kakao-pagination-disabled-opacity, 0.45);
         --_transition: var(--kakao-pagination-transition, 150ms);
         /* @kakao-settings:end */

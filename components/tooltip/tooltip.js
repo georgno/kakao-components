@@ -91,7 +91,7 @@
  * ----------------------------------------------------------------------------
  *  --kakao-tooltip-bg / -text / -border
  *  --kakao-tooltip-font-size / -font-weight / -padding-x / -padding-y
- *  --kakao-tooltip-radius / -max-width / -offset / -z-index
+ *  --kakao-tooltip-radius / -shadow / -max-width / -offset / -z-index
  *  --kakao-tooltip-anim-duration / -anim-easing
  *
  * Parts: bubble.
@@ -130,11 +130,12 @@
         --_font-weight: var(--kakao-tooltip-font-weight, 500);
         --_padding-x: var(--kakao-tooltip-padding-x, 0.5rem);
         --_padding-y: var(--kakao-tooltip-padding-y, 0.25rem);
-        --_radius: var(--kakao-tooltip-radius, 6px);
+        --_radius: var(--kakao-tooltip-radius, var(--kakao-radius-sm, 6px));
+        --_shadow: var(--kakao-tooltip-shadow, 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent));
         --_max-width: var(--kakao-tooltip-max-width, 16rem);
         --_offset: var(--kakao-tooltip-offset, 6px);
         --_z-index: var(--kakao-tooltip-z-index, 2147483000);
-        --_anim-duration: var(--kakao-tooltip-anim-duration, 120ms);
+        --_anim-duration: var(--kakao-tooltip-anim-duration, 150ms);
         --_anim-easing: var(--kakao-tooltip-anim-easing, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
         /* @kakao-settings:end */
         display: contents;
@@ -155,6 +156,7 @@
         overflow: visible;
         border: 1px solid var(--_border);
         border-radius: var(--_radius);
+        box-shadow: var(--_shadow);
         background: var(--_bg);
         color: var(--_text);
         font-family: var(--kakao-font-family, system-ui, -apple-system, sans-serif);
@@ -172,7 +174,7 @@
       :host([inline]) { display: inline-block; vertical-align: middle; }
       :host([inline]) .bubble { position: static; display: block; max-width: var(--_max-width); }
       @media (forced-colors: active) {
-        .bubble { border-color: CanvasText; background: Canvas; color: CanvasText; }
+        .bubble { border-color: CanvasText; background: Canvas; color: CanvasText; box-shadow: none; }
       }
     </style>
     <div class="bubble" part="bubble"><slot></slot></div>
@@ -577,7 +579,7 @@
         const ms = parseFloat(raw) * (/ms$/.test(raw) ? 1 : 1000);
         b.animate(
           [{ opacity: 0, translate: from }, { opacity: 1, translate: '0 0' }],
-          { duration: Number.isFinite(ms) ? ms : 120, easing: cs.getPropertyValue('--_anim-easing').trim() || 'ease-out' }
+          { duration: Number.isFinite(ms) ? ms : 150, easing: cs.getPropertyValue('--_anim-easing').trim() || 'ease-out' }
         );
       }
     }

@@ -63,7 +63,7 @@
     <style>
       :host {
         /* @kakao-settings:start prefix=--kakao-chip- (written by construction.html, edit there) */
-        --_radius: var(--kakao-chip-radius, 4px);
+        --_radius: var(--kakao-chip-radius, var(--kakao-radius-xs, 4px));
         --_height: var(--kakao-chip-height, 1.5rem);
         --_padding-x: var(--kakao-chip-padding-x, 0.45rem);
         --_gap: var(--kakao-chip-gap, 0.35rem);

@@ -147,7 +147,7 @@
         --_bg: var(--kakao-card-bg, var(--kakao-color-bg, #ffffff));
         --_border: var(--kakao-card-border, var(--kakao-color-line, #e5e7eb));
         --_text: var(--kakao-card-text, var(--kakao-color-text, #18181b));
-        --_radius: var(--kakao-card-radius, 14px);
+        --_radius: var(--kakao-card-radius, var(--kakao-radius-lg, 14px));
         --_padding: var(--kakao-card-padding, 1.25rem);
         --_gap: var(--kakao-card-gap, 0.75rem);
         --_footer-gap: var(--kakao-card-footer-gap, 0.5rem);

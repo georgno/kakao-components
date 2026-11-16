@@ -86,7 +86,7 @@
         --_current-weight: var(--kakao-breadcrumb-current-weight, 600);
         --_gap: var(--kakao-breadcrumb-gap, 0.125rem);
         --_padding-x: var(--kakao-breadcrumb-padding-x, 0.375rem);
-        --_radius: var(--kakao-breadcrumb-radius, 6px);
+        --_radius: var(--kakao-breadcrumb-radius, var(--kakao-radius-sm, 6px));
         --_icon-size: var(--kakao-breadcrumb-icon-size, 1rem);
         --_max-item-width: var(--kakao-breadcrumb-max-item-width, 16rem);
         /* @kakao-settings:end */

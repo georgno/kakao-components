@@ -162,11 +162,11 @@
         --_label-gap: var(--kakao-select-label-gap, 6px);
         --_message-gap: var(--kakao-select-message-gap, 5px);
         --_chevron-size: var(--kakao-select-chevron-size, 0.9em);
-        --_radius: var(--kakao-select-radius, 10px);
+        --_radius: var(--kakao-select-radius, var(--kakao-radius-md, 10px));
         --_focus-width: var(--kakao-select-focus-width, 2px);
         --_focus-offset: var(--kakao-select-focus-offset, 2px);
         --_disabled-opacity: var(--kakao-select-disabled-opacity, 0.55);
-        --_panel-radius: var(--kakao-select-panel-radius, 10px);
+        --_panel-radius: var(--kakao-select-panel-radius, var(--kakao-radius-md, 10px));
         --_panel-padding: var(--kakao-select-panel-padding, 4px);
         --_panel-offset: var(--kakao-select-panel-offset, 6px);
         --_panel-height: var(--kakao-select-panel-height, 20rem);
@@ -174,7 +174,7 @@
         --_panel-shadow: var(--kakao-select-panel-shadow, 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent));
         --_z: var(--kakao-select-z, 70);
         --_option-height: var(--kakao-select-option-height, 36px);
-        --_option-radius: var(--kakao-select-option-radius, 6px);
+        --_option-radius: var(--kakao-select-option-radius, var(--kakao-radius-sm, 6px));
         --_search-height: var(--kakao-select-search-height, 36px);
         --_box-size: var(--kakao-select-box-size, 18px);
         --_box-radius: var(--kakao-select-box-radius, 5px);

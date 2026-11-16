@@ -197,7 +197,7 @@
         --_accent: var(--kakao-file-upload-accent, var(--kakao-color-primary, #4f46e5));
         --_bg: var(--kakao-file-upload-bg, var(--kakao-color-bg, #ffffff));
         --_border: var(--kakao-file-upload-border, var(--kakao-color-field-border, #ececef));
-        --_radius: var(--kakao-file-upload-radius, 14px);
+        --_radius: var(--kakao-file-upload-radius, var(--kakao-radius-lg, 14px));
         --_min-height: var(--kakao-file-upload-min-height, 9rem);
         --_dot-color: var(--kakao-file-upload-dot-color, color-mix(in srgb, var(--kakao-color-line, #e5e7eb) 53%, transparent));
         --_dot-size: var(--kakao-file-upload-dot-size, 1px);
@@ -218,7 +218,7 @@
         --_drag-spotlight: var(--kakao-file-upload-drag-spotlight, 180px);
         --_list-gap: var(--kakao-file-upload-list-gap, 0.4rem);
         --_item-padding: var(--kakao-file-upload-item-padding, 0.45rem 0.5rem 0.45rem 0.45rem);
-        --_item-radius: var(--kakao-file-upload-item-radius, 10px);
+        --_item-radius: var(--kakao-file-upload-item-radius, var(--kakao-radius-md, 10px));
         --_thumb-size: var(--kakao-file-upload-thumb-size, 2.5rem);
         --_thumb-radius: var(--kakao-file-upload-thumb-radius, 7px);
         --_type-color: var(--kakao-file-upload-type-color, var(--kakao-color-muted, #6b7280));

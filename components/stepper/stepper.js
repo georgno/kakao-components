@@ -139,7 +139,7 @@
         --_marker-size: var(--kakao-stepper-marker-size, 2rem);
         --_marker-font-size: var(--kakao-stepper-marker-font-size, 0.8125rem);
         --_marker-weight: var(--kakao-stepper-marker-weight, 600);
-        --_marker-radius: var(--kakao-stepper-marker-radius, 999px);
+        --_marker-radius: var(--kakao-stepper-marker-radius, var(--kakao-radius-pill, 999px));
         --_border-width: var(--kakao-stepper-border-width, 2px);
         --_line-width: var(--kakao-stepper-line-width, 2px);
         --_line-gap: var(--kakao-stepper-line-gap, 0.375rem);
@@ -148,7 +148,7 @@
         --_min-step-width: var(--kakao-stepper-min-step-width, 6rem);
         --_bar-height: var(--kakao-stepper-bar-height, 6px);
         --_bar-gap: var(--kakao-stepper-bar-gap, 4px);
-        --_radius: var(--kakao-stepper-radius, 6px);
+        --_radius: var(--kakao-stepper-radius, var(--kakao-radius-sm, 6px));
         /* @kakao-settings:end */
         display: block;
         min-width: 0;

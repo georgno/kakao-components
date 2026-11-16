@@ -12,9 +12,9 @@ kakao-tabs {
   --_color: var(--kakao-tabs-color, currentColor);
   --_padding: var(--kakao-tabs-padding, 4px);
   --_gap: var(--kakao-tabs-gap, 4px);
-  --_radius: var(--kakao-tabs-radius, 10px);
+  --_radius: var(--kakao-tabs-radius, var(--kakao-radius-md, 10px));
   --_thumb-bg: var(--kakao-tabs-thumb-bg, var(--kakao-color-raised, #fff));
-  --_thumb-radius: var(--kakao-tabs-thumb-radius, 6px);
+  --_thumb-radius: var(--kakao-tabs-thumb-radius, var(--kakao-radius-sm, 6px));
   --_thumb-shadow: var(--kakao-tabs-thumb-shadow, 0 2px 24px rgba(0, 0, 0, 0.04));
   --_tab-padding: var(--kakao-tabs-tab-padding, 8px 14px);
   --_tab-padding-compact: var(--kakao-tabs-tab-padding-compact, 8px 10px);

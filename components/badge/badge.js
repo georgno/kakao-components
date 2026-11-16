@@ -52,7 +52,7 @@
     <style>
       :host {
         /* @kakao-settings:start prefix=--kakao-badge- (written by construction.html, edit there) */
-        --_radius: var(--kakao-badge-radius, 999px);
+        --_radius: var(--kakao-badge-radius, var(--kakao-radius-pill, 999px));
         --_padding-y: var(--kakao-badge-padding-y, 0.05rem);
         --_padding-x: var(--kakao-badge-padding-x, 0.5rem);
         --_font-size: var(--kakao-badge-font-size, 0.75rem);

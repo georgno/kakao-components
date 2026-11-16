@@ -121,7 +121,7 @@
         --_pattern-angle: var(--kakao-error-page-pattern-angle, -30deg);
         --_pattern-gap: var(--kakao-error-page-pattern-gap, 1em);
         --_pattern-line-height: var(--kakao-error-page-pattern-line-height, 2.2);
-        --_radius: var(--kakao-error-page-radius, 10px);
+        --_radius: var(--kakao-error-page-radius, var(--kakao-radius-md, 10px));
         --_padding: var(--kakao-error-page-padding, clamp(1.5rem, 6vw, 3rem));
         --_gap: var(--kakao-error-page-gap, 0.75rem);
         --_max-width: var(--kakao-error-page-max-width, 36rem);

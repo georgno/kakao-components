@@ -28,10 +28,11 @@
  *                   and is shown as its hover tooltip).
  *   title           Hover tooltip. An icon-only button defaults it to its name;
  *                   title="" turns that off. With kakao-tooltip loaded (before
- *                   or after this script), the same text goes to data-tooltip on
- *                   the inner <button> instead, so the themed tooltip shows it
- *                   (also on focus and touch long-press) and no native one; a
- *                   data-tooltip of your own on the host wins. The button reacts
+ *                   or after this script), every button with a title (its own,
+ *                   on any button, or the icon-only default) puts that text in
+ *                   data-tooltip on the inner <button> instead, so the themed
+ *                   tooltip shows it (also on focus and touch long-press) and no
+ *                   native one; a data-tooltip of your own on the host wins. The button reacts
  *                   to the tooltip's "tooltip-ready" trigger (KakaoComponents).
  *
  * Menu (dropdown) form - works with every variant and size:
@@ -672,12 +673,13 @@
     // tooltip off); an icon-only button otherwise shows its accessible name, since
     // the label is hidden and aria-label alone shows nothing on hover.
     // With kakao-tooltip loaded the text goes to data-tooltip instead (its
-    // public opt-in), so the themed tooltip shows it and the native one does not.
+    // public opt-in), for every button with a title, not only icon-only ones,
+    // so the themed tooltip shows it and the native one does not.
     _syncTitle() {
       if (!this._btn) return;
       const own = this.getAttribute('title');
       const tip = own !== null ? own
-        : (this.getAttribute('icon-position') === 'only' ? this._btn.getAttribute('aria-label') || '' : '');
+        : (this._iconPosition() === 'only' ? this._btn.getAttribute('aria-label') || '' : '');
       const themed = !!customElements.get('kakao-tooltip');
       if (tip && !themed) {
         this._btn.setAttribute('title', tip);
@@ -692,8 +694,13 @@
       }
     }
 
+    // The icon position, with its default: left with a label, only without one.
+    _iconPosition() {
+      return this.getAttribute('icon-position') || (this.getAttribute('label') ? 'left' : 'only');
+    }
+
     _syncFromAttributes() {
-      const iconPos = this.getAttribute('icon-position') || (this.getAttribute('label') ? 'left' : 'only');
+      const iconPos = this._iconPosition();
       const labelText = this.getAttribute('label') || '';
       const shownItem = this.hasAttribute('show-selected') ? this._selectedItem() : null;
 
@@ -868,7 +875,7 @@
   if (typeof KakaoComponents !== 'undefined') {
     KakaoComponents.register('kakao-button', {
       triggers: [],
-      reactions: { 'tooltip-ready': 'an icon-only name moves from title to data-tooltip' },
+      reactions: { 'tooltip-ready': 'the title (own, or an icon-only name) moves to data-tooltip' },
     });
   }
 

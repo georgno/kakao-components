@@ -155,7 +155,7 @@
         --_char-size: var(--kakao-code-input-char-size, 1.15rem);
         --_gap: var(--kakao-code-input-gap, 8px);
         --_group-gap: var(--kakao-code-input-group-gap, 10px);
-        --_radius: var(--kakao-code-input-radius, 10px);
+        --_radius: var(--kakao-code-input-radius, var(--kakao-radius-md, 10px));
         --_label-gap: var(--kakao-code-input-label-gap, 6px);
         --_message-gap: var(--kakao-code-input-message-gap, 5px);
         --_focus-width: var(--kakao-code-input-focus-width, 2px);

@@ -38,6 +38,11 @@
   --kakao-space-y: 0.5rem;
   --kakao-space-gap: 1rem;
   --kakao-radius: 8px;
+  --kakao-radius-xs: 4px;
+  --kakao-radius-sm: 6px;
+  --kakao-radius-md: 10px;
+  --kakao-radius-lg: 14px;
+  --kakao-radius-pill: 999px;
   --kakao-font-family: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
   --kakao-font-size: 0.95rem;
   --kakao-motion-duration: 320ms;

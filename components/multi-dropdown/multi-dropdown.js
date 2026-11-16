@@ -161,7 +161,7 @@
         --_accent: var(--kakao-multi-dropdown-accent, var(--kakao-color-primary, #4f46e5));
         --_bg: var(--kakao-multi-dropdown-bg, var(--kakao-color-bg, #ffffff));
         --_border: var(--kakao-multi-dropdown-border, var(--kakao-color-field-border, #ececef));
-        --_radius: var(--kakao-multi-dropdown-radius, 10px);
+        --_radius: var(--kakao-multi-dropdown-radius, var(--kakao-radius-md, 10px));
         --_text: var(--kakao-multi-dropdown-text, var(--kakao-color-text, #111827));
         --_muted: var(--kakao-multi-dropdown-muted, var(--kakao-color-muted, #9ca3af));
         --_hover-bg: var(--kakao-multi-dropdown-hover-bg, var(--kakao-color-subtle, #f3f4f6));
@@ -176,7 +176,7 @@
         --_popup-padding: var(--kakao-multi-dropdown-popup-padding, 0.25rem);
         --_popup-shadow: var(--kakao-multi-dropdown-popup-shadow, 0 8px 24px rgba(0, 0, 0, 0.08));
         --_option-padding: var(--kakao-multi-dropdown-option-padding, 0.35rem 0.6rem);
-        --_option-radius: var(--kakao-multi-dropdown-option-radius, 6px);
+        --_option-radius: var(--kakao-multi-dropdown-option-radius, var(--kakao-radius-sm, 6px));
         --_focus: var(--kakao-multi-dropdown-focus, var(--kakao-color-focus, #2563eb));
         --_focus-width: var(--kakao-multi-dropdown-focus-width, 2px);
         --_focus-offset: var(--kakao-multi-dropdown-focus-offset, 2px);

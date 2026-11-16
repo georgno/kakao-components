@@ -155,7 +155,7 @@
         --_message-gap: var(--kakao-date-input-message-gap, 5px);
         --_icon-size: var(--kakao-date-input-icon-size, 1em);
         --_moz-nudge: var(--kakao-date-input-moz-nudge, -0.36em);
-        --_radius: var(--kakao-date-input-radius, 10px);
+        --_radius: var(--kakao-date-input-radius, var(--kakao-radius-md, 10px));
         --_focus-width: var(--kakao-date-input-focus-width, 2px);
         --_focus-offset: var(--kakao-date-input-focus-offset, 2px);
         --_disabled-opacity: var(--kakao-date-input-disabled-opacity, 0.55);
@@ -167,7 +167,7 @@
         --_today-padding-x: var(--kakao-date-input-today-padding-x, 0.4rem);
         --_today-font-size: var(--kakao-date-input-today-font-size, 0.78rem);
         --_today-font-weight: var(--kakao-date-input-today-font-weight, 600);
-        --_today-radius: var(--kakao-date-input-today-radius, 4px);
+        --_today-radius: var(--kakao-date-input-today-radius, var(--kakao-radius-xs, 4px));
         /* @kakao-settings:end */
         --_glyph: ${CALENDAR};
         display: block;

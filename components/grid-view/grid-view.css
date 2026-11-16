@@ -32,13 +32,13 @@ kakao-grid-view {
   --_gv-summary-size: var(--kakao-grid-view-summary-size, 0.875rem);
   --_gv-gap: var(--kakao-grid-view-gap, 0.75rem);
   --_gv-field-height: var(--kakao-grid-view-field-height, 36px);
-  --_gv-field-radius: var(--kakao-grid-view-field-radius, 10px);
+  --_gv-field-radius: var(--kakao-grid-view-field-radius, var(--kakao-radius-md, 10px));
   --_gv-filter-min-width: var(--kakao-grid-view-filter-min-width, 5rem);
   --_gv-action-size: var(--kakao-grid-view-action-size, 36px);
-  --_gv-action-radius: var(--kakao-grid-view-action-radius, 999px);
+  --_gv-action-radius: var(--kakao-grid-view-action-radius, var(--kakao-radius-pill, 999px));
   --_gv-action-icon-size: var(--kakao-grid-view-action-icon-size, 16px);
   --_gv-action-gap: var(--kakao-grid-view-action-gap, 0.25rem);
-  --_gv-toggle-radius: var(--kakao-grid-view-toggle-radius, 10px);
+  --_gv-toggle-radius: var(--kakao-grid-view-toggle-radius, var(--kakao-radius-md, 10px));
   --_gv-focus-width: var(--kakao-grid-view-focus-width, 2px);
   --_gv-focus-offset: var(--kakao-grid-view-focus-offset, 2px);
   --_gv-duration: var(--kakao-grid-view-duration, 120ms);

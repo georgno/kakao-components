@@ -143,7 +143,7 @@
     <style>
       :host {
         /* @kakao-settings:start prefix=--kakao-image- (written by construction.html, edit there) */
-        --_radius: var(--kakao-image-radius, 10px);
+        --_radius: var(--kakao-image-radius, var(--kakao-radius-md, 10px));
         --_background: var(--kakao-image-background, transparent);
         --_placeholder-color: var(--kakao-image-placeholder-color, var(--kakao-color-subtle-strong, #e6e6e8));
         --_placeholder-height: var(--kakao-image-placeholder-height, 12rem);

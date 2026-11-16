@@ -69,7 +69,7 @@
         --_danger: var(--kakao-checkbox-danger, var(--kakao-color-danger, #dc2626));
         --_font: var(--kakao-checkbox-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_box-size: var(--kakao-checkbox-box-size, 20px);
-        --_box-radius: var(--kakao-checkbox-box-radius, 6px);
+        --_box-radius: var(--kakao-checkbox-box-radius, var(--kakao-radius-sm, 6px));
         --_gap: var(--kakao-checkbox-gap, 10px);
         --_label-weight: var(--kakao-checkbox-label-weight, 450);
         --_focus-width: var(--kakao-checkbox-focus-width, 2px);

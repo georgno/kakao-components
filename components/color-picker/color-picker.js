@@ -147,11 +147,11 @@
         --_focus: var(--kakao-color-picker-focus, var(--kakao-color-focus, #2563eb));
         --_font: var(--kakao-color-picker-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_height: var(--kakao-color-picker-height, 44px);
-        --_radius: var(--kakao-color-picker-radius, 10px);
+        --_radius: var(--kakao-color-picker-radius, var(--kakao-radius-md, 10px));
         --_swatch-size: var(--kakao-color-picker-swatch-size, 28px);
         --_swatch-radius: var(--kakao-color-picker-swatch-radius, 7px);
         --_popup-width: var(--kakao-color-picker-popup-width, 248px);
-        --_popup-radius: var(--kakao-color-picker-popup-radius, 14px);
+        --_popup-radius: var(--kakao-color-picker-popup-radius, var(--kakao-radius-lg, 14px));
         --_popup-padding: var(--kakao-color-picker-popup-padding, 12px);
         --_popup-shadow: var(--kakao-color-picker-popup-shadow, 0 8px 24px rgba(0, 0, 0, 0.12));
         --_area-height: var(--kakao-color-picker-area-height, 160px);

@@ -80,7 +80,7 @@
         --_gap: var(--kakao-radio-group-gap, 10px);
         --_option-gap: var(--kakao-radio-group-option-gap, 4px);
         --_option-padding: var(--kakao-radio-group-option-padding, 2px 8px);
-        --_radius: var(--kakao-radio-group-radius, 10px);
+        --_radius: var(--kakao-radio-group-radius, var(--kakao-radius-md, 10px));
         --_label-weight: var(--kakao-radio-group-label-weight, 600);
         --_focus-width: var(--kakao-radio-group-focus-width, 2px);
         --_focus-offset: var(--kakao-radio-group-focus-offset, 2px);

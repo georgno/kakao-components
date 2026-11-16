@@ -112,7 +112,7 @@
         --_font: var(--kakao-text-input-font, 0.95rem/1.4 var(--kakao-font-family, system-ui, -apple-system, sans-serif));
         --_height: var(--kakao-text-input-height, 44px);
         --_padding-x: var(--kakao-text-input-padding-x, 12px);
-        --_radius: var(--kakao-text-input-radius, 10px);
+        --_radius: var(--kakao-text-input-radius, var(--kakao-radius-md, 10px));
         --_icon-size: var(--kakao-text-input-icon-size, 15px);
         --_clear-size: var(--kakao-text-input-clear-size, 22px);
         --_label-gap: var(--kakao-text-input-label-gap, 6px);
