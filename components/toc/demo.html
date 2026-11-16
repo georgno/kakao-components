@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-toc - Demo</title>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="toc.js" defer></script>
+<style>
+  /* The blog layout: sidebar toc beside the article, the toc above it on narrow screens. */
+  .post-layout { display: grid; gap: 1.5rem; }
+  @media (min-width: 52rem) {
+    .post-layout { grid-template-columns: 13rem minmax(0, 1fr); align-items: start; }
+  }
+  .post-layout kakao-toc { --kakao-toc-bg: var(--card); } /* the folded bar sits on the card here */
+  .post { max-width: 62ch; }
+  .post h2 { margin: 2rem 0 0.5rem; font-size: 1.25rem; }
+  .post h2:first-child { margin-top: 0; }
+  .post h3 { margin: 1.25rem 0 0.375rem; font-size: 1rem; }
+  .post p { margin: 0 0 0.75rem; color: var(--ink); }
+  .post .byline { color: var(--muted); font-size: 0.875rem; }
+  .narrow { max-width: 16rem; }
+  .row { display: grid; gap: 1.5rem; }
+  @media (min-width: 40rem) { .row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Toc"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Toc</h1>
+    <p><code>&lt;kakao-toc&gt;</code> - "On this page" for a long article: it lists the headings, marks the section you are reading and scrolls there smoothly.</p>
+  </header>
+
+  <h2>A blog article</h2>
+  <p><code>for</code> names the article; the toc lists its h2 and h3 headings (<code>levels="2-3"</code>, the default) and gives the ones without an id a slug. <code>sticky</code> keeps it beside the article below the page bar. Scroll the article: the current entry follows, and the last one wins at the bottom of the page.</p>
+  <kakao-card id="blog">
+    <h3 slot="header">Sidebar · <code>for</code>, <code>sticky</code>, <code>heading</code></h3>
+    <div class="post-layout" data-demo-wrap>
+      <kakao-toc id="post-toc" for="post" sticky heading="On this page" collapse="auto" collapse-below="52rem"></kakao-toc>
+      <article id="post" class="post">
+        <p class="byline" data-toc-ignore>12 November 2026 · 7 min read</p>
+        <h2>Why we moved off the monolith</h2>
+        <p>For six years the shop ran as one Rails application. It served us well: one deploy, one database, one place to look when something broke. By the spring, though, a release took most of a day, and every team waited on every other team.</p>
+        <p>We did not want a rewrite. We wanted to take one piece out, run it on its own, and learn what that costs before taking out the next.</p>
+        <h2>Picking the first service</h2>
+        <p>The first candidate had to be small, well understood and boring. Exciting candidates teach you about the domain; boring ones teach you about the move itself, which was the point.</p>
+        <h3>Looking for a seam</h3>
+        <p>We listed every module with its callers and its tables. Invoicing stood out: three callers, two tables, and a clear verb at its edge ("make an invoice for this order").</p>
+        <p>Search, which everyone wanted to move first, had forty callers. It stayed.</p>
+        <h3>Keeping the database, for now</h3>
+        <p>Splitting the data on day one would have doubled the risk. The new service read and wrote the same invoice tables through a narrow repository, and nothing else was allowed to touch them.</p>
+        <h3>What "done" meant</h3>
+        <p>Done meant: the monolith no longer contains invoice code, the service deploys on its own in under ten minutes, and an on-call engineer who never saw it can find the logs.</p>
+        <h2>Running both side by side</h2>
+        <p>For three weeks every invoice was made twice: once by the monolith, once by the service, which only logged its result. A nightly job compared the two.</p>
+        <h3>The differences we found</h3>
+        <p>Rounding, of course. The old code rounded each line, the new code the total. Neither was wrong, but the customer-facing number had to stay the same, so the service learned the old habit.</p>
+        <p>Time zones came second: invoices made just before midnight landed on different days.</p>
+        <h3>Switching over</h3>
+        <p>We switched one country at a time behind a flag, starting with the smallest. The flag stayed for a month after the last country, then went in a one-line commit that got more applause than any feature that year.</p>
+        <h2>What it cost</h2>
+        <p>Four months for two people, where we had planned six weeks. Most of the extra time went into the plumbing every later service will reuse: the deploy pipeline, tracing across the boundary, and a local setup that starts both apps with one command.</p>
+        <h2>What we would do again</h2>
+        <p>Pick the boring candidate. Run old and new side by side long enough to be bored by the comparison report. Move one country, or one customer, at a time.</p>
+        <p>And write down what "done" means before starting: it is the only thing that stopped the project from quietly becoming a rewrite.</p>
+        <h2>Comments</h2>
+        <p>Questions or your own story? Write to us; we answer every mail.</p>
+      </article>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+    <template data-code>
+      <div class="post-layout">
+        <kakao-toc for="post" sticky heading="On this page" collapse="auto" collapse-below="52rem"></kakao-toc>
+        <article id="post">
+          <p data-toc-ignore>12 November 2026 · 7 min read</p>
+          <h2>Why we moved off the monolith</h2>
+          <p>…</p>
+          <h2>Picking the first service</h2>
+          <h3>Looking for a seam</h3>
+          <p>…</p>
+        </article>
+      </div>
+      <script>
+        document.querySelector('kakao-toc').addEventListener('toc-change', (e) => {
+          console.log(e.detail.id, e.detail.title); // the section being read
+        });
+      </script>
+    </template>
+  </kakao-card>
+
+  <h2>Levels and deep entries</h2>
+  <p><code>levels</code> takes a range (<code>2-3</code>) or a list (<code>2,4</code>); <code>headings</code> takes any CSS selector instead. <code>nested="active"</code> shows the deeper entries only under the section being read.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Top level only · <code>levels="2"</code></h3>
+      <div class="narrow" data-demo-wrap>
+        <kakao-toc for="post" levels="2"></kakao-toc>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Only the current branch · <code>nested="active"</code></h3>
+      <div class="narrow" data-demo-wrap>
+        <kakao-toc for="post" nested="active"></kakao-toc>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Folded</h2>
+  <p><code>collapse="always"</code> folds the list behind a toggle that shows the current section; <code>collapse="auto"</code> does so below <code>collapse-below</code> (default 48rem), as the sidebar above does on a phone. Picking an entry or Escape closes it.</p>
+  <kakao-card>
+    <h3 slot="header">Folded · <code>collapse="always"</code></h3>
+    <div class="narrow" data-demo-wrap style="max-width:24rem">
+      <kakao-toc for="post" collapse="always" levels="2"></kakao-toc>
+    </div>
+  </kakao-card>
+
+  <h2>Hand-written entries</h2>
+  <p>Without headings to read, the entries come from <code>list-data</code> (<code>{ "title", "href" | "id", "children" }</code>, never "data") or from a nested list of links inside the element, which is also what shows before the script loads. Links to <code>#</code> ids on the page take part in the scrollspy; these point into the article above.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">From JSON · <code>list-data</code></h3>
+      <div class="narrow" data-demo-wrap>
+        <kakao-toc label="Article highlights" list-data='[
+          {"title": "The seam", "id": "looking-for-a-seam"},
+          {"title": "Side by side", "href": "#running-both-side-by-side", "children": [
+            {"title": "Rounding and time zones", "id": "the-differences-we-found"}
+          ]},
+          {"title": "The cost", "id": "what-it-cost"}
+        ]'></kakao-toc>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">From a nested list</h3>
+      <div class="narrow" data-demo-wrap>
+        <kakao-toc label="Article parts">
+          <ol>
+            <li><a href="#why-we-moved-off-the-monolith">Why</a></li>
+            <li><a href="#picking-the-first-service">How</a>
+              <ol>
+                <li><a href="#switching-over">Switching over</a></li>
+              </ol>
+            </li>
+            <li><a href="#what-we-would-do-again">Lessons</a></li>
+          </ol>
+        </kakao-toc>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>From script</h2>
+  <p>New headings show up by themselves (a <code>MutationObserver</code> watches the target). <code>scrollToId(id)</code> goes to a section as a click would; <code>KakaoToc.texts</code> changes the default name, "On this page", for every toc.</p>
+  <kakao-card>
+    <h3 slot="header">API · <code>scrollToId</code>, <code>texts</code></h3>
+    <div class="actions" data-demo-only>
+      <kakao-button id="add-heading" label="Add a section to the article" variant="secondary" size="sm"></kakao-button>
+      <kakao-button id="go-cost" label="scrollToId('what-it-cost')" variant="ghost" size="sm"></kakao-button>
+      <kakao-button id="texts-de" label="texts = { label: 'Auf dieser Seite' }" variant="ghost" size="sm"></kakao-button>
+    </div>
+    <template data-code>
+      <script>
+        const toc = document.querySelector('kakao-toc');
+        toc.scrollToId('what-it-cost');
+        KakaoToc.texts = { label: 'Auf dieser Seite' };
+      </script>
+    </template>
+  </kakao-card>
+</main>
+<script>
+  customElements.whenDefined('kakao-toc').then(() => {
+    const log = document.getElementById('log');
+    document.getElementById('post-toc').addEventListener('toc-change', (e) => logLine(log, 'toc-change', e.detail));
+
+    let added = 0;
+    document.getElementById('add-heading').addEventListener('kakao-button-action', () => {
+      added += 1;
+      const h = document.createElement('h2');
+      h.textContent = `Update ${added}`;
+      const p = document.createElement('p');
+      p.textContent = 'A section added from script: every toc on the page lists it without a refresh.';
+      document.getElementById('post').append(h, p);
+    });
+    document.getElementById('go-cost').addEventListener('kakao-button-action', () => {
+      document.getElementById('post-toc').scrollToId('what-it-cost');
+    });
+    let german = false;
+    document.getElementById('texts-de').addEventListener('kakao-button-action', (e) => {
+      german = !german;
+      KakaoToc.texts = german ? { label: 'Auf dieser Seite' } : KakaoToc.DEFAULT_TEXTS;
+      e.currentTarget.setAttribute('label', german ? 'Back to "On this page"' : "texts = { label: 'Auf dieser Seite' }");
+    });
+  });
+</script>
+</body>
+</html>

@@ -8,7 +8,26 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Added
+
+- `kakao-toc`: "On this page" for long pages, with a built-in scrollspy.
+  Lists the headings of a target (`for`, `levels`, or a `headings`
+  selector), nested by level, and gives headings without an id a stable
+  slug; or takes hand-written entries from `list-data` or a nested list of
+  links. Marks the section being read with `aria-current="location"` (the
+  last one at the bottom of the page), follows added or retitled headings,
+  hash changes and back / forward. A click scrolls smoothly (instantly
+  under reduced motion), pushes the hash and focuses the heading. `sticky`
+  for a sidebar, `nested="active"`, `collapse="auto|always|never"` folds it
+  behind a toggle that shows the current section. Fires `toc-change` and
+  the `section-change` trigger.
+
 ### Changed
+
+- Components page: the section menu (an aside menu filled by a page
+  script) is now a `kakao-toc` that follows the scroll: a sticky sidebar
+  from 75rem, a sticky folded bar below. The page links moved into the
+  header bar's nav.
 
 - `kakao-button`: an icon-only button shows its name (`label` or
   `aria-label`) as a hover tooltip (`title` on the inner `<button>`). Before,

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-toc - Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="toc.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="toc" data-source="toc.js" data-title="Toc">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Sidebar · <code>heading</code>, second entry current</figcaption>
+      <div style="max-width:16rem">
+        <kakao-toc id="cx-toc" heading="On this page" list-data='[
+          {"title": "Why we moved off the monolith", "href": "#cx-why"},
+          {"title": "The first service", "href": "#cx-first", "children": [
+            {"title": "Picking the seam", "href": "#cx-seam"},
+            {"title": "Shared database, for now", "href": "#cx-db"}
+          ]},
+          {"title": "What we would do again", "href": "#cx-again"}
+        ]'></kakao-toc>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Folded · <code>collapse="always"</code></figcaption>
+      <div style="max-width:22rem">
+        <kakao-toc id="cx-folded" collapse="always" list-data='[
+          {"title": "Introduction", "href": "#cx-intro"},
+          {"title": "Getting started", "href": "#cx-start"}
+        ]'></kakao-toc>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-toc-text", "label": "Link text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-toc-hover", "label": "Hover text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-toc-hover-bg", "label": "Hover fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-toc-active", "label": "Current entry", "group": "Colour", "type": "color" },
+    { "property": "--kakao-toc-marker", "label": "Current marker", "group": "Colour", "type": "color" },
+    { "property": "--kakao-toc-track", "label": "Track line", "group": "Colour", "type": "color" },
+    { "property": "--kakao-toc-title", "label": "Title", "group": "Colour", "type": "color" },
+    { "property": "--kakao-toc-bg", "label": "Folded bar fill", "group": "Colour", "type": "color", "hint": "behind the folded toc, so a sticky one covers the page" },
+    { "property": "--kakao-toc-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-toc-gap", "label": "Gap between entries", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-toc-indent", "label": "Indent per level", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-toc-padding-x", "label": "Entry padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-toc-padding-y", "label": "Entry padding y", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-toc-marker-width", "label": "Marker width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-toc-sticky-gap", "label": "Sticky gap", "group": "Size & spacing", "type": "length", "hint": "space below the page bar when sticky" },
+    { "property": "--kakao-toc-panel-max-height", "label": "Folded list max height", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-toc-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-toc-title-size", "label": "Title size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-toc-active-weight", "label": "Current entry weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-toc-radius", "label": "Hover radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+</main>
+<script>
+  // The preview has no sections to scroll past: mark one entry current by hand.
+  customElements.whenDefined('kakao-toc').then(() => {
+    document.getElementById('cx-toc').activeId = 'cx-seam';
+    document.getElementById('cx-folded').activeId = 'cx-start';
+  });
+</script>
+</body>
+</html>
