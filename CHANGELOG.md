@@ -15,7 +15,8 @@ pages (landing page, settings, demos), not the components.
   selector), nested by level, and gives headings without an id a stable
   slug; or takes hand-written entries from `list-data` or a nested list of
   links. Marks the section being read with `aria-current="location"` (the
-  last one at the bottom of the page), follows added or retitled headings,
+  last one at the bottom of the page) and a rounded marker bar that stretches
+  (and thins) over to the next entry and settles at its size, follows added or retitled headings,
   hash changes and back / forward. A click scrolls smoothly (instantly
   under reduced motion), pushes the hash and focuses the heading. `sticky`
   for a sidebar, `nested="active"`, `collapse="auto|always|never"` folds it

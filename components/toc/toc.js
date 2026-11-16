@@ -92,10 +92,12 @@
  *  --kakao-toc-text / -hover / -hover-bg / -active / -marker / -track / -title
  *  --kakao-toc-bg / -focus
  *  --kakao-toc-font-size / -title-size / -active-weight / -indent / -gap
- *  --kakao-toc-padding-x / -padding-y / -radius / -marker-width / -sticky-gap
+ *  --kakao-toc-padding-x / -padding-y / -radius / -marker-width / -marker-radius
+ *  --kakao-toc-marker-stretch-width (while moving) / -sticky-gap
+ *  --kakao-toc-anim-duration / -anim-easing (the marker's move)
  *  --kakao-toc-panel-max-height
  *
- * Parts: nav, title, toggle, list, link, active.
+ * Parts: nav, title, toggle, list, link, active, marker.
  * ============================================================================
  */
 (function () {
@@ -131,7 +133,11 @@
         --_padding-x: var(--kakao-toc-padding-x, 0.75rem);
         --_padding-y: var(--kakao-toc-padding-y, 0.3125rem);
         --_radius: var(--kakao-toc-radius, 6px);
-        --_marker-width: var(--kakao-toc-marker-width, 2px);
+        --_marker-width: var(--kakao-toc-marker-width, 5px);
+        --_marker-radius: var(--kakao-toc-marker-radius, 999px);
+        --_marker-stretch-width: var(--kakao-toc-marker-stretch-width, 3px);
+        --_anim-duration: var(--kakao-toc-anim-duration, 200ms);
+        --_anim-easing: var(--kakao-toc-anim-easing, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
         --_sticky-gap: var(--kakao-toc-sticky-gap, 1rem);
         --_panel-max-height: var(--kakao-toc-panel-max-height, 60vh);
         /* @kakao-settings:end */
@@ -160,7 +166,7 @@
       nav { display: block; }
       .title {
         margin: 0 0 0.5rem;
-        padding-inline-start: calc(var(--_padding-x) + var(--_marker-width) - 1px);
+        padding-inline-start: calc(var(--_padding-x) + var(--_marker-width));
         font-size: var(--_title-size);
         font-weight: 600;
         color: var(--_title);
@@ -172,7 +178,34 @@
         padding: 0;
         list-style: none;
       }
+      /* Room for the part of the marker left of the track, so a scrolling
+         (sticky) toc does not clip it. The marker overhangs the 1px track by
+         (width - 1px) / 2 on each side: keep the width odd (3px, 5px) so that is
+         whole pixels and the bar sits exactly centred on the line. */
+      .rail { position: relative; padding-inline-start: calc((var(--_marker-width) - 1px) / 2); }
       .list { border-inline-start: 1px solid var(--_track); }
+
+      /* The current-entry marker: one rounded bar on the track. On a move it
+         stretches: the leading edge reaches the new entry first, the trailing
+         edge follows, so for a moment it spans both (and thins to
+         --kakao-toc-marker-stretch-width), then it is the new entry's size
+         again (no overshoot, no bounce). Place, height and the move are set
+         from script. */
+      .marker {
+        position: absolute;
+        top: 0;
+        inset-inline-start: 0;
+        z-index: 1;
+        width: var(--_marker-width);
+        height: var(--_marker-h, 0px);
+        border-radius: var(--_marker-radius);
+        background: var(--_marker);
+        transform: translateY(var(--_marker-y, 0px));
+        opacity: 0;
+        pointer-events: none;
+      }
+      .marker.is-on { opacity: 1; }
+      .marker.is-moving { transition: opacity 150ms var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)); }
       li { margin: 0; }
       li + li, ol ol { margin-top: var(--_gap); }
       ol[hidden] { display: none; }
@@ -181,23 +214,20 @@
         display: block;
         margin-inline-start: -1px;
         padding: var(--_padding-y) var(--_padding-x);
-        padding-inline-start: calc(var(--_padding-x) + var(--depth, 0) * var(--_indent));
-        border-inline-start: var(--_marker-width) solid transparent;
+        padding-inline-start: calc(var(--_padding-x) + (var(--_marker-width) + 1px) / 2 + var(--depth, 0) * var(--_indent));
         border-start-end-radius: var(--_radius);
         border-end-end-radius: var(--_radius);
         color: var(--_text);
         text-decoration: none;
         overflow-wrap: anywhere;
         transition: color 150ms var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)),
-                    background-color 150ms var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)),
-                    border-color 150ms var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1));
+                    background-color 150ms var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1));
       }
       .link:hover { color: var(--_hover); background: var(--_hover-bg); }
       .link:focus-visible { outline: 2px solid var(--_focus); outline-offset: -2px; }
       .link[aria-current="location"] {
         color: var(--_active);
         font-weight: var(--_active-weight);
-        border-inline-start-color: var(--_marker);
       }
 
       /* Folded: a toggle that shows the title and the current section. */
@@ -252,10 +282,10 @@
       .is-folded .panel[hidden] { display: none; }
 
       @media (prefers-reduced-motion: reduce) {
-        .link, .toggle svg { transition: none; }
+        .link, .toggle svg, .marker.is-moving { transition: none; }
       }
       @media (forced-colors: active) {
-        .link[aria-current="location"] { border-inline-start-color: Highlight; }
+        .marker { background: Highlight; }
         .link:focus-visible, .toggle:focus-visible { outline-color: Highlight; }
         .list { border-inline-start-color: CanvasText; }
       }
@@ -265,7 +295,7 @@
       <button class="toggle" part="toggle" type="button" aria-expanded="false" aria-controls="panel">
         <span class="toggle-title"></span><span class="toggle-current"></span>${CHEVRON}
       </button>
-      <div class="panel" id="panel"><ol class="list" part="list"></ol></div>
+      <div class="panel" id="panel"><div class="rail"><span class="marker" part="marker" aria-hidden="true"></span><ol class="list" part="list"></ol></div></div>
     </nav>
   `;
 
@@ -371,6 +401,13 @@
       this._toggleCurrent = shadow.querySelector('.toggle-current');
       this._panel = shadow.querySelector('.panel');
       this._list = shadow.querySelector('.list');
+      this._rail = shadow.querySelector('.rail');
+      this._marker = shadow.querySelector('.marker');
+      // Entries can change height (wrapping, fonts, unfolding): keep the marker on its entry.
+      if (typeof ResizeObserver !== 'undefined') {
+        this._railObserver = new ResizeObserver(() => this._placeMarker(null));
+        this._railObserver.observe(this._rail);
+      }
 
       this._items = null;      // hand-written entries from the items property
       this._tree = [];         // entries as rendered
@@ -442,7 +479,7 @@
       if (!this.isConnected) return;
       if (name === 'collapse' || name === 'collapse-below') { this._watchFold(); return; }
       if (name === 'label' || name === 'heading' || name === 'heading-level') { this._renderChrome(); return; }
-      if (name === 'nested') { this._applyNesting(); return; }
+      if (name === 'nested') { this._applyNesting(); this._placeMarker(null); return; }
       if (name === 'offset') { this._observe(); this._schedule(); return; }
       this._signature = '';
       this._build();
@@ -581,6 +618,7 @@
       this._activeId = null;
       if (keep && this._flat.some((f) => f.id === keep)) this._setActive(keep, { silent: true });
       this._applyNesting();
+      this._placeMarker(false);
     }
 
     _watchMutations(root) {
@@ -679,6 +717,7 @@
       });
       this._toggleCurrent.textContent = current ? current.title : '';
       this._applyNesting();
+      this._placeMarker(true);
       this._revealActive(current);
       if (silent) return;
       this.dispatchEvent(new CustomEvent('toc-change', {
@@ -689,6 +728,68 @@
       if (typeof KakaoComponents !== 'undefined') {
         KakaoComponents.emit(this, 'section-change', { id, title: current ? current.title : null });
       }
+    }
+
+    /**
+     * Moves the marker bar onto the current entry. animate true: stretch over
+     * there (a new section); false: jump (first draw, rebuilt list); null: keep
+     * whatever move is running (a resize must not cut it short).
+     */
+    _placeMarker(animate = false) {
+      const m = this._marker;
+      const current = this._activeId != null ? this._flat.find((f) => f.id === this._activeId) : null;
+      const link = current && current.link;
+      if (!link || !link.isConnected || !link.getClientRects().length) {
+        m.classList.remove('is-on');
+        return;
+      }
+      const rail = this._rail.getBoundingClientRect();
+      const r = link.getBoundingClientRect();
+      const wasOn = m.classList.contains('is-on');
+      if (animate !== null) m.classList.toggle('is-moving', animate && wasOn);
+      const y = r.top - rail.top;
+      const h = r.height;
+      if (animate === false && this._markerMove) { this._markerMove.cancel(); this._markerMove = null; }
+      if (animate && wasOn && !reducedMotion()) {
+        // Start from where the bar is drawn now, so a move that interrupts one
+        // carries on from there instead of snapping back.
+        const now = m.getBoundingClientRect();
+        this._stretchMarker(now.top - rail.top, now.height, y, h);
+      }
+      m.style.setProperty('--_marker-y', `${y}px`);
+      m.style.setProperty('--_marker-h', `${h}px`);
+      m.classList.add('is-on');
+    }
+
+    /**
+     * Squash & stretch from (y0, h0) to (y1, h1): the edge in the direction of
+     * travel leads and the other edge trails, so the bar stretches over the gap,
+     * then settles at the new entry's size. Edges only ever move forward.
+     */
+    _stretchMarker(y0, h0, y1, h1) {
+      const m = this._marker;
+      if (this._markerMove) this._markerMove.cancel();
+      if (Math.abs(y1 - y0) < 1 && Math.abs(h1 - h0) < 1) return;
+      const cs = getComputedStyle(m);
+      const raw = cs.getPropertyValue('--_anim-duration').trim();
+      const ms = raw.endsWith('ms') ? parseFloat(raw) : raw.endsWith('s') ? parseFloat(raw) * 1000 : 200;
+      const easing = cs.getPropertyValue('--_anim-easing').trim() || 'cubic-bezier(.2, 0, 0, 1)';
+      // Thinner while stretched (scaled about its centre, so it stays on the track).
+      const w = m.offsetWidth || 1;
+      const thin = parseFloat(cs.getPropertyValue('--_marker-stretch-width'));
+      const sx = Number.isFinite(thin) && thin > 0 ? Math.min(1, thin / w) : 1;
+      const down = y1 > y0;
+      // Halfway: the leading edge is at its target, the trailing one barely moved.
+      const top = down ? y0 + (y1 - y0) * 0.15 : y1;
+      const bottom = down ? y1 + h1 : (y0 + h0) - ((y0 + h0) - (y1 + h1)) * 0.15;
+      const frame = (ty, hh, s = 1) => ({ transform: `translateY(${ty}px) scaleX(${s})`, height: `${Math.max(0, hh)}px` });
+      this._markerMove = m.animate([
+        { ...frame(y0, h0), easing },
+        { ...frame(top, bottom - top, sx), offset: 0.5, easing },
+        frame(y1, h1),
+      ], { duration: Number.isFinite(ms) ? ms : 200 });
+      const move = this._markerMove;
+      move.onfinish = move.oncancel = () => { if (this._markerMove === move) this._markerMove = null; };
     }
 
     /** Keeps the active entry in view when the toc scrolls inside itself. */
