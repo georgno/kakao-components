@@ -58,6 +58,7 @@
 <script src="components/alert/alert.js" defer></script>
 <script src="components/toast/toast.js" defer></script>
 <script src="components/toc/toc.js" defer></script>
+<script src="components/tooltip/tooltip.js" defer></script>
 <script src="components/tree-view/tree-view.js" defer></script>
 <script src="components/menu/menu.js" defer></script>
 <script src="components/progress/progress.js" defer></script>
@@ -1981,6 +1982,35 @@
         <div class="example">
           <h3>Folded · <code>collapse="always"</code></h3>
           <kakao-toc label="A few cards" collapse="always" list-data='[{"title":"Accordion","id":"accordion"},{"title":"Tabs","id":"tabs"},{"title":"Toast","id":"toast"},{"title":"Tree view","id":"tree-view"}]'></kakao-toc>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Tooltip ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Tooltip</h2>
+        <code>&lt;kakao-tooltip&gt;</code>
+        <a href="components/tooltip/construction.html">Construction</a>
+        <a href="components/tooltip/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A small themed label next to a control. Shows on hover, on keyboard focus and on a touch long-press (which then does not click), so the name of an icon-only button reaches phone users too, where the native <code>title</code> never shows. Icon-only <code>kakao-button</code>s use it by themselves; any element opts in with <code>data-tooltip</code>, or a <code>&lt;kakao-tooltip for&gt;</code> belongs to one. Escape dismisses it; the label can be hovered. It is never the accessible name.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>Icon-only buttons · automatic</h3>
+          <div class="row">
+            <kakao-button aria-label="Edit" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></kakao-button>
+            <kakao-button aria-label="Archive" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16v11H4zM3 4h18v4H3zM10 12h4"/></svg></kakao-button>
+            <kakao-button aria-label="Delete" variant="danger"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></kakao-button>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Any element · <code>data-tooltip</code></h3>
+          <p>Invoices are sent as <abbr tabindex="0" data-tooltip="Portable Document Format">PDF</abbr> files.</p>
+        </div>
+        <div class="example">
+          <h3>The label · <code>inline</code> sample</h3>
+          <kakao-tooltip inline>Copy link</kakao-tooltip>
         </div>
       </div>
     </article>

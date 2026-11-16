@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<title>kakao-tooltip - Construction</title>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="tooltip.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="tooltip" data-source="tooltip.js" data-title="Tooltip">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>A button's name · <code>inline</code> sample</figcaption>
+      <kakao-tooltip inline>Copy link</kakao-tooltip>
+    </figure>
+    <figure>
+      <figcaption>A longer hint wraps at the max width</figcaption>
+      <kakao-tooltip inline>Billed yearly, cancel any time before the renewal date</kakao-tooltip>
+    </figure>
+    <figure>
+      <figcaption>Live · hover, focus or long-press (<code>for</code>, so it takes the settings)</figcaption>
+      <div style="display:flex;gap:0.5rem">
+        <kakao-button id="cx-edit" aria-label="Edit" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></kakao-button>
+        <kakao-button id="cx-delete" aria-label="Delete" variant="danger"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></kakao-button>
+      </div>
+      <kakao-tooltip for="cx-edit" hidden>Edit</kakao-tooltip>
+      <kakao-tooltip for="cx-delete" placement="bottom" hidden>Delete</kakao-tooltip>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-tooltip-bg", "label": "Fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tooltip-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-tooltip-border", "label": "Border", "group": "Colour", "type": "color", "hint": "the fill by default; set a line colour for a light label" },
+    { "property": "--kakao-tooltip-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tooltip-padding-y", "label": "Padding y", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tooltip-max-width", "label": "Max width", "group": "Size & spacing", "type": "length" },
+    { "property": "--kakao-tooltip-offset", "label": "Gap to the control", "group": "Size & spacing", "type": "length", "hint": "px" },
+    { "property": "--kakao-tooltip-z-index", "label": "Stacking order", "group": "Size & spacing", "type": "number", "hint": "only without the popover API (top layer)" },
+    { "property": "--kakao-tooltip-font-size", "label": "Font size", "group": "Typography", "type": "length" },
+    { "property": "--kakao-tooltip-font-weight", "label": "Font weight", "group": "Typography", "type": "number" },
+    { "property": "--kakao-tooltip-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-tooltip-anim-duration", "label": "Fade-in duration", "group": "Motion", "type": "duration", "hint": "none under reduced motion" },
+    { "property": "--kakao-tooltip-anim-easing", "label": "Fade-in easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+</body>
+</html>

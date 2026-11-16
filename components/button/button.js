@@ -27,7 +27,12 @@
  *                   give it an aria-label or a label, which then names the button
  *                   and is shown as its hover tooltip).
  *   title           Hover tooltip. An icon-only button defaults it to its name;
- *                   title="" turns that off.
+ *                   title="" turns that off. With kakao-tooltip loaded (before
+ *                   or after this script), the same text goes to data-tooltip on
+ *                   the inner <button> instead, so the themed tooltip shows it
+ *                   (also on focus and touch long-press) and no native one; a
+ *                   data-tooltip of your own on the host wins. The button reacts
+ *                   to the tooltip's "tooltip-ready" trigger (KakaoComponents).
  *
  * Menu (dropdown) form - works with every variant and size:
  *   list-data       JSON array of items (never "data"):
@@ -131,6 +136,9 @@
         this._observeDataAttrs();
       }
       this._wireEvents();
+      if (typeof KakaoComponents !== 'undefined' && !this._offTooltip) {
+        this._offTooltip = KakaoComponents.on('tooltip-ready', () => this._syncTitle());
+      }
       this._rafId = requestAnimationFrame(() => {
         this._syncFromAttributes();
         this._mirrorButtonAttrs();
@@ -157,6 +165,10 @@
       if (this._dataObserver) {
         this._dataObserver.disconnect();
         this._dataObserver = null;
+      }
+      if (this._offTooltip) {
+        this._offTooltip();
+        this._offTooltip = null;
       }
       this._eventsWired = false;
       this._menuOpen = false;
@@ -634,6 +646,7 @@
           this._btn.setAttribute(attr.name, attr.value);
         }
       });
+      this._syncTitle(); // puts back a data-tooltip the button sets itself
     }
 
     _observeDataAttrs() {
@@ -658,14 +671,24 @@
     // Hover tooltip on the inner <button>. An own title wins (title="" turns the
     // tooltip off); an icon-only button otherwise shows its accessible name, since
     // the label is hidden and aria-label alone shows nothing on hover.
+    // With kakao-tooltip loaded the text goes to data-tooltip instead (its
+    // public opt-in), so the themed tooltip shows it and the native one does not.
     _syncTitle() {
+      if (!this._btn) return;
       const own = this.getAttribute('title');
       const tip = own !== null ? own
         : (this.getAttribute('icon-position') === 'only' ? this._btn.getAttribute('aria-label') || '' : '');
-      if (tip) {
+      const themed = !!customElements.get('kakao-tooltip');
+      if (tip && !themed) {
         this._btn.setAttribute('title', tip);
       } else {
         this._btn.removeAttribute('title');
+      }
+      if (this.hasAttribute('data-tooltip')) return; // the page's own, mirrored as is
+      if (tip && themed) {
+        this._btn.setAttribute('data-tooltip', tip);
+      } else {
+        this._btn.removeAttribute('data-tooltip');
       }
     }
 
@@ -840,6 +863,13 @@
         this._loading = false;
       }
     }
+  }
+
+  if (typeof KakaoComponents !== 'undefined') {
+    KakaoComponents.register('kakao-button', {
+      triggers: [],
+      reactions: { 'tooltip-ready': 'an icon-only name moves from title to data-tooltip' },
+    });
   }
 
   customElements.define('kakao-button', KakaoButton);

@@ -23,6 +23,24 @@ pages (landing page, settings, demos), not the components.
   behind a toggle that shows the current section. Fires `toc-change` and
   the `section-change` trigger.
 
+- `kakao-tooltip`: a small themed label next to a control, shadow DOM, so
+  the name of an icon-only control reaches sighted touch and keyboard users
+  too (the native `title` never shows on iOS and rarely on Android). Any
+  element opts in with `data-tooltip` (plain text; `data-tooltip=""` turns
+  it off) and `data-tooltip-placement`, or a `<kakao-tooltip for="id">`
+  belongs to one element; `placement` top, bottom, left or right, flipping
+  and kept on screen, in the top layer. Shows after a short hover delay (at
+  once when moving between anchors) and on `:focus-visible`; stays while
+  the pointer is on the label; Escape dismisses it (and is consumed, so a
+  dialog stays open). On touch a 500ms long-press shows it, cancelled by
+  moving or scrolling; the click after it is swallowed, the context menu,
+  callout and selection are suppressed, and it goes on the next tap, on
+  scroll or after 3 seconds. The anchor's own `title` is put aside while it
+  shows. Never the accessible name; `aria-describedby` only when the text
+  adds to the name. `inline` draws a static sample. Events `tooltip-show` /
+  `tooltip-hide`, the `tooltip-ready` trigger, `show()` / `hide()`,
+  `KakaoTooltip.show/hide/delays`.
+
 ### Changed
 
 - Components page: the section menu (an aside menu filled by a page
@@ -33,7 +51,11 @@ pages (landing page, settings, demos), not the components.
 - `kakao-button`: an icon-only button shows its name (`label` or
   `aria-label`) as a hover tooltip (`title` on the inner `<button>`). Before,
   the name reached screen readers only and hovering showed nothing. An own
-  `title` still wins; `title=""` turns the tooltip off.
+  `title` still wins; `title=""` turns the tooltip off. With `kakao-tooltip`
+  loaded (before or after the button, through its `tooltip-ready` trigger)
+  the same text goes to `data-tooltip` on the inner `<button>` instead of
+  `title`, so the themed label shows it, also on focus and long-press, and
+  the native one does not; a `data-tooltip` on the host wins.
 
 ## [0.8.0] - 2026-11-15
 

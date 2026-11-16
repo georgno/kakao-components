@@ -56,6 +56,7 @@ const VALUES = {
   'kakao-spinner': { size: SIZES, tone: ['none', 'primary', 'success', 'warning', 'danger', 'muted'] },
   'kakao-stepper': { orientation: ['horizontal', 'vertical'], collapse: COLLAPSE, clickable: ['', 'done', 'all'] },
   'kakao-toc': { collapse: COLLAPSE, nested: ['all', 'active'] },
+  'kakao-tooltip': { placement: ['top', 'bottom', 'left', 'right'] },
   'kakao-tree-view': { selection: ['single', 'multiple', 'none'] },
 };
 

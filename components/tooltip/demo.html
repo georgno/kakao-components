@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-tooltip - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="tooltip.js" defer></script>
+<style>
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .places { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; padding: 2.5rem 1rem; }
+  .prose { margin: 0; max-width: 60ch; line-height: 1.7; }
+  .prose abbr { text-decoration: underline dotted; cursor: help; }
+  .count { font-variant-numeric: tabular-nums; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Tooltip"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Tooltip</h1>
+    <p><code>&lt;kakao-tooltip&gt;</code> - a small themed label next to a control: the name of an icon-only button, or a short hint. It shows on hover, on keyboard focus and on a touch long-press, so it also reaches people on a phone, where the native <code>title</code> never shows.</p>
+  </header>
+
+  <h2>Buttons</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Icon-only buttons · automatic</h3>
+      <p class="muted">Nothing to add: with <code>tooltip.js</code> loaded, an icon-only <code>kakao-button</code> shows its name. Hover, tab onto them, or press and hold on a touch screen. Without the script they keep the native <code>title</code>.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-button aria-label="Edit" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></kakao-button>
+        <kakao-button aria-label="Copy link" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg></kakao-button>
+        <kakao-button aria-label="Archive" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16v11H4zM3 4h18v4H3zM10 12h4"/></svg></kakao-button>
+        <kakao-button aria-label="Delete" variant="danger"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></kakao-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Touch · long-press</h3>
+      <p class="muted">On a touch screen, a tap runs the action as usual. Press and hold for half a second to read the name instead: the action does not run, the menu does not open and no context menu or text selection appears. Moving the finger or scrolling cancels it; the label goes on the next tap, on scroll or after three seconds.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-button id="like" aria-label="Like" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></kakao-button>
+        <span class="muted" data-demo-only>Likes: <span class="count" id="likes">0</span></span>
+        <kakao-button aria-label="Sort by" variant="ghost" no-chevron selected="new"
+          list-data='[{"value":"new","label":"Newest first"},{"value":"old","label":"Oldest first"},{"value":"top","label":"Most liked"}]'><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M3 16l4 4 4-4M17 20V4M13 8l4-4 4 4"/></svg></kakao-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">A hint as well as the name · <code>data-tooltip</code></h3>
+      <p class="muted">On the host, <code>data-tooltip</code> replaces the label text, also on a button with a visible label. When it differs from the name, the button is described by it (<code>aria-describedby</code>) while it shows; the name stays as it is.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-button label="Export" variant="secondary" data-tooltip="Download as CSV, UTF-8"></kakao-button>
+        <kakao-button aria-label="Share" data-tooltip="Share with your team" variant="secondary"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M5 12v8h14v-8"/></svg></kakao-button>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Turned off · <code>title=""</code></h3>
+      <p class="muted">An empty <code>title</code> (or <code>data-tooltip=""</code>) on the host turns the tooltip off, with or without the script. Use it when the icon is plain enough and the name is already said next to it.</p>
+      <div class="row" data-demo-wrap>
+        <kakao-button aria-label="Close" title="" variant="ghost"><svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></kakao-button>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Any element</h2>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">By attribute · <code>data-tooltip</code></h3>
+      <p class="muted">Any element can opt in with plain text. Give a non-interactive one <code>tabindex="0"</code> so keyboard users can reach it too.</p>
+      <p class="prose">Invoices are sent as <abbr tabindex="0" data-tooltip="Portable Document Format">PDF</abbr> files. Read the <a href="#" data-tooltip="Opens the terms in this tab">terms of payment</a> before you pay.</p>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Dedicated element · <code>for</code></h3>
+      <p class="muted">A <code>&lt;kakao-tooltip&gt;</code> with <code>for</code> belongs to one element; its text is the label and describes the element. <code>hidden</code> only keeps the text out of sight before the script runs.</p>
+      <p class="prose">Your plan renews on the <a href="#" id="renew-date">4th of August</a>.</p>
+      <kakao-tooltip for="renew-date" placement="bottom" hidden>Billed yearly, cancel any time before</kakao-tooltip>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Placement · <code>data-tooltip-placement</code></h3>
+      <p class="muted"><code>top</code> (default), <code>bottom</code>, <code>left</code> or <code>right</code>; on a <code>kakao-tooltip</code> it is <code>placement</code>. It flips to the other side when there is no room and stays inside the window.</p>
+      <div class="places" data-demo-wrap>
+        <kakao-button label="Top" variant="secondary" data-tooltip="Above"></kakao-button>
+        <kakao-button label="Bottom" variant="secondary" data-tooltip="Below" data-tooltip-placement="bottom"></kakao-button>
+        <kakao-button label="Left" variant="secondary" data-tooltip="To the left" data-tooltip-placement="left"></kakao-button>
+        <kakao-button label="Right" variant="secondary" data-tooltip="To the right" data-tooltip-placement="right"></kakao-button>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Script</h2>
+  <kakao-card>
+    <h3 slot="header">Events and API</h3>
+    <p class="muted"><code>tooltip-show</code> and <code>tooltip-hide</code> bubble from the anchor with <code>{ text, reason }</code> (hover, focus, touch or api). <code>KakaoTooltip.show(anchor, text)</code> shows a label from script, for example a confirmation.</p>
+    <div class="row" data-demo-wrap>
+      <kakao-button id="api-copy" label="Copy order number" variant="secondary"></kakao-button>
+      <kakao-button id="api-hide" label="KakaoTooltip.hide()" variant="ghost" size="sm" data-demo-only></kakao-button>
+    </div>
+    <div class="log" id="log" role="log" aria-label="Event log" style="margin-top:1rem"></div>
+    <template data-code>
+      <script>
+        document.addEventListener('tooltip-show', (e) => {
+          console.log(e.detail.text, e.detail.reason); // "Edit", "touch"
+        });
+        copyButton.addEventListener('kakao-button-action', () => {
+          KakaoTooltip.show(copyButton, 'Copied');
+        });
+        KakaoTooltip.delays = { hover: 400, longPress: 500, touchHide: 3000 };
+      </script>
+    </template>
+  </kakao-card>
+</main>
+<script>
+  (function () {
+    const log = document.getElementById('log');
+    const write = (text) => {
+      const line = document.createElement('div');
+      line.textContent = text;
+      log.prepend(line);
+      while (log.children.length > 6) log.lastChild.remove();
+    };
+    document.addEventListener('tooltip-show', (e) => write(`tooltip-show "${e.detail.text}" (${e.detail.reason})`));
+    document.addEventListener('tooltip-hide', (e) => write(`tooltip-hide "${e.detail.text}"`));
+
+    let likes = 0;
+    document.getElementById('like').addEventListener('kakao-button-action', () => {
+      document.getElementById('likes').textContent = String(++likes);
+    });
+
+    const copy = document.getElementById('api-copy');
+    copy.addEventListener('kakao-button-action', () => {
+      customElements.whenDefined('kakao-tooltip').then(() => KakaoTooltip.show(copy.querySelector('button') || copy, 'Copied'));
+    });
+    document.getElementById('api-hide').addEventListener('kakao-button-action', () => {
+      if (window.KakaoTooltip) KakaoTooltip.hide();
+    });
+  })();
+</script>
+</body>
+</html>
