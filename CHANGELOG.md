@@ -8,6 +8,23 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-11-17
+
+### Added
+
+- `tokens.json`: every design value in one machine-readable file, for
+  libraries on other platforms (first user: the Flutter mirror,
+  kakao-components-flutter). It holds the shared tokens, every theme with
+  its more-contrast colours, and each component's settings: the default as
+  written, with its references kept (`token`, `setting`, `hook`), and what it
+  resolves to, per theme where it depends on one. Lengths are px (1rem =
+  16), colours `#rrggbbaa`, durations ms, easings four numbers, shadows
+  layers, font shorthands parts; `color-mix()` is computed per theme, and
+  `calc()` / `clamp()` / `min()`, em, cap and viewport units stay typed.
+  Written by `node tools/export-tokens.js`; `--check` reports a stale file,
+  the deploy runs it, and the pre-commit hook regenerates it from the
+  staged sources. Published on the demo site as `/tokens.json`.
+
 ## [0.9.0] - 2026-11-16
 
 ### Added
@@ -855,7 +872,8 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/georgno/kakao-components/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/georgno/kakao-components/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/georgno/kakao-components/compare/v0.5.0...v0.8.0
 [0.5.0]: https://github.com/georgno/kakao-components/compare/v0.4.0...v0.5.0
