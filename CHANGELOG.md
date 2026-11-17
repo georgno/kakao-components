@@ -8,6 +8,21 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Added
+
+- `tokens.json`: every design value in one machine-readable file, for
+  libraries on other platforms (first user: the Flutter mirror,
+  kakao-components-flutter). It holds the shared tokens, every theme with
+  its more-contrast colours, and each component's settings: the default as
+  written, with its references kept (`token`, `setting`, `hook`), and what it
+  resolves to, per theme where it depends on one. Lengths are px (1rem =
+  16), colours `#rrggbbaa`, durations ms, easings four numbers, shadows
+  layers, font shorthands parts; `color-mix()` is computed per theme, and
+  `calc()` / `clamp()` / `min()`, em, cap and viewport units stay typed.
+  Written by `node tools/export-tokens.js`; `--check` reports a stale file,
+  the deploy runs it, and the pre-commit hook regenerates it from the
+  staged sources. Published on the demo site as `/tokens.json`.
+
 ## [0.9.0] - 2026-11-16
 
 ### Added

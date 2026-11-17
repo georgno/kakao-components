@@ -19,13 +19,13 @@
 
 ## 4. Keeping it current
 
-- [ ] 4.1 Extend `.githooks/pre-commit` to run the exporter and stage `tokens.json`, with the same unstaged-edits guard as for `index.html`. Verify by editing a token value, committing, and seeing `tokens.json` in the commit.
-- [ ] 4.2 In `.github/workflows/pages.yml`, add `node tools/export-tokens.js --check` next to the style check, and add `tokens.json` to the copy list. Verify the workflow YAML parses (`node -e` with a YAML-free read is enough) and that the copy line includes the file.
-- [ ] 4.3 Add a rule line to `AGENTS.md` (generated file: never edit by hand, run the exporter), and add an Unreleased entry to `CHANGELOG.md`. Verify by reading both diffs.
+- [x] 4.1 Extend `.githooks/pre-commit` to run the exporter and stage `tokens.json`, with the same unstaged-edits guard as for `index.html`. Verify by editing a token value, committing, and seeing `tokens.json` in the commit.
+- [x] 4.2 In `.github/workflows/pages.yml`, add `node tools/export-tokens.js --check` next to the style check, and add `tokens.json` to the copy list. Verify the workflow YAML parses (`node -e` with a YAML-free read is enough) and that the copy line includes the file.
+- [x] 4.3 Add a rule line to `AGENTS.md` (generated file: never edit by hand, run the exporter), and add an Unreleased entry to `CHANGELOG.md`. Verify by reading both diffs.
 
 ## 5. Integration check
 
-- [ ] 5.1 Change `--kakao-color-primary` on `tokens.html` via the construct server, run the exporter, and confirm that every setting that follows primary changes in `tokens.json`, in every theme that does not override it. Then revert the change.
+- [x] 5.1 Change `--kakao-color-primary` on `tokens.html` via the construct server, run the exporter, and confirm that every setting that follows primary changes in `tokens.json`, in every theme that does not override it. Then revert the change.
 
 ## Workflow follow-up
 

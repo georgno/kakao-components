@@ -19,6 +19,11 @@ render into a shadow root (with slots where they take content).
   its `construction.html`, not by hand.
 - Shared colours come from `shared/tokens.css`; every theme in `shared/themes.css`
   must keep passing `node tools/check-themes.js`.
+- `tokens.json` is generated (`node tools/export-tokens.js`) from the tokens, themes
+  and every settings block, for the Flutter mirror and other platforms; never edit it
+  by hand. The pre-commit hook regenerates it from the staged sources and the deploy
+  runs `--check`. New CSS syntax in a settings block makes the exporter stop: extend
+  `tools/export-tokens/parse.js` (with a test), don't work around it.
 - A new component is added to `components.html` (the list page), to the styleguide's
   component audit and, if it fits, to `kitchen-sink.html`. `index.html` is the hero page.
 - Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`:
