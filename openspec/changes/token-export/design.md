@@ -47,6 +47,7 @@ Generators that want simple constants read `resolved`. Generators that want to k
 **3. Units.**
 - rem is 16 px. That is the browser default, and a Flutter logical pixel is the same as a CSS px.
 - em stays `{ "type": "em", "factor": 0.9 }`, because it depends on the font size where it is used.
+- cap (the font's cap height) stays `{ "type": "cap", "factor": … }` for the same reason; deg becomes `{ "type": "angle", "deg": … }`. (Both turned up in the settings blocks after the first survey.)
 - Durations become ms.
 - Viewport units and `100%` stay typed.
 

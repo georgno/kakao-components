@@ -1,0 +1,622 @@
+{
+  "browser": "chromium 153.0.8010.12",
+  "recordedAt": "2026-11-17",
+  "values": [
+    {
+      "component": "button",
+      "alias": "--_primary-ring",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "color(srgb 0.0941176 0.0941176 0.105882 / 0.16)"
+    },
+    {
+      "component": "button",
+      "alias": "--_ghost-hover-bg",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "color(srgb 0.0941176 0.0941176 0.105882 / 0.045)"
+    },
+    {
+      "component": "button",
+      "alias": "--_danger-ring",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "color(srgb 0.862745 0.14902 0.14902 / 0.18)"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-bg",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "rgb(24, 24, 27)"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_shadow",
+      "theme": "light",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.0941176 0.0941176 0.105882 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_bg",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "rgb(255, 255, 255)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-on",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "rgb(79, 70, 229)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-off",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "rgb(130, 130, 139)"
+    },
+    {
+      "component": "card",
+      "alias": "--_border",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "rgb(229, 231, 235)"
+    },
+    {
+      "component": "file-upload",
+      "alias": "--_spotlight-color",
+      "theme": "light",
+      "property": "background-color",
+      "computed": "color(srgb 0.670921 0.662109 0.912484 / 0.6475)"
+    },
+    {
+      "component": "tooltip",
+      "alias": "--_shadow",
+      "theme": "light",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.0941176 0.0941176 0.105882 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-ring",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "color(srgb 0.956863 0.956863 0.960784 / 0.16)"
+    },
+    {
+      "component": "button",
+      "alias": "--_ghost-hover-bg",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "color(srgb 0.956863 0.956863 0.960784 / 0.045)"
+    },
+    {
+      "component": "button",
+      "alias": "--_danger-ring",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "color(srgb 0.972549 0.443137 0.443137 / 0.18)"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-bg",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "rgb(244, 244, 245)"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_shadow",
+      "theme": "dark",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.956863 0.956863 0.960784 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_bg",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "rgb(69, 69, 76)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-on",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "rgb(129, 140, 248)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-off",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "rgb(113, 113, 122)"
+    },
+    {
+      "component": "card",
+      "alias": "--_border",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "rgb(46, 46, 51)"
+    },
+    {
+      "component": "file-upload",
+      "alias": "--_spotlight-color",
+      "theme": "dark",
+      "property": "background-color",
+      "computed": "color(srgb 0.306064 0.322719 0.498282 / 0.6475)"
+    },
+    {
+      "component": "tooltip",
+      "alias": "--_shadow",
+      "theme": "dark",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.956863 0.956863 0.960784 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-ring",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "color(srgb 1 1 1 / 0.16)"
+    },
+    {
+      "component": "button",
+      "alias": "--_ghost-hover-bg",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "color(srgb 1 1 1 / 0.045)"
+    },
+    {
+      "component": "button",
+      "alias": "--_danger-ring",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "color(srgb 0.972549 0.443137 0.443137 / 0.18)"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-bg",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "rgb(255, 255, 255)"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_shadow",
+      "theme": "amoled",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 1 1 1 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_bg",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "rgb(42, 42, 46)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-on",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "rgb(129, 140, 248)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-off",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "rgb(107, 107, 115)"
+    },
+    {
+      "component": "card",
+      "alias": "--_border",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "rgb(26, 26, 29)"
+    },
+    {
+      "component": "file-upload",
+      "alias": "--_spotlight-color",
+      "theme": "amoled",
+      "property": "background-color",
+      "computed": "color(srgb 0.257915 0.27457 0.445318 / 0.6475)"
+    },
+    {
+      "component": "tooltip",
+      "alias": "--_shadow",
+      "theme": "amoled",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 1 1 1 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-ring",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "color(srgb 0.168627 0.137255 0.0901961 / 0.16)"
+    },
+    {
+      "component": "button",
+      "alias": "--_ghost-hover-bg",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "color(srgb 0.168627 0.137255 0.0901961 / 0.045)"
+    },
+    {
+      "component": "button",
+      "alias": "--_danger-ring",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "color(srgb 0.592157 0.113725 0.0941176 / 0.18)"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-bg",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "rgb(43, 35, 23)"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_shadow",
+      "theme": "beige",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.168627 0.137255 0.0901961 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_bg",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "rgb(246, 239, 226)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-on",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "rgb(138, 75, 18)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-off",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "rgb(111, 97, 73)"
+    },
+    {
+      "component": "card",
+      "alias": "--_border",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "rgb(205, 191, 164)"
+    },
+    {
+      "component": "file-upload",
+      "alias": "--_spotlight-color",
+      "theme": "beige",
+      "property": "background-color",
+      "computed": "color(srgb 0.702476 0.573382 0.422076 / 0.6475)"
+    },
+    {
+      "component": "tooltip",
+      "alias": "--_shadow",
+      "theme": "beige",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.168627 0.137255 0.0901961 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-ring",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.0941176 0.0941176 0.105882 / 0.16)"
+    },
+    {
+      "component": "button",
+      "alias": "--_ghost-hover-bg",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.0941176 0.0941176 0.105882 / 0.045)"
+    },
+    {
+      "component": "button",
+      "alias": "--_danger-ring",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.862745 0.14902 0.14902 / 0.18)"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-bg",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "rgb(24, 24, 27)"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_shadow",
+      "theme": "light/contrast",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.0941176 0.0941176 0.105882 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_bg",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "rgb(255, 255, 255)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-on",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "rgb(79, 70, 229)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-off",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "rgb(82, 82, 91)"
+    },
+    {
+      "component": "card",
+      "alias": "--_border",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "rgb(161, 161, 170)"
+    },
+    {
+      "component": "file-upload",
+      "alias": "--_spotlight-color",
+      "theme": "light/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.507215 0.493588 0.756 / 0.6475)"
+    },
+    {
+      "component": "tooltip",
+      "alias": "--_shadow",
+      "theme": "light/contrast",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.0941176 0.0941176 0.105882 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-ring",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.956863 0.956863 0.960784 / 0.16)"
+    },
+    {
+      "component": "button",
+      "alias": "--_ghost-hover-bg",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.956863 0.956863 0.960784 / 0.045)"
+    },
+    {
+      "component": "button",
+      "alias": "--_danger-ring",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.972549 0.443137 0.443137 / 0.18)"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-bg",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "rgb(244, 244, 245)"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_shadow",
+      "theme": "dark/contrast",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.956863 0.956863 0.960784 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_bg",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "rgb(69, 69, 76)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-on",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "rgb(129, 140, 248)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-off",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "rgb(161, 161, 170)"
+    },
+    {
+      "component": "card",
+      "alias": "--_border",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "rgb(82, 82, 91)"
+    },
+    {
+      "component": "file-upload",
+      "alias": "--_spotlight-color",
+      "theme": "dark/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.392732 0.409388 0.59458 / 0.6475)"
+    },
+    {
+      "component": "tooltip",
+      "alias": "--_shadow",
+      "theme": "dark/contrast",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.956863 0.956863 0.960784 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-ring",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 1 1 1 / 0.16)"
+    },
+    {
+      "component": "button",
+      "alias": "--_ghost-hover-bg",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 1 1 1 / 0.045)"
+    },
+    {
+      "component": "button",
+      "alias": "--_danger-ring",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.972549 0.443137 0.443137 / 0.18)"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-bg",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "rgb(255, 255, 255)"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_shadow",
+      "theme": "amoled/contrast",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 1 1 1 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_bg",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "rgb(42, 42, 46)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-on",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "rgb(129, 140, 248)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-off",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "rgb(161, 161, 170)"
+    },
+    {
+      "component": "card",
+      "alias": "--_border",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "rgb(63, 63, 70)"
+    },
+    {
+      "component": "file-upload",
+      "alias": "--_spotlight-color",
+      "theme": "amoled/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.346991 0.363646 0.544023 / 0.6475)"
+    },
+    {
+      "component": "tooltip",
+      "alias": "--_shadow",
+      "theme": "amoled/contrast",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 1 1 1 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-ring",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.168627 0.137255 0.0901961 / 0.16)"
+    },
+    {
+      "component": "button",
+      "alias": "--_ghost-hover-bg",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.168627 0.137255 0.0901961 / 0.045)"
+    },
+    {
+      "component": "button",
+      "alias": "--_danger-ring",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.592157 0.113725 0.0941176 / 0.18)"
+    },
+    {
+      "component": "button",
+      "alias": "--_primary-bg",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "rgb(43, 35, 23)"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_shadow",
+      "theme": "beige/contrast",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.168627 0.137255 0.0901961 / 0.1) 0px 0px 0px 1px"
+    },
+    {
+      "component": "dialog",
+      "alias": "--_bg",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "rgb(246, 239, 226)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-on",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "rgb(138, 75, 18)"
+    },
+    {
+      "component": "switch-group",
+      "alias": "--_track-bg-off",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "rgb(79, 66, 41)"
+    },
+    {
+      "component": "card",
+      "alias": "--_border",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "rgb(162, 149, 122)"
+    },
+    {
+      "component": "file-upload",
+      "alias": "--_spotlight-color",
+      "theme": "beige/contrast",
+      "property": "background-color",
+      "computed": "color(srgb 0.598955 0.472269 0.320963 / 0.6475)"
+    },
+    {
+      "component": "tooltip",
+      "alias": "--_shadow",
+      "theme": "beige/contrast",
+      "property": "box-shadow",
+      "computed": "rgba(0, 0, 0, 0.08) 0px 8px 24px 0px, color(srgb 0.168627 0.137255 0.0901961 / 0.1) 0px 0px 0px 1px"
+    }
+  ]
+}
