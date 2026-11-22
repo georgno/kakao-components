@@ -258,6 +258,8 @@
       /* The row under the field: hint or error, then the now tag at the end
          (as the textarea's counter and the date input's today tag). */
       .below {
+        /* Keeps the out-of-flow .sr span from escaping a page's scroller. */
+        position: relative;
         display: flex;
         gap: 12px;
         align-items: flex-start;

@@ -202,6 +202,8 @@
         --_ease: var(--kakao-password-input-ease, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
         /* @kakao-settings:end */
         display: block;
+        /* Keeps the out-of-flow .sr spans from escaping a page's scroller. */
+        position: relative;
         font: var(--_font);
         color: var(--_text);
       }

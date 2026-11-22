@@ -191,6 +191,8 @@
         --_line: calc(var(--_height) - 2px - 2 * var(--_padding-y));
         --_inset: max(var(--_padding-y), calc((var(--_height) - 2px - var(--_chip-height)) / 2));
         display: block;
+        /* Keeps the out-of-flow .sr span from escaping a page's scroller. */
+        position: relative;
         font: var(--_font);
         color: var(--_text);
       }

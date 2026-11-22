@@ -160,6 +160,8 @@ class KakaoAnimatedNumber extends HTMLElement {
           --_duration: var(--kakao-animated-number-duration, 600ms);
           /* @kakao-settings:end */
           display: inline-block;
+          /* Keeps the out-of-flow .sr span from escaping a page's scroller. */
+          position: relative;
           vertical-align: baseline;
           font-family: var(--_font-family);
           font-size: var(--_font-size);

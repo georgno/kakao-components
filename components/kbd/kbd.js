@@ -198,6 +198,8 @@
       kbd { font: inherit; }
 
       .kbd {
+        /* Keeps the out-of-flow .sr span from escaping a page's scroller. */
+        position: relative;
         display: inline-flex;
         flex-wrap: wrap;
         align-items: center;

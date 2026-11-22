@@ -248,7 +248,8 @@
 
       .icon { flex: none; display: inline-flex; color: var(--_icon); }
       .icon svg { display: block; width: var(--_icon-size); height: var(--_icon-size); }
-      .label { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+      /* Keeps the out-of-flow .sr word of a loading node from escaping. */
+      .label { flex: 1; min-width: 0; overflow-wrap: anywhere; position: relative; }
       .sr {
         position: absolute;
         width: 1px;

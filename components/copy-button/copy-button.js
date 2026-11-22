@@ -158,6 +158,8 @@
         --_radius: var(--_md-radius);
         --_gap: var(--_md-gap);
         display: inline-flex;
+        /* Keeps the out-of-flow .sr span from escaping a page's scroller. */
+        position: relative;
         vertical-align: middle;
         max-width: 100%;
       }

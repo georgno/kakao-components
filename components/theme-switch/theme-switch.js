@@ -640,6 +640,8 @@
         --_fade-easing: var(--kakao-theme-switch-fade-easing, cubic-bezier(.4, 0, .2, 1));
         /* @kakao-settings:end */
         display: inline-flex;
+        /* Keeps the out-of-flow .sr spans from escaping a page's scroller. */
+        position: relative;
         vertical-align: middle;
       }
       :host([hidden]) { display: none; }
