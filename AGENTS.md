@@ -29,6 +29,12 @@ render into a shadow root (with slots where they take content).
 - Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`:
   it keeps the page hidden until the deferred component scripts have drawn, so
   reloads don't flicker. It's for this project's pages only, not part of any component.
+- A page that switches screens without a reload loads `shared/page-transition.js` and opts
+  in with markup: `data-page-transition` on the in-app links or their container,
+  `data-page-transition-content="<key>"` on each region a swap replaces (paired by key;
+  screens an in-app link leads to must render the same regions, else the link navigates
+  for real), `data-page-transition-script` on the scripts that must run again after a swap.
+  Its CSS gives the content region its own `view-transition-name`, or the whole shell fades.
 - Demo pages (`<body class="demo-page">`) show every example as a `<kakao-card>`, title in
   `<h3 slot="header">`, one card per row (a `.grid` of them is one column there). A layout
   the example needs inside the card (a row of buttons, a form) goes in a `data-demo-wrap`
