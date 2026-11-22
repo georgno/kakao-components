@@ -1,16 +1,19 @@
 /**
  * kakao-aside-menu web component styles
- * Light-DOM custom element: a hidden slide-in menu whose open button pushes
- * the whole <body> aside and slides the panel into the freed space.
+ * Light-DOM custom element: a hidden slide-in menu whose open button makes
+ * room in the page - it pushes the whole <body> aside (effect="push", the
+ * default) or narrows it (effect="squash") - and slides the panel into the
+ * freed space.
  *
  * Theming: every --kakao-aside-* property in the settings block below can be
  * set on the element or any ancestor. The defaults live in that block:
  * change them on construction.html.
  *
  * The component is light DOM (like <kakao-button>): this file must be loaded,
- * because the push effect styles the page <body> itself. While a menu is open
+ * because the effect styles the page <body> itself. While a menu is open
  * the component sets data-kakao-aside-open="left|right" on <html> and the
- * --kakao-aside-push custom property with the panel width.
+ * --kakao-aside-push custom property with the panel width; with
+ * effect="squash" it also sets data-kakao-aside-effect="squash".
  */
 
 kakao-aside-menu {
@@ -56,13 +59,16 @@ kakao-aside-menu[data-instant] .kakao-aside-panel {
 
 /* ---------------------------------------------------------------------------
  * The page push: while a menu is open the body slides away by the panel
- * width. The transition makes the push follow the panel, not snap. While
- * a menu is open html clips horizontal overflow, so the document cannot be
- * scrolled sideways and the viewport keeps its exact size (the fixed panel
- * is unaffected by the push).
+ * width. The transition makes the push follow the panel, not snap. The
+ * pushed body is wider than the viewport (100% plus its margin), so html
+ * clips horizontal overflow: the document cannot be scrolled sideways and
+ * the viewport keeps its exact size (the fixed panel is unaffected by the
+ * push). Squash is exempt: it makes the body narrower than the viewport
+ * instead, and content too wide for it (a table, a code block) has to keep
+ * its scrollbar rather than be clipped out of reach.
  * ------------------------------------------------------------------------- */
 
-html[data-kakao-aside-open] {
+html[data-kakao-aside-open]:not([data-kakao-aside-effect='squash']) {
   overflow-x: hidden;
 }
 
@@ -84,6 +90,28 @@ html[data-kakao-aside-open='right'] body {
 }
 
 /* Pages can override the push timing by setting --kakao-aside-duration. */
+
+/* ---------------------------------------------------------------------------
+ * The page squash: same margin on the same <body>, but the width stays
+ * automatic, so the body ends where the panel starts and its content reflows
+ * into the remaining space instead of sliding out of view. The width is the
+ * panel width the push uses (--kakao-aside-push), so the timing is the same.
+ * Only the easing differs: squash re-wraps text across line breaks, so it
+ * takes the standard curve (styleguide Easing Rule), not the push's legacy one.
+ * ------------------------------------------------------------------------- */
+
+html[data-kakao-aside-effect='squash'][data-kakao-aside-open] body {
+  width: auto;
+  margin-left: var(--kakao-aside-push, 280px);
+  transition: margin-left var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
+}
+
+html[data-kakao-aside-effect='squash'][data-kakao-aside-open='right'] body {
+  width: auto;
+  margin-left: 0;
+  margin-right: var(--kakao-aside-push, 280px);
+  transition: margin-right var(--kakao-aside-duration, 320ms) var(--kakao-aside-easing, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
+}
 
 /* ---------------------------------------------------------------------------
  * Open (hamburger) button. Stays visible where the element is placed.
@@ -312,7 +340,9 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
 /* Reduced motion: everything snaps into place. */
 @media (prefers-reduced-motion: reduce) {
   html[data-kakao-aside-open] body,
-  html[data-kakao-aside-open='right'] body {
+  html[data-kakao-aside-open='right'] body,
+  html[data-kakao-aside-effect='squash'][data-kakao-aside-open] body,
+  html[data-kakao-aside-effect='squash'][data-kakao-aside-open='right'] body {
     transition: none;
   }
   .kakao-aside-panel,

@@ -2,11 +2,12 @@
  * <kakao-aside-menu>
  * ============================================================================
  * A slide-in side menu that is completely hidden until opened. Its hamburger
- * button opens it; the panel then pushes the whole page (the <body>) to the
- * side to make room, slides in, and shows its content - any markup placed
- * inside the element, which the component moves into the panel (it is light
- * DOM, so a <slot> would not work). A close button inside the panel header
- * closes it again.
+ * button opens it; the panel then makes room for itself by pushing the whole
+ * page (the <body>) aside by its own width, or, with effect="squash", by
+ * narrowing the page so the content reflows beside the panel. It slides in and
+ * shows its content - any markup placed inside the element, which the component
+ * moves into the panel (it is light DOM, so a <slot> would not work). A close
+ * button inside the panel header closes it again.
  * Vanilla JS, no dependencies.
  *
  * ----------------------------------------------------------------------------
@@ -31,7 +32,12 @@
  *   label         Accessible name / visible title of the panel.
  *                 Default "Menu".
  *   position      "left" (default) or "right". The side the panel slides in
- *                 from; the body is pushed to the opposite side.
+ *                 from; the page gives way to the opposite side.
+ *   effect        How the page gives way: "push" (default) slides the whole
+ *                 <body> aside by the panel width, so the content keeps its
+ *                 width and moves out of view; "squash" leaves the body where
+ *                 it is and narrows it, so the content reflows beside the
+ *                 panel. Anything other than "squash" means push.
  *   width         Panel width as a CSS length, e.g. "320px" or "18rem".
  *                 Default 280px. Also settable via the --kakao-aside-width
  *                 custom property; the attribute wins while present.
@@ -68,8 +74,9 @@
  * Triggers (KakaoComponents, see shared/component-api.js):
  *   aside-open    detail: { position, width, clearance } - fired when the
  *                 menu opens. clearance is how far a fixed element in the
- *                 same viewport corner should move down so it does not
- *                 block the panel's close button.
+ *                 same viewport corner should move down so it does not block
+ *                 the panel's close button; it applies to both effects, since
+ *                 the panel covers that corner either way.
  *   aside-close   detail: { position } - fired when it starts sliding back.
  *   aside-select  detail: { value } - a nav item was picked.
  *
@@ -80,10 +87,21 @@
  * be set on <kakao-aside-menu> or any ancestor. The defaults live in that
  * block: change them on construction.html.
  *
- * The push effect works on the page itself, so aside-menu.css must be loaded
- * (like the button and number-input, the panel is light DOM). While a menu is
- * open, <html> carries data-kakao-aside-open="<position>"; the stylesheet
- * gives the <body> a matching animated margin.
+ * The effect works on the page itself, so aside-menu.css must be loaded (like
+ * the button and number-input, the panel is light DOM). While a menu is open,
+ * <html> carries data-kakao-aside-open="<position>" and
+ * --kakao-aside-push (the panel width); with effect="squash" it also carries
+ * data-kakao-aside-effect="squash" (push adds nothing, so pages that never ask
+ * for squash are untouched).
+ *
+ * Either effect works on the box of the <body>, so no page markup is involved.
+ * The stylesheet gives that box a matching animated margin: push keeps it a
+ * full viewport wide, so it slides; squash leaves its width automatic, so the
+ * margin narrows it and everything inside reflows. The one thing a page may
+ * have to say itself: an element it counter-moves while a menu is open (this
+ * project's page shell shifts <kakao-header-bar> back by the push, see
+ * shared/demo.css) needs no counter-move under squash, because the narrowed
+ * body moves the bar by itself.
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
@@ -103,7 +121,7 @@
 
   class KakaoAsideMenu extends HTMLElement {
     static get observedAttributes() {
-      return ['open', 'label', 'position', 'width', 'no-open-button', 'persistent', 'list-data', 'selected'];
+      return ['open', 'label', 'position', 'width', 'effect', 'no-open-button', 'persistent', 'list-data', 'selected'];
     }
 
     constructor() {
@@ -136,6 +154,7 @@
       if (this._mo) this._mo.disconnect();
       clearTimeout(this._closeTimer);
       document.documentElement.removeAttribute('data-kakao-aside-open');
+      document.documentElement.removeAttribute('data-kakao-aside-effect');
       document.documentElement.style.removeProperty('--kakao-aside-push');
     }
 
@@ -307,12 +326,13 @@
     }
 
     /**
-     * Apply the open state: slide the panel, push the body, manage focus.
+     * Apply the open state: slide the panel, make room in the page, manage focus.
      * @param {boolean} on
      * @param {{ focus?: boolean }} [options]
      */
     _apply(on, options = {}) {
       const position = this.getAttribute('position') === 'right' ? 'right' : 'left';
+      const effect = this.getAttribute('effect') === 'squash' ? 'squash' : 'push';
       const root = document.documentElement;
 
       if (on) {
@@ -329,6 +349,12 @@
           .trim() || '280px';
         root.style.setProperty('--kakao-aside-push', width);
         root.setAttribute('data-kakao-aside-open', position);
+        // Only squash needs an attribute: push is what the stylesheet does anyway.
+        if (effect === 'squash') {
+          root.setAttribute('data-kakao-aside-effect', 'squash');
+        } else {
+          root.removeAttribute('data-kakao-aside-effect');
+        }
         this._emitTrigger('aside-open', {
           position,
           width,
@@ -353,7 +379,14 @@
           const duration =
             parseFloat(getComputedStyle(this).getPropertyValue('--kakao-aside-duration')) || 320;
           this._closeTimer = setTimeout(() => {
+            // An opening menu takes the root over: it strips this one's `open`
+            // attribute, which lands here, so the teardown must not run while
+            // another menu is open (right after its state was set up).
+            if (document.querySelector(TAG_NAME + '[open]')) {
+              return;
+            }
             root.removeAttribute('data-kakao-aside-open');
+            root.removeAttribute('data-kakao-aside-effect');
             root.style.removeProperty('--kakao-aside-push');
           }, duration + 50);
         }

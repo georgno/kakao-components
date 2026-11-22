@@ -63,7 +63,7 @@
       <a class="back" href="construction.html">Construction page →</a>
     </div>
     <h1>Aside menu</h1>
-    <p><code>&lt;kakao-aside-menu&gt;</code> - a completely hidden slide-in menu. The built-in hamburger button pushes the whole page aside and slides the panel into the freed space; a close button in the panel header closes it again. Light DOM: load <code>aside-menu.css</code> next to the script.</p>
+    <p><code>&lt;kakao-aside-menu&gt;</code> - a completely hidden slide-in menu. The built-in hamburger button makes room for it - it pushes the whole page aside, or narrows it with <code>effect="squash"</code> - and slides the panel into the freed space; a close button in the panel header closes it again. Light DOM: load <code>aside-menu.css</code> next to the script.</p>
   </header>
 
   <h2>Try it</h2>
@@ -104,6 +104,17 @@
         </nav>
       </kakao-aside-menu>
       <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The body is pushed to the left instead.</p>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Squash · <code>effect="squash"</code></h3>
+      <kakao-aside-menu effect="squash" label="Squash menu">
+        <nav aria-label="Squash menu">
+          <a href="#" onclick="return false">Home</a>
+          <a href="#" onclick="return false">Browse</a>
+          <a href="#" onclick="return false">Settings</a>
+        </nav>
+      </kakao-aside-menu>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">With squash the page does not slide sideways: the body gives the panel its width and its content reflows into the room left of it - as far as the layout lets it. This page's content is a centred 880px column, so above 880px + the panel width it keeps its 880px and only shifts right by half the panel width; below that, the text re-wraps. Same duration as the push, but the standard easing.</p>
     </kakao-card>
     <kakao-card>
       <h3 slot="header">Wide · <code>width="22rem"</code></h3>
@@ -167,7 +178,7 @@
     <div class="log" id="log" role="log" aria-label="Event log"></div>
   </kakao-card>
 
-  <footer>Attributes on the host: <code>label</code>, <code>position</code> (<code>left</code> · <code>right</code>), <code>width</code> (any CSS length), <code>open</code>, <code>no-open-button</code>, <code>persistent</code> (min viewport width; stays open above it), <code>list-data</code>, <code>selected</code>. Methods: <code>open()</code>, <code>close()</code>, <code>toggle()</code>. Escape closes, focus is trapped inside the open panel and returned to the trigger. Full reference in the header of <code>aside-menu.js</code>.</footer>
+  <footer>Attributes on the host: <code>label</code>, <code>position</code> (<code>left</code> · <code>right</code>), <code>effect</code> (<code>push</code> · <code>squash</code>), <code>width</code> (any CSS length), <code>open</code>, <code>no-open-button</code>, <code>persistent</code> (min viewport width; stays open above it), <code>list-data</code>, <code>selected</code>. Methods: <code>open()</code>, <code>close()</code>, <code>toggle()</code>. Escape closes, focus is trapped inside the open panel and returned to the trigger. Full reference in the header of <code>aside-menu.js</code>.</footer>
 </main>
 
 <script>

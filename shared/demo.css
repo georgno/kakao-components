@@ -320,6 +320,13 @@ html[data-kakao-aside-open='right'] kakao-header-bar {
   margin-left: var(--kakao-aside-push, 280px);
   margin-right: calc(-1 * var(--kakao-aside-push, 280px));
 }
+/* effect="squash": the whole <body> narrows instead of sliding, and the bar
+   narrows with it - so it needs no counter-move. */
+html[data-kakao-aside-effect='squash'][data-kakao-aside-open] kakao-header-bar {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html[data-kakao-aside-open] kakao-header-bar { transition: none; }
 }
