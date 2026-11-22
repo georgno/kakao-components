@@ -58,6 +58,23 @@ pages (landing page, settings, demos), not the components.
   skipped for `effect="squash"` menus, where the content narrows and the bar
   narrows with it.
 
+### Fixed
+
+- Components with a screen-reader-only `.sr` span no longer grow the page's
+  scrollable height when they sit in a scroll container. The span is out of
+  flow (`position: absolute`, 1×1, clipped), and nothing in the component was
+  positioned, so its containing block was the initial containing block: such a
+  box is not clipped by the ancestor that clips its component and still counts
+  towards the document's scrollable overflow, so the page scrolled into blank
+  space (measured: a 931px content region with a 12320px page height in a
+  consumer app, all of it from two copy buttons). `kakao-animated-number`,
+  `-code-input`, `-copy-button`, `-date-input`, `-kbd`, `-password-input`,
+  `-tag-input`, `-theme-switch`, `-time-input` and `-tree-view` now have a
+  positioned containing block of their own (`position: relative` on `:host`, or
+  on the element that already wraps the span). Nothing changes for a page
+  author. Not a visual or API change: no attribute, setting or
+  `--kakao-*` property was added.
+
 ## [0.10.0] - 2026-11-17
 
 ### Added
