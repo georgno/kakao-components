@@ -8,6 +8,55 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Added
+
+- `shared/page-transition.js`: switch screens without a reload. In-app links
+  (`data-page-transition`, on the link or on a container of them) fetch their
+  page, replace only the marked content regions
+  (`data-page-transition-content="<key>"`, paired by key with the fetched
+  page) and wrap that in `document.startViewTransition`, so the shell stays in
+  the DOM and the page-cloak never runs again - which is why a cross-document
+  transition is not used: the new document's first snapshot is still hidden.
+  Keeps the title and the `kakao-tabs` selection in step, pushes history entries
+  and handles Back/Forward, keeps an open aside-menu open, and runs the page's
+  own scripts (`script[data-page-transition-script]`) again so the swapped-in
+  screen gets its behaviour. Browsers without View Transitions and
+  `prefers-reduced-motion: reduce` swap at once; without the script every link
+  navigates as before. Each page gives its content region its own
+  `view-transition-name`, so only the content animates and the shell around it
+  stays put. A swap is refused - ordinary navigation instead - when the fetched
+  screen renders a region the current one lacks (a 404 or `/agents` has no chat
+  list), when it is not same-origin, or while a screen reports a turn in flight
+  (`window.kakaoPageTransition.busy`, set by chat.js while a reply streams); the
+  region marked `tabindex="-1"` takes the focus after a swap and the page
+  scrolls to the top, as a normal navigation does. Limits: inline scripts
+  written into a swapped region do not run (behaviour comes as a marked script),
+  and a screen the fetched page renders *fewer* regions for keeps the ones it
+  has.
+
+- `kakao-aside-menu`: `effect` attribute - `push` (the default, unchanged): the
+  whole `<body>` slides aside by the panel width, so the content keeps its width
+  and moves out of view; `squash`: the body stays where it is and narrows by the
+  panel width, so the content reflows beside the panel. Nothing new to set up on
+  the page - both work on the `<body>` box (`push` keeps it a full viewport wide,
+  `squash` leaves its width automatic); both animate `--kakao-aside-push`, so
+  `--kakao-aside-duration` / `--kakao-aside-easing` set the timing of either, and
+  `prefers-reduced-motion` still snaps both. The choice is published on `<html>`
+  as `data-kakao-aside-effect="squash"` (only for squash, next to
+  `data-kakao-aside-open`), and is removed with it after the closing slide and on
+  disconnect. Squash defaults to the standard easing curve instead (its content
+  re-wraps across line breaks, see the styleguide Easing Rule); push keeps the
+  curve it had.
+  Anything but `squash` means push; `position="right"` narrows from
+  the right instead; the persistent sidebar ignores the attribute.
+
+### Site only
+
+- `shared/demo.css`, `shared/construction.css`: the page-bar counter-move (which
+  keeps `<kakao-header-bar>` on screen while an aside menu pushes the page) is
+  skipped for `effect="squash"` menus, where the content narrows and the bar
+  narrows with it.
+
 ## [0.10.0] - 2026-11-17
 
 ### Added
