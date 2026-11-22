@@ -31,6 +31,7 @@ const STATUS_TONES = ['neutral', 'primary', 'success', 'danger', 'ink'];
 const COLLAPSE = ['auto', 'always', 'never'];
 
 const VALUES = {
+  'kakao-aside-menu': { effect: ['push', 'squash'] },
   'kakao-button': { variant: ['primary', 'secondary', 'ghost', 'danger'], size: SIZES },
   'kakao-badge': { tone: STATUS_TONES },
   'kakao-chip': { tone: STATUS_TONES },

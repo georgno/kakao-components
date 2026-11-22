@@ -17,7 +17,7 @@ const EXPECTED_FAILS = {
   'list-data-json': 1,
   'field-has-name': 5,
   'icon-button-has-name': 3,
-  'attribute-values': 5,
+  'attribute-values': 6,
 };
 
 const rules = fs.readdirSync(path.join(__dirname, '../../style-rules')).map((f) => f.replace(/\.js$/, '')).sort();
