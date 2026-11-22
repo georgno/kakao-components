@@ -185,6 +185,8 @@
 
     const url = new URL(link.href, location.href);
     if (url.origin !== location.origin || url.href === location.href) return;
+    // An in-page link scrolls to its target; a swap scrolls to the top instead.
+    if (url.hash) return;
 
     event.preventDefault();
     navigate(url.href);

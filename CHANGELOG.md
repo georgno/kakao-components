@@ -29,10 +29,11 @@ pages (landing page, settings, demos), not the components.
   list), when it is not same-origin, or while a screen reports a turn in flight
   (`window.kakaoPageTransition.busy`, set by chat.js while a reply streams); the
   region marked `tabindex="-1"` takes the focus after a swap and the page
-  scrolls to the top, as a normal navigation does. Limits: inline scripts
-  written into a swapped region do not run (behaviour comes as a marked script),
-  and a screen the fetched page renders *fewer* regions for keeps the ones it
-  has.
+  scrolls to the top, as a normal navigation does. A link carrying a `#fragment`
+  navigates as before, so the browser still scrolls to its target. Limits:
+  inline scripts written into a swapped region do not run (behaviour comes as a
+  marked script), and a screen the fetched page renders *fewer* regions for
+  keeps the ones it has.
 
 - `kakao-aside-menu`: `effect` attribute - `push` (the default, unchanged): the
   whole `<body>` slides aside by the panel width, so the content keeps its width
