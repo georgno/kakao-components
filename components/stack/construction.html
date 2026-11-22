@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-stack - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<script src="../card/card.js" defer></script>
+<script src="stack.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<style>
+  .stack-stage { min-height: 14rem; }
+  .stack-stage-note { margin: 0.5rem 0 0; color: var(--kakao-color-muted, #62626c); font-size: 0.85rem; }
+</style>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="stack" data-source="stack.js" data-title="Stack">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Inline pile (point at it to fan it out)</figcaption>
+      <div class="stack-stage">
+        <kakao-stack label="Preview stack">
+          <kakao-card>report-q3.pdf uploaded</kakao-card>
+          <kakao-card>team-photo.jpg uploaded</kakao-card>
+          <kakao-card>budget-2027.xlsx uploaded</kakao-card>
+        </kakao-stack>
+      </div>
+      <p class="stack-stage-note">The toast has its own copy of these settings (<a href="../toast/construction.html">toast settings</a>); its cards are alerts.</p>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-stack-width", "label": "Width", "group": "Size & spacing", "type": "length", "hint": "corner stacks: full width below 30rem" },
+    { "property": "--kakao-stack-gutter", "label": "Gutter", "group": "Size & spacing", "type": "length", "hint": "corner stacks: distance from the viewport edges" },
+    { "property": "--kakao-stack-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "hint": "between cards when fanned out" },
+    { "property": "--kakao-stack-peek", "label": "Peek", "group": "Stack", "type": "length", "hint": "how far each card behind shows" },
+    { "property": "--kakao-stack-scale-step", "label": "Scale step", "group": "Stack", "type": "number", "hint": "smaller per card behind" },
+    { "property": "--kakao-stack-fade-step", "label": "Fade step", "group": "Stack", "type": "number", "hint": "less colour per card behind" },
+    { "property": "--kakao-stack-tilt", "label": "Tilt", "group": "Stack", "type": "text", "hint": "rotateX per card behind, e.g. 6deg" },
+    { "property": "--kakao-stack-perspective", "label": "Perspective", "group": "Stack", "type": "length" },
+    { "property": "--kakao-stack-radius", "label": "Radius", "group": "Effects", "type": "length", "hint": "of the shadow; match the cards" },
+    { "property": "--kakao-stack-shadow", "label": "Shadow", "group": "Effects", "type": "shadow" },
+    { "property": "--kakao-stack-z-index", "label": "Z-index", "group": "Effects", "type": "number", "hint": "corner stacks" },
+    { "property": "--kakao-stack-motion-duration", "label": "Motion", "group": "Motion", "type": "duration", "hint": "stacking, fanning, sliding in and out" },
+    { "property": "--kakao-stack-ease", "label": "Easing", "group": "Motion", "type": "easing" }
+  ]
+  </script>
+</main>
+</body>
+</html>

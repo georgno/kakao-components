@@ -8,6 +8,25 @@ pages (landing page, settings, demos), not the components.
 
 ## [Unreleased]
 
+### Added
+
+- `<kakao-stack>`: the toast's pile of cards as a component of its own. The
+  newest child is in front, older ones smaller, paler (desaturated) and
+  tilted back behind it, fanned out into a list on hover or focus (tap on
+  touch); `max`, slide in on add, `dismiss(el)` slides out and removes.
+  `position="inline"` (default) sits in the page flow; the four corners fix
+  it to the viewport like the toast. Events `stack-add`, `stack-removed`,
+  `stack-expand`; settings `--kakao-stack-*`. Its class `KakaoStack` is the
+  scaffold for other widgets: extend it and use the documented hooks
+  instead of copying the mechanics.
+
+### Changed
+
+- `<kakao-toast>` extends `KakaoStack`; behaviour, API, events and its
+  `--kakao-toast-*` settings are unchanged. **Load `stack.js` before
+  `toast.js`.** The card state attribute is now `data-stack-state` (was
+  `data-toast-state`).
+
 ## [0.10.0] - 2026-11-17
 
 ### Added

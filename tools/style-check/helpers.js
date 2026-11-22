@@ -54,6 +54,8 @@ const VALUES = {
     animation: ['shimmer', 'pulse', 'none'],
   },
   'kakao-spinner': { size: SIZES, tone: ['none', 'primary', 'success', 'warning', 'danger', 'muted'] },
+  'kakao-stack': { position: ['inline', 'bottom-right', 'bottom-left', 'top-right', 'top-left'] },
+  'kakao-toast': { position: ['bottom-right', 'bottom-left', 'top-right', 'top-left'] },
   'kakao-stepper': { orientation: ['horizontal', 'vertical'], collapse: COLLAPSE, clickable: ['', 'done', 'all'] },
   'kakao-toc': { collapse: COLLAPSE, nested: ['all', 'active'] },
   'kakao-tooltip': { placement: ['top', 'bottom', 'left', 'right'] },
