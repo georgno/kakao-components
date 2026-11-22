@@ -68,8 +68,13 @@ the audit missed (`tree-view`) escapes as well and is fixed too.
   is a different component and a different class name, so it is left for its own
   change; it is not part of this one.
 - `table`'s hidden checkbox input sits in `.kakao-table-check`
-  (`table.css:284`), and `step-switch` / `switch-group` clip the track they draw
-  in; none of them escapes.
+  (`table.css:284`): contained.
+- `step-switch` (`step-switch.js:553` `.visually-hidden`, span at `:562`, chain
+  `.root` -> `:host`, both static) and `switch-group` (`switch-group.js:614`,
+  span at `:623`, chain `.group` -> `:host`, both static) do escape the same
+  way, with legacy `clip:` - so Chromium grows the page and Firefox does not.
+  Found in review after the first commit; fixed by positioning `.root`
+  (`step-switch.js:287`) and `.group` (`switch-group.js:321`).
 
 ## Measured
 

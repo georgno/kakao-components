@@ -284,6 +284,8 @@
       }
 
       .root {
+        /* Keeps the out-of-flow .visually-hidden span from escaping a page's scroller. */
+        position: relative;
         padding: 0.4rem var(--_label-overhang);
       }
 

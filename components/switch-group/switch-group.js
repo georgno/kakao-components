@@ -318,6 +318,8 @@
       }
 
       .group {
+        /* Keeps the out-of-flow .visually-hidden span from escaping a page's scroller. */
+        position: relative;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
