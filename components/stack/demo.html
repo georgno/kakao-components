@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>kakao-stack - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="stack.js" defer></script>
+<style>
+  .note { color: var(--muted); font-size: 0.85rem; }
+  .pile-card { display: block; }
+  .pile-card strong { display: block; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Stack"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Stack</h1>
+    <p><code>&lt;kakao-stack&gt;</code> - a pile of cards: the newest child in front, the older ones behind it, each a little smaller, paler and tilted back. Point at the pile or tab into it and the cards fan out into a list. It is also the scaffold other components extend: <a href="../toast/demo.html">the toast</a> is a stack of alerts with timers and a live region.</p>
+  </header>
+
+  <h2>Inline · in the page flow</h2>
+  <p>Without <code>position</code> the stack sits in the page and its cards peek out below the front one. Any element child is a card; the last child is the newest. <code>dismiss(card)</code> lets a card shrink away and removes it, appending a card slides it in at the front.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Recent uploads</h3>
+      <div data-demo-wrap>
+        <kakao-stack id="uploads" label="Recent uploads">
+          <kakao-card><strong>report-q3.pdf</strong> 2.4 MB, uploaded 10 minutes ago</kakao-card>
+          <kakao-card><strong>team-photo.jpg</strong> 5.1 MB, uploaded 4 minutes ago</kakao-card>
+          <kakao-card><strong>budget-2027.xlsx</strong> 310 KB, uploaded just now</kakao-card>
+        </kakao-stack>
+      </div>
+      <div class="row" data-demo-only>
+        <kakao-button id="add" label="Add a card" size="sm"></kakao-button>
+        <kakao-button id="dismiss" label="Dismiss the front card" variant="secondary" size="sm"></kakao-button>
+      </div>
+      <template data-code>
+        <script>
+          const stack = document.getElementById('uploads');
+          const card = document.createElement('kakao-card');
+          card.textContent = 'notes.md uploaded';
+          stack.append(card);                                  // slides in at the front
+          stack.dismiss(stack.items[0]).then((reason) => console.log(reason)); // shrinks away
+        </script>
+      </template>
+      <div class="log" id="log" role="log" aria-label="Event log"></div>
+    </kakao-card>
+  </div>
+
+  <h2>Corner · <code>position</code></h2>
+  <p><code>bottom-right</code>, <code>bottom-left</code>, <code>top-right</code>, <code>top-left</code> fix the stack to that corner of the viewport, as the toast does: safe-area insets, below the header bar in top corners, beside an aside menu on its side. In bottom corners the cards peek out above the front one, and dismissed cards slide out towards the edge.</p>
+  <div class="grid">
+    <kakao-card data-code-with="corner">
+      <div class="row" data-demo-only>
+        <kakao-button data-position="bottom-left" label="Bottom left" variant="secondary" size="sm"></kakao-button>
+        <kakao-button data-position="top-left" label="Top left" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="corner-add" label="Add a card" size="sm"></kakao-button>
+        <kakao-button id="corner-dismiss" label="Dismiss the front card" variant="ghost" size="sm"></kakao-button>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Extending · <code>KakaoStack</code></h2>
+  <p>A component that needs the pile extends <code>KakaoStack</code> instead of copying it: it gets the layout, fanning, <code>max</code>, the enter and leave motion and the corner placement, and adds its own behaviour through hooks. The full list is in the header of <code>stack.js</code>; <code>toast.js</code> is the worked example.</p>
+  <div class="grid">
+    <kakao-card data-no-code>
+      <pre><code>class UploadPile extends KakaoStack {
+  // Its own settings replace the stack's (same --_* names).
+  static get stackStyles() { return `:host { --_width: var(--kakao-upload-pile-width, 18rem); }`; }
+  _isItem(el) { return el.localName === 'kakao-card'; }       // which children are cards
+  _itemAdded(rec) { super._itemAdded(rec); startUpload(rec.el); }
+  _updated() { /* rec.index and rec.visible are current: run timers here */ }
+  _fade(rec, paler) { /* paint a card behind the front one */ }
+}
+customElements.define('kakao-upload-pile', UploadPile);</code></pre>
+    </kakao-card>
+  </div>
+
+  <footer>Attributes: <code>position</code>, <code>max</code>, <code>label</code>, <code>expanded</code> (set by the stack). Properties: <code>max</code>, <code>expanded</code>, <code>items</code>. Method: <code>dismiss(el, reason)</code>. Events: <code>stack-add</code>, <code>stack-removed</code> (with <code>reason</code>), <code>stack-expand</code>. Full reference in the header of <code>stack.js</code>.</footer>
+</main>
+
+<kakao-stack id="corner" position="bottom-left" label="Corner stack"></kakao-stack>
+
+<script>
+  customElements.whenDefined('kakao-stack').then(() => {
+    const on = (el, fn) => (typeof el === 'string' ? document.getElementById(el) : el).addEventListener('kakao-button-action', fn);
+    const uploads = document.getElementById('uploads');
+    const corner = document.getElementById('corner');
+    const log = document.getElementById('log');
+    logEvents(log, ['stack-add', 'stack-removed', 'stack-expand'], uploads);
+
+    const files = ['notes.md', 'invoice-march.pdf', 'logo.svg', 'archive.zip', 'slides.key'];
+    let n = 0;
+    const card = (text) => {
+      const c = document.createElement('kakao-card');
+      c.innerHTML = `<strong>${text}</strong> uploaded just now`;
+      return c;
+    };
+    on('add', () => uploads.append(card(files[n++ % files.length])));
+    on('dismiss', () => { if (uploads.items[0]) uploads.dismiss(uploads.items[0]); });
+
+    on('corner-add', () => corner.append(card(files[n++ % files.length])));
+    on('corner-dismiss', () => { if (corner.items[0]) corner.dismiss(corner.items[0]); });
+    document.querySelectorAll('[data-position]').forEach((b) => on(b, () => {
+      corner.setAttribute('position', b.dataset.position);
+      if (!corner.items.length) corner.append(card(files[n++ % files.length]));
+    }));
+  });
+</script>
+</body>
+</html>

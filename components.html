@@ -56,6 +56,7 @@
 <script src="components/chip-list/chip-list.js" defer></script>
 <script src="components/breadcrumb/breadcrumb.js" defer></script>
 <script src="components/alert/alert.js" defer></script>
+<script src="components/stack/stack.js" defer></script>
 <script src="components/toast/toast.js" defer></script>
 <script src="components/toc/toc.js" defer></script>
 <script src="components/tooltip/tooltip.js" defer></script>
@@ -1626,6 +1627,27 @@
         <div class="example">
           <h3>Label below · <code>stacked</code></h3>
           <kakao-spinner size="lg" tone="primary" stacked show-label label="Loading invoices"></kakao-spinner>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Stack ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Stack</h2>
+        <code>&lt;kakao-stack&gt;</code>
+        <a href="components/stack/construction.html">Construction</a>
+        <a href="components/stack/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A pile of cards: the newest in front, older ones smaller, paler and tilted back behind it, fanned out into a list while the pointer or focus is on it. In the page flow or fixed to a corner. Also the base other components extend: the toast is a stack of alerts.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Inline · point at it</h3>
+          <kakao-stack id="ov-stack" label="Recent uploads">
+            <kakao-card>report-q3.pdf uploaded</kakao-card>
+            <kakao-card>team-photo.jpg uploaded</kakao-card>
+            <kakao-card>budget-2027.xlsx uploaded</kakao-card>
+          </kakao-stack>
         </div>
       </div>
     </article>

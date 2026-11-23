@@ -5,11 +5,13 @@
  * <kakao-alert> elements, drawn as a stack of cards: the newest in front, the
  * older ones behind it, a little smaller, fainter and tilted back. Hovering
  * the stack or moving focus into it fans the cards out into a list. Vanilla
- * JS, Shadow DOM, no deps; needs alert.js (load it first).
+ * JS, Shadow DOM; built on <kakao-stack> (the pile, fanning, max, motion,
+ * corner placement) and needs alert.js. Load stack.js and alert.js first.
  *
  * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
+ *   <script src="stack.js" defer><\/script>
  *   <script src="alert.js" defer><\/script>
  *   <script src="toast.js" defer><\/script>
  *
@@ -51,6 +53,9 @@
  *             wait hidden behind the stack; their timers don't run.
  *  label      Accessible name of the region. Default "Notifications".
  *  expanded   Set while the stack is fanned out (the region toggles it).
+ *  The stacking, fanning, max and motion are <kakao-stack>'s (stack.js);
+ *  the toast adds the alerts, their timers, Escape and the live region. It
+ *  fires toast-show / toast-hidden instead of the stack's events.
  *
  * BEHAVIOUR
  *  - Fans out while the pointer is over the stack or focus is inside it; on
@@ -82,8 +87,9 @@
  *  --kakao-toast-width / -gutter / -gap / -peek
  *  --kakao-toast-scale-step / -fade-step / -tilt / -perspective
  *  --kakao-toast-shadow / -z-index / -motion-duration / -ease
- *  The cards themselves are alerts: --kakao-alert-* applies (set them on
- *  kakao-toast to change toasts only).
+ *  These replace the --kakao-stack-* settings for toasts. The cards
+ *  themselves are alerts: --kakao-alert-* applies (set them on kakao-toast
+ *  to change toasts only); the card radius is the alert's.
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
@@ -95,14 +101,17 @@
 
   const TAG_NAME = 'kakao-toast';
   if (customElements.get(TAG_NAME)) return;
+  if (typeof KakaoStack === 'undefined') {
+    console.warn('kakao-toast: load stack.js (kakao-stack) before toast.js.');
+    return;
+  }
 
   const ASSERTIVE = ['warning', 'danger', 'error'];
-  const DEFAULT_MAX = 3;
   const FRESH_DELAY = 150; // a new live region needs a moment before content
 
-  const TEMPLATE = document.createElement('template');
-  TEMPLATE.innerHTML = `
-    <style>
+  // Replaces the stack's settings (same aliases, toast names) and makes the
+  // cards' corners the alert's.
+  const STYLE = `
       :host {
         /* @kakao-settings:start prefix=--kakao-toast- (written by construction.html, edit there) */
         --_width: var(--kakao-toast-width, 22rem);
@@ -118,89 +127,8 @@
         --_motion-duration: var(--kakao-toast-motion-duration, var(--kakao-motion-duration, 320ms));
         --_ease: var(--kakao-toast-ease, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
         /* @kakao-settings:end */
-        --_inset-x: calc(var(--_gutter) + env(safe-area-inset-right, 0px));
-        --_inset-x-start: calc(var(--_gutter) + env(safe-area-inset-left, 0px));
-        position: fixed;
-        z-index: var(--_z-index);
-        right: var(--_inset-x);
-        bottom: calc(var(--_gutter) + env(safe-area-inset-bottom, 0px));
-        box-sizing: border-box;
-        display: block;
-        width: min(var(--_width), calc(100vw - 2 * var(--_gutter)));
-        height: var(--_stack-height, 0px);
-        perspective: var(--_perspective);
-        pointer-events: var(--_hit, none);
-        translate: var(--_shift, 0px) 0;
-        transition: translate var(--_motion-duration) var(--_ease);
-        font-family: inherit;
-        /* A page margin on the host (a card's "> * + * { margin-top }") would
-           shift the fixed box. Normal page declarations beat :host, so only
-           !important holds. */
-        margin: 0 !important;
+        --_radius: var(--kakao-alert-radius, var(--kakao-radius-md, 10px));
       }
-      :host([data-h="left"]) { right: auto; left: var(--_inset-x-start); }
-      :host([data-v="top"]) {
-        bottom: auto;
-        top: calc(var(--_gutter) + env(safe-area-inset-top, 0px) + var(--kakao-header-bar-rendered-height, 0px));
-      }
-      @media (max-width: 30rem) {
-        :host, :host([data-h="left"]) { left: var(--_inset-x-start); right: var(--_inset-x); width: auto; }
-      }
-
-      ::slotted(*) { display: none; }
-      ::slotted(kakao-alert) {
-        display: block;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: 0;
-        pointer-events: auto;
-        border-radius: var(--kakao-alert-radius, var(--kakao-radius-md, 10px));
-        box-shadow: var(--_shadow);
-        transform-origin: 50% 0;
-        transform:
-          translate3d(var(--_toast-x, 0px), var(--_toast-y, 0px), 0)
-          rotateX(var(--_toast-tilt, 0deg))
-          scale(var(--_toast-s, 1));
-        opacity: var(--_toast-o, 1);
-        z-index: var(--_toast-z, 1);
-        clip-path: var(--_toast-clip, none);
-        transition:
-          transform var(--_motion-duration) var(--_ease),
-          opacity var(--_motion-duration) var(--_ease),
-          clip-path var(--_motion-duration) var(--_ease),
-          visibility 0s;
-      }
-      :host([data-v="top"]) ::slotted(kakao-alert) { bottom: auto; top: 0; transform-origin: 50% 100%; }
-      ::slotted(kakao-alert[data-toast-state="hidden"]) {
-        visibility: hidden;
-        pointer-events: none;
-        transition:
-          transform var(--_motion-duration) var(--_ease),
-          opacity var(--_motion-duration) var(--_ease),
-          clip-path var(--_motion-duration) var(--_ease),
-          visibility 0s linear var(--_motion-duration);
-      }
-      ::slotted(kakao-alert[data-toast-state="leaving"]) { pointer-events: none; }
-      ::slotted(kakao-alert[hidden]) { display: none; }
-
-      /* Lengths from the settings, measured in px by the script. */
-      .probe { position: absolute; visibility: hidden; pointer-events: none; height: 0; overflow: hidden; }
-      .probe > span { display: block; height: 0; }
-      .p-gap { width: var(--_gap); }
-      .p-peek { width: var(--_peek); }
-
-      @media (prefers-reduced-motion: reduce) {
-        :host, ::slotted(kakao-alert), ::slotted(kakao-alert[data-toast-state="hidden"]) { transition: none; }
-      }
-      @media (forced-colors: active) {
-        ::slotted(kakao-alert) { box-shadow: none; }
-      }
-    </style>
-    <style class="dyn"></style>
-    <div class="probe" aria-hidden="true"><span class="p-gap"></span><span class="p-peek"></span></div>
-    <slot></slot>
   `;
 
   /** "8000ms", "8s", "8000" → milliseconds. */
@@ -211,146 +139,64 @@
     return /[^m]s$/.test(v) ? n * 1000 : n;
   }
 
-  /** "280px", "20rem", "80vw" → px (for the aside width). */
-  function toPx(value) {
-    const v = String(value || '').trim();
-    const n = parseFloat(v);
-    if (!Number.isFinite(n)) return 0;
-    if (v.endsWith('rem')) return n * (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16);
-    if (v.endsWith('vw')) return (n * window.innerWidth) / 100;
-    return n;
-  }
-
   let warnedAlert = false;
 
-  class KakaoToast extends HTMLElement {
-    static get observedAttributes() { return ['position', 'max', 'label']; }
+  class KakaoToast extends KakaoStack {
+    static get stackStyles() { return STYLE; }
 
     constructor() {
       super();
-      const shadow = this.attachShadow({ mode: 'open' });
-      shadow.appendChild(TEMPLATE.content.cloneNode(true));
-      this._dyn = shadow.querySelector('.dyn');
-      this._probeGap = shadow.querySelector('.p-gap');
-      this._probePeek = shadow.querySelector('.p-peek');
-      this._slot = shadow.querySelector('slot');
+      this._toasts = new Map();    // alert → toast record (handle, timer, reason)
 
-      this._records = new Map();   // alert → record
-      this._order = [];            // records, oldest first
-      this._hover = false;
-      this._focus = false;
-      this._touchOpen = false;
-      this._expanded = false;
-      this._asideShift = 0;
-      this._aside = null;          // { position, width } of an open aside menu on any side
-      this._height = 0;
-      this._frame = 0;
-
-      this._slot.addEventListener('slotchange', () => this._scan());
-
-      this.addEventListener('pointerenter', (e) => {
-        if (e.pointerType === 'touch') return;
-        this._hover = true;
-        this._update();
-      });
-      this.addEventListener('pointerleave', (e) => {
-        if (e.pointerType === 'touch') return;
-        this._hover = false;
-        this._update();
-      });
-      this.addEventListener('pointerup', (e) => {
-        if (e.pointerType !== 'touch') return;
-        const onControl = e.composedPath().some((n) => n !== this && n.matches && n.matches('button, a, input, kakao-button, [role="button"]'));
-        if (onControl) return;
-        this._touchOpen = !this._touchOpen;
-        this._update();
-      });
-      this._onOutside = (e) => {
-        if (!this._touchOpen || e.composedPath().includes(this)) return;
-        this._touchOpen = false;
-        this._update();
-      };
-      this.addEventListener('focusin', () => { this._focus = true; this._update(); });
-      this.addEventListener('focusout', () => queueMicrotask(() => {
-        this._focus = this.matches(':focus-within');
-        this._update();
-      }));
       this.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
-        const alert = e.composedPath().find((n) => this._records.has(n));
+        const alert = e.composedPath().find((n) => this._toasts.has(n));
         if (!alert) return;
         e.preventDefault();
-        this._records.get(alert).reason = 'close';
+        this._toasts.get(alert).reason = 'close';
         alert.close();
       });
 
       // Hiding comes from the alert: its close button, close(), our timer.
+      // The stack slides the card out while the alert fades, and removes it
+      // once the alert is hidden.
       this.addEventListener('alert-hide', (e) => {
-        const rec = this._records.get(e.target);
-        if (!rec) return;
+        const t = this._toasts.get(e.target);
+        if (!t) return;
         queueMicrotask(() => {
-          if (e.defaultPrevented) { rec.reason = null; return; }
-          this._leave(rec, e.detail && e.detail.reason);
+          if (e.defaultPrevented) { t.reason = null; return; }
+          this._startLeaving(t, e.detail && e.detail.reason);
         });
       });
       this.addEventListener('alert-hidden', (e) => {
-        const rec = this._records.get(e.target);
-        if (!rec) return;
-        this._leave(rec, e.detail && e.detail.reason);
-        this._finish(rec);
+        const t = this._toasts.get(e.target);
+        if (!t) return;
+        this._startLeaving(t, e.detail && e.detail.reason);
+        this._finish(t.el, t.reason || 'method');
       });
 
       this._onVisibility = () => this._syncTimers();
-      this._onResize = () => { this._applyAside(); this._schedule(); };
-      this._resizeObserver = typeof ResizeObserver !== 'undefined'
-        ? new ResizeObserver(() => this._schedule())
-        : null;
     }
 
     connectedCallback() {
       if (!this.hasAttribute('role')) this.setAttribute('role', 'region');
       if (!this.hasAttribute('aria-live')) this.setAttribute('aria-live', 'polite');
-      this._renderAttrs();
       document.addEventListener('visibilitychange', this._onVisibility);
-      document.addEventListener('pointerdown', this._onOutside, true);
-      window.addEventListener('resize', this._onResize);
-      if (typeof KakaoComponents !== 'undefined') {
-        this._offAside = [
-          KakaoComponents.on('aside-open', (d) => { this._aside = { position: d.position, width: d.width }; this._applyAside(); }),
-          KakaoComponents.on('aside-close', () => { this._aside = null; this._applyAside(); }),
-        ];
-      }
       if (!customElements.get('kakao-alert') && !warnedAlert) {
         warnedAlert = true;
         console.warn('kakao-toast: load alert.js (kakao-alert) for the toasts to render.');
       }
       customElements.whenDefined('kakao-alert').then(() => this._scan());
-      this._scan();
+      super.connectedCallback();
     }
 
     disconnectedCallback() {
+      super.disconnectedCallback();
       document.removeEventListener('visibilitychange', this._onVisibility);
-      document.removeEventListener('pointerdown', this._onOutside, true);
-      window.removeEventListener('resize', this._onResize);
-      if (this._offAside) this._offAside.forEach((off) => off());
-      this._offAside = null;
-      this._order.forEach((rec) => this._stopTimer(rec));
-    }
-
-    attributeChangedCallback() {
-      if (!this.isConnected) return;
-      this._renderAttrs();
-      this._applyAside();
-      this._update();
+      this._toasts.forEach((t) => this._stopTimer(t));
     }
 
     /* ------------------------------ API ------------------------------- */
-
-    get max() {
-      const n = parseInt(this.getAttribute('max'), 10);
-      return Number.isFinite(n) && n >= 1 ? n : DEFAULT_MAX;
-    }
-    set max(value) { this.setAttribute('max', value); }
 
     /** Adds a toast; returns { element, close(), closed }. */
     show(options = {}, _fresh = false) {
@@ -365,39 +211,96 @@
       if (message instanceof Node) alert.append(message);
       else if (message != null) alert.append(String(message));
 
-      const rec = this._record(alert);
-      if (options.action && options.action.label) this._addAction(rec, options.action);
+      const t = this._toast(alert);
+      if (options.action && options.action.label) this._addAction(t, options.action);
 
-      const insert = () => { if (!rec.cancelled) this.append(alert); };
+      const insert = () => { if (!t.cancelled) this.append(alert); };
       if (_fresh) setTimeout(insert, FRESH_DELAY);
       else insert();
-      return rec.handle;
+      return t.handle;
+    }
+
+    /** A toast leaves through its alert, so the alert's fade plays too. */
+    dismiss(el, reason = 'method') {
+      const t = this._toasts.get(el);
+      if (!t || !t.adopted) return super.dismiss(el, reason);
+      t.reason = t.reason || reason;
+      el.close();
+      return t.handle.closed;
+    }
+
+    /* ------------------------ Stack hooks ----------------------------- */
+
+    _position() {
+      const pos = (this.getAttribute('position') || '').trim().toLowerCase();
+      return /^(top|bottom)-(left|right)$/.test(pos) ? pos : 'bottom-right';
+    }
+
+    _renderAttrs() {
+      super._renderAttrs();
+      this.setAttribute('aria-label', this.getAttribute('label') || 'Notifications');
+    }
+
+    _isItem(el) { return el.localName === 'kakao-alert' && !!customElements.get('kakao-alert'); }
+
+    _itemAdded(rec) {
+      const el = rec.el;
+      const t = this._toasts.get(el) || this._toast(el);
+      t.adopted = true;
+      t.remaining = this._durationFor(el);
+      const acs = getComputedStyle(el);
+      t.tint = parseFloat(acs.getPropertyValue('--_tint') || acs.getPropertyValue('--kakao-alert-tint')) || 10;
+      el.setAttribute('duration', '0');  // the region runs the timer
+      this._dispatch('toast-show', { toast: el });
+    }
+
+    _itemRemoved(rec, reason) {
+      const t = this._toasts.get(rec.el);
+      rec.el.style.removeProperty('--kakao-alert-tint');
+      if (!t) return;
+      this._stopTimer(t);
+      const why = t.reason || reason || 'method';
+      const wasShown = t.adopted && t.leaving;
+      this._settle(t, why);
+      if (wasShown) this._dispatch('toast-hidden', { toast: rec.el, reason: why });
+    }
+
+    _expandedChanged() {}
+
+    _updated() { this._syncTimers(); }
+
+    // Cards further back are paler: less tone in the fill. They stay opaque,
+    // so nothing behind the stack shows through them.
+    _fade(rec, paler) {
+      const t = this._toasts.get(rec.el);
+      if (paler < 1 && t) rec.el.style.setProperty('--kakao-alert-tint', `${t.tint * paler}%`);
+      else rec.el.style.removeProperty('--kakao-alert-tint');
     }
 
     /* --------------------------- Records ------------------------------ */
 
-    _record(alert) {
+    _toast(alert) {
       let resolve;
       const closed = new Promise((r) => { resolve = r; });
-      const rec = {
+      const t = {
         el: alert, resolve, reason: null, leaving: false, done: false, cancelled: false,
-        adopted: false, remaining: 0, timer: 0, deadline: 0, index: 0,
+        adopted: false, remaining: 0, timer: 0, deadline: 0, tint: 10,
       };
-      rec.handle = {
+      t.handle = {
         element: alert,
         closed,
         close: () => {
-          if (rec.done || rec.leaving) return;
-          if (!rec.adopted) { rec.cancelled = true; this._settle(rec, 'method'); return; }
-          rec.reason = rec.reason || 'method';
+          if (t.done || t.leaving) return;
+          if (!t.adopted) { t.cancelled = true; this._settle(t, 'method'); return; }
+          t.reason = t.reason || 'method';
           alert.close();
         },
       };
-      this._records.set(alert, rec);
-      return rec;
+      this._toasts.set(alert, t);
+      return t;
     }
 
-    _addAction(rec, action) {
+    _addAction(t, action) {
       const row = document.createElement('div');
       row.setAttribute('data-toast-action', '');
       row.style.cssText = 'display:flex;gap:.5rem;margin-top:.5rem';
@@ -416,56 +319,14 @@
         eventName = 'click';
       }
       button.addEventListener(eventName, () => {
-        if (rec.leaving || rec.done) return;
-        const result = typeof action.onClick === 'function' ? action.onClick(rec.handle) : undefined;
+        if (t.leaving || t.done) return;
+        const result = typeof action.onClick === 'function' ? action.onClick(t.handle) : undefined;
         if (result === false) return;
-        rec.reason = 'action';
-        rec.el.close();
+        t.reason = 'action';
+        t.el.close();
       });
       row.append(button);
-      rec.el.append(row);
-    }
-
-    /** Adopt new <kakao-alert> children; forget removed ones. */
-    _scan() {
-      if (!this.isConnected) return;
-      const children = Array.from(this.children).filter((el) => el.localName === 'kakao-alert');
-      children.forEach((el) => {
-        let rec = this._records.get(el);
-        if (rec && rec.adopted) return;
-        if (!rec) {
-          if (el.hidden) return;
-          rec = this._record(el);
-        }
-        this._adopt(rec);
-      });
-      this._order = this._order.filter((rec) => {
-        if (rec.el.parentNode === this) return true;
-        if (!rec.done) { this._stopTimer(rec); this._settle(rec, rec.reason || 'method'); }
-        return false;
-      });
-      this._update();
-    }
-
-    _adopt(rec) {
-      const el = rec.el;
-      rec.adopted = true;
-      rec.remaining = this._durationFor(el);
-      const acs = getComputedStyle(el);
-      rec.tint = parseFloat(acs.getPropertyValue('--_tint') || acs.getPropertyValue('--kakao-alert-tint')) || 10;
-      el.setAttribute('duration', '0');  // the region runs the timer
-      this._order.push(rec);
-      if (this._resizeObserver) this._resizeObserver.observe(el);
-
-      // Start just past the corner, then let the layout move it in.
-      const top = this.dataset.v === 'top';
-      el.style.setProperty('--_toast-y', `${top ? -16 : 16}px`);
-      el.style.setProperty('--_toast-s', '0.96');
-      el.style.setProperty('--_toast-o', '0');
-      el.style.setProperty('--_toast-z', '200');
-      void el.offsetHeight;
-
-      this._dispatch('toast-show', { toast: el });
+      t.el.append(row);
     }
 
     _durationFor(el) {
@@ -481,185 +342,53 @@
       return Number.isFinite(ms) && ms > 0 ? ms : 8000;
     }
 
-    _leave(rec, alertReason) {
-      if (rec.leaving) return;
-      rec.leaving = true;
-      rec.reason = rec.reason || (alertReason === 'close' ? 'close' : alertReason === 'timeout' ? 'timeout' : 'method');
-      this._stopTimer(rec);
-      rec.remaining = 0;
-      rec.el.setAttribute('data-toast-state', 'leaving');
-      const left = this.dataset.h === 'left';
-      rec.el.style.setProperty('--_toast-x', left ? '-110%' : '110%');
-      rec.el.style.setProperty('--_toast-o', '0');
-      this._update();
+    _startLeaving(t, alertReason) {
+      if (t.leaving) return;
+      t.leaving = true;
+      t.reason = t.reason || (alertReason === 'close' ? 'close' : alertReason === 'timeout' ? 'timeout' : 'method');
+      this._stopTimer(t);
+      t.remaining = 0;
+      this._leave(t.el);
     }
 
-    _finish(rec) {
-      if (rec.done) return;
-      if (this._resizeObserver) this._resizeObserver.unobserve(rec.el);
-      this._order = this._order.filter((r) => r !== rec);
-      const reason = rec.reason || 'method';
-      rec.el.remove();
-      this._settle(rec, reason);
-      this._dispatch('toast-hidden', { toast: rec.el, reason });
-      if (!this._order.length) { this._hover = false; this._touchOpen = false; }
-      this._update();
-    }
-
-    _settle(rec, reason) {
-      if (rec.done) return;
-      rec.done = true;
-      this._records.delete(rec.el);
-      rec.resolve(reason);
-    }
-
-    /* ----------------------------- Layout ----------------------------- */
-
-    _renderAttrs() {
-      const pos = (this.getAttribute('position') || '').trim().toLowerCase();
-      this.dataset.v = pos.startsWith('top') ? 'top' : 'bottom';
-      this.dataset.h = pos.endsWith('left') ? 'left' : 'right';
-      this.setAttribute('aria-label', this.getAttribute('label') || 'Notifications');
-    }
-
-    _schedule() {
-      if (this._frame) return;
-      this._frame = requestAnimationFrame(() => { this._frame = 0; this._layout(); });
-    }
-
-    /** Recompute the expanded state, the layout and the timers. */
-    _update() {
-      const expanded = this._order.some((r) => !r.leaving) && (this._hover || this._focus || this._touchOpen);
-      if (expanded !== this._expanded) {
-        this._expanded = expanded;
-        this.toggleAttribute('expanded', expanded);
-      }
-      this._layout();
-      this._syncTimers();
-    }
-
-    _layout() {
-      const top = this.dataset.v === 'top';
-      const dir = top ? 1 : -1;
-      const cs = getComputedStyle(this);
-      const step = parseFloat(cs.getPropertyValue('--_scale-step')) || 0;
-      const fade = parseFloat(cs.getPropertyValue('--_fade-step')) || 0;
-      const tilt = parseFloat(cs.getPropertyValue('--_tilt')) || 0;
-      const gap = this._probeGap.getBoundingClientRect().width;
-      const peek = this._probePeek.getBoundingClientRect().width;
-      const max = this.max;
-
-      const active = this._order.filter((r) => !r.leaving).reverse(); // newest first
-      const heights = active.map((r) => r.el.offsetHeight);
-      const front = heights[0] || 0;
-      const shown = Math.min(active.length, max);
-      let offset = 0;
-
-      active.forEach((rec, i) => {
-        const el = rec.el;
-        const h = heights[i];
-        // A card that holds focus stays visible even past max, so focus is
-        // never left on a hidden card.
-        const visible = i < max || el.matches(':focus-within');
-        const k = Math.min(i, max - 1) + (visible ? 0 : 1);
-        rec.index = i;
-        let y; let s = 1; let o = 1; let t = 0; let clip = 0; let paler = 1;
-        if (this._expanded && visible) {
-          y = dir * offset;
-          offset += h + gap;
-        } else {
-          s = Math.max(0.5, 1 - k * step);
-          o = visible ? 1 : 0;
-          paler = Math.max(0, 1 - k * fade);
-          t = k * tilt * (top ? -1 : 1);
-          // Its far edge peeks k × peek past the front card.
-          y = top ? front + k * peek - h : h - front - k * peek;
-          // A card behind shows only its peeking strip (plus 2px under the
-          // next card's rounded corners), so no text peeks out.
-          clip = k ? Math.max(0, h - (peek + 2) / s) : 0;
-        }
-        const out = -60;
-        const c = clip > 0 ? clip : out;
-        el.style.setProperty('--_toast-x', '0px');
-        el.style.setProperty('--_toast-y', `${y}px`);
-        el.style.setProperty('--_toast-s', String(s));
-        el.style.setProperty('--_toast-o', String(o));
-        el.style.setProperty('--_toast-tilt', `${t}deg`);
-        el.style.setProperty('--_toast-z', String(100 - i));
-        el.style.setProperty('--_toast-clip', top
-          ? `inset(${c}px ${out}px ${out}px ${out}px)`
-          : `inset(${out}px ${out}px ${c}px ${out}px)`);
-        // Cards further back are paler: less tone in the fill. They
-        // stay opaque, so nothing behind the stack shows through them.
-        if (paler < 1) {
-          el.style.setProperty('--kakao-alert-tint', `${rec.tint * paler}%`);
-        } else {
-          el.style.removeProperty('--kakao-alert-tint');
-        }
-        if (visible) el.removeAttribute('data-toast-state');
-        else el.setAttribute('data-toast-state', 'hidden');
-      });
-
-      const height = !shown ? 0 : this._expanded ? Math.max(0, offset - gap) : front + (shown - 1) * peek;
-      this._height = height;
-      this._writeDyn();
-    }
-
-    _writeDyn() {
-      const hit = this._order.some((r) => !r.leaving) ? 'auto' : 'none';
-      this._dyn.textContent = `:host { --_stack-height: ${this._height}px; --_hit: ${hit}; --_shift: ${this._asideShift}px; }`;
-    }
-
-    /** Move beside an aside panel that opened on our side, if there is room. */
-    _applyAside() {
-      let shift = 0;
-      const a = this._aside;
-      if (a && a.position === this.dataset.h) {
-        const panel = Math.min(toPx(a.width), window.innerWidth);
-        const gutter = parseFloat(getComputedStyle(this).getPropertyValue('--_gutter')) || 16;
-        const width = this.getBoundingClientRect().width;
-        if (window.innerWidth - panel - 2 * gutter >= width) shift = this.dataset.h === 'left' ? panel : -panel;
-      }
-      if (shift !== this._asideShift) {
-        this._asideShift = shift;
-        this._writeDyn();
-      }
+    _settle(t, reason) {
+      if (t.done) return;
+      t.done = true;
+      this._toasts.delete(t.el);
+      t.resolve(reason);
     }
 
     /* ------------------------------ Timers ---------------------------- */
 
     _syncTimers() {
-      const paused = this._expanded || document.hidden;
+      if (!this._toasts) return; // the stack lays out before our constructor ends
+      const paused = this.expanded || document.hidden;
       const max = this.max;
-      this._order.forEach((rec) => {
-        if (rec.leaving || rec.remaining <= 0) return;
-        const run = !paused && rec.index < max;
+      this._toasts.forEach((t) => {
+        if (!t.adopted || t.leaving || t.remaining <= 0) return;
+        const rec = this._records.get(t.el);
+        const run = !paused && !!rec && rec.index < max;
         if (!run) {
-          if (rec.timer) {
-            clearTimeout(rec.timer);
-            rec.timer = 0;
-            rec.remaining = Math.max(1, rec.deadline - Date.now());
+          if (t.timer) {
+            clearTimeout(t.timer);
+            t.timer = 0;
+            t.remaining = Math.max(1, t.deadline - Date.now());
           }
-        } else if (!rec.timer) {
-          rec.deadline = Date.now() + rec.remaining;
-          rec.timer = setTimeout(() => {
-            rec.timer = 0;
-            rec.remaining = 0;
-            rec.reason = 'timeout';
-            rec.el.close();
-          }, rec.remaining);
+        } else if (!t.timer) {
+          t.deadline = Date.now() + t.remaining;
+          t.timer = setTimeout(() => {
+            t.timer = 0;
+            t.remaining = 0;
+            t.reason = 'timeout';
+            t.el.close();
+          }, t.remaining);
         }
       });
     }
 
-    _stopTimer(rec) {
-      clearTimeout(rec.timer);
-      rec.timer = 0;
-    }
-
-    _dispatch(name, detail) {
-      this.dispatchEvent(new CustomEvent(name, { detail, bubbles: true, composed: true }));
-      if (typeof KakaoComponents !== 'undefined') KakaoComponents.emit(this, name, detail);
+    _stopTimer(t) {
+      clearTimeout(t.timer);
+      t.timer = 0;
     }
   }
 
