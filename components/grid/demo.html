@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-grid - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="grid.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="grid.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+<style>
+  /* This page only: the big number of a stat tile, and the two grids of one example apart. */
+  .stat { margin: 0; font-size: 1.75rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .demo-flow { display: grid; gap: 1rem; }
+  kakao-grid > p { margin: 0; }
+</style>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Grid"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Grid</h1>
+    <p><code>&lt;kakao-grid&gt;</code> - a responsive grid: as many equal columns as fit at a minimum width, one column on a phone, with a gap from the spacing tokens. For cards, stat tiles and fields side by side. It is light DOM: <code>grid.css</code> lays it out, so a server-rendered page needs no script. For rows of data there is the <a href="../table/demo.html">table</a> or the <a href="../grid-view/demo.html">grid view</a>; for one column of sections, the <a href="../flow/demo.html">flow</a>.</p>
+  </header>
+
+  <h2>Cards that wrap</h2>
+  <p>The default minimum is 18rem: two to four columns on a laptop, one on a phone. Every cell of a row is as tall as the tallest.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Default (md)</h3>
+      <kakao-grid>
+        <kakao-card><h4 slot="header">Build</h4><p>Passed in 2 min 14 s.</p></kakao-card>
+        <kakao-card><h4 slot="header">Tests</h4><p>103 passed, 2 skipped. The slowest suite was the manifest check.</p></kakao-card>
+        <kakao-card><h4 slot="header">Deploy</h4><p>Waiting for review.</p></kakao-card>
+        <kakao-card><h4 slot="header">Docs</h4><p>Up to date.</p></kakao-card>
+      </kakao-grid>
+    </kakao-card>
+  </div>
+
+  <h2>Minimum width · gap</h2>
+  <p><code>min="sm"</code> (12rem) fits more tiles in a row, <code>min="lg"</code> (24rem) fewer; <code>gap</code> is <code>sm</code> (0.5rem), <code>md</code> (1rem) or <code>lg</code> (2rem). Any other minimum: <code>style="--kakao-grid-min: 14rem"</code>.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Stat tiles · min sm · gap sm</h3>
+      <kakao-grid min="sm" gap="sm">
+        <kakao-card><h4 slot="header">Open</h4><p class="stat">24</p></kakao-card>
+        <kakao-card><h4 slot="header">In review</h4><p class="stat">7</p></kakao-card>
+        <kakao-card><h4 slot="header">Merged</h4><p class="stat">131</p></kakao-card>
+        <kakao-card><h4 slot="header">Closed</h4><p class="stat">12</p></kakao-card>
+      </kakao-grid>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Wide panels · min lg · gap lg</h3>
+      <kakao-grid min="lg" gap="lg">
+        <kakao-card><h4 slot="header">Summary</h4><p>Two panels side by side on a wide screen, one above the other below about 50rem.</p></kakao-card>
+        <kakao-card><h4 slot="header">Details</h4><p>Each keeps at least 24rem, so a sentence still reads well.</p></kakao-card>
+      </kakao-grid>
+    </kakao-card>
+  </div>
+
+  <h2>Few items: fill</h2>
+  <p>By default the columns share the row (<code>auto-fit</code>): one card spans it all. With <code>fill</code> the empty columns stay, and a lone card keeps one column's width.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Without and with fill</h3>
+      <div class="demo-flow" data-demo-wrap>
+        <kakao-grid min="sm">
+          <kakao-card><h4 slot="header">Stretched</h4><p>The only card, across the row.</p></kakao-card>
+        </kakao-grid>
+        <kakao-grid min="sm" fill>
+          <kakao-card><h4 slot="header">Kept</h4><p>The only card, one column wide.</p></kakao-card>
+        </kakao-grid>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Fields side by side</h2>
+  <p>Not only cards: any element child is a cell. Below 12rem per field they wrap under each other.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Status per area</h3>
+      <kakao-grid min="sm" gap="sm">
+        <p>Search <kakao-badge tone="success">Healthy</kakao-badge></p>
+        <p>Checkout <kakao-badge tone="warning">Slow</kakao-badge></p>
+        <p>Uploads <kakao-badge tone="danger">Failing</kakao-badge></p>
+        <p>Login <kakao-badge tone="success">Healthy</kakao-badge></p>
+      </kakao-grid>
+    </kakao-card>
+  </div>
+</main>
+</body>
+</html>

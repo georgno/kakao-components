@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-flow - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="flow.css" />
+<script src="../button/button.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="flow" data-source="flow.css" data-title="Flow">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default: gap md</figcaption>
+      <kakao-flow>
+        <h3>Release notes</h3>
+        <p>Three fixes and one new component since the last release.</p>
+        <kakao-card><p>A card in the flow keeps the full width.</p></kakao-card>
+      </kakao-flow>
+    </figure>
+    <figure>
+      <figcaption>Sections gap lg, their text gap sm</figcaption>
+      <kakao-flow gap="lg">
+        <kakao-flow gap="sm"><h3>Results</h3><p>12 checks passed, 1 failed.</p></kakao-flow>
+        <kakao-flow gap="sm"><h3>Next steps</h3><p>Fix the failing check, then run the suite again.</p></kakao-flow>
+      </kakao-flow>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-flow-gap", "label": "Gap (md)", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "between blocks" },
+    { "property": "--kakao-flow-gap-sm", "label": "Gap (sm)", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "a heading and its text" },
+    { "property": "--kakao-flow-gap-lg", "label": "Gap (lg)", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "between sections" }
+  ]
+  </script>
+</main>
+</body>
+</html>

@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="components/number-input/number-input.css" />
 <link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
 <link rel="stylesheet" href="components/chip-list/chip-list.css" />
+<link rel="stylesheet" href="components/page/page.css" />
+<link rel="stylesheet" href="components/flow/flow.css" />
 <script src="shared/demo.js"></script>
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
@@ -64,9 +66,13 @@
 <script src="components/action-bar/action-bar.js" defer></script>
 <script src="components/copy-button/copy-button.js" defer></script>
 <script src="components/code-block/code-block.js" defer></script>
+<script src="components/page/page.js" defer></script>
+<script src="components/flow/flow.js" defer></script>
 <style>
-  /* The unsaved-changes bar is fixed: keep the end of the page above it. */
-  main { padding-bottom: calc(var(--kakao-action-bar-rendered-height, 0px) + 1rem); }
+  /* The content column is a kakao-page (it also keeps its end above the fixed
+     unsaved-changes bar): main drops demo.css's own column, the page keeps its width. */
+  main { max-width: none; padding: 0; }
+  kakao-page { --kakao-page-max-width: 55rem; }
   /* ---- bare form layout for this page only ---- */
   kakao-tabs { margin-bottom: 0.5rem; }
 
@@ -93,7 +99,7 @@
   .price small { color: var(--muted); }
   kakao-animated-number { --kakao-animated-number-font-size: 2rem; --kakao-animated-number-font-weight: 700; }
   .more-genres-label { margin-top: 0.9rem; margin-bottom: 0.4rem; }
-  .summary kakao-progress, .summary kakao-meter, .summary kakao-accordion { margin-top: 0.9rem; max-width: 22rem; }
+  .summary kakao-progress, .summary kakao-meter, .summary kakao-accordion { max-width: 22rem; }
   .summary kakao-accordion ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
   .summary [slot="footer"] { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
@@ -109,6 +115,7 @@
   <kakao-theme-switch slot="end"></kakao-theme-switch>
 </kakao-header-bar>
 <main>
+<kakao-page>
   <header>
     <div class="demo-nav">
       <kakao-breadcrumb start-text="Home" start-url="index.html" list-data='[["Kitchen sink"]]'></kakao-breadcrumb>
@@ -473,20 +480,22 @@
   <!-- ============================== Summary ============================== -->
   <kakao-card class="summary">
     <h2 slot="header">Your plan</h2>
-    <div class="price">
-      <span>€</span>
-      <kakao-animated-number id="price" value="13.49" decimals="2"></kakao-animated-number>
-      <small id="price-period">/ month</small>
-    </div>
-    <kakao-progress id="profile" label="Profile" value="0" max="4" show-value value-text="0 of 4"></kakao-progress>
-    <kakao-meter label="Download space" value="14.2" max="20" low="10" high="16" optimum="0" show-value value-text="14.2 of 20 GB"></kakao-meter>
-    <kakao-accordion variant="tile" heading="What's included">
-      <ul>
-        <li>Ad-free streaming on every plan</li>
-        <li>Downloads on up to two devices</li>
-        <li>Cancel anytime</li>
-      </ul>
-    </kakao-accordion>
+    <kakao-flow>
+      <div class="price">
+        <span>€</span>
+        <kakao-animated-number id="price" value="13.49" decimals="2"></kakao-animated-number>
+        <small id="price-period">/ month</small>
+      </div>
+      <kakao-progress id="profile" label="Profile" value="0" max="4" show-value value-text="0 of 4"></kakao-progress>
+      <kakao-meter label="Download space" value="14.2" max="20" low="10" high="16" optimum="0" show-value value-text="14.2 of 20 GB"></kakao-meter>
+      <kakao-accordion variant="tile" heading="What's included">
+        <ul>
+          <li>Ad-free streaming on every plan</li>
+          <li>Downloads on up to two devices</li>
+          <li>Cancel anytime</li>
+        </ul>
+      </kakao-accordion>
+    </kakao-flow>
     <div slot="footer">
       <kakao-button id="save" label="Save changes" icon="fas fa-check" type="submit" form="settings"></kakao-button>
       <kakao-button id="reset" label="Reset" variant="ghost" title="Undo every change on this page"></kakao-button>
@@ -503,6 +512,7 @@
   <h2>Submitted values</h2>
   <p>What a save would send, collected from the component APIs.</p>
   <kakao-code-block id="log" mode="log" label="Submitted values" wrap max-height="16rem"></kakao-code-block>
+</kakao-page>
 </main>
 
 <script>

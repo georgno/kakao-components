@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-flow - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="flow.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="flow.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+<style>
+  /* This page only: a light frame shows where the flow's edges are. */
+  .frame { outline: 1px dashed var(--kakao-color-border, #82828b); outline-offset: 4px; }
+</style>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Flow"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Flow</h1>
+    <p><code>&lt;kakao-flow&gt;</code> - a vertical flow: one even gap between its children, none before the first or after the last, whatever margins the page gives headings and paragraphs. For the sections of a page, the fields of a form, the blocks of a card. It is light DOM: <code>flow.css</code> spaces it, so a server-rendered page needs no script. For columns there is the <a href="../grid/demo.html">grid</a>; <a href="../stack/demo.html">stack</a> is a pile of overlapping cards, not a layout.</p>
+  </header>
+
+  <h2>Even gaps</h2>
+  <p>The heading, the paragraph and the card each bring their own margins; inside the flow only the gap counts (dashed: the flow's edges).</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Default (md)</h3>
+      <kakao-flow class="frame">
+        <h4>Release notes</h4>
+        <p>Three fixes and one new component since the last release.</p>
+        <kakao-card><p>The card keeps the full width; a button below keeps its own.</p></kakao-card>
+        <div><kakao-button label="Read more" variant="secondary"></kakao-button></div>
+      </kakao-flow>
+    </kakao-card>
+  </div>
+
+  <h2>Gap sizes · nested</h2>
+  <p><code>gap</code> is <code>sm</code> (0.5rem: a heading and its text), <code>md</code> (1rem: blocks) or <code>lg</code> (2rem: sections). A flow inside a flow sits at its parent's gap and spaces its own children by its own.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Sections lg, their text sm</h3>
+      <kakao-flow gap="lg">
+        <section>
+          <kakao-flow gap="sm">
+            <h4>Results</h4>
+            <p>12 checks passed, 1 failed.</p>
+          </kakao-flow>
+        </section>
+        <section>
+          <kakao-flow gap="sm">
+            <h4>Next steps</h4>
+            <p>Fix the failing check, then run the suite again.</p>
+          </kakao-flow>
+        </section>
+      </kakao-flow>
+    </kakao-card>
+  </div>
+
+  <h2>Hidden children</h2>
+  <p>A child with <code>hidden</code> takes no gap and leaves no double gap behind. Show it to see the flow make room.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">A note that comes and goes</h3>
+      <kakao-flow>
+        <p>Your changes are saved as you type.</p>
+        <p id="flow-note" hidden>Offline: the changes are kept on this device until the connection is back.</p>
+        <p>Last saved a minute ago.</p>
+      </kakao-flow>
+      <div class="toolbar" data-demo-only>
+        <kakao-button label="Show or hide the note" variant="secondary" size="sm" onclick="const n = document.getElementById('flow-note'); n.hidden = !n.hidden"></kakao-button>
+      </div>
+    </kakao-card>
+  </div>
+</main>
+</body>
+</html>

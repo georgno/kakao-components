@@ -1,0 +1,39 @@
+/*
+ * kakao-page styles
+ *
+ * Light DOM: the page container is drawn by this file alone, so a
+ * server-rendered page has its width and margins before any script runs.
+ * Every rule is scoped under kakao-page.
+ *
+ * Theming: every --kakao-page-* property in the settings block below can be
+ * set on <kakao-page> or any ancestor. The defaults live in that block:
+ * change them on construction.html.
+ */
+
+kakao-page {
+  /* @kakao-settings:start prefix=--kakao-page- (written by construction.html, edit there) */
+  --_max-width: var(--kakao-page-max-width, 72rem);
+  --_narrow-width: var(--kakao-page-narrow-width, 45rem);
+  --_wide-width: var(--kakao-page-wide-width, 96rem);
+  --_padding-x: var(--kakao-page-padding-x, 1.25rem);
+  --_padding-top: var(--kakao-page-padding-top, var(--kakao-space-below-bar, 8px));
+  --_padding-bottom: var(--kakao-page-padding-bottom, 4rem);
+  /* @kakao-settings:end */
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--_max-width);
+  margin-inline: auto;
+  /* The sides clear a phone's notch; the end clears a fixed kakao-action-bar
+     (it writes its height to the root while shown, 0 otherwise). */
+  padding-block: var(--_padding-top) calc(var(--_padding-bottom) + var(--kakao-action-bar-rendered-height, 0px));
+  padding-inline: max(var(--_padding-x), env(safe-area-inset-left, 0px)) max(var(--_padding-x), env(safe-area-inset-right, 0px));
+}
+
+/* The width counts the padding too (border-box), so the text column of a
+   narrow page is the narrow width minus the side padding. */
+kakao-page[width="narrow"] { max-width: var(--_narrow-width); }
+kakao-page[width="wide"] { max-width: var(--_wide-width); }
+kakao-page[width="full"] { max-width: none; }
+
+kakao-page[hidden] { display: none; }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-page - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="page.css" />
+<script src="../button/button.js" defer></script>
+<script src="page.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+<style>
+  /* This page only: a frame for the container, its edges dashed. */
+  .page-preview { border: 1px solid var(--kakao-color-line, #e5e7eb); border-radius: var(--kakao-radius-md, 10px); overflow: hidden; }
+  .page-preview kakao-page { outline: 1px dashed var(--kakao-color-border, #82828b); outline-offset: -1px; }
+  .page-preview h3, .page-preview p { margin: 0 0 0.5rem; }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="page" data-source="page.css" data-title="Page">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Narrow (dashed: the container, padding included)</figcaption>
+      <div class="page-preview">
+        <kakao-page width="narrow">
+          <h3>Account</h3>
+          <p>At the narrow width a line of text stays easy to read.</p>
+        </kakao-page>
+      </div>
+    </figure>
+    <figure>
+      <figcaption>Normal</figcaption>
+      <div class="page-preview">
+        <kakao-page>
+          <h3>Results</h3>
+          <p>The default width, for most pages.</p>
+        </kakao-page>
+      </div>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-page-max-width", "label": "Max width (normal)", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-page-narrow-width", "label": "Max width (narrow)", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "text and forms" },
+    { "property": "--kakao-page-wide-width", "label": "Max width (wide)", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "tables and dashboards" },
+    { "property": "--kakao-page-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-page-padding-top", "label": "Padding top", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "below the header bar" },
+    { "property": "--kakao-page-padding-bottom", "label": "Padding bottom", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "plus a fixed action bar" }
+  ]
+  </script>
+</main>
+</body>
+</html>

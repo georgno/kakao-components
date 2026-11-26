@@ -16,7 +16,7 @@
  * CATALOG
  * ----------------------------------------------------------------------------
  *  for        A pile of cards, newest in front; the base of kakao-toast.
- *  not for    Page layout or vertical spacing: CSS gap.
+ *  not for    Page layout: kakao-page, kakao-grid; vertical spacing: kakao-flow.
  *
  * ----------------------------------------------------------------------------
  * FILES

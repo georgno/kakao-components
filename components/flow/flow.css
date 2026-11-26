@@ -1,0 +1,41 @@
+/*
+ * kakao-flow styles
+ *
+ * Light DOM: the flow is drawn by this file alone. It owns the space between
+ * its children: one gap between neighbours, none before the first or after
+ * the last, whatever block margins the page gives headings and paragraphs.
+ * Block flow, not flex: children keep their own width (a button stays its
+ * size, a card fills the row). Every rule is scoped under kakao-flow.
+ *
+ * The gap is declared on the children, not on the flow: a flow inside a flow
+ * then sits at its parent's gap and spaces its own children by its own.
+ *
+ * Theming: every --kakao-flow-* property in the settings block below can be
+ * set on <kakao-flow> or any ancestor. The defaults live in that block:
+ * change them on construction.html.
+ */
+
+kakao-flow {
+  display: flow-root; /* children's margins stay inside its edges */
+}
+
+kakao-flow > * {
+  /* @kakao-settings:start prefix=--kakao-flow- (written by construction.html, edit there) */
+  --_flow-gap: var(--kakao-flow-gap, var(--kakao-space-gap, 1rem));
+  --_flow-gap-sm: var(--kakao-flow-gap-sm, var(--kakao-space-y, 0.5rem));
+  --_flow-gap-lg: var(--kakao-flow-gap-lg, 2rem);
+  /* @kakao-settings:end */
+}
+
+kakao-flow[gap="sm"] > * { --_flow-gap: var(--_flow-gap-sm); }
+kakao-flow[gap="lg"] > * { --_flow-gap: var(--_flow-gap-lg); }
+
+/* :nth-child(n) lifts the specificity above the page's own h2 / p / .class
+   margins, so the flow's gap wins. Elements that never show (hidden, script,
+   style, template) take no gap and give none to the next child. */
+kakao-flow > :nth-child(n) { margin-block: 0; }
+kakao-flow > :not([hidden], script, style, template, link) ~ :not([hidden], script, style, template, link) {
+  margin-block-start: var(--_flow-gap);
+}
+
+kakao-flow[hidden] { display: none; }

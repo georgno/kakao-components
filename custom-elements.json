@@ -6010,6 +6010,157 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/flow/flow.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "KakaoFlow",
+          "tagName": "kakao-flow",
+          "summary": "Even vertical space between blocks: sections, form fields, paragraphs and cards.",
+          "description": "A vertical flow: one consistent gap between its children, none before the first or after the last, whatever margins the page gives headings and paragraphs. For the sections of a page, the fields of a form, the blocks of a card. Light DOM: flow.css draws it, so a server-rendered page is spaced before (and without) this script; the script only defines the tag. Vanilla JS, no deps.",
+          "attributes": [
+            {
+              "name": "gap",
+              "description": "sm · md (default) · lg: the space between children, from the spacing tokens (0.5rem: a heading and its text; 1rem: blocks; 2rem: sections).",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'"
+            },
+            {
+              "name": "hidden",
+              "description": "Not shown."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--kakao-flow-gap",
+              "default": "var(--kakao-space-gap, 1rem)"
+            },
+            {
+              "name": "--kakao-flow-gap-sm",
+              "default": "var(--kakao-space-y, 0.5rem)"
+            },
+            {
+              "name": "--kakao-flow-gap-lg",
+              "default": "2rem"
+            }
+          ],
+          "kakao": {
+            "script": "components/flow/flow.js",
+            "css": [
+              "components/flow/flow.css"
+            ],
+            "lightDom": true,
+            "requires": [],
+            "enhancedBy": [],
+            "notFor": "Columns: kakao-grid; a pile of overlapping cards: kakao-stack; a row of buttons: a flex row."
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "kakao-flow",
+          "declaration": {
+            "name": "KakaoFlow",
+            "module": "components/flow/flow.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/grid/grid.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "KakaoGrid",
+          "tagName": "kakao-grid",
+          "summary": "Columns that wrap by width: cards, stat tiles, fields side by side.",
+          "description": "A responsive grid: as many equal columns as fit at a minimum width, one column on a phone, with a token gap. For cards, stat tiles, fields side by side. Light DOM: grid.css draws it, so a server-rendered grid is laid out before (and without) this script; the script only defines the tag. Vanilla JS, no deps.",
+          "attributes": [
+            {
+              "name": "min",
+              "description": "sm · md (default) · lg: the narrowest a column gets (12rem, 18rem, 24rem); never wider than the grid, so a phone shows one column. Without it, --kakao-grid-min sets any length.",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'"
+            },
+            {
+              "name": "gap",
+              "description": "sm · md (default) · lg: the space between cells, from the spacing tokens (0.5rem, 1rem, 2rem).",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'"
+            },
+            {
+              "name": "fill",
+              "description": "Boolean. Keeps the empty columns: one or two items stay one column wide instead of stretching across the row.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "name": "hidden",
+              "description": "Not shown."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--kakao-grid-min",
+              "default": "18rem"
+            },
+            {
+              "name": "--kakao-grid-min-sm",
+              "default": "12rem"
+            },
+            {
+              "name": "--kakao-grid-min-lg",
+              "default": "24rem"
+            },
+            {
+              "name": "--kakao-grid-gap",
+              "default": "var(--kakao-space-gap, 1rem)"
+            },
+            {
+              "name": "--kakao-grid-gap-sm",
+              "default": "var(--kakao-space-y, 0.5rem)"
+            },
+            {
+              "name": "--kakao-grid-gap-lg",
+              "default": "2rem"
+            }
+          ],
+          "kakao": {
+            "script": "components/grid/grid.js",
+            "css": [
+              "components/grid/grid.css"
+            ],
+            "lightDom": true,
+            "requires": [],
+            "enhancedBy": [],
+            "notFor": "Rows of data: kakao-table or kakao-grid-view; one column of sections: kakao-flow; a pile of cards: kakao-stack."
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "kakao-grid",
+          "declaration": {
+            "name": "KakaoGrid",
+            "module": "components/grid/grid.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/grid-view/grid-view.js",
       "declarations": [
         {
@@ -7862,6 +8013,80 @@
           "declaration": {
             "name": "KakaoNumberInput",
             "module": "components/number-input/number-input.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/page/page.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "KakaoPage",
+          "tagName": "kakao-page",
+          "summary": "The page's content column: max-width, side padding, space below the header bar.",
+          "description": "The page container: centres the page's content at a readable maximum width, pads its sides (and a phone's notch), starts just below the sticky header bar and keeps its end clear of a fixed kakao-action-bar. Light DOM: page.css draws it, so a server-rendered page is laid out before (and without) this script; the script only defines the tag. Vanilla JS, no deps.",
+          "attributes": [
+            {
+              "name": "width",
+              "description": "narrow · normal (default) · wide · full: the maximum width, padding included (45rem: one column of text or a form; 72rem; 96rem: tables and dashboards; none).",
+              "type": {
+                "text": "'narrow' | 'normal' | 'wide' | 'full'"
+              },
+              "default": "'normal'"
+            },
+            {
+              "name": "hidden",
+              "description": "Not shown."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--kakao-page-max-width",
+              "default": "72rem"
+            },
+            {
+              "name": "--kakao-page-narrow-width",
+              "default": "45rem"
+            },
+            {
+              "name": "--kakao-page-wide-width",
+              "default": "96rem"
+            },
+            {
+              "name": "--kakao-page-padding-x",
+              "default": "1.25rem"
+            },
+            {
+              "name": "--kakao-page-padding-top",
+              "default": "var(--kakao-space-below-bar, 8px)"
+            },
+            {
+              "name": "--kakao-page-padding-bottom",
+              "default": "4rem"
+            }
+          ],
+          "kakao": {
+            "script": "components/page/page.js",
+            "css": [
+              "components/page/page.css"
+            ],
+            "lightDom": true,
+            "requires": [],
+            "enhancedBy": [],
+            "notFor": "Columns of cards: kakao-grid; space between sections: kakao-flow; a framed box: kakao-card."
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "kakao-page",
+          "declaration": {
+            "name": "KakaoPage",
+            "module": "components/page/page.js"
           }
         }
       ]
@@ -10983,7 +11208,7 @@
             "lightDom": false,
             "requires": [],
             "enhancedBy": [],
-            "notFor": "Page layout or vertical spacing: CSS gap."
+            "notFor": "Page layout: kakao-page, kakao-grid; vertical spacing: kakao-flow."
           }
         }
       ],

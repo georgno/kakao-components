@@ -1,0 +1,39 @@
+/*
+ * kakao-grid styles
+ *
+ * Light DOM: the grid is drawn by this file alone, so a server-rendered
+ * grid of cards is laid out before any script runs. Every rule is scoped
+ * under kakao-grid; the children are not styled.
+ *
+ * Theming: every --kakao-grid-* property in the settings block below can be
+ * set on <kakao-grid> or any ancestor. The defaults live in that block:
+ * change them on construction.html. --kakao-grid-min also takes any length
+ * on one grid (style="--kakao-grid-min: 14rem"), when it has no min
+ * attribute.
+ */
+
+kakao-grid {
+  /* @kakao-settings:start prefix=--kakao-grid- (written by construction.html, edit there) */
+  --_min: var(--kakao-grid-min, 18rem);
+  --_min-sm: var(--kakao-grid-min-sm, 12rem);
+  --_min-lg: var(--kakao-grid-min-lg, 24rem);
+  --_gap: var(--kakao-grid-gap, var(--kakao-space-gap, 1rem));
+  --_gap-sm: var(--kakao-grid-gap-sm, var(--kakao-space-y, 0.5rem));
+  --_gap-lg: var(--kakao-grid-gap-lg, 2rem);
+  /* @kakao-settings:end */
+  --_repeat: auto-fit;
+  display: grid;
+  /* min(…, 100%): a column never asks for more than the grid has, so a
+     narrow phone shows one full-width column instead of scrolling sideways. */
+  grid-template-columns: repeat(var(--_repeat), minmax(min(var(--_min), 100%), 1fr));
+  gap: var(--_gap);
+}
+
+kakao-grid[min="sm"] { --_min: var(--_min-sm); }
+kakao-grid[min="lg"] { --_min: var(--_min-lg); }
+kakao-grid[gap="sm"] { --_gap: var(--_gap-sm); }
+kakao-grid[gap="lg"] { --_gap: var(--_gap-lg); }
+/* Empty tracks stay: one or two items keep a column's width. */
+kakao-grid[fill] { --_repeat: auto-fill; }
+
+kakao-grid[hidden] { display: none; }

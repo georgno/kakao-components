@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-page - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="page.css" />
+<link rel="stylesheet" href="../flow/flow.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="page.js" defer></script>
+<script src="../flow/flow.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+<style>
+  /* This page only: a small screen to show the container in. Its own
+     properties keep the example short: less space at the end. */
+  .screen {
+    --kakao-page-padding-bottom: 1.25rem;
+    border: 1px solid var(--kakao-color-line, #e5e7eb);
+    border-radius: var(--kakao-radius-md, 10px);
+    background: var(--kakao-color-page, #f6f7f9);
+    overflow: hidden;
+  }
+  .screen-bar { padding: 0.5rem 1rem; border-bottom: 1px solid var(--kakao-color-line, #e5e7eb); background: var(--kakao-color-bg, #fff); font-weight: 600; }
+  /* The container's edges, padding included. */
+  .screen kakao-page { outline: 1px dashed var(--kakao-color-border, #82828b); outline-offset: -1px; }
+</style>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Page"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Page</h1>
+    <p><code>&lt;kakao-page&gt;</code> - the page container: the content column at a readable maximum width, centred, with side padding (and room for a phone's notch). It starts just below the sticky <a href="../header-bar/demo.html">header bar</a> and keeps its end clear of a fixed <a href="../action-bar/demo.html">action bar</a>. It is light DOM: <code>page.css</code> lays it out, so a server-rendered page needs no script. Inside it, the <a href="../flow/demo.html">flow</a> spaces the sections and the <a href="../grid/demo.html">grid</a> lays out cards.</p>
+  </header>
+
+  <h2>The page's content column</h2>
+  <p>Put it in the <code>&lt;main&gt;</code> below the header bar; it is not a landmark itself. Dashed: the container's edges, its side padding inside them.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Narrow: one column of text or a form</h3>
+      <div class="screen" data-demo-wrap>
+        <div class="screen-bar" data-demo-only>Header bar</div>
+        <kakao-page width="narrow">
+          <kakao-flow gap="sm">
+            <h4>Account</h4>
+            <p>At 45rem a line of text stays easy to read, and a form doesn't stretch across a wide screen.</p>
+          </kakao-flow>
+        </kakao-page>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Widths</h2>
+  <p><code>width</code> is the maximum width, padding included: <code>narrow</code> (45rem), <code>normal</code> (72rem, the default), <code>wide</code> (96rem: tables and dashboards) or <code>full</code> (no limit). Below its width the container spans the screen.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Full: the whole width, padded</h3>
+      <div class="screen" data-demo-wrap>
+        <div class="screen-bar" data-demo-only>Header bar</div>
+        <kakao-page width="full">
+          <kakao-flow gap="sm">
+            <h4>Dashboard</h4>
+            <p>Full and wide are for tables and boards that use every column they get.</p>
+          </kakao-flow>
+        </kakao-page>
+      </div>
+    </kakao-card>
+  </div>
+</main>
+</body>
+</html>

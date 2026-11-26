@@ -20,6 +20,9 @@
 <link rel="stylesheet" href="components/number-input/number-input.css" />
 <link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
 <link rel="stylesheet" href="components/code/code.css" />
+<link rel="stylesheet" href="components/page/page.css" />
+<link rel="stylesheet" href="components/grid/grid.css" />
+<link rel="stylesheet" href="components/flow/flow.css" />
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
 <script src="components/stepper/stepper.js" defer></script>
@@ -85,6 +88,9 @@
 <script src="components/action-bar/action-bar.js" defer></script>
 <script src="components/code/code.js" defer></script>
 <script src="components/code-block/code-block.js" defer></script>
+<script src="components/page/page.js" defer></script>
+<script src="components/grid/grid.js" defer></script>
+<script src="components/flow/flow.js" defer></script>
 <style>
   /* The table of contents: a sticky sidebar column from 75rem, a sticky
      folded bar under the page bar below that. */
@@ -124,6 +130,9 @@
   /* Action bar examples: resting in a page-coloured frame, not floating. */
   .ov-action-frame { padding: 1rem 0; border-radius: 10px; background: var(--kakao-color-page, #f6f7f9); }
   .ov-action-frame kakao-action-bar { position: relative; bottom: auto; top: auto; z-index: auto; }
+  /* Page example: the container in a page-coloured frame, its edges dashed, less space at its end. */
+  .page-frame { --kakao-page-padding-bottom: 1rem; border: 1px solid var(--line); border-radius: 10px; background: var(--kakao-color-page, #f6f7f9); overflow: hidden; }
+  .page-frame kakao-page { outline: 1px dashed var(--kakao-color-border, #82828b); outline-offset: -1px; }
 </style>
 </head>
 <body>
@@ -1064,6 +1073,56 @@ npm test
       </div>
     </article>
 
+    <!-- ============================== Flow ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Flow</h2>
+        <code>&lt;kakao-flow&gt;</code>
+        <a href="components/flow/construction.html">Construction</a>
+        <a href="components/flow/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A vertical flow: one even gap between its children (<code>gap</code> sm, md or lg from the spacing tokens), none before the first or after the last, whatever margins the page gives headings and paragraphs. For the sections of a page, the fields of a form, the blocks of a card; hidden children leave no gap. Light DOM: <code>flow.css</code> spaces it, no script needed.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>A heading and its text · <code>gap="sm"</code></h3>
+          <kakao-flow gap="sm">
+            <h4>Results</h4>
+            <p>12 checks passed, 1 failed.</p>
+            <p>Fix the failing check, then run the suite again.</p>
+          </kakao-flow>
+        </div>
+        <div class="example">
+          <h3>Blocks · default</h3>
+          <kakao-flow>
+            <kakao-card><p>First block</p></kakao-card>
+            <kakao-card><p>Second block, one gap below the first</p></kakao-card>
+          </kakao-flow>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Grid ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Grid</h2>
+        <code>&lt;kakao-grid&gt;</code>
+        <a href="components/grid/construction.html">Construction</a>
+        <a href="components/grid/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A responsive grid: as many equal columns as fit at a minimum width (<code>min</code> sm, md or lg), one column on a phone, with a gap from the spacing tokens; <code>fill</code> keeps a lone item one column wide. For cards, stat tiles and fields side by side, not rows of data (that is the table or the grid view). Light DOM: <code>grid.css</code> lays it out, no script needed.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Stat tiles · <code>min="sm"</code> <code>gap="sm"</code></h3>
+          <kakao-grid min="sm" gap="sm">
+            <kakao-card><p>Open 24</p></kakao-card>
+            <kakao-card><p>In review 7</p></kakao-card>
+            <kakao-card><p>Merged 131</p></kakao-card>
+            <kakao-card><p>Closed 12</p></kakao-card>
+          </kakao-grid>
+        </div>
+      </div>
+    </article>
+
     <!-- ============================== Grid view ============================== -->
     <article class="card">
       <div class="component-head">
@@ -1339,6 +1398,30 @@ npm test
         <div class="example">
           <h3>Touch split · <code>grouped="false"</code></h3>
           <kakao-number-input touch-steppers grouped="false" plus="left" minus="right"><input type="number" min="0" max="100" value="10" aria-label="Quantity, split buttons" /></kakao-number-input>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Page ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Page</h2>
+        <code>&lt;kakao-page&gt;</code>
+        <a href="components/page/construction.html">Construction</a>
+        <a href="components/page/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The page container, inside <code>&lt;main&gt;</code>: the content column centred at a maximum width (<code>width</code> narrow 45rem, normal 72rem, wide 96rem or full), side padding with room for a phone's notch, starting just below the sticky header bar and keeping its end clear of a fixed action bar. Light DOM: <code>page.css</code> lays it out, no script needed.</p>
+      <div class="examples wide">
+        <div class="example full">
+          <h3>Narrow, in a frame · <code>width="narrow"</code></h3>
+          <div class="page-frame">
+            <kakao-page width="narrow">
+              <kakao-flow gap="sm">
+                <h4>Account</h4>
+                <p>At 45rem a line of text stays easy to read, and a form doesn't stretch across a wide screen.</p>
+              </kakao-flow>
+            </kakao-page>
+          </div>
         </div>
       </div>
     </article>

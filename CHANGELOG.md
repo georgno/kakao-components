@@ -19,6 +19,17 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- Layout primitives, light DOM and drawn by their CSS alone (no script needed;
+  load `page.css`, `grid.css`, `flow.css`), spaced from the tokens:
+  `<kakao-page>`, the page container (centred at `width` narrow 45rem,
+  normal 72rem, wide 96rem or full, side padding with the safe-area insets,
+  starting `--kakao-space-below-bar` below the header bar and keeping its end
+  clear of a fixed action bar); `<kakao-grid>`, a responsive grid (auto-fit
+  columns of at least `min` sm 12rem, md 18rem or lg 24rem or any
+  `--kakao-grid-min`, one column on a phone, `gap` sm, md or lg, `fill` to
+  keep a lone item one column wide); `<kakao-flow>`, a vertical flow (one
+  `gap` between its children, their own margins replaced, hidden children
+  leave none). The kitchen sink's content column is a kakao-page.
 - `<kakao-code-block>`: preformatted text, code or logs. Monospace in the
   theme's colours, scrolling past `max-height` (24rem) or wrapping with
   `wrap`, an optional label row (`label`, a display-only `language`) and copy
