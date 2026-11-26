@@ -31,6 +31,7 @@ test('setup errors exit 2 without checking files', () => {
     [['--config', 'config/broken.json', 'rules'], /not valid JSON/],
     [['--config', 'config/dup.json', 'rules'], /Two rules have the id "list-data-name"/],
     [['--config', 'config/missing.json'], /does not exist/],
+    [['--config', 'config/no-manifest.json', 'rules'], /Manifest config\/nothing\.json does not exist/],
     [['no/such/path'], /Path no\/such\/path does not exist/],
     [['--format', 'xml'], /--format must be text or json/],
   ]) {
@@ -110,4 +111,11 @@ test('forced.mandatory: no id, no section and a stale section are errors', () =>
   assert.equal(r.forced, 3);
   const c = cli([], path.join(FIX, 'forced/mandatory'));
   assert.equal(c.status, 1);
+});
+
+test('the config can name the manifest the dependency rule reads', () => {
+  const r = check({ argv: ['--config', 'config/manifest.json', 'config/manifest-page.html'], cwd: FIX });
+  assert.deepEqual(r.findings.map((f) => [f.rule, f.message]), [
+    ['page-loads-dependencies', '<kakao-thing> needs lib/base/base.js (for kakao-base), but the page does not load it. Add <script src="lib/base/base.js" defer>, before lib/thing/thing.js.'],
+  ]);
 });

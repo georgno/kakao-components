@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "2.1.0",
+  "modules": [
+    { "kind": "javascript-module", "path": "lib/thing/thing.js", "declarations": [
+      { "kind": "class", "customElement": true, "name": "Thing", "tagName": "kakao-thing",
+        "kakao": { "script": "lib/thing/thing.js", "css": [], "lightDom": false, "requires": ["kakao-base"], "enhancedBy": [] } } ] },
+    { "kind": "javascript-module", "path": "lib/base/base.js", "declarations": [
+      { "kind": "class", "customElement": true, "name": "Base", "tagName": "kakao-base",
+        "kakao": { "script": "lib/base/base.js", "css": [], "lightDom": false, "requires": [], "enhancedBy": [] } } ] }
+  ]
+}

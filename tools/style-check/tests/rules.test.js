@@ -18,6 +18,7 @@ const EXPECTED_FAILS = {
   'field-has-name': 5,
   'icon-button-has-name': 3,
   'attribute-values': 6,
+  'page-loads-dependencies': 5,
 };
 
 const rules = fs.readdirSync(path.join(__dirname, '../../style-rules')).map((f) => f.replace(/\.js$/, '')).sort();
@@ -64,4 +65,22 @@ test('attribute-values names the allowed values', () => {
   const r = run('attribute-values.fail.html');
   assert.equal(r.findings[0].message, 'tone="info" on <kakao-badge>: info is not one of neutral, primary, success, warning, danger, ink.');
   assert.deepEqual([r.findings[0].line, r.findings[0].column], [1, 14]);
+});
+
+test('page-loads-dependencies names the missing files and the order', () => {
+  const msgs = run('page-loads-dependencies.fail.html').findings.map((f) => `${f.line} ${f.message}`);
+  assert.equal(msgs.length, 5);
+  assert.match(msgs[0], /^11 <kakao-tabs> needs the light-DOM CSS \.\.\/kakao\/components\/tabs\/tabs\.css,/);
+  assert.match(msgs[1], /^16 <kakao-toast> needs \.\.\/kakao\/components\/alert\/alert\.js \(for kakao-alert\).*before \.\.\/kakao\/components\/toast\/toast\.js\.$/);
+  assert.match(msgs[2], /^16 <kakao-toast> needs \.\.\/kakao\/components\/stack\/stack\.js \(for kakao-stack\)/);
+  assert.match(msgs[3], /^17 <kakao-tag-input>: \.\.\/kakao\/components\/chip\/chip\.js must load before .*tag-input\.js .*\(line 8\)\.$/);
+  assert.match(msgs[4], /^18 <kakao-badge> needs \.\.\/kakao\/components\/badge\/badge\.js, but the page does not load it\./);
+});
+
+test('page-loads-dependencies: warnings in a template, nothing in a partial', () => {
+  const t = run('page-loads-dependencies.template.php');
+  assert.equal(t.errors, 0);
+  assert.equal(t.warnings, 2);
+  assert.match(t.findings[0].message, /needs <\?= \$base \?>\/components\/alert\/alert\.js/);
+  assert.deepEqual(run('page-loads-dependencies.partial.php').findings, []);
 });

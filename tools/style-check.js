@@ -20,8 +20,14 @@
  * config's "ruleDirs"):
  *   module.exports = { id, level: 'error' | 'warning', description,
  *     tags: ['kakao-dialog'] (or 'kakao-*'), check(el, ctx) -> [{ message,
- *     el?, line?, column? }] };
- * ctx holds the shared helpers of tools/style-check/helpers.js.
+ *     el?, line?, column?, level? }] };
+ * ctx holds the shared helpers of tools/style-check/helpers.js, plus file
+ * (path), source (text), doc (the parsed file: elements in document order)
+ * and manifest (custom-elements.json, or null). A finding's level 'warning'
+ * lowers an error rule's level for that finding (e.g. in template files).
+ *
+ * The manifest is the config's "manifest" file, else custom-elements.json
+ * next to the config, else the one shipped with this tool.
  *
  * Forced placements: an element with the boolean attribute `force` produces
  * no errors or warnings; its findings are listed as "forced". A forced element
@@ -57,7 +63,9 @@ const DEFAULTS = {
   rules: {},
   ruleDirs: [],
   forced: { file: 'kakao-style.forced.md', mandatory: false },
+  manifest: null,
 };
+const OWN_MANIFEST = path.join(__dirname, '..', 'custom-elements.json');
 
 class SetupError extends Error {}
 
@@ -131,8 +139,12 @@ function loadConfig(cwd, file) {
     if ('mandatory' in f && typeof f.mandatory !== 'boolean') throw new SetupError(`${name}: "forced.mandatory" must be true or false.`);
     Object.assign(forced, f);
   }
+  if ('manifest' in raw && raw.manifest !== null && typeof raw.manifest !== 'string') {
+    throw new SetupError(`${name}: "manifest" must be a path.`);
+  }
   const base = configPath ? path.dirname(configPath) : cwd;
   return {
+    manifest: raw.manifest ? path.resolve(base, raw.manifest) : null,
     base,
     paths: raw.paths || DEFAULTS.paths,
     ignore: raw.ignore || DEFAULTS.ignore,
@@ -141,6 +153,20 @@ function loadConfig(cwd, file) {
     ruleDirs: raw.ruleDirs || DEFAULTS.ruleDirs,
     forced,
   };
+}
+
+/* ---- manifest -------------------------------------------------------------- */
+
+function loadManifest(config, cwd) {
+  let file = config.manifest;
+  if (file && !fs.existsSync(file)) throw new SetupError(`Manifest ${toSlash(path.relative(cwd, file))} does not exist.`);
+  if (!file) file = [path.join(config.base, 'custom-elements.json'), OWN_MANIFEST].find((f) => fs.existsSync(f));
+  if (!file) return null;
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (err) {
+    throw new SetupError(`Manifest ${toSlash(path.relative(cwd, file))} cannot be read: ${err.message}`);
+  }
 }
 
 /* ---- rules ----------------------------------------------------------------- */
@@ -257,12 +283,13 @@ function check({ argv = [], cwd = process.cwd() } = {}) {
   if (args.help) return { help: true, args };
   const config = loadConfig(cwd, args.config);
   const { rules, levels } = loadRules(config, cwd);
+  const manifest = loadManifest(config, cwd);
   const fromConfig = args.paths.length === 0;
   const files = findFiles(fromConfig ? config.paths : args.paths, config, cwd, fromConfig);
 
   const byTag = (tag) => rules.filter((r) => r.tags.some((t) => t === tag || (t.endsWith('*') && tag.startsWith(t.slice(0, -1)))));
   const ruleCache = new Map();
-  const ctxBase = { ...helpers };
+  const ctxBase = { ...helpers, manifest };
   const findings = [];
   const forcedEls = [];
   const add = (f) => { if (f.level !== 'off') findings.push(f); };
@@ -273,7 +300,7 @@ function check({ argv = [], cwd = process.cwd() } = {}) {
     for (const p of doc.problems) {
       add({ path: file.rel, line: p.line, column: p.column, level: levels['markup-unreadable'], rule: 'markup-unreadable', message: p.message });
     }
-    const ctx = { ...ctxBase, file: file.rel };
+    const ctx = { ...ctxBase, file: file.rel, source, doc };
     for (const el of doc.elements) {
       if (!el.tag.startsWith('kakao-')) continue;
       if (!ruleCache.has(el.tag)) ruleCache.set(el.tag, byTag(el.tag));
@@ -294,7 +321,7 @@ function check({ argv = [], cwd = process.cwd() } = {}) {
             path: file.rel,
             line: f.line || at.line,
             column: f.column || at.column,
-            level: forced ? 'forced' : levels[rule.id],
+            level: forced ? 'forced' : f.level === 'warning' ? 'warning' : levels[rule.id],
             rule: rule.id,
             message: String(f.message || rule.description),
             element: el,

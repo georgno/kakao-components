@@ -28,6 +28,14 @@ upgrade is safe; the entries below them give the detail.
   component headers by `node tools/manifest.js`; `--check` reports a stale
   file, and the pre-commit hook and the deploy run it. Published on the
   demo site.
+- Style checker: the rule `page-loads-dependencies` checks that a page loads,
+  for every kakao tag it uses, the component's script, its light-DOM CSS
+  (`tabs.css`, `button.css`, …) and the components it requires, each one
+  before the script that needs it (toast: `stack.js` and `alert.js` first).
+  The message names the missing file. The data comes from
+  custom-elements.json (the config's new `manifest` key can point at another
+  copy). Files without a `<head>` (partials, Yii2 views) are skipped; in
+  template files the findings are warnings.
 - Every component header has a FILES section (script, css, requires,
   enhanced). The headers of button, slider, tabs, number-input,
   animated-number and list follow the shared header format now.
