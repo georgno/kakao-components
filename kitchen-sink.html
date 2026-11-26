@@ -60,12 +60,12 @@
   <kakao-aside-menu slot="start" data-page-transition-content="bar-start" id="pageNav" class="page-nav" label="Settings sections" persistent="1440px"
     list-data='[{"value":"plan","label":"Plan"},{"value":"playback","label":"Playback"},{"value":"alerts","label":"Alerts"},{"value":"account","label":"Account"}]'
     selected="plan"></kakao-aside-menu>
-  <a slot="nav" href="index.html">Home</a>
-  <a slot="nav" href="components.html">Components</a>
-  <a slot="nav" href="kitchen-sink.html" aria-current="page">Kitchen sink</a>
-  <a slot="nav" href="styleguide.html">Style guide</a>
-  <a slot="nav" href="tokens.html">Main variables</a>
-  <a slot="nav" href="changelog.html">Changelog</a>
+  <a slot="nav" href="index.html" data-text="Home">Home</a>
+  <a slot="nav" href="components.html" data-text="Components">Components</a>
+  <a slot="nav" href="kitchen-sink.html" aria-current="page" data-text="Kitchen sink">Kitchen sink</a>
+  <a slot="nav" href="styleguide.html" data-text="Style guide">Style guide</a>
+  <a slot="nav" href="tokens.html" data-text="Main variables">Main variables</a>
+  <a slot="nav" href="changelog.html" data-text="Changelog">Changelog</a>
   <kakao-button slot="end" class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
     list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
   <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>

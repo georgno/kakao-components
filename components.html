@@ -45,7 +45,7 @@
       repeating-linear-gradient(115deg, color-mix(in srgb, var(--accent) 55%, transparent) 0 14px, transparent 14px 34px),
       var(--card);
   }
-  /* Links in a bar's nav (the page bar's and the bar examples'): shared/site-shell.css. */
+  /* Links in the page bar's nav: shared/site-shell.css. */
   /* Action bar examples: resting in a page-coloured frame, not floating. */
   .ov-action-frame { padding: 1rem 0; border-radius: 10px; background: var(--kakao-color-page, #f6f7f9); }
   .ov-action-frame kakao-action-bar { position: relative; bottom: auto; top: auto; z-index: auto; }
@@ -59,12 +59,12 @@
   <!-- The site's shell: it stays while the pages swap their <main> (shared/page-transition.js).
        The start slot is a region too: the kitchen sink puts its section menu there. -->
   <span slot="start" data-page-transition-content="bar-start"></span>
-  <a slot="nav" href="index.html">Home</a>
-  <a slot="nav" href="components.html" aria-current="page">Components</a>
-  <a slot="nav" href="kitchen-sink.html">Kitchen sink</a>
-  <a slot="nav" href="styleguide.html">Style guide</a>
-  <a slot="nav" href="tokens.html">Main variables</a>
-  <a slot="nav" href="changelog.html">Changelog</a>
+  <a slot="nav" href="index.html" data-text="Home">Home</a>
+  <a slot="nav" href="components.html" aria-current="page" data-text="Components">Components</a>
+  <a slot="nav" href="kitchen-sink.html" data-text="Kitchen sink">Kitchen sink</a>
+  <a slot="nav" href="styleguide.html" data-text="Style guide">Style guide</a>
+  <a slot="nav" href="tokens.html" data-text="Main variables">Main variables</a>
+  <a slot="nav" href="changelog.html" data-text="Changelog">Changelog</a>
   <kakao-button slot="end" class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
     list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
   <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
