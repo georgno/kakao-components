@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Release check report</title>
+<!--
+  Recipe: a report or detail page. Summary tiles, a details card, status
+  badges, findings in tabs and accordions, short lists of file:line references.
+  In your project: kakao/shared/kakao.css and kakao/shared/kakao.js (see
+  templates/page.html). The loader loads every tag below; no other script tag.
+-->
+<link rel="stylesheet" href="../shared/kakao.css" />
+<script src="../shared/kakao.js"></script>
+<style>
+  /* The page base (as in templates/page.html). */
+  body {
+    margin: 0;
+    background: var(--kakao-color-page);
+    color: var(--kakao-color-text);
+    font: 1rem/1.5 var(--kakao-font-family);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
+  a { color: var(--kakao-color-primary); }
+
+  /* This recipe: the big number of a summary tile. */
+  .stat { font-size: 1.75rem; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <strong>Release check</strong>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <kakao-page>
+    <kakao-flow gap="lg">
+      <header>
+        <kakao-flow gap="sm">
+          <h1>Release 2.4.0</h1>
+          <p><kakao-badge tone="danger">Blocked</kakao-badge> Three checks failed; fix them before the release.</p>
+        </kakao-flow>
+      </header>
+
+      <!-- Summary: one tile per number, as many columns as fit. -->
+      <section>
+        <kakao-flow>
+          <kakao-section-header heading="Summary" description="Checks run on the release branch."></kakao-section-header>
+          <kakao-grid min="sm" gap="sm">
+            <kakao-card><h3 slot="header">Passed</h3><p class="stat">42</p></kakao-card>
+            <kakao-card><h3 slot="header">Failed</h3><p class="stat">3</p></kakao-card>
+            <kakao-card><h3 slot="header">Warnings</h3><p class="stat">6</p></kakao-card>
+            <kakao-card><h3 slot="header">Duration</h3><p class="stat">4m 12s</p></kakao-card>
+          </kakao-grid>
+        </kakao-flow>
+      </section>
+
+      <!-- Details: label and value pairs, rich values as <dt> / <dd> children. -->
+      <section>
+        <kakao-flow>
+          <kakao-section-header heading="Details"></kakao-section-header>
+          <kakao-card>
+            <kakao-description-list dividers>
+              <dt>Status</dt>
+              <dd><kakao-badge tone="danger">Blocked</kakao-badge></dd>
+              <dt>Branch</dt>
+              <dd><kakao-code>release/2.4</kakao-code></dd>
+              <dt>Commit</dt>
+              <dd><kakao-code>3f9c2a1</kakao-code> Update the payment form</dd>
+              <dt>Started</dt>
+              <dd>26 Nov 2026, 09:14</dd>
+              <dt>Owner</dt>
+              <dd><a href="#owner">Ada Lovelace</a></dd>
+            </kakao-description-list>
+          </kakao-card>
+        </kakao-flow>
+      </section>
+
+      <!-- Findings: tabs for the groups, an accordion per finding. -->
+      <section>
+        <kakao-flow>
+          <kakao-section-header heading="Findings" count="9" description="Failures block the release; warnings don't.">
+            <kakao-copy-button slot="actions" value="Release 2.4.0: 3 failed, 6 warnings, 42 passed" label="Copy summary" size="sm"></kakao-copy-button>
+          </kakao-section-header>
+
+          <kakao-tabs role="tablist" aria-label="Findings">
+            <kakao-tab id="tab-failed" controls="panel-failed" selected>Failed 3</kakao-tab>
+            <kakao-tab id="tab-warnings" controls="panel-warnings">Warnings 6</kakao-tab>
+            <kakao-tab id="tab-passed" controls="panel-passed">Passed 42</kakao-tab>
+          </kakao-tabs>
+
+          <div id="panel-failed" role="tabpanel" aria-labelledby="tab-failed">
+            <kakao-flow gap="sm">
+              <kakao-accordion heading="Payment form fields have no label" description="Accessibility" open>
+                <kakao-badge slot="meta" tone="danger">Fail</kakao-badge>
+                <kakao-flow gap="sm">
+                  <p>Screen readers announce these fields as "edit text". Give each a label.</p>
+                  <kakao-plain-list size="sm">
+                    <ul role="list">
+                      <li><kakao-code>src/pay/form.html:42</kakao-code> card number</li>
+                      <li><kakao-code>src/pay/form.html:57</kakao-code> expiry date</li>
+                    </ul>
+                  </kakao-plain-list>
+                </kakao-flow>
+              </kakao-accordion>
+              <kakao-accordion heading="Two unit tests fail" description="Tests">
+                <kakao-badge slot="meta" tone="danger">Fail</kakao-badge>
+                <kakao-flow gap="sm">
+                  <kakao-plain-list size="sm">
+                    <ul role="list">
+                      <li><kakao-badge tone="danger">Fail</kakao-badge> rounds totals to two decimals</li>
+                      <li><kakao-badge tone="danger">Fail</kakao-badge> rejects an expired card</li>
+                    </ul>
+                  </kakao-plain-list>
+                  <kakao-code-block label="Output" max-height="12rem">expected 10.99, got 10.989999
+    at total.test.js:18:5
+expected "expired", got "ok"
+    at card.test.js:44:7</kakao-code-block>
+                </kakao-flow>
+              </kakao-accordion>
+              <kakao-accordion heading="Bundle over budget" description="Performance">
+                <kakao-badge slot="meta" tone="danger">Fail</kakao-badge>
+                <p>The main bundle is 312 KB, 12 KB over the 300 KB budget.</p>
+              </kakao-accordion>
+            </kakao-flow>
+          </div>
+
+          <div id="panel-warnings" role="tabpanel" aria-labelledby="tab-warnings" hidden>
+            <kakao-plain-list>
+              <ul role="list">
+                <li><kakao-badge tone="warning">Warning</kakao-badge> <kakao-code>src/app.js:118</kakao-code> unused variable</li>
+                <li><kakao-badge tone="warning">Warning</kakao-badge> <kakao-code>src/app.js:240</kakao-code> console.log left in</li>
+                <li><kakao-badge tone="warning">Warning</kakao-badge> <kakao-code>src/cart/total.js:9</kakao-code> magic number</li>
+                <li><kakao-badge tone="warning">Warning</kakao-badge> <kakao-code>src/pay/form.html:12</kakao-code> image without width and height</li>
+                <li><kakao-badge tone="warning">Warning</kakao-badge> <kakao-code>src/pay/api.js:77</kakao-code> deprecated fetch option</li>
+                <li><kakao-badge tone="warning">Warning</kakao-badge> <kakao-code>README.md:3</kakao-code> broken link</li>
+              </ul>
+            </kakao-plain-list>
+          </div>
+
+          <div id="panel-passed" role="tabpanel" aria-labelledby="tab-passed" hidden>
+            <kakao-accordion heading="42 checks passed" description="Tests, accessibility, performance, links">
+              <kakao-badge slot="meta" tone="success">Pass</kakao-badge>
+              <kakao-plain-list size="sm">
+                <ul role="list">
+                  <li><kakao-badge tone="success">Pass</kakao-badge> saves a draft</li>
+                  <li><kakao-badge tone="success">Pass</kakao-badge> sends the form</li>
+                  <li><kakao-badge tone="success">Pass</kakao-badge> shows the cart total</li>
+                  <li><kakao-badge tone="success">Pass</kakao-badge> every page has a title</li>
+                  <li><kakao-badge tone="success">Pass</kakao-badge> 38 more</li>
+                </ul>
+              </kakao-plain-list>
+            </kakao-accordion>
+          </div>
+        </kakao-flow>
+      </section>
+    </kakao-flow>
+  </kakao-page>
+</main>
+</body>
+</html>

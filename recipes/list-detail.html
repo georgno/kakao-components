@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Orders</title>
+<!--
+  Recipe: a list with a detail sheet. A server-rendered table; each row's link
+  opens one kakao-aside-sheet, filled from the row's data. Without JavaScript
+  the links lead to the order's own page.
+  In your project: kakao/shared/kakao.css and kakao/shared/kakao.js (see
+  templates/page.html). The loader loads every tag below; no other script tag.
+-->
+<link rel="stylesheet" href="../shared/kakao.css" />
+<script src="../shared/kakao.js"></script>
+<style>
+  /* The page base (as in templates/page.html). */
+  body {
+    margin: 0;
+    background: var(--kakao-color-page);
+    color: var(--kakao-color-text);
+    font: 1rem/1.5 var(--kakao-font-family);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
+  a { color: var(--kakao-color-primary); }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <strong>Shop</strong>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <kakao-page>
+    <kakao-flow gap="lg">
+      <header>
+        <kakao-flow gap="sm">
+          <h1>Orders</h1>
+          <p>Open an order to see its items and mark it as shipped.</p>
+        </kakao-flow>
+      </header>
+
+      <section>
+        <kakao-flow>
+          <kakao-section-header heading="Today" count="4"></kakao-section-header>
+          <kakao-table label="Today's orders">
+            <table>
+              <thead>
+                <tr>
+                  <th data-key="order">Order</th>
+                  <th data-key="customer">Customer</th>
+                  <th data-key="status">Status</th>
+                  <th data-key="total" data-type="number">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-key="1042">
+                  <td><a href="?order=1042" data-order="1042">#1042</a></td>
+                  <td>Ada Lovelace</td>
+                  <td><kakao-badge tone="warning">To pack</kakao-badge></td>
+                  <td>€84.00</td>
+                </tr>
+                <tr data-key="1041">
+                  <td><a href="?order=1041" data-order="1041">#1041</a></td>
+                  <td>Grace Hopper</td>
+                  <td><kakao-badge tone="warning">To pack</kakao-badge></td>
+                  <td>€19.50</td>
+                </tr>
+                <tr data-key="1040">
+                  <td><a href="?order=1040" data-order="1040">#1040</a></td>
+                  <td>Alan Turing</td>
+                  <td><kakao-badge tone="success">Shipped</kakao-badge></td>
+                  <td>€132.90</td>
+                </tr>
+                <tr data-key="1039">
+                  <td><a href="?order=1039" data-order="1039">#1039</a></td>
+                  <td>Katherine Johnson</td>
+                  <td><kakao-badge tone="danger">Payment failed</kakao-badge></td>
+                  <td>€45.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </kakao-table>
+        </kakao-flow>
+      </section>
+    </kakao-flow>
+  </kakao-page>
+</main>
+
+<!-- One sheet for every order; the script fills it before it opens. From the
+     end edge on a wide screen; side="bottom" suits a phone-first page. -->
+<kakao-aside-sheet id="order-sheet" side="end" label="Order">
+  <h2 slot="header" id="order-title">Order</h2>
+  <kakao-flow>
+    <kakao-description-list id="order-facts" dividers></kakao-description-list>
+    <section>
+      <kakao-flow gap="sm">
+        <kakao-section-header heading="Items" level="3" id="order-items-heading"></kakao-section-header>
+        <kakao-plain-list>
+          <ul role="list" id="order-items"></ul>
+        </kakao-plain-list>
+      </kakao-flow>
+    </section>
+  </kakao-flow>
+  <div slot="footer">
+    <kakao-button label="Close" variant="ghost" data-close></kakao-button>
+    <!-- kakao-button doesn't honour hidden yet (CATALOG.md): hide a wrapper. -->
+    <span id="ship"><kakao-button label="Mark as shipped" data-close="ship"></kakao-button></span>
+  </div>
+</kakao-aside-sheet>
+<kakao-toast></kakao-toast>
+
+<!-- The orders' details, as the server would write them. -->
+<script type="application/json" id="orders">
+{
+  "1042": { "customer": "Ada Lovelace", "placed": "26 Nov, 09:12", "payment": "Card", "status": "To pack", "tone": "warning", "total": "€84.00",
+            "items": ["2 × Notebook, dotted", "1 × Fountain pen", "1 × Ink, blue"] },
+  "1041": { "customer": "Grace Hopper", "placed": "26 Nov, 08:47", "payment": "PayPal", "status": "To pack", "tone": "warning", "total": "€19.50",
+            "items": ["1 × Pencil set"] },
+  "1040": { "customer": "Alan Turing", "placed": "26 Nov, 08:05", "payment": "Card", "status": "Shipped", "tone": "success", "total": "€132.90",
+            "items": ["1 × Desk lamp", "3 × Notebook, squared"] },
+  "1039": { "customer": "Katherine Johnson", "placed": "26 Nov, 07:58", "payment": "Card", "status": "Payment failed", "tone": "danger", "total": "€45.00",
+            "items": ["1 × Leather folder"] }
+}
+</script>
+<script>
+  // Every text goes in as text (textContent), never as HTML.
+  const orders = JSON.parse(document.getElementById('orders').textContent);
+  const sheet = document.getElementById('order-sheet');
+  let current = null;
+
+  function el(tag, text, attrs = {}) {
+    const node = document.createElement(tag);
+    if (text != null) node.textContent = text;
+    Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+    return node;
+  }
+
+  function fill(id) {
+    const order = orders[id];
+    current = id;
+    document.getElementById('order-title').textContent = 'Order #' + id;
+    const facts = document.getElementById('order-facts');
+    const badge = el('kakao-badge', order.status, { tone: order.tone });
+    const status = el('dd');
+    status.append(badge);
+    facts.replaceChildren(
+      el('dt', 'Status'), status,
+      el('dt', 'Customer'), el('dd', order.customer),
+      el('dt', 'Placed'), el('dd', order.placed),
+      el('dt', 'Payment'), el('dd', order.payment),
+      el('dt', 'Total'), el('dd', order.total)
+    );
+    document.getElementById('order-items-heading').setAttribute('count', order.items.length);
+    document.getElementById('order-items').replaceChildren(...order.items.map((item) => el('li', item)));
+    document.getElementById('ship').hidden = order.status !== 'To pack';
+  }
+
+  // A link opens the sheet instead of the order's page.
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[data-order]');
+    if (!link) return;
+    event.preventDefault();
+    fill(link.dataset.order);
+    kakaoLoader.ready.then(() => sheet.show());
+  });
+
+  // The sheet closed with "Mark as shipped": a real page posts it to the server.
+  sheet.addEventListener('sheet-hidden', (event) => {
+    if (event.detail.returnValue !== 'ship') return;
+    orders[current].status = 'Shipped';
+    orders[current].tone = 'success';
+    const badge = document.querySelector('tr[data-key="' + current + '"] kakao-badge');
+    badge.textContent = 'Shipped';
+    badge.setAttribute('tone', 'success');
+    KakaoToast.show({ tone: 'success', message: 'Order #' + current + ' is marked as shipped.' });
+  });
+</script>
+</body>
+</html>

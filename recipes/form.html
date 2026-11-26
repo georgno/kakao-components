@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Request access</title>
+<!--
+  Recipe: a form with validation and an error summary. The browser's checks
+  (required, type="email", minlength) feed the summary on submit; an error the
+  server sends back goes through summary.show(); success is a toast.
+  In your project: kakao/shared/kakao.css and kakao/shared/kakao.js (see
+  templates/page.html). The loader loads every tag below; no other script tag.
+-->
+<link rel="stylesheet" href="../shared/kakao.css" />
+<script src="../shared/kakao.js"></script>
+<style>
+  /* The page base (as in templates/page.html). */
+  body {
+    margin: 0;
+    background: var(--kakao-color-page);
+    color: var(--kakao-color-text);
+    font: 1rem/1.5 var(--kakao-font-family);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
+  a { color: var(--kakao-color-primary); }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <strong>Workspace</strong>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <!-- narrow: one column of text or a form. -->
+  <kakao-page width="narrow">
+    <kakao-flow gap="lg">
+      <header>
+        <kakao-flow gap="sm">
+          <h1>Request access</h1>
+          <p>An admin reviews every request within one working day. All fields except the message are required.</p>
+        </kakao-flow>
+      </header>
+
+      <kakao-card>
+        <!-- Around the form: the list of errors shows above it, and takes no
+             room while there are none. live: fixed fields drop out while typing.
+             novalidate: the summary runs the browser's checks and lists every
+             problem at once, instead of the browser's one bubble. -->
+        <kakao-error-summary id="request-errors" live>
+        <form id="request" action="#" method="post" novalidate>
+          <kakao-flow>
+            <kakao-text-input label="Full name" name="name" autocomplete="name" required></kakao-text-input>
+            <kakao-text-input id="email" label="Work email" name="email" type="email" autocomplete="email"
+              hint="Try taken@example.com to see an error from the server." required></kakao-text-input>
+            <kakao-select label="Team" name="team" required list-data='["Design", "Engineering", "Marketing", "Sales", "Support"]'></kakao-select>
+            <kakao-radio-group label="Access" name="access" value="view" list-data='[
+              {"value": "view", "label": "View", "hint": "Read projects and comment"},
+              {"value": "edit", "label": "Edit", "hint": "Change projects; needs a second approval"}
+            ]'></kakao-radio-group>
+            <kakao-textarea label="Message" name="message" rows="3" maxlength="300" counter autosize
+              hint="What do you need the access for?"></kakao-textarea>
+            <kakao-checkbox label="I have read the workspace rules" name="rules" value="yes" required></kakao-checkbox>
+            <div>
+              <kakao-button type="submit" label="Send request"></kakao-button>
+            </div>
+          </kakao-flow>
+        </form>
+        </kakao-error-summary>
+      </kakao-card>
+    </kakao-flow>
+  </kakao-page>
+</main>
+<!-- The notification region; KakaoToast.show() puts toasts in it. -->
+<kakao-toast></kakao-toast>
+
+<script>
+  // Runs once the components are defined, so the summary's own submit check
+  // (it cancels an invalid submit) is in place before this listener.
+  kakaoLoader.ready.then(() => {
+    const form = document.getElementById('request');
+    const summary = document.getElementById('request-errors');
+    const email = document.getElementById('email');
+
+    form.addEventListener('submit', (event) => {
+      if (event.defaultPrevented) return; // the summary found errors and shows them
+      event.preventDefault(); // this recipe has no server: send it with fetch() instead
+
+      // Stand-in for the server's reply. A real page: const reply = await fetch(…).
+      const reply = email.value.trim().toLowerCase() === 'taken@example.com'
+        ? { errors: [{ field: 'email', message: 'This address already has access' }] }
+        : { ok: true };
+
+      if (reply.errors) {
+        // Mark the field and list the error, like the browser's own checks.
+        reply.errors.forEach((e) => document.getElementById(e.field).setAttribute('error', e.message));
+        summary.show(reply.errors);
+        return;
+      }
+      // A real page usually redirects here (post, then redirect, then get).
+      KakaoToast.show({ tone: 'success', message: 'Request sent. You will get an email once it is approved.' });
+    });
+
+    // A server error stays until the field changes.
+    email.addEventListener('input', () => email.removeAttribute('error'));
+  });
+</script>
+</body>
+</html>

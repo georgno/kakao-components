@@ -24,6 +24,8 @@
  *   - Demo pages (components/<name>/demo.html), copied unchanged: their code
  *     blocks (shared/demo.js) show each example's markup as written, so its
  *     line breaks, indentation and the scripts in <template data-code> stay.
+ *   - The page template and the recipes (templates/, recipes/), copied
+ *     unchanged: they are pages to read and copy, comments included.
  *   - One space where HTML had whitespace between elements, so inline layouts
  *     (buttons in a row, words around inline code) stay as they are.
  *   - Already minified vendor files (shared/vendor) are left alone.
@@ -47,6 +49,7 @@ if (!root) {
 const SKIP_DIRS = new Set(['vendor', 'fonts']);
 const KEEP_CSS = /@kakao-settings|@theme |@generated/;
 const DEMO_PAGE = /^components\/[^/]+\/demo\.html$/;
+const AS_WRITTEN = /^(templates|recipes)\//;
 
 const JS_OPTIONS = {
   compress: { passes: 2 },
@@ -112,7 +115,8 @@ for await (const file of files(root)) {
   let out;
   try {
     if (ext === '.html') {
-      if (DEMO_PAGE.test(relative(root, file).split(sep).join('/'))) {
+      const rel = relative(root, file).split(sep).join('/');
+      if (DEMO_PAGE.test(rel) || AS_WRITTEN.test(rel)) {
         kept.push(relative(root, file));
         continue;
       }
@@ -151,5 +155,5 @@ for await (const file of files(root)) {
 
 const kb = (n) => `${(n / 1024).toFixed(0)} KB`;
 console.log(`minify-site: ${count} files, ${kb(before)} -> ${kb(after)} (${Math.round((1 - after / before) * 100)}% smaller)`);
-if (kept.length) console.log(`minify-site: kept as is (settings markers, demo pages): ${kept.join(', ')}`);
+if (kept.length) console.log(`minify-site: kept as is (settings markers, demo pages, templates, recipes): ${kept.join(', ')}`);
 if (unminified.length) console.log(`minify-site: settings block not restorable, published unminified: ${unminified.join(', ')}`);

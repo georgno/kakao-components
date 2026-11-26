@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Team members</title>
+<!--
+  Recipe: a filtered, sorted and paged table. kakao-grid-view owns the rows
+  here (list-data); with a server that pages and filters, write the table and
+  pager in the markup and set mode="server" (see components/grid-view/demo.html).
+  list-data is JSON in an attribute: escape it as HTML when the server writes
+  it (CATALOG.md, "Shared contract").
+  In your project: kakao/shared/kakao.css and kakao/shared/kakao.js (see
+  templates/page.html). The loader loads every tag below; no other script tag.
+-->
+<link rel="stylesheet" href="../shared/kakao.css" />
+<script src="../shared/kakao.js"></script>
+<style>
+  /* The page base (as in templates/page.html). */
+  body {
+    margin: 0;
+    background: var(--kakao-color-page);
+    color: var(--kakao-color-text);
+    font: 1rem/1.5 var(--kakao-font-family);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
+  a { color: var(--kakao-color-primary); }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <strong>Workspace</strong>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <kakao-page width="wide">
+    <kakao-flow gap="lg">
+      <header>
+        <kakao-flow gap="sm">
+          <h1>Team members</h1>
+          <p>Everyone with access to this workspace. Filter by name, role or status; sort by name or last activity.</p>
+        </kakao-flow>
+      </header>
+
+      <section>
+        <kakao-flow>
+          <kakao-section-header id="members-heading" heading="Members" count="24">
+            <kakao-button slot="actions" label="Invite people" size="sm" href="form.html"></kakao-button>
+          </kakao-section-header>
+          <!-- action-url: where view / update go ({action}, {id}, any column key). -->
+          <kakao-grid-view id="members" label="Members" page-size="10" page-sizes="10,20,50" sort="name"
+            action-url="#{action}-{id}" list-data='{
+      "columns": [
+        { "key": "name", "label": "Name", "sortable": true, "filter": true },
+        { "key": "email", "label": "Email", "filter": true },
+        { "key": "role", "label": "Role", "filter": ["Admin", "Editor", "Viewer"] },
+        { "key": "status", "label": "Status", "filter": ["Active", "Invited", "Blocked"] },
+        { "key": "active", "label": "Last active", "sortable": true },
+        { "key": "actions", "label": "Actions", "actions": ["view", "update", "delete"] }
+      ],
+      "rows": [
+        {"id": 1, "name": "Ada Lovelace", "email": "ada.lovelace@example.com", "role": "Admin", "status": "Active", "active": "2026-11-26"},
+        {"id": 2, "name": "Alan Turing", "email": "alan.turing@example.com", "role": "Editor", "status": "Active", "active": "2026-11-23"},
+        {"id": 3, "name": "Grace Hopper", "email": "grace.hopper@example.com", "role": "Viewer", "status": "Invited", "active": "2026-11-20"},
+        {"id": 4, "name": "Katherine Johnson", "email": "katherine.johnson@example.com", "role": "Admin", "status": "Active", "active": "2026-11-17"},
+        {"id": 5, "name": "Linus Torvalds", "email": "linus.torvalds@example.com", "role": "Editor", "status": "Blocked", "active": "2026-11-14"},
+        {"id": 6, "name": "Margaret Hamilton", "email": "margaret.hamilton@example.com", "role": "Viewer", "status": "Active", "active": "2026-11-11"},
+        {"id": 7, "name": "Tim Berners-Lee", "email": "tim.berners-lee@example.com", "role": "Admin", "status": "Active", "active": "2026-11-08"},
+        {"id": 8, "name": "Barbara Liskov", "email": "barbara.liskov@example.com", "role": "Editor", "status": "Invited", "active": "2026-11-05"},
+        {"id": 9, "name": "Donald Knuth", "email": "donald.knuth@example.com", "role": "Viewer", "status": "Active", "active": "2026-11-02"},
+        {"id": 10, "name": "Frances Allen", "email": "frances.allen@example.com", "role": "Admin", "status": "Blocked", "active": "2026-11-24"},
+        {"id": 11, "name": "Ken Thompson", "email": "ken.thompson@example.com", "role": "Editor", "status": "Active", "active": "2026-11-21"},
+        {"id": 12, "name": "Radia Perlman", "email": "radia.perlman@example.com", "role": "Viewer", "status": "Active", "active": "2026-11-18"},
+        {"id": 13, "name": "Dennis Ritchie", "email": "dennis.ritchie@example.com", "role": "Admin", "status": "Invited", "active": "2026-11-15"},
+        {"id": 14, "name": "Hedy Lamarr", "email": "hedy.lamarr@example.com", "role": "Editor", "status": "Active", "active": "2026-11-12"},
+        {"id": 15, "name": "John McCarthy", "email": "john.mccarthy@example.com", "role": "Viewer", "status": "Blocked", "active": "2026-11-09"},
+        {"id": 16, "name": "Annie Easley", "email": "annie.easley@example.com", "role": "Admin", "status": "Active", "active": "2026-11-06"},
+        {"id": 17, "name": "Edsger Dijkstra", "email": "edsger.dijkstra@example.com", "role": "Editor", "status": "Active", "active": "2026-11-03"},
+        {"id": 18, "name": "Sophie Wilson", "email": "sophie.wilson@example.com", "role": "Viewer", "status": "Invited", "active": "2026-11-25"},
+        {"id": 19, "name": "Guido van Rossum", "email": "guido.rossum@example.com", "role": "Admin", "status": "Active", "active": "2026-11-22"},
+        {"id": 20, "name": "Mary Kenneth Keller", "email": "mary.keller@example.com", "role": "Editor", "status": "Blocked", "active": "2026-11-19"},
+        {"id": 21, "name": "Bjarne Stroustrup", "email": "bjarne.stroustrup@example.com", "role": "Viewer", "status": "Active", "active": "2026-11-16"},
+        {"id": 22, "name": "Joan Clarke", "email": "joan.clarke@example.com", "role": "Admin", "status": "Active", "active": "2026-11-13"},
+        {"id": 23, "name": "Vint Cerf", "email": "vint.cerf@example.com", "role": "Editor", "status": "Invited", "active": "2026-11-10"},
+        {"id": 24, "name": "Karen Spärck Jones", "email": "karen.jones@example.com", "role": "Viewer", "status": "Active", "active": "2026-11-07"}
+      ]
+    }'></kakao-grid-view>
+        </kakao-flow>
+      </section>
+    </kakao-flow>
+  </kakao-page>
+</main>
+<kakao-toast></kakao-toast>
+
+<script>
+  // Delete asks first (a kakao-dialog); then row-action fires. Here the row is
+  // removed in the browser; a real page sends the delete to its server.
+  kakaoLoader.ready.then(() => {
+    const grid = document.getElementById('members');
+    const heading = document.getElementById('members-heading');
+    grid.addEventListener('row-action', (event) => {
+      const { action, id, row } = event.detail;
+      if (action !== 'delete') return; // view and update follow their link
+      event.preventDefault();
+      grid.rows = grid.rows.filter((r) => r.id !== id);
+      heading.setAttribute('count', grid.rows.length);
+      KakaoToast.show({ tone: 'success', message: row.name + ' was removed.' });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Page title</title>
+<!--
+  Starting page for kakao components. Copy it, rename it, fill <main>.
+  In your project the library sits in kakao/ (node tools/vendor.js kakao):
+  the two lines below then read kakao/shared/kakao.css and kakao/shared/kakao.js.
+  kakao.js loads every <kakao-*> tag the page uses (also ones added later);
+  no other script tag is needed. Keep it in <head>, without defer: it applies
+  the saved theme before the first paint.
+-->
+<link rel="stylesheet" href="../shared/kakao.css" />
+<script src="../shared/kakao.js"></script>
+<style>
+  /* The page base: kakao.css brings tokens, font and themes, not body styles. */
+  body {
+    margin: 0;
+    background: var(--kakao-color-page);
+    color: var(--kakao-color-text);
+    font: 1rem/1.5 var(--kakao-font-family);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
+  a { color: var(--kakao-color-primary); }
+  kakao-header-bar > [slot="nav"] { color: var(--kakao-color-text); text-decoration: none; }
+  kakao-header-bar > [slot="nav"]:hover,
+  kakao-header-bar > [aria-current="page"] { text-decoration: underline; }
+</style>
+</head>
+<body>
+<!-- The sticky top bar: first in <body>. Title in the default slot, links in
+     nav, the theme switch at the end. -->
+<kakao-header-bar>
+  <strong>App name</strong>
+  <a slot="nav" href="page.html" aria-current="page">Overview</a>
+  <a slot="nav" href="#settings">Settings</a>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <!-- kakao-page: the content column (width narrow · normal · wide · full),
+       side padding, space below the bar. kakao-flow: even space between the
+       blocks (gap sm · md · lg); no margins of your own. -->
+  <kakao-page>
+    <kakao-flow gap="lg">
+      <header>
+        <kakao-flow gap="sm">
+          <h1>Page title</h1>
+          <p>One sentence on what this page is for.</p>
+        </kakao-flow>
+      </header>
+
+      <section>
+        <kakao-flow>
+          <kakao-section-header id="first-section" heading="First section" description="What this section shows.">
+            <kakao-button slot="actions" label="Action" variant="secondary" size="sm"></kakao-button>
+          </kakao-section-header>
+          <kakao-card>
+            <h3 slot="header">A card</h3>
+            <p>Content. Columns of cards go in a kakao-grid; rows of data in a kakao-table.</p>
+          </kakao-card>
+        </kakao-flow>
+      </section>
+    </kakao-flow>
+  </kakao-page>
+</main>
+</body>
+</html>

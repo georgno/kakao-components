@@ -19,6 +19,14 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `templates/page.html` and `recipes/`: a starting page (the two-line loader
+  head, a page base from the tokens, `kakao-header-bar` with the theme switch,
+  `kakao-page` and `kakao-flow`) and five copy-paste pages built on it: a
+  report (summary tiles, badges, tabs, accordions, plain lists), a dashboard
+  (stat tiles, progress, meter, table), a form with validation, an error
+  summary and a server error, a filtered and paged `kakao-grid-view`, and a
+  list whose rows open a `kakao-aside-sheet`. Published with the site, not
+  minified.
 - `<kakao-section-header>`: the heading row of a page section. `heading` and
   `level` (2 to 6, default 2) render a real `<h2>`–`<h6>`; `count` adds a muted
   number to the heading, or a `kakao-badge` with `count-tone`, and

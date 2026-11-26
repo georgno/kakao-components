@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Support dashboard</title>
+<!--
+  Recipe: a dashboard. Stat tiles in a grid, progress towards a goal, a meter
+  for a measurement, and a server-rendered table of the latest rows.
+  In your project: kakao/shared/kakao.css and kakao/shared/kakao.js (see
+  templates/page.html). The loader loads every tag below; no other script tag.
+-->
+<link rel="stylesheet" href="../shared/kakao.css" />
+<script src="../shared/kakao.js"></script>
+<style>
+  /* The page base (as in templates/page.html). */
+  body {
+    margin: 0;
+    background: var(--kakao-color-page);
+    color: var(--kakao-color-text);
+    font: 1rem/1.5 var(--kakao-font-family);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
+  a { color: var(--kakao-color-primary); }
+
+  /* This recipe: the big number of a stat tile. */
+  .stat { font-size: 1.75rem; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<kakao-header-bar>
+  <strong>Support</strong>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <!-- wide: dashboards and tables get the wider column. -->
+  <kakao-page width="wide">
+    <kakao-flow gap="lg">
+      <header>
+        <kakao-flow gap="sm">
+          <h1>Support overview</h1>
+          <p>The last 7 days, updated every 5 minutes.</p>
+        </kakao-flow>
+      </header>
+
+      <!-- Stat tiles: a number and its trend each. -->
+      <section>
+        <kakao-flow>
+          <kakao-section-header heading="This week"></kakao-section-header>
+          <kakao-grid min="sm" gap="sm">
+            <kakao-card>
+              <h3 slot="header">Open tickets</h3>
+              <kakao-flow gap="sm">
+                <p class="stat">128</p>
+                <p><kakao-badge tone="warning">+12</kakao-badge> since Monday</p>
+              </kakao-flow>
+            </kakao-card>
+            <kakao-card>
+              <h3 slot="header">First reply</h3>
+              <kakao-flow gap="sm">
+                <p class="stat">2h 14m</p>
+                <p><kakao-badge tone="success">−18 min</kakao-badge> median</p>
+              </kakao-flow>
+            </kakao-card>
+            <kakao-card>
+              <h3 slot="header">Satisfaction</h3>
+              <kakao-flow gap="sm">
+                <p class="stat">94%</p>
+                <p><kakao-badge>±0</kakao-badge> 212 ratings</p>
+              </kakao-flow>
+            </kakao-card>
+            <kakao-card>
+              <h3 slot="header">Resolved</h3>
+              <kakao-flow gap="sm">
+                <p class="stat">312</p>
+                <p><kakao-badge tone="success">+9%</kakao-badge> on last week</p>
+              </kakao-flow>
+            </kakao-card>
+          </kakao-grid>
+
+          <!-- Progress is a task on its way to done; a meter is a measurement in a range. -->
+          <kakao-grid min="md">
+            <kakao-card>
+              <h3 slot="header">Weekly goal</h3>
+              <kakao-flow>
+                <kakao-progress label="Tickets resolved" value="312" max="400" segments="1" show-value value-text="312 of 400"></kakao-progress>
+                <kakao-progress label="Backlog older than 7 days" value="3" max="10" segments="10" tone="warning" show-value value-text="3 of 10 cleared"></kakao-progress>
+              </kakao-flow>
+            </kakao-card>
+            <kakao-card>
+              <h3 slot="header">Capacity</h3>
+              <kakao-flow>
+                <kakao-meter label="Agents busy" value="17" max="20" low="12" high="18" optimum="0" show-value value-text="17 of 20"></kakao-meter>
+                <kakao-meter label="Attachment storage" value="41" max="100" low="70" high="90" optimum="0" show-value value-text="41 GB of 100 GB"></kakao-meter>
+              </kakao-flow>
+            </kakao-card>
+          </kakao-grid>
+        </kakao-flow>
+      </section>
+
+      <!-- The latest rows, rendered by the server; kakao-table sorts them and
+           wraps them into cards on a phone. -->
+      <section>
+        <kakao-flow>
+          <kakao-section-header heading="Latest tickets" count="5" description="Updated in the last hour.">
+            <kakao-button slot="actions" label="All tickets" variant="secondary" size="sm" href="table.html"></kakao-button>
+          </kakao-section-header>
+          <kakao-table label="Latest tickets" sort="-updated">
+            <table>
+              <thead>
+                <tr>
+                  <th data-key="id" data-sortable>Ticket</th>
+                  <th data-key="subject">Subject</th>
+                  <th data-key="status">Status</th>
+                  <th data-key="priority" data-sortable>Priority</th>
+                  <th data-key="updated" data-sortable>Updated</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-key="4821">
+                  <td><a href="#4821">#4821</a></td>
+                  <td>Invoice shows the wrong VAT rate</td>
+                  <td><kakao-badge tone="danger">Overdue</kakao-badge></td>
+                  <td data-sort-value="1">High</td>
+                  <td data-sort-value="2026-11-26T09:52">09:52</td>
+                </tr>
+                <tr data-key="4820">
+                  <td><a href="#4820">#4820</a></td>
+                  <td>Can't reset my password</td>
+                  <td><kakao-badge tone="primary">Open</kakao-badge></td>
+                  <td data-sort-value="2">Normal</td>
+                  <td data-sort-value="2026-11-26T09:41">09:41</td>
+                </tr>
+                <tr data-key="4818">
+                  <td><a href="#4818">#4818</a></td>
+                  <td>Export to CSV cuts off long names</td>
+                  <td><kakao-badge tone="warning">Waiting</kakao-badge></td>
+                  <td data-sort-value="2">Normal</td>
+                  <td data-sort-value="2026-11-26T09:30">09:30</td>
+                </tr>
+                <tr data-key="4815">
+                  <td><a href="#4815">#4815</a></td>
+                  <td>Add a second admin to our team</td>
+                  <td><kakao-badge tone="success">Solved</kakao-badge></td>
+                  <td data-sort-value="3">Low</td>
+                  <td data-sort-value="2026-11-26T09:12">09:12</td>
+                </tr>
+                <tr data-key="4809">
+                  <td><a href="#4809">#4809</a></td>
+                  <td>Webhook retries twice</td>
+                  <td><kakao-badge tone="primary">Open</kakao-badge></td>
+                  <td data-sort-value="1">High</td>
+                  <td data-sort-value="2026-11-26T09:03">09:03</td>
+                </tr>
+              </tbody>
+            </table>
+          </kakao-table>
+        </kakao-flow>
+      </section>
+    </kakao-flow>
+  </kakao-page>
+</main>
+</body>
+</html>
