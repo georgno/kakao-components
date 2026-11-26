@@ -6,6 +6,12 @@
  * text. The last item is the current page. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Where the page sits in a hierarchy, as a trail of links.
+ *  not for    The steps of a flow: kakao-stepper.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     breadcrumb.js

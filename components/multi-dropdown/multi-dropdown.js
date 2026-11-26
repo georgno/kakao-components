@@ -8,6 +8,12 @@
  * ("sometime in 1990") is a valid value. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Several dropdowns that form one value (day | month | year).
+ *  not for    One choice: kakao-select; a date with a picker: kakao-date-input.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     multi-dropdown.js

@@ -7,6 +7,12 @@
  * (no icon font either: the icon is the page's own, see SLOTS).
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A single-line text field.
+ *  not for    Several lines: kakao-textarea; suggestions: kakao-combobox.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     text-input.js

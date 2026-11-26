@@ -6,6 +6,14 @@
  * Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A yes/no choice, or one item of a check list, submitted with a
+ *             form.
+ *  not for    Settings that apply at once: kakao-switch-group; one of several:
+ *             kakao-radio-group.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     checkbox.js

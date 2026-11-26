@@ -13,6 +13,12 @@
  * the tags show as plain grey labels without the remove button).
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A field for free-text values (tags, recipients) as chips.
+ *  not for    Values from a fixed list: kakao-select multiple.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     tag-input.js

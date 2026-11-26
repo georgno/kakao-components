@@ -7,6 +7,12 @@
  * sits. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A box that groups content, with an optional header and footer.
+ *  not for    Content that collapses: kakao-accordion; a message: kakao-alert.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     card.js

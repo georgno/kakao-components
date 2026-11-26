@@ -14,6 +14,12 @@
  * 5, selected", which a role="switch" cannot express.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A switch with several positions on one track: low, medium, high.
+ *  not for    On/off: kakao-switch-group; many options: kakao-select.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     step-switch.js

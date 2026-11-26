@@ -6,6 +6,13 @@
  * For a plain styled list of short items, use kakao-content-list instead.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A 3D picker: rows tilt in perspective as they scroll past the
+ *             middle.
+ *  not for    A plain list of short items: <ul> or <ol>.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     list.js

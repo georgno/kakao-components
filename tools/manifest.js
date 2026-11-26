@@ -29,9 +29,13 @@
  *    when loaded).
  *  - CSS custom properties: the component's settings block (public name and
  *    default), not the prose.
+ *  - CATALOG: "for" (one line, what the component is for) becomes the main
+ *    element's summary; "not for" (when not to use it, and what to use
+ *    instead) becomes kakao.notFor. CATALOG.md is built from them
+ *    (tools/catalog.js).
  *
  * Each declaration carries the library's own fields under "kakao":
- *   { script, css: [], lightDom, requires: [tags], enhancedBy: [tags] }.
+ *   { script, css: [], lightDom, requires: [tags], enhancedBy: [tags], notFor }.
  * A header that doesn't follow the format is fixed in the header, never
  * special-cased here: unknown section titles in a tag's API are an error.
  * ============================================================================
@@ -86,6 +90,7 @@ const KIND = [
   [/^EVENTS\b|\bEVENTS$/, 'events'],
   [/^SLOTS\b|\bSLOTS$/, 'slots'],
   [/^FILES$/, 'files'],
+  [/^CATALOG$/, 'catalog'],
   [/^(PROPERTIES|METHODS|PUBLIC API|PUBLIC METHODS|API)\b/, 'members'],
 ];
 
@@ -207,6 +212,26 @@ function filesOf(section, file) {
   return out;
 }
 
+/* ---- catalog -------------------------------------------------------------- */
+
+/** CATALOG: "for" (what it is for) and "not for" (what to use instead). */
+function catalogOf(section, file) {
+  const out = {};
+  let cur = null;
+  for (const l of section.lines) {
+    const m = /^ {1,4}(for|not for)\s{2,}(\S.*)$/.exec(l);
+    if (m) {
+      cur = m[1];
+      out[cur] = m[2].trim();
+    } else if (cur && /^ {5,}\S/.test(l)) out[cur] += ` ${l.trim()}`;
+    else cur = null;
+  }
+  for (const k of ['for', 'not for']) {
+    if (!out[k]) throw new ManifestError(`${file}: CATALOG has no "${k}" line`);
+  }
+  return { summary: out.for, notFor: out['not for'] };
+}
+
 /* ---- tags ------------------------------------------------------------------ */
 
 function tagsOf(src) {
@@ -251,17 +276,20 @@ function build(root = ROOT) {
     const filesSection = sections.find((s) => kindOf(s.title) === 'files');
     if (!filesSection) throw new ManifestError(`${rel}: header has no FILES section`);
     const files = filesOf(filesSection, rel);
+    const catalogSection = sections.find((s) => kindOf(s.title) === 'catalog');
+    if (!catalogSection) throw new ManifestError(`${rel}: header has no CATALOG section`);
+    const catalog = catalogOf(catalogSection, rel);
     const parts = (/(?:^|\n)\s*Parts?:\s*([^\n]+?)\.?\s*(?:\n|$)/.exec(sections.map((s) => s.lines.join('\n')).join('\n') + '\n' + intro.join('\n')) || [])[1];
 
     const decls = new Map(
       tags.map((t) => [
         t.tag,
-        { kind: 'class', customElement: true, name: t.className, tagName: t.tag, description: t === primary ? description : '', attributes: [], members: [], events: [], slots: [], cssProperties: [], cssParts: [] },
+        { kind: 'class', customElement: true, name: t.className, tagName: t.tag, ...(t === primary ? { summary: catalog.summary } : {}), description: t === primary ? description : '', attributes: [], members: [], events: [], slots: [], cssProperties: [], cssParts: [] },
       ]),
     );
     for (const s of sections) {
       const kind = kindOf(s.title);
-      if (!kind || kind === 'files') continue;
+      if (!kind || kind === 'files' || kind === 'catalog') continue;
       const named = /\bkakao-[a-z-]+/.exec(s.title);
       const decl = decls.get(named ? named[0] : primary.tag);
       if (!decl) throw new ManifestError(`${rel}: section "${s.title}" names a tag this file doesn't define`);
@@ -308,6 +336,7 @@ function build(root = ROOT) {
       lightDom: !/attachShadow\(/.test(src),
       requires: files.requires.map(toTag),
       enhancedBy: files.enhanced.map(toTag),
+      notFor: catalog.notFor,
     };
     for (const d of decls.values()) {
       d.kakao = kakao;
@@ -365,4 +394,4 @@ if (require.main === module) {
   process.exitCode = main(process.argv.slice(2), r > 0 ? path.resolve(process.argv[r + 1]) : ROOT);
 }
 
-module.exports = { build, main, entriesOf, enumOf, sectionsOf };
+module.exports = { build, main, entriesOf, enumOf, sectionsOf, ManifestError };

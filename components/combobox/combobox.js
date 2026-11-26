@@ -8,6 +8,12 @@
  * select's dropdown panel. Form-associated. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A text field with suggestions; the user may keep their own text.
+ *  not for    A fixed list of values: kakao-select.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     combobox.js

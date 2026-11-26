@@ -6,6 +6,12 @@
  * edge fade when it doesn't fit. Vanilla JS, light DOM: load tabs.css.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Views of one area, one kakao-tab each.
+ *  not for    Page navigation: links; collapsing sections: kakao-accordion.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     tabs.js

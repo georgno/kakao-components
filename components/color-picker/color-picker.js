@@ -9,6 +9,12 @@
  * before the picker opened. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A colour field with a picker: area, hue, alpha, presets.
+ *  not for    Showing a colour value: kakao-color-code.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     color-picker.js

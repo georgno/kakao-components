@@ -7,6 +7,12 @@
  * a highlight sweeps through the segments. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        The progress of a task in segments: "Uploading 3 of 8".
+ *  not for    A measurement: kakao-meter; unknown duration: kakao-spinner.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     progress.js

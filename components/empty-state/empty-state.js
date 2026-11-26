@@ -9,6 +9,12 @@
  * Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        The block where content is missing: no rows, no results.
+ *  not for    A whole error page: kakao-error-page; loading: kakao-skeleton.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     empty-state.js

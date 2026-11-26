@@ -8,6 +8,13 @@
  * Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Read-only key/value rows for summaries and details.
+ *  not for    Records with columns: kakao-table; editable settings:
+ *             kakao-settings-group.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     description-list.js

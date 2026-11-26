@@ -14,6 +14,7 @@
           "customElement": true,
           "name": "KakaoAccordion",
           "tagName": "kakao-accordion",
+          "summary": "Content that opens and closes: FAQs, details, optional sections.",
           "description": "A card that opens and closes to show any content. The header row holds a title, an optional description, optional trailing meta and a chevron that turns; the body takes anything. Built on native <details> / <summary>, so the header is a real disclosure button. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -225,7 +226,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Parallel views of one area: kakao-tabs."
           }
         }
       ],
@@ -249,6 +251,7 @@
           "customElement": true,
           "name": "KakaoAlert",
           "tagName": "kakao-alert",
+          "summary": "A lasting message in the content: saved, failed, a warning.",
           "description": "An inline message in the page content: \"Settings saved\", \"Payment failed\". A tinted box with an icon, an optional title and the message, optionally closable, optionally hiding itself after a while. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -428,7 +431,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Brief feedback: kakao-toast; a form's errors: kakao-error-summary."
           }
         }
       ],
@@ -452,6 +456,7 @@
           "customElement": true,
           "name": "KakaoAnimatedNumber",
           "tagName": "kakao-animated-number",
+          "summary": "A number that rolls its digits when it changes: counters, totals.",
           "description": "Odometer-style rolling digits when the value changes. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -518,7 +523,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Numbers that never change: plain text."
           }
         }
       ],
@@ -542,6 +548,7 @@
           "customElement": true,
           "name": "KakaoAsideMenu",
           "tagName": "kakao-aside-menu",
+          "summary": "Site navigation in a panel opened by a hamburger button.",
           "description": "A slide-in side menu that is completely hidden until opened. Its hamburger button opens it; the panel then makes room for itself by pushing the whole page (the <body>) aside by its own width, or, with effect=\"squash\", by narrowing the page so the content reflows beside the panel. It slides in and shows its content - any markup placed inside the element, which the component moves into the panel (it is light DOM, so a <slot> would not work). A close button inside the panel header closes it again. Vanilla JS, no dependencies.",
           "attributes": [
             {
@@ -732,7 +739,8 @@
             "requires": [
               "kakao-button"
             ],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Content beside the page: kakao-aside-sheet; actions: kakao-menu."
           }
         }
       ],
@@ -756,6 +764,7 @@
           "customElement": true,
           "name": "KakaoAsideSheet",
           "tagName": "kakao-aside-sheet",
+          "summary": "A panel from a screen edge: details, filters or a form.",
           "description": "A card that slides in from an edge of the viewport, over the page. Modal by default: covered page, focus kept inside, Escape and a click on the covered page close it. Built like <kakao-dialog>: a plain fixed overlay, not <dialog> + showModal(), so phones, tablets and desktops behave the same. Only the corners that face into the page are rounded, so the sheet reads as pushed in from outside the view. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -976,7 +985,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A short confirmation: kakao-dialog; site navigation: kakao-aside-menu."
           }
         }
       ],
@@ -1000,6 +1010,7 @@
           "customElement": true,
           "name": "KakaoAvatar",
           "tagName": "kakao-avatar",
+          "summary": "A person, team or bot as a picture or initials; kakao-avatar-group for several.",
           "description": "A person (or a team, a bot) as a small round picture. Shows the image when there is one, the initials of the name while it loads, when there is none or when it fails, and an icon when there is no name either. Optional status dot. Not interactive: it never takes focus; wrap it in a link or a button when it should do something. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -1218,7 +1229,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Logos and pictures: kakao-image."
           }
         },
         {
@@ -1265,7 +1277,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Logos and pictures: kakao-image."
           }
         }
       ],
@@ -1297,6 +1310,7 @@
           "customElement": true,
           "name": "KakaoBadge",
           "tagName": "kakao-badge",
+          "summary": "A short read-only status label: \"New\", \"Missing\", \"Draft\".",
           "description": "A small pill-shaped status label: \"New\", \"Proposed\", \"Missing\". Not interactive: it never takes focus and is read as plain text. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -1406,7 +1420,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Clickable, removable or filter labels: kakao-chip."
           }
         }
       ],
@@ -1430,6 +1445,7 @@
           "customElement": true,
           "name": "KakaoBreadcrumb",
           "tagName": "kakao-breadcrumb",
+          "summary": "Where the page sits in a hierarchy, as a trail of links.",
           "description": "Where the current page sits in a hierarchy, built from title/url pairs. The trail starts with a home item: a house icon by default, or the start text. The last item is the current page. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -1545,7 +1561,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "The steps of a flow: kakao-stepper."
           }
         }
       ],
@@ -1569,6 +1586,7 @@
           "customElement": true,
           "name": "KakaoButton",
           "tagName": "kakao-button",
+          "summary": "Every action: buttons, toggles, dropdown buttons, async .run(promise).",
           "description": "Light-DOM button web component with variants, sizes, icons, toggle, a dropdown menu form and async loading states (via .run(promise)). Load button.css in the page.",
           "attributes": [
             {
@@ -1992,7 +2010,8 @@
             "requires": [],
             "enhancedBy": [
               "kakao-tooltip"
-            ]
+            ],
+            "notFor": "Links in text: <a>; copying: kakao-copy-button."
           }
         }
       ],
@@ -2016,6 +2035,7 @@
           "customElement": true,
           "name": "KakaoCard",
           "tagName": "kakao-card",
+          "summary": "A box that groups content, with an optional header and footer.",
           "description": "A content card: optional header, body, optional footer. When the footer starts with a <kakao-button>, the card gets a very subtle, blurred radial glow in that button's colour, rising from the bottom left where the button sits. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -2129,7 +2149,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Content that collapses: kakao-accordion; a message: kakao-alert."
           }
         }
       ],
@@ -2153,6 +2174,7 @@
           "customElement": true,
           "name": "KakaoCheckbox",
           "tagName": "kakao-checkbox",
+          "summary": "A yes/no choice, or one item of a check list, submitted with a form.",
           "description": "A checkbox with a label, optional hint, indeterminate state and three sizes. Form-associated: `name` / `value` are submitted while checked. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -2314,7 +2336,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Settings that apply at once: kakao-switch-group; one of several: kakao-radio-group."
           }
         }
       ],
@@ -2338,6 +2361,7 @@
           "customElement": true,
           "name": "KakaoChip",
           "tagName": "kakao-chip",
+          "summary": "A compact tag, token or filter; can link, act or be removed.",
           "description": "A compact label for file types, tokens, tags or filters. Optional colour swatch, icon and muted secondary text. It can be a link or an action button, removable, or both. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -2511,7 +2535,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A read-only status: kakao-badge."
           }
         }
       ],
@@ -2535,6 +2560,7 @@
           "customElement": true,
           "name": "KakaoChipList",
           "tagName": "kakao-chip-list",
+          "summary": "A wrapping row of kakao-chip elements that glide into place.",
           "description": "A wrapping row of <kakao-chip>s. When a chip leaves, it fades out where it was and the others glide to their new places, across row breaks too; the list's height follows instead of jumping. New chips fade in. Light DOM (needs chip-list.css), vanilla JS, no deps.",
           "attributes": [
             {
@@ -2583,7 +2609,8 @@
             ],
             "lightDom": true,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Typing new tags: kakao-tag-input."
           }
         }
       ],
@@ -2607,6 +2634,7 @@
           "customElement": true,
           "name": "KakaoCodeInput",
           "tagName": "kakao-code-input",
+          "summary": "A one-time code or PIN, one box per character.",
           "description": "A one-time code or PIN field: one box per character (4 to 8, default 6), with the text input's label, hint, error, sizes and border. Typing moves on, Backspace goes back, a pasted or autofilled code fills the boxes. Form-associated. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -2847,7 +2875,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Passwords: kakao-password-input."
           }
         }
       ],
@@ -2871,6 +2900,7 @@
           "customElement": true,
           "name": "KakaoColorCode",
           "tagName": "kakao-color-code",
+          "summary": "Shows a colour value with a swatch, in documentation.",
           "description": "A colour value as a small badge-like label, with a swatch of the colour before the text: \"#18181b\", \"oklch(70% 0.15 145)\", \"var(--kakao-color-ink)\". Made for documentation (palette tables, contrast pairs). Not interactive. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -2976,7 +3006,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Picking a colour: kakao-color-picker."
           }
         }
       ],
@@ -3000,6 +3031,7 @@
           "customElement": true,
           "name": "KakaoColorPicker",
           "tagName": "kakao-color-picker",
+          "summary": "A colour field with a picker: area, hue, alpha, presets.",
           "description": "A colour field with a picker popover: saturation/brightness area, hue slider, optional alpha slider, preset swatches and (where supported) an eyedropper. The value is set live while picking: the field, `value` and the form value follow the pointer or keys at once, and `input` fires on every step; `change` fires when the pick is done. Escape reverts to the colour from before the picker opened. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -3161,7 +3193,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Showing a colour value: kakao-color-code."
           }
         }
       ],
@@ -3185,6 +3218,7 @@
           "customElement": true,
           "name": "KakaoCombobox",
           "tagName": "kakao-combobox",
+          "summary": "A text field with suggestions; the user may keep their own text.",
           "description": "A text field with suggestions: typing filters a list below the field, and the user either picks a suggestion or keeps their own text as the value (an editable combobox with list autocomplete, as in the ARIA APG). The field looks like the text input (label, hint, error, three sizes); the list is the select's dropdown panel. Form-associated. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -3464,7 +3498,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A fixed list of values: kakao-select."
           }
         }
       ],
@@ -3488,6 +3523,7 @@
           "customElement": true,
           "name": "KakaoCommandPalette",
           "tagName": "kakao-command-palette",
+          "summary": "A hotkey search (Mod+K) over the page's actions.",
           "description": "A search over the page's actions, opened with a hotkey (Mod+K by default): type a few letters, pick a command with the arrows, run it with Enter. Modal like the dialog (scrim, page scroll locked, focus held and given back), drawn with the select's panel and rows, in the top layer. The WAI-ARIA combobox pattern with a grouped listbox. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -3738,7 +3774,8 @@
             "requires": [],
             "enhancedBy": [
               "kakao-kbd"
-            ]
+            ],
+            "notFor": "The actions of one control: kakao-menu."
           }
         }
       ],
@@ -3762,6 +3799,7 @@
           "customElement": true,
           "name": "KakaoCopyButton",
           "tagName": "kakao-copy-button",
+          "summary": "Copies a text to the clipboard and confirms it.",
           "description": "A button that copies a text to the clipboard and says so: the icon turns into a check, the label into \"Copied\", and a screen reader hears it. After a moment it is a copy button again. When the browser refuses, it shows and announces that instead. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -4004,7 +4042,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Any other action: kakao-button."
           }
         }
       ],
@@ -4028,6 +4067,7 @@
           "customElement": true,
           "name": "KakaoDateInput",
           "tagName": "kakao-date-input",
+          "summary": "A date, date-and-time, month or week field with the browser's picker.",
           "description": "A date, time, date-and-time, month or week field that keeps the browser's own field and picker, dressed as the library's other fields: label, hint, error, three sizes, the picker icon on the right where the select's chevron sits. Form-associated. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -4263,7 +4303,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Time only: kakao-time-input."
           }
         }
       ],
@@ -4287,6 +4328,7 @@
           "customElement": true,
           "name": "KakaoDescriptionList",
           "tagName": "kakao-description-list",
+          "summary": "Read-only key/value rows for summaries and details.",
           "description": "Key/value rows for summary and detail screens: \"Plan / Pro\", \"Renews / 1 Dec 2026\". A real <dl>, with the term muted and the value in the text colour. Term beside value where there is room, term above value where there is not (a phone, a narrow column), so nothing is squeezed. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -4428,7 +4470,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Records with columns: kakao-table; editable settings: kakao-settings-group."
           }
         }
       ],
@@ -4452,6 +4495,7 @@
           "customElement": true,
           "name": "KakaoDialog",
           "tagName": "kakao-dialog",
+          "summary": "A modal for a confirmation or a short task.",
           "description": "A modal dialog: covered page, centred panel, focus kept inside. Built from a plain fixed overlay, not from <dialog> + showModal(), so it behaves the same on phone, tablet and desktop - one implementation, no mobile fallback. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -4629,7 +4673,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Longer content: kakao-aside-sheet; a notice: kakao-toast."
           }
         }
       ],
@@ -4653,6 +4698,7 @@
           "customElement": true,
           "name": "KakaoEmptyState",
           "tagName": "kakao-empty-state",
+          "summary": "The block where content is missing: no rows, no results.",
           "description": "The quiet block shown where content is missing: a list with no rows, a search with no results, a card with nothing in it yet. An icon, a heading, a short message and actions, centred. It has no frame and no background: it sits on the surface of the card, list or table area around it. For an error that fills the page, use kakao-error-page. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -4806,7 +4852,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A whole error page: kakao-error-page; loading: kakao-skeleton."
           }
         }
       ],
@@ -4830,6 +4877,7 @@
           "customElement": true,
           "name": "KakaoErrorPage",
           "tagName": "kakao-error-page",
+          "summary": "A whole 404, 500 or maintenance page.",
           "description": "An error page: 404, 500, 503 maintenance … The page passes the facts as attributes, the component draws them: the status code very large and as a diagonal repeating pattern in the background, the error's heading, a message, reference information in muted text, and the page's actions. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -5024,7 +5072,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Missing content inside a page: kakao-empty-state."
           }
         }
       ],
@@ -5048,6 +5097,7 @@
           "customElement": true,
           "name": "KakaoErrorSummary",
           "tagName": "kakao-error-summary",
+          "summary": "A form's errors at its top, each linked to its field.",
           "description": "The list of a form's errors at the top of the form, each one a link to its field (the GOV.UK error summary pattern). It takes over the browser's error bubbles: on submit it lists every invalid field, takes focus so a screen reader reads it, and a link moves focus to the field. Drawn as a danger first).",
           "attributes": [
             {
@@ -5198,7 +5248,8 @@
             "requires": [
               "kakao-alert"
             ],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A single message: kakao-alert; one field's error: its error attribute."
           }
         }
       ],
@@ -5222,6 +5273,7 @@
           "customElement": true,
           "name": "KakaoFileUpload",
           "tagName": "kakao-file-upload",
+          "summary": "Picking or dropping files, with a list of the selection.",
           "description": "File picker with a drop area instead of the native button, and a growing list of the selected files. Every pick or drop ADDS to the list, so files can be collected from several folders one after another. Each file gets a thumbnail (a real preview for images, a type icon otherwise) and a remove button. The drop area has a dotted background that follows the pointer. Vanilla JS, Shadow DOM, no dependencies.",
           "attributes": [
             {
@@ -5465,7 +5517,8 @@
             "requires": [],
             "enhancedBy": [
               "kakao-button"
-            ]
+            ],
+            "notFor": "Files already stored: kakao-table."
           }
         }
       ],
@@ -5489,6 +5542,7 @@
           "customElement": true,
           "name": "KakaoGridView",
           "tagName": "kakao-grid-view",
+          "summary": "A data grid with a filter row, sorting and paging.",
           "description": "A data grid in the manner of Yii2's GridView: a kakao-table with a filter row under its headings (a search field or a dropdown per column), an action column (view / edit / delete or your own buttons per row), a summary line (\"Showing 1–20 of 143\") and a kakao-pagination below. It filters, sorts and pages the rows in the browser, or leaves all three to the server and sends the filters as GET parameters (UserSearch[email]=…), and it decorates a server-rendered table in place. On a phone each row wraps into a block of label / value pairs (the table's wrapped form); the filters open from a \"Filters\" button above the blocks and the actions sit at the bottom of each block.",
           "attributes": [
             {
@@ -5768,7 +5822,8 @@
               "kakao-select",
               "kakao-skeleton",
               "kakao-text-input"
-            ]
+            ],
+            "notFor": "A table without filters: kakao-table."
           }
         }
       ],
@@ -5792,6 +5847,7 @@
           "customElement": true,
           "name": "KakaoHeaderBar",
           "tagName": "kakao-header-bar",
+          "summary": "The page's sticky top bar: title, navigation, actions.",
           "description": "The page's top bar: a sticky <header> (the banner landmark) with a start, a centre (title) and an end region, plus an optional navigation region. Transparent at the top of the page; once the page is scrolled, a translucent page-coloured background with a backdrop blur and a hairline below it. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -5923,7 +5979,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Headings inside the page: h2 to h6."
           }
         }
       ],
@@ -5947,6 +6004,7 @@
           "customElement": true,
           "name": "KakaoImage",
           "tagName": "kakao-image",
+          "summary": "An image that keeps its place, with a skeleton while it loads.",
           "description": "An image that keeps its place while it loads: a skeleton of the image's size until the file is there, then the picture fades in. Loads lazily, takes the alt text and an optional caption below (figure and figcaption). When the file fails, the frame shows a muted icon and the alt text instead. Not interactive. Vanilla JS, Shadow DOM.",
           "attributes": [
             {
@@ -6115,7 +6173,8 @@
             "requires": [
               "kakao-skeleton"
             ],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "People: kakao-avatar; icons: inline SVG."
           }
         }
       ],
@@ -6139,6 +6198,7 @@
           "customElement": true,
           "name": "KakaoKbd",
           "tagName": "kakao-kbd",
+          "summary": "Keyboard keys and shortcuts in text: \"Ctrl + K\".",
           "description": "Keyboard keys as keycaps: a single key (\"Esc\"), a combination (\"Ctrl + K\") or a sequence (\"G then I\"). Small and inline: it sits in running text, next to menu items and beside buttons. Not interactive: it never takes focus. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -6257,7 +6317,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Code and file names: <code>."
           }
         }
       ],
@@ -6281,6 +6342,7 @@
           "customElement": true,
           "name": "KakaoList",
           "tagName": "kakao-list",
+          "summary": "A 3D picker: rows tilt in perspective as they scroll past the middle.",
           "description": "A 3D picker list: rows tilt away in perspective as they scroll past the middle, with optional group headings. Vanilla JS, Shadow DOM, no deps. For a plain styled list of short items, use kakao-content-list instead.",
           "attributes": [
             {
@@ -6460,7 +6522,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A plain list of short items: <ul> or <ol>."
           }
         }
       ],
@@ -6484,6 +6547,7 @@
           "customElement": true,
           "name": "KakaoMenu",
           "tagName": "kakao-menu",
+          "summary": "A menu of actions from a trigger or a right-click.",
           "description": "A menu of actions that opens from any trigger, or as a context menu on right-click. Groups with headings, separators, icons, shortcuts, a danger tone, checkbox and radio items, link items and submenus. The WAI-ARIA menu pattern (menu / menuitem / menuitemcheckbox / menuitemradio, arrow keys, type-ahead). Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -6730,7 +6794,8 @@
             "requires": [],
             "enhancedBy": [
               "kakao-kbd"
-            ]
+            ],
+            "notFor": "Picking a value: kakao-select; navigation: kakao-aside-menu."
           }
         }
       ],
@@ -6754,6 +6819,7 @@
           "customElement": true,
           "name": "KakaoMeter",
           "tagName": "kakao-meter",
+          "summary": "A measurement in a known range: \"55 GB of 100 GB used\".",
           "description": "A gauge, like native <meter>: a measurement within a known range (\"55 GB of 100 GB used\"). One bar, styled as a sibling of <kakao-progress>; the fill colour shows whether the value is good (optimum region), so-so (suboptimal) or bad (even less good), with the native low / high / optimum rules. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -6889,7 +6955,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "The progress of a task: kakao-progress."
           }
         }
       ],
@@ -6913,6 +6980,7 @@
           "customElement": true,
           "name": "KakaoMultiDropdown",
           "tagName": "kakao-multi-dropdown",
+          "summary": "Several dropdowns that form one value (day | month | year).",
           "description": "Several separate dropdowns joined into one input group that holds a single value, e.g. a date \"dd.mm.yyyy\" (Day | Month | Year) or a product variant \"Size / Colour\". Segments can offer an \"Unknown\" choice, so a partly known date such as 00.00.1990 (\"sometime in 1990\") is a valid value. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -7127,7 +7195,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "One choice: kakao-select; a date with a picker: kakao-date-input."
           }
         }
       ],
@@ -7151,6 +7220,7 @@
           "customElement": true,
           "name": "KakaoNumberInput",
           "tagName": "kakao-number-input",
+          "summary": "Stepper arrows for a child <input type=\"number\">.",
           "description": "Wraps a child <input type=\"number\"> with custom stepper arrows and wheel on the arrow strip. Native browser spin buttons are hidden. Vanilla JS, light DOM: load number-input.css.",
           "attributes": [
             {
@@ -7305,7 +7375,8 @@
             ],
             "lightDom": true,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A value on a scale: kakao-slider."
           }
         }
       ],
@@ -7329,6 +7400,7 @@
           "customElement": true,
           "name": "KakaoPagination",
           "tagName": "kakao-pagination",
+          "summary": "Page links for a long list.",
           "description": "Page links for a long list: previous / next, the page numbers with an ellipsis window, and a compact form (\"1–20 of 143\" with previous / next) that it falls back to by itself when it gets too narrow. It stands alone: a table or grid puts one below itself and listens for `page-change`. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -7578,7 +7650,8 @@
             "requires": [],
             "enhancedBy": [
               "kakao-select"
-            ]
+            ],
+            "notFor": "The steps of a flow: kakao-stepper."
           }
         }
       ],
@@ -7602,6 +7675,7 @@
           "customElement": true,
           "name": "KakaoPasswordInput",
           "tagName": "kakao-password-input",
+          "summary": "A password field: show/hide, Caps Lock warning, strength bar.",
           "description": "A password field: the text input's look (label, hint, error, three sizes), a show / hide button inside the field, a Caps Lock warning while typing, and, opt-in, a list of requirements whose progress is drawn with the segmented <kakao-progress>: one segment per requirement, so every requirement the password meets completes a segment (and that segment pops). Form-associated. Vanilla JS, Shadow DOM, no icon font.",
           "attributes": [
             {
@@ -7894,7 +7968,8 @@
             "requires": [],
             "enhancedBy": [
               "kakao-progress"
-            ]
+            ],
+            "notFor": "One-time codes: kakao-code-input."
           }
         }
       ],
@@ -7918,6 +7993,7 @@
           "customElement": true,
           "name": "KakaoPopover",
           "tagName": "kakao-popover",
+          "summary": "A floating panel anchored to an element, for richer content.",
           "description": "A production-ready, theme-able popover/tooltip Web Component built with vanilla JS and Shadow DOM. Anchors itself to any element on the page via an `for` attribute (an element id, in the spirit of <label for=\"...\">) and opens on click or hover, positioned on any of four sides with automatic flipping when it would overflow the viewport.",
           "attributes": [
             {
@@ -8100,7 +8176,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A short label: kakao-tooltip; a list of actions: kakao-menu."
           }
         }
       ],
@@ -8124,6 +8201,7 @@
           "customElement": true,
           "name": "KakaoProgress",
           "tagName": "kakao-progress",
+          "summary": "The progress of a task in segments: \"Uploading 3 of 8\".",
           "description": "A segmented progress bar: \"Uploading 3 of 8\", \"Step 2 of 4\". The value fills the segments in order; when the fill completes a segment, that segment gives a short squash-and-stretch pop. Without a value it is indeterminate: a highlight sweeps through the segments. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -8315,7 +8393,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A measurement: kakao-meter; unknown duration: kakao-spinner."
           }
         }
       ],
@@ -8339,6 +8418,7 @@
           "customElement": true,
           "name": "KakaoRadioGroup",
           "tagName": "kakao-radio-group",
+          "summary": "One choice from a few options, all visible.",
           "description": "A set of radio buttons built from `list-data`: label, hint, error, vertical or horizontal layout, three sizes. Form-associated: the chosen value is submitted under `name`. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -8534,7 +8614,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Many options: kakao-select; yes/no: kakao-checkbox."
           }
         }
       ],
@@ -8558,6 +8639,7 @@
           "customElement": true,
           "name": "KakaoRangeSlider",
           "tagName": "kakao-range-slider",
+          "summary": "A span (from-to) on a scale, with two thumbs.",
           "description": "A two-thumb slider that picks a span (from-to) between min and max. It looks and moves like <kakao-slider>: the same track, friction-point ticks, min / max labels and number fields with a unit badge; the fill runs between the two thumbs. Form-associated. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -8822,7 +8904,8 @@
             "requires": [],
             "enhancedBy": [
               "kakao-number-input"
-            ]
+            ],
+            "notFor": "A single value: kakao-slider."
           }
         }
       ],
@@ -8846,6 +8929,7 @@
           "customElement": true,
           "name": "KakaoRating",
           "tagName": "kakao-rating",
+          "summary": "A star rating to give, or a score to show.",
           "description": "A star rating: pick 1 to `max` symbols, with optional half steps, or show a score read-only. Radio buttons underneath, so it works from the keyboard and with a screen reader. Form-associated: the value is submitted under `name`. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -9066,7 +9150,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A measurement: kakao-meter."
           }
         }
       ],
@@ -9090,6 +9175,7 @@
           "customElement": true,
           "name": "KakaoSelect",
           "tagName": "kakao-select",
+          "summary": "One or several values from a fixed list, with search.",
           "description": "A select field: pick one value, or several with `multiple`, from a list with a search field on top. The trigger looks like the other input fields (label, hint, error, three sizes); the open panel is the library's dropdown (the look and placement of the button menu and the multi dropdown). Form-associated. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -9375,7 +9461,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Free text: kakao-combobox; two to four options: kakao-radio-group."
           }
         }
       ],
@@ -9399,6 +9486,7 @@
           "customElement": true,
           "name": "KakaoSettingsGroup",
           "tagName": "kakao-settings-group",
+          "summary": "A settings screen: titled groups of kakao-setting rows.",
           "description": "The settings-screen layout: a titled group of rows. Each row has a label (and an optional hint) on the start side and its control on the end side; rows are divided by hairlines. On a narrow row the control drops below the label (a container query on the row, not the viewport). Rows can also be links to a subpage, whole-row buttons, dangerous or disabled. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -9581,7 +9669,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Read-only key/value rows: kakao-description-list."
           }
         },
         {
@@ -9650,7 +9739,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Read-only key/value rows: kakao-description-list."
           }
         }
       ],
@@ -9682,6 +9772,7 @@
           "customElement": true,
           "name": "KakaoSkeleton",
           "tagName": "kakao-skeleton",
+          "summary": "A placeholder in the shape of loading content.",
           "description": "A grey placeholder in the shape of content that is still loading: lines of text, a circle for an avatar, a plain block for an image, or a whole card or list row made of those. It keeps the space the content will take, so the page does not jump when the content arrives. Not interactive, and hidden from assistive technology. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -9848,7 +9939,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "A wait of unknown shape: kakao-spinner; nothing to show: kakao-empty-state."
           }
         }
       ],
@@ -9872,6 +9964,7 @@
           "customElement": true,
           "name": "KakaoSlider",
           "tagName": "kakao-slider",
+          "summary": "One value on a scale, with a number field.",
           "description": "An accessible value slider with animated friction points, a numeric input and a unit append. Visual design: system-native, plain - no gradients on interactive elements, no drop shadows, borders for separation. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -10084,7 +10177,8 @@
             "requires": [],
             "enhancedBy": [
               "kakao-number-input"
-            ]
+            ],
+            "notFor": "A span: kakao-range-slider; exact numbers: kakao-number-input."
           }
         }
       ],
@@ -10108,6 +10202,7 @@
           "customElement": true,
           "name": "KakaoSpinner",
           "tagName": "kakao-spinner",
+          "summary": "Loading of unknown length, inline or in a block.",
           "description": "A turning ring for \"something is loading and we don't know how long\". The same ring the button shows while it runs, on its own: inline next to text, inside a card, or large in the middle of a panel. Not interactive: it never takes focus. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -10245,7 +10340,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Known progress: kakao-progress; placeholders: kakao-skeleton."
           }
         }
       ],
@@ -10269,6 +10365,7 @@
           "customElement": true,
           "name": "KakaoStack",
           "tagName": "kakao-stack",
+          "summary": "A pile of cards, newest in front; the base of kakao-toast.",
           "description": "A pile of cards: the newest child in front, the older ones behind it, each a little smaller, paler and tilted back, peeking out past the front card. Pointing at the pile or moving focus into it fans the cards out into a list. Cards slide in when added and out when dismissed. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -10410,7 +10507,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Page layout or vertical spacing: CSS gap."
           }
         }
       ],
@@ -10434,6 +10532,7 @@
           "customElement": true,
           "name": "KakaoStepSwitch",
           "tagName": "kakao-step-switch",
+          "summary": "A switch with several positions on one track: low, medium, high.",
           "description": "A multi-position switch: one thumb, any number of steps in between. It keeps the squash & stretch feel of <kakao-switch-group>: the thumb flattens when grabbed, can be dragged with a finger or mouse, snaps to the nearest step on release with a springy overshoot, and rubber-bands into the wall when you drag past either end. Vanilla JS, Shadow DOM, no dependencies.",
           "attributes": [
             {
@@ -10752,7 +10851,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "On/off: kakao-switch-group; many options: kakao-select."
           }
         }
       ],
@@ -10776,6 +10876,7 @@
           "customElement": true,
           "name": "KakaoStepper",
           "tagName": "kakao-stepper",
+          "summary": "Where someone is in a multi-step flow: a wizard, a checkout.",
           "description": "Where someone is in a multi-step flow (a wizard, a checkout): numbered steps that are done, current or upcoming, joined by lines. It shows progress; the page owns the step content. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -10992,7 +11093,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Task progress: kakao-progress; a hierarchy: kakao-breadcrumb."
           }
         }
       ],
@@ -11016,6 +11118,7 @@
           "customElement": true,
           "name": "KakaoSwitchGroup",
           "tagName": "kakao-switch-group",
+          "summary": "On/off switches for settings that apply at once.",
           "description": "A production-ready, fully accessible group of toggle switches with a fluid \"squash and stretch\" animation, built with vanilla JS + Shadow DOM.",
           "attributes": [
             {
@@ -11262,7 +11365,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Choices submitted with a form: kakao-checkbox."
           }
         }
       ],
@@ -11286,6 +11390,7 @@
           "customElement": true,
           "name": "KakaoTable",
           "tagName": "kakao-table",
+          "summary": "A data table around a server-rendered <table>: sorting, selection, phone layout.",
           "description": "A data table: sortable headings, row selection, a sticky header, striped, dense and bordered forms, an empty and a loading state. On a narrow element (a phone) each row wraps into a block of label / value pairs, the column heading as the label, so no column is squeezed or hidden.",
           "attributes": [
             {
@@ -11633,7 +11738,8 @@
             "enhancedBy": [
               "kakao-empty-state",
               "kakao-skeleton"
-            ]
+            ],
+            "notFor": "Filters and paging: kakao-grid-view; key/value rows: kakao-description-list."
           }
         }
       ],
@@ -11686,7 +11792,8 @@
             ],
             "lightDom": true,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Page navigation: links; collapsing sections: kakao-accordion."
           }
         },
         {
@@ -11694,6 +11801,7 @@
           "customElement": true,
           "name": "KakaoTabs",
           "tagName": "kakao-tabs",
+          "summary": "Views of one area, one kakao-tab each.",
           "description": "A row of tabs with a sliding thumb under the selected one. Each tab can show its panel (controls) or carry a URL; the row scrolls sideways with an edge fade when it doesn't fit. Vanilla JS, light DOM: load tabs.css.",
           "members": [
             {
@@ -11805,7 +11913,8 @@
             ],
             "lightDom": true,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Page navigation: links; collapsing sections: kakao-accordion."
           }
         }
       ],
@@ -11837,6 +11946,7 @@
           "customElement": true,
           "name": "KakaoTagInput",
           "tagName": "kakao-tag-input",
+          "summary": "A field for free-text values (tags, recipients) as chips.",
           "description": "A field for a list of short free-text values (tags, keywords, recipients): the typed text becomes a chip on Enter or a delimiter (comma by default), the chips sit in the field, wrap to more lines, and the text field takes the room left on the last line. The field looks like the text input (label, hint, error, three sizes); the tags are real <kakao-chip>s; optional suggestions open in the select's dropdown panel. Form-associated: one form entry per tag. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -12124,7 +12234,8 @@
             "requires": [
               "kakao-chip"
             ],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Values from a fixed list: kakao-select multiple."
           }
         }
       ],
@@ -12148,6 +12259,7 @@
           "customElement": true,
           "name": "KakaoTextInput",
           "tagName": "kakao-text-input",
+          "summary": "A single-line text field.",
           "description": "A single-line text field: label, leading icon, optional clear button, hint and error message, three sizes. Form-associated: `name`, `value`, `required` are submitted with the surrounding form. Vanilla JS, Shadow DOM, no deps (no icon font either: the icon is the page's own, see SLOTS).",
           "attributes": [
             {
@@ -12386,7 +12498,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Several lines: kakao-textarea; suggestions: kakao-combobox."
           }
         }
       ],
@@ -12410,6 +12523,7 @@
           "customElement": true,
           "name": "KakaoTextarea",
           "tagName": "kakao-textarea",
+          "summary": "A multi-line text field, optional counter and auto-grow.",
           "description": "A multi-line text field: label, hint, error, an optional character counter and optional auto-growing (up to max-height). Form-associated. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -12599,7 +12713,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "One line: kakao-text-input."
           }
         }
       ],
@@ -12623,6 +12738,7 @@
           "customElement": true,
           "name": "KakaoThemeSwitch",
           "tagName": "kakao-theme-switch",
+          "summary": "Switches the colour theme; load its script early in the head.",
           "description": "A button that switches the page between colour themes: light and dark by default, any number of themes via list-data. The new theme spreads over the page as a soft-edged ripple from the button. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -12773,7 +12889,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Other settings: kakao-switch-group."
           }
         }
       ],
@@ -12797,6 +12914,7 @@
           "customElement": true,
           "name": "KakaoTimeInput",
           "tagName": "kakao-time-input",
+          "summary": "A time field with the browser's picker; the value is ISO 24-hour.",
           "description": "A time field that keeps the browser's own field and picker, dressed as the library's other fields: label, hint, error, three sizes, the picker icon on the right where the select's chevron sits. The field shows 12 or 24 hours as the browser and the OS are set; the value is always ISO 24-hour. The sibling of <kakao-date-input>. Form-associated. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -13059,7 +13177,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Dates: kakao-date-input."
           }
         }
       ],
@@ -13083,6 +13202,7 @@
           "customElement": true,
           "name": "KakaoToast",
           "tagName": "kakao-toast",
+          "summary": "Brief notices in a corner that go away by themselves.",
           "description": "A notification region fixed to a corner of the viewport. Its toasts are older ones behind it, a little smaller, fainter and tilted back. Hovering the stack or moving focus into it fans the cards out into a list. Vanilla JS, Shadow DOM; built on <kakao-stack> (the pile, fanning, max, motion, corner placement) and needs alert.js. Load stack.js and alert.js first.",
           "attributes": [
             {
@@ -13182,7 +13302,8 @@
             ],
             "enhancedBy": [
               "kakao-button"
-            ]
+            ],
+            "notFor": "Lasting messages: kakao-alert; a decision: kakao-dialog."
           }
         }
       ],
@@ -13206,6 +13327,7 @@
           "customElement": true,
           "name": "KakaoToc",
           "tagName": "kakao-toc",
+          "summary": "\"On this page\" contents for a long page, with a scrollspy.",
           "description": "\"On this page\": a table of contents for a long page such as a blog article, with a built-in scrollspy. It lists the headings of a target (or links you write), marks the section the reader is in and scrolls there smoothly. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -13407,7 +13529,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Site navigation: kakao-aside-menu."
           }
         }
       ],
@@ -13431,6 +13554,7 @@
           "customElement": true,
           "name": "KakaoTooltip",
           "tagName": "kakao-tooltip",
+          "summary": "A short label next to a control, also on keyboard focus.",
           "description": "A small themed label next to a control: the name of an icon-only button, or a short hint. Unlike the native `title` it also shows for keyboard focus and for touch (long-press), and it takes the theme's colours. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -13539,7 +13663,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Rich or interactive content: kakao-popover."
           }
         }
       ],
@@ -13563,6 +13688,7 @@
           "customElement": true,
           "name": "KakaoTreeView",
           "tagName": "kakao-tree-view",
+          "summary": "Nested, collapsible rows: folders, permission groups.",
           "description": "Nested, collapsible rows: folders and files, or permission groups with checkboxes. The WAI-ARIA tree pattern (tree / treeitem / group, one tab stop, arrow keys, type-ahead) with three selection modes and an optional form value. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -13774,7 +13900,8 @@
             "css": [],
             "lightDom": false,
             "requires": [],
-            "enhancedBy": []
+            "enhancedBy": [],
+            "notFor": "Flat rows: kakao-table; collapsible content: kakao-accordion."
           }
         }
       ],

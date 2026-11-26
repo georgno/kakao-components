@@ -12,6 +12,12 @@
  * system and the switch shows that theme.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Switches the colour theme; load its script early in the head.
+ *  not for    Other settings: kakao-switch-group.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     theme-switch.js

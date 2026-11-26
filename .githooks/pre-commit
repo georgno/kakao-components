@@ -4,6 +4,7 @@
 #
 # - The component count on index.html (tools/count-components.js).
 # - tokens.json (tools/export-tokens.js), exported from the staged sources.
+# - custom-elements.json and CATALOG.md are checked, not rewritten.
 set -e
 root=$(git rev-parse --show-toplevel)
 
@@ -47,5 +48,12 @@ fi
 # rewritten: a header edit means the manifest is regenerated on purpose.
 node "$root/tools/manifest.js" --check >/dev/null || {
   echo "pre-commit: custom-elements.json is out of date. Run node tools/manifest.js and stage it."
+  exit 1
+}
+
+# ---- CATALOG.md -----------------------------------------------------------------
+# Its component list is generated from custom-elements.json (tools/catalog.js).
+node "$root/tools/catalog.js" --check >/dev/null || {
+  echo "pre-commit: CATALOG.md is out of date. Run node tools/catalog.js and stage it."
   exit 1
 }

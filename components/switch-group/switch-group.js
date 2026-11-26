@@ -5,6 +5,12 @@
  * "squash and stretch" animation, built with vanilla JS + Shadow DOM.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        On/off switches for settings that apply at once.
+ *  not for    Choices submitted with a form: kakao-checkbox.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     switch-group.js

@@ -19,6 +19,16 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `CATALOG.md`: the short guide for projects that use the library (about
+  3k tokens): the page head, the shared contract (label, size, tone,
+  list-data, hidden, events, escaping JSON in attributes with one-line
+  helpers for Python, PHP and JS), a "which one?" table for the look-alikes
+  and one line per component (what for, what to use instead, light or shadow
+  DOM, CSS file, components to load first). The component lines come from
+  custom-elements.json, whose `summary` and `kakao.notFor` are read from a new
+  CATALOG section in every component header; `node tools/catalog.js` writes
+  them, `--check` (pre-commit hook and deploy) reports a stale list or a
+  component name that doesn't exist. Published on the demo site.
 - `custom-elements.json`: every component in the Custom Elements Manifest
   format (schema 2.1.0) - attributes with their allowed values and defaults,
   properties, methods, events with their detail, slots, CSS custom properties

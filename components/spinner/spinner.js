@@ -9,6 +9,12 @@
  * For a load with a known amount use <kakao-progress>; a spinner has no value.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Loading of unknown length, inline or in a block.
+ *  not for    Known progress: kakao-progress; placeholders: kakao-skeleton.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     spinner.js

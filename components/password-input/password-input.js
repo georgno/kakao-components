@@ -9,6 +9,12 @@
  * pops). Form-associated. Vanilla JS, Shadow DOM, no icon font.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A password field: show/hide, Caps Lock warning, strength bar.
+ *  not for    One-time codes: kakao-code-input.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     password-input.js

@@ -11,6 +11,12 @@
  * enough. This element is for everything beyond that.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A menu of actions from a trigger or a right-click.
+ *  not for    Picking a value: kakao-select; navigation: kakao-aside-menu.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     menu.js

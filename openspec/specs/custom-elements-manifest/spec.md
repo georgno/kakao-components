@@ -24,7 +24,7 @@ Every declaration SHALL carry a `kakao` field with its script, the light-DOM CSS
 - **THEN** it requires kakao-stack and kakao-alert, in that order
 
 ### Requirement: One header format
-Every component header SHALL follow the shared format (sections between dash lines, entries indented 1-4 spaces, a FILES section). An entry naming several attributes (`name · required · disabled`) MAY put its description on the following, deeper-indented lines. A component that renders slots SHALL list them in a SLOTS section (`(default)` for the unnamed slot). A header that doesn't parse is fixed in the header; the tool reports a missing FILES section or an unknown component in it as an error.
+Every component header SHALL follow the shared format (sections between dash lines, entries indented 1-4 spaces, a CATALOG section and a FILES section). An entry naming several attributes (`name · required · disabled`) MAY put its description on the following, deeper-indented lines. A component that renders slots SHALL list them in a SLOTS section (`(default)` for the unnamed slot). A header that doesn't parse is fixed in the header; the tool reports a missing FILES or CATALOG section, a CATALOG section without its `for` or `not for` line, or an unknown component in FILES as an error.
 
 #### Scenario: Missing FILES section
 - **WHEN** a component header has no FILES section
@@ -44,3 +44,10 @@ Every component header SHALL follow the shared format (sections between dash lin
 #### Scenario: Header edited without regenerating
 - **WHEN** an attribute is renamed in a header and the manifest is not regenerated
 - **THEN** `--check` fails and the commit or deploy stops
+
+### Requirement: Catalog text per component
+A header's CATALOG section SHALL hold `for` (one line: what the component is for) and `not for` (when not to use it, and what to use instead), each possibly continued on deeper-indented lines. The manifest SHALL carry `for` as the main declaration's `summary` and `not for` as `kakao.notFor`.
+
+#### Scenario: Badge
+- **WHEN** the badge header's CATALOG says `not for  Clickable, removable or filter labels: kakao-chip.`
+- **THEN** kakao-badge's `kakao.notFor` is that text

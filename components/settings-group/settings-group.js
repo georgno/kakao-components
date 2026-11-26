@@ -9,6 +9,12 @@
  * Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A settings screen: titled groups of kakao-setting rows.
+ *  not for    Read-only key/value rows: kakao-description-list.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     settings-group.js

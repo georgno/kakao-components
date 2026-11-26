@@ -7,6 +7,13 @@
  * sits. Form-associated. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A date, date-and-time, month or week field with the browser's
+ *             picker.
+ *  not for    Time only: kakao-time-input.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     date-input.js

@@ -12,6 +12,12 @@
  * a plain still block and everything else works the same.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        An image that keeps its place, with a skeleton while it loads.
+ *  not for    People: kakao-avatar; icons: inline SVG.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     image.js

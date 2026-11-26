@@ -10,6 +10,12 @@
  * The stepper picks nothing; it is an ordered list that says "step 2 of 4".
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Where someone is in a multi-step flow: a wizard, a checkout.
+ *  not for    Task progress: kakao-progress; a hierarchy: kakao-breadcrumb.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     stepper.js

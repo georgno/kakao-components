@@ -8,6 +8,13 @@
  * Form-associated. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        One or several values from a fixed list, with search.
+ *  not for    Free text: kakao-combobox; two to four options:
+ *             kakao-radio-group.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     select.js

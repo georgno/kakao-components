@@ -9,6 +9,13 @@
  * pushed in from outside the view. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A panel from a screen edge: details, filters or a form.
+ *  not for    A short confirmation: kakao-dialog; site navigation:
+ *             kakao-aside-menu.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     aside-sheet.js

@@ -7,6 +7,12 @@
  * the header is a real disclosure button. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Content that opens and closes: FAQs, details, optional sections.
+ *  not for    Parallel views of one area: kakao-tabs.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     accordion.js

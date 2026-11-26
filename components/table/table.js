@@ -13,6 +13,14 @@
  * Vanilla JS, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A data table around a server-rendered <table>: sorting,
+ *             selection, phone layout.
+ *  not for    Filters and paging: kakao-grid-view; key/value rows:
+ *             kakao-description-list.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     table.js

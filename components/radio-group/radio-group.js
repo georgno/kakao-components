@@ -6,6 +6,12 @@
  * submitted under `name`. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        One choice from a few options, all visible.
+ *  not for    Many options: kakao-select; yes/no: kakao-checkbox.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     radio-group.js

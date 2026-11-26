@@ -11,6 +11,12 @@
  * Vanilla JS, no dependencies.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Site navigation in a panel opened by a hamburger button.
+ *  not for    Content beside the page: kakao-aside-sheet; actions: kakao-menu.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     aside-menu.js

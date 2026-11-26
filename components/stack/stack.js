@@ -13,6 +13,12 @@
  * instead of copying the mechanics (see EXTENDING). Load stack.js before it.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        A pile of cards, newest in front; the base of kakao-toast.
+ *  not for    Page layout or vertical spacing: CSS gap.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     stack.js

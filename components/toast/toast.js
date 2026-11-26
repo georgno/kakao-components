@@ -9,6 +9,12 @@
  * corner placement) and needs alert.js. Load stack.js and alert.js first.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Brief notices in a corner that go away by themselves.
+ *  not for    Lasting messages: kakao-alert; a decision: kakao-dialog.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     toast.js

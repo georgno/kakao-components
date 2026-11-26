@@ -7,6 +7,12 @@
  * value. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * CATALOG
+ * ----------------------------------------------------------------------------
+ *  for        Nested, collapsible rows: folders, permission groups.
+ *  not for    Flat rows: kakao-table; collapsible content: kakao-accordion.
+ *
+ * ----------------------------------------------------------------------------
  * FILES
  * ----------------------------------------------------------------------------
  *  script     tree-view.js
