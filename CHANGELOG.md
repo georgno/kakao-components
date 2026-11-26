@@ -14,6 +14,10 @@ upgrade is safe; the entries below them give the detail.
 
 **Upgrade:**
 
+- Button: the focus halo settings are gone. `--kakao-button-primary-ring`,
+  `-secondary-ring`, `-ghost-ring`, `-danger-ring` and `-focus-ring-width`
+  now do nothing; set `--kakao-button-focus`, `-focus-width` and
+  `-focus-offset` instead.
 - Load `stack.js` (components/stack/) before `toast.js`: the toast extends `KakaoStack`.
 - CSS that targets a toast card's `[data-toast-state]`: use `[data-stack-state]`.
 
@@ -233,8 +237,10 @@ upgrade is safe; the entries below them give the detail.
 
 ### Fixed
 
-- Button: primary (the default) and danger buttons show the keyboard focus
-  ring again; their own shadow outranked it, so tabbing to them showed nothing.
+- Button: keyboard focus is the styleguide's 2px outline in the focus colour
+  (2px offset) on every variant and segment item, instead of the soft halo,
+  which failed 3:1, vanished in forced-colors mode, was missing on primary
+  and danger buttons and dropped out while a segment item settled.
 - Header bar: removing a page header bar while the page itself is torn down
   no longer throws in `disconnectedCallback`.
 - `<kakao-button type="reset">` resets its form (it rendered a plain button).

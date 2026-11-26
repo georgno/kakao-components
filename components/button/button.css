@@ -17,19 +17,15 @@ kakao-button,
   --_primary-bg: var(--kakao-button-primary-bg, var(--_ink));
   --_primary-text: var(--kakao-button-primary-text, var(--_paper));
   --_primary-hover-bg: var(--kakao-button-primary-hover-bg, var(--kakao-color-ink-hover, #2c2c31));
-  --_primary-ring: var(--kakao-button-primary-ring, color-mix(in srgb, var(--_ink) 16%, transparent));
   --_primary-shadow: var(--kakao-button-primary-shadow, 0 2px 24px rgba(0, 0, 0, 0.04));
   --_secondary-bg: var(--kakao-button-secondary-bg, var(--kakao-color-subtle, #f0f0f1));
   --_secondary-text: var(--kakao-button-secondary-text, var(--_ink));
   --_secondary-hover-bg: var(--kakao-button-secondary-hover-bg, var(--kakao-color-subtle-strong, #e6e6e8));
-  --_secondary-ring: var(--kakao-button-secondary-ring, color-mix(in srgb, var(--_ink) 12%, transparent));
   --_ghost-text: var(--kakao-button-ghost-text, var(--_ink-soft));
   --_ghost-hover-bg: var(--kakao-button-ghost-hover-bg, color-mix(in srgb, var(--_ink) 4.5%, transparent));
-  --_ghost-ring: var(--kakao-button-ghost-ring, color-mix(in srgb, var(--_ink) 10%, transparent));
   --_danger-bg: var(--kakao-button-danger-bg, var(--kakao-color-danger, #bd4b43));
   --_danger-text: var(--kakao-button-danger-text, var(--kakao-color-on-danger, #fdf4f3));
   --_danger-hover-bg: var(--kakao-button-danger-hover-bg, var(--kakao-color-danger-hover, #a83f38));
-  --_danger-ring: var(--kakao-button-danger-ring, color-mix(in srgb, var(--_danger-bg) 18%, transparent));
   --_danger-shadow: var(--kakao-button-danger-shadow, 0 2px 24px rgba(189, 75, 67, 0.06));
   --_sm-height: var(--kakao-button-sm-height, 36px);
   --_sm-padding-x: var(--kakao-button-sm-padding-x, 16px);
@@ -47,7 +43,9 @@ kakao-button,
   --_lg-radius: var(--kakao-button-lg-radius, var(--kakao-radius-lg, 14px));
   --_lg-gap: var(--kakao-button-lg-gap, 10px);
   --_label-weight: var(--kakao-button-label-weight, 550);
-  --_focus-ring-width: var(--kakao-button-focus-ring-width, 4px);
+  --_focus: var(--kakao-button-focus, var(--kakao-color-focus, #2563eb));
+  --_focus-width: var(--kakao-button-focus-width, 2px);
+  --_focus-offset: var(--kakao-button-focus-offset, 2px);
   --_disabled-opacity: var(--kakao-button-disabled-opacity, 0.2);
   --_toggle-off-opacity: var(--kakao-button-toggle-off-opacity, 0.45);
   --_spinner-size: var(--kakao-button-spinner-size, 18px);
@@ -102,8 +100,12 @@ kakao-button {
   transition: background-color var(--_transition) ease, box-shadow var(--_transition) ease, color var(--_transition) ease;
 }
 
+/* The styleguide's focus rule: a solid outline, never a soft halo (a halo
+   fails 3:1, and forced-colors mode drops box-shadow). An outline is not
+   touched by the variant shadows or the segment's settle animation. */
 .kakao-button-inner:focus-visible {
-  box-shadow: 0 0 0 var(--_focus-ring-width) var(--_ring, var(--_primary-ring));
+  outline: var(--_focus-width) solid var(--_focus);
+  outline-offset: var(--_focus-offset);
 }
 
 /* sizes */
@@ -156,7 +158,6 @@ kakao-button[variant="primary"] .kakao-button-inner,
 kakao-button:not([variant]) .kakao-button-inner {
   background: var(--_primary-bg);
   color: var(--_primary-text);
-  --_ring: var(--_primary-ring);
   box-shadow: var(--_primary-shadow);
 }
 
@@ -168,7 +169,6 @@ kakao-button:not([variant]) .kakao-button-inner:hover {
 kakao-button[variant="secondary"] .kakao-button-inner {
   background: var(--_secondary-bg);
   color: var(--_secondary-text);
-  --_ring: var(--_secondary-ring);
 }
 
 kakao-button[variant="secondary"] .kakao-button-inner:hover {
@@ -178,7 +178,6 @@ kakao-button[variant="secondary"] .kakao-button-inner:hover {
 kakao-button[variant="ghost"] .kakao-button-inner {
   background: transparent;
   color: var(--_ghost-text);
-  --_ring: var(--_ghost-ring);
 }
 
 kakao-button[variant="ghost"] .kakao-button-inner:hover {
@@ -188,15 +187,7 @@ kakao-button[variant="ghost"] .kakao-button-inner:hover {
 kakao-button[variant="danger"] .kakao-button-inner {
   background: var(--_danger-bg);
   color: var(--_danger-text);
-  --_ring: var(--_danger-ring);
   box-shadow: var(--_danger-shadow);
-}
-
-/* The variant shadows above outrank the plain :focus-visible rule; keep the
-   keyboard focus ring on primary and danger buttons. */
-kakao-button[variant] .kakao-button-inner:focus-visible,
-kakao-button:not([variant]) .kakao-button-inner:focus-visible {
-  box-shadow: 0 0 0 var(--_focus-ring-width) var(--_ring, var(--_primary-ring));
 }
 
 kakao-button[variant="danger"] .kakao-button-inner:hover {
@@ -333,7 +324,6 @@ kakao-button[toggle][pressed] .kakao-button-inner {
   height: var(--_segment-item-size);
   width: var(--_segment-item-size);
   padding: 0;
-  --_ring: var(--_secondary-ring);
 }
 
 .kakao-button-segment kakao-button[toggle] .kakao-button-inner {
@@ -369,11 +359,6 @@ kakao-button[toggle][pressed] .kakao-button-inner {
   .kakao-button-segment kakao-button[pressed].kakao-button-settling .kakao-button-inner {
     animation: none;
   }
-}
-
-/* keep the keyboard focus ring (box-shadow is reset above) */
-.kakao-button-segment kakao-button .kakao-button-inner:focus-visible {
-  box-shadow: 0 0 0 var(--_focus-ring-width) var(--_ring, var(--_primary-ring));
 }
 
 /* ---- menu (dropdown) form: list-data ---------------------------------- */

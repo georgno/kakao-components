@@ -1,13 +1,13 @@
 {
-  "browser": "chromium 153.0.8010.12",
-  "recordedAt": "2026-11-17",
+  "browser": "chromium 143.0.7499.4",
+  "recordedAt": "2026-11-26",
   "values": [
     {
       "component": "button",
-      "alias": "--_primary-ring",
+      "alias": "--_focus",
       "theme": "light",
       "property": "background-color",
-      "computed": "color(srgb 0.0941176 0.0941176 0.105882 / 0.16)"
+      "computed": "rgb(37, 99, 235)"
     },
     {
       "component": "button",
@@ -18,10 +18,10 @@
     },
     {
       "component": "button",
-      "alias": "--_danger-ring",
+      "alias": "--_danger-hover-bg",
       "theme": "light",
       "property": "background-color",
-      "computed": "color(srgb 0.862745 0.14902 0.14902 / 0.18)"
+      "computed": "rgb(185, 28, 28)"
     },
     {
       "component": "button",
@@ -81,10 +81,10 @@
     },
     {
       "component": "button",
-      "alias": "--_primary-ring",
+      "alias": "--_focus",
       "theme": "dark",
       "property": "background-color",
-      "computed": "color(srgb 0.956863 0.956863 0.960784 / 0.16)"
+      "computed": "rgb(96, 165, 250)"
     },
     {
       "component": "button",
@@ -95,10 +95,10 @@
     },
     {
       "component": "button",
-      "alias": "--_danger-ring",
+      "alias": "--_danger-hover-bg",
       "theme": "dark",
       "property": "background-color",
-      "computed": "color(srgb 0.972549 0.443137 0.443137 / 0.18)"
+      "computed": "rgb(252, 165, 165)"
     },
     {
       "component": "button",
@@ -158,10 +158,10 @@
     },
     {
       "component": "button",
-      "alias": "--_primary-ring",
+      "alias": "--_focus",
       "theme": "amoled",
       "property": "background-color",
-      "computed": "color(srgb 1 1 1 / 0.16)"
+      "computed": "rgb(96, 165, 250)"
     },
     {
       "component": "button",
@@ -172,10 +172,10 @@
     },
     {
       "component": "button",
-      "alias": "--_danger-ring",
+      "alias": "--_danger-hover-bg",
       "theme": "amoled",
       "property": "background-color",
-      "computed": "color(srgb 0.972549 0.443137 0.443137 / 0.18)"
+      "computed": "rgb(252, 165, 165)"
     },
     {
       "component": "button",
@@ -235,10 +235,10 @@
     },
     {
       "component": "button",
-      "alias": "--_primary-ring",
+      "alias": "--_focus",
       "theme": "beige",
       "property": "background-color",
-      "computed": "color(srgb 0.168627 0.137255 0.0901961 / 0.16)"
+      "computed": "rgb(26, 95, 138)"
     },
     {
       "component": "button",
@@ -249,10 +249,10 @@
     },
     {
       "component": "button",
-      "alias": "--_danger-ring",
+      "alias": "--_danger-hover-bg",
       "theme": "beige",
       "property": "background-color",
-      "computed": "color(srgb 0.592157 0.113725 0.0941176 / 0.18)"
+      "computed": "rgb(173, 40, 34)"
     },
     {
       "component": "button",
@@ -312,10 +312,10 @@
     },
     {
       "component": "button",
-      "alias": "--_primary-ring",
+      "alias": "--_focus",
       "theme": "light/contrast",
       "property": "background-color",
-      "computed": "color(srgb 0.0941176 0.0941176 0.105882 / 0.16)"
+      "computed": "rgb(37, 99, 235)"
     },
     {
       "component": "button",
@@ -326,10 +326,10 @@
     },
     {
       "component": "button",
-      "alias": "--_danger-ring",
+      "alias": "--_danger-hover-bg",
       "theme": "light/contrast",
       "property": "background-color",
-      "computed": "color(srgb 0.862745 0.14902 0.14902 / 0.18)"
+      "computed": "rgb(185, 28, 28)"
     },
     {
       "component": "button",
@@ -389,10 +389,10 @@
     },
     {
       "component": "button",
-      "alias": "--_primary-ring",
+      "alias": "--_focus",
       "theme": "dark/contrast",
       "property": "background-color",
-      "computed": "color(srgb 0.956863 0.956863 0.960784 / 0.16)"
+      "computed": "rgb(96, 165, 250)"
     },
     {
       "component": "button",
@@ -403,10 +403,10 @@
     },
     {
       "component": "button",
-      "alias": "--_danger-ring",
+      "alias": "--_danger-hover-bg",
       "theme": "dark/contrast",
       "property": "background-color",
-      "computed": "color(srgb 0.972549 0.443137 0.443137 / 0.18)"
+      "computed": "rgb(252, 165, 165)"
     },
     {
       "component": "button",
@@ -466,10 +466,10 @@
     },
     {
       "component": "button",
-      "alias": "--_primary-ring",
+      "alias": "--_focus",
       "theme": "amoled/contrast",
       "property": "background-color",
-      "computed": "color(srgb 1 1 1 / 0.16)"
+      "computed": "rgb(96, 165, 250)"
     },
     {
       "component": "button",
@@ -480,10 +480,10 @@
     },
     {
       "component": "button",
-      "alias": "--_danger-ring",
+      "alias": "--_danger-hover-bg",
       "theme": "amoled/contrast",
       "property": "background-color",
-      "computed": "color(srgb 0.972549 0.443137 0.443137 / 0.18)"
+      "computed": "rgb(252, 165, 165)"
     },
     {
       "component": "button",
@@ -543,10 +543,10 @@
     },
     {
       "component": "button",
-      "alias": "--_primary-ring",
+      "alias": "--_focus",
       "theme": "beige/contrast",
       "property": "background-color",
-      "computed": "color(srgb 0.168627 0.137255 0.0901961 / 0.16)"
+      "computed": "rgb(26, 95, 138)"
     },
     {
       "component": "button",
@@ -557,10 +557,10 @@
     },
     {
       "component": "button",
-      "alias": "--_danger-ring",
+      "alias": "--_danger-hover-bg",
       "theme": "beige/contrast",
       "property": "background-color",
-      "computed": "color(srgb 0.592157 0.113725 0.0941176 / 0.18)"
+      "computed": "rgb(173, 40, 34)"
     },
     {
       "component": "button",

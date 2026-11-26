@@ -376,7 +376,7 @@
           <tr><td>Tabs, unselected tab</td><td>ink at 45% on <kakao-color-code>#ebebeb</kakao-color-code></td><td class="num">2.82</td><td>4.5</td><td><kakao-badge tone="danger">Fails</kakao-badge></td></tr>
           <tr><td>List row action icon</td><td><kakao-color-code>#aaa</kakao-color-code> on white</td><td class="num">2.32</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now muted token, 6.0</span></td></tr>
           <tr><td>Switch, off track</td><td><kakao-color-code>#d1d5db</kakao-color-code> on white</td><td class="num">1.47</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now border token, 3.8</span></td></tr>
-          <tr><td>Button focus ring</td><td>ink 16% halo on white</td><td class="num">1.40</td><td>3</td><td><kakao-badge tone="danger">Fails</kakao-badge></td></tr>
+          <tr><td>Button focus ring</td><td>ink 16% halo on white</td><td class="num">1.40</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now focus outline, 5.2</span></td></tr>
           <tr><td>Number input focus ring</td><td>ink 14% halo on white</td><td class="num">1.33</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now focus outline, 5.2</span></td></tr>
           <tr><td>Tabs focus outline</td><td><kakao-color-code>#888</kakao-color-code> on <kakao-color-code>#ebebeb</kakao-color-code></td><td class="num">2.97</td><td>3</td><td><kakao-badge tone="success">Fixed</kakao-badge> <span class="muted small">now focus token</span></td></tr>
           <tr><td>Muted text token</td><td><kakao-color-code>#6b7280</kakao-color-code> on white</td><td class="num">4.83</td><td>4.5</td><td><kakao-badge tone="success">Passes</kakao-badge></td></tr>
@@ -599,13 +599,13 @@
   <!-- ================================================================ -->
   <section id="focus">
     <h2>Focus &amp; states</h2>
-    <p>Two focus styles shipped: a soft translucent halo and a solid 2px outline. The halo looks nicer but fails the 3:1 rule, so fields now all draw the outline. The button is the last part still on its halo.</p>
+    <p>Two focus styles shipped: a soft translucent halo and a solid 2px outline. The halo looks nicer but fails the 3:1 rule, so fields and buttons now all draw the outline.</p>
 
     <div class="card">
       <h3>Focus indicator <kakao-badge tone="ink">Rule</kakao-badge></h3>
-      <p class="small">Every focusable part shows <code>outline: 2px solid var(--kakao-color-focus)</code> with a 2px offset on <code>:focus-visible</code>. Fields (text input, textarea, number input, select, multi dropdown, combobox, date, time, password, code and tag input, color picker) draw it around the whole field box and turn their border the focus colour too; on fields with an error state, outline and border are danger. No soft halo on fields. Fields expose the colour as a <code>-focus</code> setting and, all but the color picker, <code>-focus-width</code> and <code>-focus-offset</code> (2px / 2px). The button still has its halo, to be moved to the outline next. Tab through these to compare:</p>
+      <p class="small">Every focusable part shows <code>outline: 2px solid var(--kakao-color-focus)</code> with a 2px offset on <code>:focus-visible</code>. Fields (text input, textarea, number input, select, multi dropdown, combobox, date, time, password, code and tag input, color picker) draw it around the whole field box and turn their border the focus colour too; on fields with an error state, outline and border are danger. No soft halo on fields. Fields expose the colour as a <code>-focus</code> setting and, all but the color picker, <code>-focus-width</code> and <code>-focus-offset</code> (2px / 2px). Buttons draw it too (every variant and segment item), with <code>-focus</code>, <code>-focus-width</code> and <code>-focus-offset</code> settings. Tab through these to compare:</p>
       <div class="focus-row" style="margin-top:1rem">
-        <div><span class="focus-sample soft" tabindex="0">Halo only</span><span class="focus-label">Button today · 1.4:1 ✗</span></div>
+        <div><span class="focus-sample soft" tabindex="0">Halo only</span><span class="focus-label">The old button halo · 1.4:1 ✗</span></div>
         <div><span class="focus-sample solid" tabindex="0">Outline</span><span class="focus-label">The rule · 5.2:1 ✓</span></div>
       </div>
     </div>

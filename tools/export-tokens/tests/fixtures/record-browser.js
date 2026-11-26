@@ -20,9 +20,9 @@ const ROOT = path.join(__dirname, '../../../..');
 
 // [component, tag, alias, css property]
 const SAMPLE = [
-  ['button', 'kakao-button', '--_primary-ring', 'background-color'],
+  ['button', 'kakao-button', '--_focus', 'background-color'],
   ['button', 'kakao-button', '--_ghost-hover-bg', 'background-color'],
-  ['button', 'kakao-button', '--_danger-ring', 'background-color'],
+  ['button', 'kakao-button', '--_danger-hover-bg', 'background-color'],
   ['button', 'kakao-button', '--_primary-bg', 'background-color'],
   ['dialog', 'kakao-dialog', '--_shadow', 'box-shadow'],
   ['dialog', 'kakao-dialog', '--_bg', 'background-color'],

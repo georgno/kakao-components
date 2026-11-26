@@ -1950,10 +1950,6 @@
               "default": "var(--kakao-color-ink-hover, #2c2c31)"
             },
             {
-              "name": "--kakao-button-primary-ring",
-              "default": "color-mix(in srgb, var(--_ink) 16%, transparent)"
-            },
-            {
               "name": "--kakao-button-primary-shadow",
               "default": "0 2px 24px rgba(0, 0, 0, 0.04)"
             },
@@ -1970,20 +1966,12 @@
               "default": "var(--kakao-color-subtle-strong, #e6e6e8)"
             },
             {
-              "name": "--kakao-button-secondary-ring",
-              "default": "color-mix(in srgb, var(--_ink) 12%, transparent)"
-            },
-            {
               "name": "--kakao-button-ghost-text",
               "default": "var(--_ink-soft)"
             },
             {
               "name": "--kakao-button-ghost-hover-bg",
               "default": "color-mix(in srgb, var(--_ink) 4.5%, transparent)"
-            },
-            {
-              "name": "--kakao-button-ghost-ring",
-              "default": "color-mix(in srgb, var(--_ink) 10%, transparent)"
             },
             {
               "name": "--kakao-button-danger-bg",
@@ -1996,10 +1984,6 @@
             {
               "name": "--kakao-button-danger-hover-bg",
               "default": "var(--kakao-color-danger-hover, #a83f38)"
-            },
-            {
-              "name": "--kakao-button-danger-ring",
-              "default": "color-mix(in srgb, var(--_danger-bg) 18%, transparent)"
             },
             {
               "name": "--kakao-button-danger-shadow",
@@ -2070,8 +2054,16 @@
               "default": "550"
             },
             {
-              "name": "--kakao-button-focus-ring-width",
-              "default": "4px"
+              "name": "--kakao-button-focus",
+              "default": "var(--kakao-color-focus, #2563eb)"
+            },
+            {
+              "name": "--kakao-button-focus-width",
+              "default": "2px"
+            },
+            {
+              "name": "--kakao-button-focus-offset",
+              "default": "2px"
             },
             {
               "name": "--kakao-button-disabled-opacity",
