@@ -74,6 +74,9 @@ render into a shadow root (with slots where they take content).
   is appended to it.
   This layout is the demo pages' own convention (in `shared/demo.css` under `.demo-page`),
   not a styleguide rule; the other pages that load `demo.css` are not affected.
+- The consumer skill's source is `skills/kakao-ui/` (the copy other repos take);
+  `.claude/skills/kakao-ui/` and `.pi/skills/kakao-ui/` are copies: edit the source, then
+  run `node tools/skills.js` (`--check` runs in the pre-commit hook and the deploy).
 - A new top-level page (or file a page loads, like `CHANGELOG.md`) must also be added to
   the copy list in `.github/workflows/pages.yml`, or it is missing from the live site.
 - The deploy minifies the published copy with `tools/minify-site.mjs` (HTML, JS, CSS;

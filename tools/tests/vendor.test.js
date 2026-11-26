@@ -41,6 +41,9 @@ test('copies, writes VERSION, refuses unknown names and foreign folders', () => 
     assert.ok(fs.existsSync(path.join(dest, 'shared/fonts/inter-tight/OFL.txt')));
     assert.ok(!fs.existsSync(path.join(dest, 'components/tabs/demo.html')));
     assert.match(fs.readFileSync(path.join(dest, 'VERSION'), 'utf8'), /^\S+\n$/);
+    for (const f of ['skills/kakao-ui/SKILL.md', 'templates/page.html', 'recipes/form.html']) {
+      assert.ok(fs.existsSync(path.join(dest, f)), `${f} is copied`);
+    }
 
     // Again with another set: the earlier copy is replaced, nothing stale stays.
     assert.equal(main([dest, 'badge'], ROOT, sink(), sink()), 0);

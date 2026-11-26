@@ -19,6 +19,13 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `skills/kakao-ui/SKILL.md`: a skill for agent sessions in projects that use
+  the library: vendoring and pinning a tag, the loader head and page base, the
+  rules that bite most, known gotchas and a closing checklist; it points to
+  CATALOG.md and the recipes. Installed here as copies in `.claude/skills/` and
+  `.pi/skills/`, kept in step by `node tools/skills.js` (`--check` in the
+  pre-commit hook and the deploy). `tools/vendor.js` now also copies the skill,
+  `templates/` and `recipes/`; the site publishes `skills/`.
 - `templates/page.html` and `recipes/`: a starting page (the two-line loader
   head, a page base from the tokens, `kakao-header-bar` with the theme switch,
   `kakao-page` and `kakao-flow`) and five copy-paste pages built on it: a

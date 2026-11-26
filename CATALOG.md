@@ -3,6 +3,8 @@
 Web components for server-rendered pages: plain JS, no build step. Full API per component
 (attributes, events, slots, CSS properties, files): `custom-elements.json`; examples:
 `components/<name>/demo.html`.
+Working rules for agents (head, page base, the rules that bite, a checklist): the skill in
+`skills/` (its SKILL.md); a starting page and copy-paste pages: `templates/page.html`, `recipes/`.
 
 ## Page head
 

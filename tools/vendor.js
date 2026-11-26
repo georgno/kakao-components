@@ -17,6 +17,10 @@
  *  - shared/kakao.js, kakao.css, tokens.css, themes.css, font.css and the font
  *    files, component-api.js;
  *  - CATALOG.md and custom-elements.json (the guide and the full API);
+ *  - as reference, pinned with the code: skills/kakao-ui (the consumer skill;
+ *    install it as .claude/skills/kakao-ui or .pi/skills/kakao-ui), templates/
+ *    and recipes/ (they load ../shared/kakao.js, so they run in place; with a
+ *    component list, tags outside it stay unstyled there);
  *  - VERSION: the release tag of the checked-out commit. Vendor from a tag
  *    (git checkout vX.Y.Z); on any other commit VERSION holds `git describe`
  *    and a warning is printed.
@@ -45,6 +49,9 @@ const SHARED = [
   'shared/component-api.js',
   'CATALOG.md',
   'custom-elements.json',
+  'skills/kakao-ui',
+  'templates',
+  'recipes',
 ];
 
 class VendorError extends Error {}

@@ -51,12 +51,16 @@ jobs:
       - name: Loader up to date
         run: node tools/loader.js --check
 
+      # .claude/skills and .pi/skills hold copies of skills/ (tools/skills.js).
+      - name: Skill copies up to date
+        run: node tools/skills.js --check
+
       # Only publish the demo pages and what they load; archive/, openspec/
       # and tools/ stay in the repo but off the site.
       - name: Assemble site
         run: |
           mkdir _site
-          cp -r index.html components.html kitchen-sink.html tokens.html styleguide.html changelog.html CHANGELOG.md CATALOG.md tokens.json custom-elements.json components shared templates recipes _site/
+          cp -r index.html components.html kitchen-sink.html tokens.html styleguide.html changelog.html CHANGELOG.md CATALOG.md tokens.json custom-elements.json components shared templates recipes skills _site/
 
       # Minify the copy (never the repo): no comments or extra whitespace in
       # HTML, JS and CSS. The minifiers are installed for this run only; the

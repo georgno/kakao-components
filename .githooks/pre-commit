@@ -4,8 +4,8 @@
 #
 # - The component count on index.html (tools/count-components.js).
 # - tokens.json (tools/export-tokens.js), exported from the staged sources.
-# - custom-elements.json, CATALOG.md, shared/kakao.css and the loader map are
-#   checked, not rewritten.
+# - custom-elements.json, CATALOG.md, shared/kakao.css, the loader map and the
+#   skill copies are checked, not rewritten.
 set -e
 root=$(git rev-parse --show-toplevel)
 
@@ -63,5 +63,13 @@ node "$root/tools/catalog.js" --check >/dev/null || {
 # Generated from tokens/font/themes and custom-elements.json (tools/loader.js).
 node "$root/tools/loader.js" --check >/dev/null || {
   echo "pre-commit: shared/kakao.css or the map in shared/kakao.js is out of date. Run node tools/loader.js and stage them."
+  exit 1
+}
+
+# ---- skill copies ------------------------------------------------------------
+# .claude/skills/<name> and .pi/skills/<name> are copies of skills/<name>
+# (tools/skills.js).
+node "$root/tools/skills.js" --check >/dev/null || {
+  echo "pre-commit: a skill copy differs from skills/. Edit skills/<name>/, run node tools/skills.js and stage the copies."
   exit 1
 }
