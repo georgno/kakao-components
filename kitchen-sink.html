@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="components/page/page.css" />
 <link rel="stylesheet" href="components/flow/flow.css" />
 <link rel="stylesheet" href="components/plain-list/plain-list.css" />
+<link rel="stylesheet" href="components/section-header/section-header.css" />
 <script src="shared/demo.js"></script>
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
@@ -70,6 +71,7 @@
 <script src="components/page/page.js" defer></script>
 <script src="components/flow/flow.js" defer></script>
 <script src="components/plain-list/plain-list.js" defer></script>
+<script src="components/section-header/section-header.js" defer></script>
 <style>
   /* The content column is a kakao-page (it also keeps its end above the fixed
      unsaved-changes bar): main drops demo.css's own column, the page keeps its width. */
@@ -103,6 +105,7 @@
   .more-genres-label { margin-top: 0.9rem; margin-bottom: 0.4rem; }
   .summary kakao-progress, .summary kakao-meter, .summary kakao-accordion { max-width: 22rem; }
   .summary kakao-plain-list { color: var(--muted); }
+  #submitted { margin-block: 2.75rem 1rem; }
   .summary [slot="footer"] { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
   .danger-zone { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -513,8 +516,9 @@
     <kakao-button slot="actions" id="unsaved-save" label="Save"></kakao-button>
   </kakao-action-bar>
 
-  <h2>Submitted values</h2>
-  <p>What a save would send, collected from the component APIs.</p>
+  <kakao-section-header id="submitted" heading="Submitted values" count="0" count-label="no entries" description="What a save would send, collected from the component APIs.">
+    <kakao-button slot="actions" id="submitted-clear" label="Clear" variant="ghost" size="sm"></kakao-button>
+  </kakao-section-header>
   <kakao-code-block id="log" mode="log" label="Submitted values" wrap max-height="16rem"></kakao-code-block>
 </kakao-page>
 </main>
@@ -524,7 +528,18 @@
   const form = $('settings');
   const log = $('log');
   // One line per action in the code block: its name, then the values as JSON (always as text).
-  const logTo = (name, detail) => log.append(`${name}${detail === undefined ? '' : ` ${safeStringify(detail)}`}\n`);
+  const logTo = (name, detail) => {
+    log.append(`${name}${detail === undefined ? '' : ` ${safeStringify(detail)}`}\n`);
+    countEntries(entries + 1);
+  };
+  // The section header counts the entries; Clear empties the log.
+  let entries = 0;
+  const countEntries = (n) => {
+    entries = n;
+    $('submitted').setAttribute('count', n);
+    $('submitted').setAttribute('count-label', n === 0 ? 'no entries' : n === 1 ? '1 entry' : `${n} entries`);
+  };
+  $('submitted-clear').addEventListener('click', () => { log.clear(); countEntries(0); });
 
   // ---- price ----
   const PLAN_PRICE = { sd: 6.99, hd: 10.99, uhd: 15.99 };

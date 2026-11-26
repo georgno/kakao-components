@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-section-header - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../code/code.css" />
+<link rel="stylesheet" href="section-header.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../code/code.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="section-header.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Section header"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Section header</h1>
+    <p><code>&lt;kakao-section-header&gt;</code> - the heading row of a page section: a real heading (<code>level</code> 2 to 6), an optional count or count badge, a muted line of description and actions at the end of the row, which wrap below the text on a phone. It is light DOM: the heading is rendered into the page itself, so it belongs to the page's outline, a <a href="../toc/demo.html">table of contents</a> lists it and <code>#id</code> links reach it. Load <code>section-header.css</code> with the script.</p>
+  </header>
+
+  <h2>Heading, count, description, actions</h2>
+  <p>The common case. The count sits in the heading (read as "Findings 12") in the muted colour; the actions are children with <code>slot="actions"</code>. Make the window narrow: the actions move below the text.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">A report section</h3>
+      <kakao-section-header heading="Findings" count="12" description="Six need a fix before the release; the rest are suggestions.">
+        <kakao-button slot="actions" label="Copy list" variant="secondary" size="sm"></kakao-button>
+        <kakao-button slot="actions" label="Export" variant="secondary" size="sm"></kakao-button>
+      </kakao-section-header>
+    </kakao-card>
+  </div>
+
+  <h2>Count badge</h2>
+  <p><code>count-tone</code> draws the count as a <code>kakao-badge</code> of that tone (load <code>badge.js</code>). <code>count-label</code> is what a screen reader hears instead of the bare number: "Failed tests, 3 failed".</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Test results</h3>
+      <div style="display:grid;gap:1.25rem" data-demo-wrap>
+        <kakao-section-header heading="Failed tests" level="3" count="3" count-tone="danger" count-label="3 failed"></kakao-section-header>
+        <kakao-section-header heading="Flaky tests" level="3" count="1" count-tone="warning" count-label="1 flaky"></kakao-section-header>
+        <kakao-section-header heading="Passed tests" level="3" count="148" count-tone="success" count-label="148 passed"></kakao-section-header>
+        <kakao-section-header heading="Skipped tests" level="3" count="0" count-tone="neutral" count-label="none"></kakao-section-header>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Levels</h2>
+  <p><code>level</code> picks the heading element, <code>h2</code> (default) to <code>h6</code>; pick the one that fits the page's outline (<code>h1</code> is the page title). The size follows: h4 to h6 look alike.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">h2 to h6</h3>
+      <div style="display:grid;gap:1.25rem" data-demo-wrap>
+        <kakao-section-header heading="Level 2: a page section" count="4"></kakao-section-header>
+        <kakao-section-header heading="Level 3: a part of it" level="3" count="4"></kakao-section-header>
+        <kakao-section-header heading="Level 4: a group inside a part" level="4" count="4"></kakao-section-header>
+        <kakao-section-header heading="Level 5" level="5"></kakao-section-header>
+        <kakao-section-header heading="Level 6" level="6"></kakao-section-header>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Rich description</h2>
+  <p>For a link or code in the description, give a child <code>slot="description"</code> instead of the <code>description</code> attribute.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Changed files</h3>
+      <kakao-section-header heading="Changed files" count="7">
+        <p slot="description">Since <kakao-code>v0.10.0</kakao-code>; the <a href="../../CHANGELOG.md">changelog</a> lists what they do.</p>
+        <kakao-button slot="actions" label="Open diff" variant="secondary" size="sm"></kakao-button>
+      </kakao-section-header>
+    </kakao-card>
+  </div>
+
+  <h2>A count that changes</h2>
+  <p>Set the attributes from a script; the same heading updates (it keeps its <code>id</code>).</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Selected rows</h3>
+      <kakao-section-header id="section-header-live" heading="Selected rows" level="3" count="0" count-tone="primary" description="Pick rows in the table below."></kakao-section-header>
+      <div class="toolbar" data-demo-only>
+        <kakao-button label="Select one more" variant="secondary" size="sm" onclick="const h = document.getElementById('section-header-live'); h.setAttribute('count', Number(h.getAttribute('count')) + 1)"></kakao-button>
+        <kakao-button label="Clear" variant="ghost" size="sm" onclick="document.getElementById('section-header-live').setAttribute('count', '0')"></kakao-button>
+      </div>
+      <template data-code>
+        <script>
+          header.setAttribute('count', selected.length);
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <h2>Hidden</h2>
+  <p><code>hidden</code> hides the whole row.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">A header that comes and goes</h3>
+      <kakao-section-header id="section-header-hidden" heading="Warnings" level="3" count="2" count-tone="warning" hidden></kakao-section-header>
+      <div class="toolbar" data-demo-only>
+        <kakao-button label="Show or hide the header" variant="secondary" size="sm" onclick="const h = document.getElementById('section-header-hidden'); h.hidden = !h.hidden"></kakao-button>
+      </div>
+    </kakao-card>
+  </div>
+</main>
+</body>
+</html>

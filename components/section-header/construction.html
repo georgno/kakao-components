@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-section-header - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="section-header.css" />
+<script src="../button/button.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="section-header.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="section-header" data-source="section-header.css" data-title="Section header">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Level 2: count, description, actions</figcaption>
+      <kakao-section-header heading="Findings" count="12" description="Six need a fix before the release.">
+        <kakao-button slot="actions" label="Export" variant="secondary" size="sm"></kakao-button>
+      </kakao-section-header>
+    </figure>
+    <figure>
+      <figcaption>Level 3, count badge</figcaption>
+      <kakao-section-header heading="Failed tests" level="3" count="3" count-tone="danger" description="Run the suite again after the fix."></kakao-section-header>
+    </figure>
+    <figure>
+      <figcaption>Level 4</figcaption>
+      <kakao-section-header heading="Warnings" level="4" count="2"></kakao-section-header>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-section-header-gap", "label": "Gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "between the text and the actions" },
+    { "property": "--kakao-section-header-row-gap", "label": "Row gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "when the actions wrap below the text" },
+    { "property": "--kakao-section-header-actions-gap", "label": "Actions gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "between the actions" },
+    { "property": "--kakao-section-header-description-gap", "label": "Description gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "between the heading and the description" },
+    { "property": "--kakao-section-header-text-min", "label": "Text min width", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "narrower and the actions wrap below" },
+    { "property": "--kakao-section-header-font-size-2", "label": "Font size (h2)", "group": "Typography", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-section-header-font-size-3", "label": "Font size (h3)", "group": "Typography", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-section-header-font-size-4", "label": "Font size (h4 to h6)", "group": "Typography", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-section-header-font-weight", "label": "Heading weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-section-header-line-height", "label": "Heading line height", "group": "Typography", "type": "number", "min": 1, "max": 2, "step": 0.05 },
+    { "property": "--kakao-section-header-description-size", "label": "Description size", "group": "Typography", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-section-header-muted", "label": "Muted (count, description)", "group": "Colour", "type": "color" }
+  ]
+  </script>
+</main>
+</body>
+</html>

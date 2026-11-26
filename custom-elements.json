@@ -6606,7 +6606,7 @@
             "lightDom": false,
             "requires": [],
             "enhancedBy": [],
-            "notFor": "Headings inside the page: h2 to h6."
+            "notFor": "Headings inside the page: h2 to h6, or kakao-section-header with a count and actions."
           }
         }
       ],
@@ -9940,6 +9940,139 @@
           "declaration": {
             "name": "KakaoRating",
             "module": "components/rating/rating.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/section-header/section-header.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "KakaoSectionHeader",
+          "tagName": "kakao-section-header",
+          "summary": "The heading row of a section: a heading, a count, a line of description and actions (\"Findings 12 · Export\").",
+          "description": "The heading row of a page section: a real heading (h2 to h6), an optional count or count badge, a muted line of description and actions at the end of the row (\"Findings 12 · Six need a fix before the release · Export\"). Light DOM: the script renders the heading into the page itself, so it is part of the page's outline, kakao-toc lists it and #id links reach it; section-header.css lays it out. Vanilla JS, no deps.",
+          "attributes": [
+            {
+              "name": "heading",
+              "description": "The heading text (plain text, never HTML). Without it no heading is rendered."
+            },
+            {
+              "name": "level",
+              "description": "2 (default) · 3 · 4 · 5 · 6: the heading element, h2 to h6. Pick the level that fits the page's outline (h1 is the page title); it also sets the size (h4 to h6 look alike).",
+              "type": {
+                "text": "'2' | '3' | '4' | '5' | '6'"
+              },
+              "default": "'2'"
+            },
+            {
+              "name": "count",
+              "description": "A number (or short text: \"12+\") after the heading text, in the heading: read as part of it (\"Findings 12\"). 0 is shown."
+            },
+            {
+              "name": "count-tone",
+              "description": "neutral · primary · success · warning · danger: draws the count as a kakao-badge of that tone (load badge.js; without it the count is plain text). Without count-tone the count is muted text.",
+              "type": {
+                "text": "'neutral' | 'primary' | 'success' | 'warning' | 'danger'"
+              }
+            },
+            {
+              "name": "count-label",
+              "description": "What a screen reader reads instead of the bare count (\"3 failed\"); the visible count stays the number."
+            },
+            {
+              "name": "description",
+              "description": "A muted line under the heading (plain text), or a child with slot=\"description\" for richer text (links, kakao-code)."
+            },
+            {
+              "name": "hidden",
+              "description": "Not shown."
+            }
+          ],
+          "slots": [
+            {
+              "name": "actions",
+              "description": "Buttons or links at the end of the heading row; they wrap below the text when the row is too narrow (a phone). Light DOM: children are moved into the actions box, in order; any child without a slot goes there too."
+            },
+            {
+              "name": "description",
+              "description": "Rich description under the heading (instead of the description attribute)."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--kakao-section-header-gap",
+              "default": "var(--kakao-space-gap, 1rem)"
+            },
+            {
+              "name": "--kakao-section-header-row-gap",
+              "default": "var(--kakao-space-y, 0.5rem)"
+            },
+            {
+              "name": "--kakao-section-header-actions-gap",
+              "default": "var(--kakao-space-y, 0.5rem)"
+            },
+            {
+              "name": "--kakao-section-header-description-gap",
+              "default": "0.25rem"
+            },
+            {
+              "name": "--kakao-section-header-text-min",
+              "default": "16rem"
+            },
+            {
+              "name": "--kakao-section-header-font-size-2",
+              "default": "1.25rem"
+            },
+            {
+              "name": "--kakao-section-header-font-size-3",
+              "default": "1.125rem"
+            },
+            {
+              "name": "--kakao-section-header-font-size-4",
+              "default": "1rem"
+            },
+            {
+              "name": "--kakao-section-header-font-weight",
+              "default": "600"
+            },
+            {
+              "name": "--kakao-section-header-line-height",
+              "default": "1.3"
+            },
+            {
+              "name": "--kakao-section-header-description-size",
+              "default": "0.875rem"
+            },
+            {
+              "name": "--kakao-section-header-muted",
+              "default": "var(--kakao-color-muted, #62626c)"
+            }
+          ],
+          "kakao": {
+            "script": "components/section-header/section-header.js",
+            "css": [
+              "components/section-header/section-header.css"
+            ],
+            "lightDom": true,
+            "requires": [],
+            "enhancedBy": [
+              "kakao-badge"
+            ],
+            "notFor": "The page's top bar: kakao-header-bar; a framed box with a title: kakao-card; a heading alone: h2 to h6."
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "kakao-section-header",
+          "declaration": {
+            "name": "KakaoSectionHeader",
+            "module": "components/section-header/section-header.js"
           }
         }
       ]

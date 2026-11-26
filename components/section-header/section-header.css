@@ -1,0 +1,101 @@
+/*
+ * kakao-section-header styles
+ *
+ * Light DOM: section-header.js renders a real <h2>–<h6> (and the count and
+ * description) as children of <kakao-section-header>, so the heading belongs
+ * to the page's outline; this file lays them out. The row: the text (heading,
+ * description) takes the space, the actions sit at its end and wrap below the
+ * text when the row gets too narrow (a phone). No outer margins: the space
+ * around a section is the page's or kakao-flow's job. Every rule is scoped
+ * under kakao-section-header, and the selectors are specific enough that the
+ * page's own h2 / h2 + p margins and sizes don't leak in.
+ *
+ * Theming: every --kakao-section-header-* property in the settings block below
+ * can be set on <kakao-section-header> or any ancestor. The defaults live in
+ * that block: change them on construction.html.
+ */
+
+kakao-section-header {
+  /* @kakao-settings:start prefix=--kakao-section-header- (written by construction.html, edit there) */
+  --_gap: var(--kakao-section-header-gap, var(--kakao-space-gap, 1rem));
+  --_row-gap: var(--kakao-section-header-row-gap, var(--kakao-space-y, 0.5rem));
+  --_actions-gap: var(--kakao-section-header-actions-gap, var(--kakao-space-y, 0.5rem));
+  --_description-gap: var(--kakao-section-header-description-gap, 0.25rem);
+  --_text-min: var(--kakao-section-header-text-min, 16rem);
+  --_font-size-2: var(--kakao-section-header-font-size-2, 1.25rem);
+  --_font-size-3: var(--kakao-section-header-font-size-3, 1.125rem);
+  --_font-size-4: var(--kakao-section-header-font-size-4, 1rem);
+  --_font-weight: var(--kakao-section-header-font-weight, 600);
+  --_line-height: var(--kakao-section-header-line-height, 1.3);
+  --_description-size: var(--kakao-section-header-description-size, 0.875rem);
+  --_muted: var(--kakao-section-header-muted, var(--kakao-color-muted, #62626c));
+  /* @kakao-settings:end */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--_row-gap) var(--_gap);
+}
+
+kakao-section-header > .kakao-section-header-text {
+  flex: 1 1 var(--_text-min);
+  min-width: 0;
+}
+
+kakao-section-header > .kakao-section-header-text > :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+  font-size: var(--_font-size-4);
+  font-weight: var(--_font-weight);
+  line-height: var(--_line-height);
+  letter-spacing: normal;
+  overflow-wrap: anywhere; /* a long word or path breaks rather than widening the page */
+}
+kakao-section-header > .kakao-section-header-text > h2 { font-size: var(--_font-size-2); }
+kakao-section-header > .kakao-section-header-text > h3 { font-size: var(--_font-size-3); }
+
+/* The count, inside the heading: one space after the text (a text node, so
+   it is also read as a separate word), muted and lighter than the heading. */
+kakao-section-header .kakao-section-header-count {
+  color: var(--_muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+kakao-section-header kakao-badge.kakao-section-header-count {
+  vertical-align: 0.15em; /* the pill sits on the heading's x-height, not below it */
+}
+
+kakao-section-header > .kakao-section-header-text > :not(:is(h1, h2, h3, h4, h5, h6)) {
+  margin: 0;
+  font-size: var(--_description-size);
+  line-height: 1.45;
+  color: var(--_muted);
+  overflow-wrap: anywhere;
+}
+kakao-section-header > .kakao-section-header-text > * + * {
+  margin-block-start: var(--_description-gap);
+}
+
+kakao-section-header > .kakao-section-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--_actions-gap);
+  min-width: 0;
+}
+kakao-section-header > .kakao-section-header-actions:empty { display: none; }
+
+/* Read by screen readers, not shown: count-label. */
+kakao-section-header .kakao-section-header-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+kakao-section-header[hidden],
+kakao-section-header > .kakao-section-header-text > [hidden] { display: none; }

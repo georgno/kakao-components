@@ -11,7 +11,8 @@
  * CATALOG
  * ----------------------------------------------------------------------------
  *  for        The page's sticky top bar: title, navigation, actions.
- *  not for    Headings inside the page: h2 to h6.
+ *  not for    Headings inside the page: h2 to h6, or kakao-section-header
+ *             with a count and actions.
  *
  * ----------------------------------------------------------------------------
  * FILES

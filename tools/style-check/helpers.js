@@ -93,6 +93,7 @@ const VALUES = {
   'kakao-radio-group': { orientation: ['vertical', 'horizontal'], size: SIZES },
   'kakao-rating': { size: SIZES, step: ['1', '0.5'] },
   'kakao-select': { size: SIZES },
+  'kakao-section-header': { level: ['2', '3', '4', '5', '6'], 'count-tone': ['neutral', 'primary', 'success', 'warning', 'danger'] },
   'kakao-setting': { layout: ['auto', 'inline', 'stacked'] },
   'kakao-settings-group': { variant: ['box', 'plain'] },
   'kakao-skeleton': {

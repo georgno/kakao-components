@@ -19,6 +19,15 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `<kakao-section-header>`: the heading row of a page section. `heading` and
+  `level` (2 to 6, default 2) render a real `<h2>`–`<h6>`; `count` adds a muted
+  number to the heading, or a `kakao-badge` with `count-tone`, and
+  `count-label` is what a screen reader hears instead of it; `description`
+  (or `slot="description"`) a muted line under it; `slot="actions"` children
+  sit at the end of the row and wrap below the text on a phone. Light DOM
+  (load `section-header.css`): the heading is rendered into the page, so
+  `kakao-toc` lists it (by its text, without the count) and `#id` links reach
+  it. Spacing from the shared tokens.
 - `<kakao-plain-list>`: a plain list of short items (file:line references,
   test names, findings). Light DOM, drawn by `plain-list.css` alone: it wraps
   a `<ul>` or `<ol>` with no outer margins, one gap between items, muted

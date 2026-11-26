@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="components/grid/grid.css" />
 <link rel="stylesheet" href="components/flow/flow.css" />
 <link rel="stylesheet" href="components/plain-list/plain-list.css" />
+<link rel="stylesheet" href="components/section-header/section-header.css" />
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
 <script src="components/stepper/stepper.js" defer></script>
@@ -93,6 +94,7 @@
 <script src="components/grid/grid.js" defer></script>
 <script src="components/flow/flow.js" defer></script>
 <script src="components/plain-list/plain-list.js" defer></script>
+<script src="components/section-header/section-header.js" defer></script>
 <style>
   /* The table of contents: a sticky sidebar column from 75rem, a sticky
      folded bar under the page bar below that. */
@@ -1674,6 +1676,29 @@ npm test
               <svg slot="symbol" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>
             </kakao-rating>
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Section header ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Section header</h2>
+        <code>&lt;kakao-section-header&gt;</code>
+        <a href="components/section-header/construction.html">Construction</a>
+        <a href="components/section-header/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">The heading row of a page section: a real heading (<code>level</code> 2 to 6), an optional count (muted, or a badge with <code>count-tone</code>), a line of description and actions with <code>slot="actions"</code> that wrap below the text on a phone. Light DOM: the heading is rendered into the page, so it is part of the outline, a table of contents lists it and <code>#id</code> links reach it. Load <code>section-header.css</code> with the script.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Count, description, actions</h3>
+          <kakao-section-header heading="Findings" level="4" count="12" description="Six need a fix before the release.">
+            <kakao-button slot="actions" label="Export" variant="secondary" size="sm"></kakao-button>
+          </kakao-section-header>
+        </div>
+        <div class="example">
+          <h3>Count badge</h3>
+          <kakao-section-header heading="Failed tests" level="4" count="3" count-tone="danger" count-label="3 failed"></kakao-section-header>
         </div>
       </div>
     </article>

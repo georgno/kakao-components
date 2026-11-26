@@ -96,6 +96,7 @@
     "kakao-radio-group": ["components/radio-group/radio-group.js",[],[],[]],
     "kakao-range-slider": ["components/range-slider/range-slider.js",[],[],["kakao-number-input"]],
     "kakao-rating": ["components/rating/rating.js",[],[],[]],
+    "kakao-section-header": ["components/section-header/section-header.js",["components/section-header/section-header.css"],[],["kakao-badge"]],
     "kakao-select": ["components/select/select.js",[],[],[]],
     "kakao-settings-group": ["components/settings-group/settings-group.js",[],[],[]],
     "kakao-setting": ["components/settings-group/settings-group.js",[],[],[]],
