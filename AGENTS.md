@@ -102,6 +102,12 @@ render into a shadow root (with slots where they take content).
   `tools/style-check/helpers.js`: adding or renaming an enumerated value (a size,
   tone, variant) in a component includes updating it, and a new component lists
   `force` in its header comment.
+- To see a page or demo you changed, run `node tools/visual-check.js <page.html>…`: desktop
+  and 390px screenshots in light and dark (written to the OS temp folder, never the repo;
+  open and look at them), plus console/request errors, sideways scroll, unnamed controls,
+  missing focus rings and motion under reduced motion. It needs Playwright with Chromium,
+  which is not a dependency (no package.json here): it is required lazily, like the
+  code-block browser test, and says how to install it. Keep it that way; no other packages.
 - Planning goes through OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
   Project rules for it are in `openspec/config.yaml`. Archive a change once its tasks are done.
 

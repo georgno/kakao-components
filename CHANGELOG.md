@@ -19,6 +19,12 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `tools/visual-check.js <page|url>…`: desktop and 390px phone screenshots in
+  light and dark (into the OS temp folder), plus checks for console and request
+  errors, sideways scroll, controls and images without an accessible name,
+  missing focus rings (Tab through the page) and motion under reduced motion.
+  Needs Playwright with Chromium, which stays optional: it is not a dependency,
+  and the tool says how to install it. In AGENTS.md and the kakao-ui skill's checklist.
 - `skills/kakao-ui/SKILL.md`: a skill for agent sessions in projects that use
   the library: vendoring and pinning a tag, the loader head and page base, the
   rules that bite most, known gotchas and a closing checklist; it points to

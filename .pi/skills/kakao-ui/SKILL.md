@@ -62,7 +62,7 @@ Shell: `<kakao-header-bar>` first in `<body>` (title, `slot="nav"` links, `<kaka
 ## Before you finish
 
 1. Run the style checker from the library checkout on your pages: `node <kakao-checkout>/tools/style-check.js path/to/pages` (0 errors; it also reports missing or misordered files on pages without the loader).
-2. Look at every page in the light and the dark theme, and at 390px width (no sideways scroll).
+2. Look at every page in the light and the dark theme, and at 390px width (no sideways scroll). `node <kakao-checkout>/tools/visual-check.js page.html` (or a dev server URL) takes those screenshots into the temp folder and checks console errors, sideways scroll, unnamed controls, focus rings and reduced motion; it needs Playwright (`npm i playwright && npx playwright install chromium`, and it says so). Open the screenshots; the checks don't replace looking.
 3. Use it with the keyboard only: every control reachable, focus visible, dialogs and sheets trap and return focus.
 4. Turn on reduced motion: nothing slides or rolls that matters.
 5. No console errors.
