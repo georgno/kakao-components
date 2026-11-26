@@ -244,6 +244,171 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/action-bar/action-bar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "KakaoActionBar",
+          "tagName": "kakao-action-bar",
+          "summary": "Actions on selected items, floating at the edge: \"3 selected · Copy\".",
+          "description": "A floating bar for actions on the items a person has selected or marked: a short summary (\"3 marked to fix\") and a row of actions (\"Show list\", \"Copy\"). Sticky at the bottom (or top) of its container, or fixed to the viewport. With a count it shows itself while something is selected and slides away at 0, and it announces count changes politely. Vanilla JS, Shadow DOM, no deps.",
+          "attributes": [
+            {
+              "name": "position",
+              "description": "bottom (default) · top. The edge it floats at; at the top it stays below the header bar (--kakao-header-bar-rendered-height).",
+              "type": {
+                "text": "'bottom' | 'top'"
+              },
+              "default": "'bottom'"
+            },
+            {
+              "name": "fixed",
+              "description": "Fixed to the viewport, centred, instead of sticky inside its container."
+            },
+            {
+              "name": "count",
+              "description": "number. With it the bar is shown while the count is above 0, and slides out at 0 (also when empty or not a number). Without it the bar is shown."
+            },
+            {
+              "name": "count-label",
+              "description": "What a count change announces, {count} replaced by the number. Default: the summary's text, else \"{count} selected\"."
+            },
+            {
+              "name": "label",
+              "description": "Accessible name of the bar (a region). Default \"Selection actions\"."
+            },
+            {
+              "name": "hidden",
+              "description": "Hides the bar at once, without the slide (removing it slides the bar in)."
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "description": "number, or null without the attribute; setting null removes it."
+            },
+            {
+              "kind": "field",
+              "name": "shown",
+              "description": "true while the bar is shown or sliding in (read-only)."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The summary: what is selected, ideally with the number."
+            },
+            {
+              "name": "actions",
+              "description": "Buttons (kakao-button, size md or sm) or links, in a row that wraps; the main action last."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--kakao-action-bar-bg",
+              "default": "var(--kakao-color-raised, #ffffff)"
+            },
+            {
+              "name": "--kakao-action-bar-text",
+              "default": "var(--kakao-color-text, #18181b)"
+            },
+            {
+              "name": "--kakao-action-bar-shadow",
+              "default": "0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent)"
+            },
+            {
+              "name": "--kakao-action-bar-font-size",
+              "default": "var(--kakao-font-size, 0.95rem)"
+            },
+            {
+              "name": "--kakao-action-bar-summary-weight",
+              "default": "500"
+            },
+            {
+              "name": "--kakao-action-bar-radius",
+              "default": "20px"
+            },
+            {
+              "name": "--kakao-action-bar-padding",
+              "default": "6px"
+            },
+            {
+              "name": "--kakao-action-bar-summary-padding-x",
+              "default": "0.625rem"
+            },
+            {
+              "name": "--kakao-action-bar-gap",
+              "default": "0.5rem"
+            },
+            {
+              "name": "--kakao-action-bar-summary-gap",
+              "default": "1rem"
+            },
+            {
+              "name": "--kakao-action-bar-min-height",
+              "default": "56px"
+            },
+            {
+              "name": "--kakao-action-bar-min-width",
+              "default": "20rem"
+            },
+            {
+              "name": "--kakao-action-bar-max-width",
+              "default": "48rem"
+            },
+            {
+              "name": "--kakao-action-bar-gutter",
+              "default": "1rem"
+            },
+            {
+              "name": "--kakao-action-bar-z-index",
+              "default": "40"
+            },
+            {
+              "name": "--kakao-action-bar-duration",
+              "default": "var(--kakao-motion-duration, 320ms)"
+            },
+            {
+              "name": "--kakao-action-bar-ease",
+              "default": "var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1))"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "bar"
+            },
+            {
+              "name": "summary"
+            },
+            {
+              "name": "actions"
+            }
+          ],
+          "kakao": {
+            "script": "components/action-bar/action-bar.js",
+            "css": [],
+            "lightDom": false,
+            "requires": [],
+            "enhancedBy": [],
+            "notFor": "A brief notice: kakao-toast; site navigation: kakao-header-bar."
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "kakao-action-bar",
+          "declaration": {
+            "name": "KakaoActionBar",
+            "module": "components/action-bar/action-bar.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/alert/alert.js",
       "declarations": [
         {

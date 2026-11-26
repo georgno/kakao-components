@@ -81,6 +81,7 @@
 <script src="components/description-list/description-list.js" defer></script>
 <script src="components/empty-state/empty-state.js" defer></script>
 <script src="components/copy-button/copy-button.js" defer></script>
+<script src="components/action-bar/action-bar.js" defer></script>
 <style>
   /* The table of contents: a sticky sidebar column from 75rem, a sticky
      folded bar under the page bar below that. */
@@ -117,6 +118,9 @@
   /* Links in a bar's nav: the page bar's page links and the bar examples'. */
   kakao-header-bar > [slot="nav"] { color: var(--ink); text-decoration: none; font-size: 0.92rem; }
   kakao-header-bar > [slot="nav"]:hover { text-decoration: underline; }
+  /* Action bar examples: resting in a page-coloured frame, not floating. */
+  .ov-action-frame { padding: 1rem 0; border-radius: 10px; background: var(--kakao-color-page, #f6f7f9); }
+  .ov-action-frame kakao-action-bar { position: relative; bottom: auto; top: auto; z-index: auto; }
 </style>
 </head>
 <body>
@@ -173,6 +177,39 @@
             </kakao-accordion>
             <kakao-accordion heading="Notifications"><p>Weekly summary by email.</p></kakao-accordion>
           </kakao-accordion>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Action bar ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Action bar</h2>
+        <code>&lt;kakao-action-bar&gt;</code>
+        <a href="components/action-bar/construction.html">Construction</a>
+        <a href="components/action-bar/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A floating bar for actions on selected items: a summary and a row of buttons. Sticky at the bottom or top of its container, or <code>fixed</code> to the viewport; with <code>count</code> it slides in while something is selected and away at 0, and announces the new count. Full width on phones. Shown here resting in a frame.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Summary and actions</h3>
+          <div class="ov-action-frame">
+            <kakao-action-bar label="Example actions">
+              3 marked to fix
+              <kakao-button slot="actions" label="Show list" variant="secondary"></kakao-button>
+              <kakao-button slot="actions" label="Copy"></kakao-button>
+            </kakao-action-bar>
+          </div>
+        </div>
+        <div class="example">
+          <h3>Small buttons</h3>
+          <div class="ov-action-frame">
+            <kakao-action-bar label="Example file actions">
+              12 files selected
+              <kakao-button slot="actions" label="Move" variant="secondary" size="sm"></kakao-button>
+              <kakao-button slot="actions" label="Delete" variant="danger" size="sm"></kakao-button>
+            </kakao-action-bar>
+          </div>
         </div>
       </div>
     </article>

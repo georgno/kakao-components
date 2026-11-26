@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>kakao-action-bar - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../checkbox/checkbox.js" defer></script>
+<script src="action-bar.js" defer></script>
+<style>
+  /* A short scrolling list: the sticky bar floats at its bottom (or top) edge. */
+  .pick-list {
+    display: grid;
+    gap: 0.5rem;
+    max-height: 15rem;
+    overflow: auto;
+    padding: 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  /* In a scrolling box the top bar measures from the box, not from below the page bar. */
+  .pick-list { --kakao-header-bar-rendered-height: 0px; }
+  /* The fixed bar covers the end of the page while shown: keep it reachable. */
+  main { padding-bottom: calc(var(--kakao-action-bar-rendered-height, 0px) + 2rem); }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Action bar"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Action bar</h1>
+    <p><code>&lt;kakao-action-bar&gt;</code> - a floating bar for actions on the items someone has selected: a short summary and a row of buttons. It sticks to the bottom (or top) of its container, or is fixed to the viewport. With <code>count</code> it slides in while something is selected and away at 0, and screen readers hear the new count. For a passing notice there is the <a href="../toast/demo.html">toast</a>.</p>
+  </header>
+
+  <h2>Sticky in its container · <code>count</code></h2>
+  <p>Tick a few rows. The bar is the last child of the scrolling list, so it floats at the list's bottom edge while you scroll and rests at its end. The page sets <code>count</code> and writes the summary; a count of 0 hides the bar.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Marked to fix</h3>
+      <div class="pick-list" data-pick>
+        <kakao-checkbox label="src/app.js:42 · unused variable"></kakao-checkbox>
+        <kakao-checkbox label="src/app.js:88 · missing await"></kakao-checkbox>
+        <kakao-checkbox label="src/router.js:12 · shadowed name"></kakao-checkbox>
+        <kakao-checkbox label="src/router.js:57 · unreachable code"></kakao-checkbox>
+        <kakao-checkbox label="src/store.js:9 · implicit any"></kakao-checkbox>
+        <kakao-checkbox label="src/store.js:31 · no return type"></kakao-checkbox>
+        <kakao-checkbox label="src/view.js:140 · long function"></kakao-checkbox>
+        <kakao-checkbox label="src/view.js:202 · magic number"></kakao-checkbox>
+        <kakao-action-bar count="0">
+          <span data-summary>0 marked to fix</span>
+          <kakao-button slot="actions" label="Show list" variant="secondary"></kakao-button>
+          <kakao-button slot="actions" label="Copy"></kakao-button>
+        </kakao-action-bar>
+      </div>
+      <template data-code>
+        <script>
+          bar.count = marked.length;                          // 0 slides it away
+          summary.textContent = `${marked.length} marked to fix`;
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <h2>At the top · <code>position="top"</code></h2>
+  <p>The bar goes at the start of its container and floats at the top edge; on a page it stays below the header bar. Smaller buttons suit a dense list.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Selected files</h3>
+      <div class="pick-list" data-pick>
+        <kakao-action-bar position="top" count="0">
+          <span data-summary>0 files selected</span>
+          <kakao-button slot="actions" label="Clear" variant="ghost" size="sm" data-clear></kakao-button>
+          <kakao-button slot="actions" label="Move" variant="secondary" size="sm"></kakao-button>
+          <kakao-button slot="actions" label="Delete" variant="danger" size="sm"></kakao-button>
+        </kakao-action-bar>
+        <kakao-checkbox label="invoice-march.pdf"></kakao-checkbox>
+        <kakao-checkbox label="invoice-april.pdf"></kakao-checkbox>
+        <kakao-checkbox label="receipts-q1.zip"></kakao-checkbox>
+        <kakao-checkbox label="contract-draft.docx"></kakao-checkbox>
+        <kakao-checkbox label="logo.svg"></kakao-checkbox>
+        <kakao-checkbox label="team-photo.jpg"></kakao-checkbox>
+        <kakao-checkbox label="notes.txt"></kakao-checkbox>
+      </div>
+    </kakao-card>
+  </div>
+
+  <h2>Fixed to the viewport · <code>fixed</code></h2>
+  <p>Centred at the bottom of the screen, clear of the safe-area insets. On a phone it spans the width, flush with the screen edge. While it is shown it writes its height to <code>--kakao-action-bar-rendered-height</code>, so the page can pad its end (this page does).</p>
+  <div class="grid">
+    <kakao-card data-code-with="fixed-bar">
+      <h3 slot="header">Pinned to the screen</h3>
+      <div class="row" data-demo-only>
+        <kakao-button label="Select 1" variant="secondary" size="sm" data-fixed-add="1"></kakao-button>
+        <kakao-button label="Select 3 more" variant="secondary" size="sm" data-fixed-add="3"></kakao-button>
+        <kakao-button label="Clear" variant="ghost" size="sm" data-fixed-add="0"></kakao-button>
+      </div>
+      <template data-code>
+        <script>
+          bar.count = 4;   // shows it; bar.count = 0 hides it
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+  <kakao-action-bar id="fixed-bar" fixed count="0" count-label="Selected rows: {count}">
+    <span data-summary>0 rows selected</span>
+    <kakao-button slot="actions" label="Export" variant="secondary"></kakao-button>
+    <kakao-button slot="actions" label="Archive"></kakao-button>
+  </kakao-action-bar>
+
+  <h2>Announcements · <code>count-label</code></h2>
+  <p>A polite live region reads the new count a moment after it changes: the summary's text by default, <code>count-label</code> (with <code>{count}</code>) when set, else “3 selected”. The fixed bar above announces “Selected rows: 4”. The count at load and a drop to 0 are not announced.</p>
+
+  <h2>Hidden · <code>hidden</code></h2>
+  <p>Without <code>count</code> the bar is shown; <code>hidden</code> hides it at once, and removing it slides the bar back in. A hidden bar takes no space.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Toggled by the page</h3>
+      <div class="row" data-demo-only>
+        <kakao-button label="Toggle hidden" variant="secondary" size="sm" id="toggle-hidden"></kakao-button>
+      </div>
+      <kakao-action-bar id="hidden-bar" label="Draft actions">
+        Draft saved 2 minutes ago
+        <kakao-button slot="actions" label="Discard" variant="ghost"></kakao-button>
+        <kakao-button slot="actions" label="Publish"></kakao-button>
+      </kakao-action-bar>
+    </kakao-card>
+  </div>
+</main>
+
+<script>
+  // Sticky examples: the ticked boxes set the count and the summary.
+  document.querySelectorAll('[data-pick]').forEach((list) => {
+    const bar = list.querySelector('kakao-action-bar');
+    const summary = bar.querySelector('[data-summary]');
+    const word = summary.textContent.replace(/^\d+\s*/, '');
+    const boxes = [...list.querySelectorAll('kakao-checkbox')];
+    const update = () => {
+      const n = boxes.filter((b) => b.checked).length;
+      bar.count = n;
+      summary.textContent = `${n} ${word}`;
+    };
+    list.addEventListener('change', update);
+    const clear = bar.querySelector('[data-clear]');
+    if (clear) clear.addEventListener('kakao-button-action', () => {
+      boxes.forEach((b) => { b.checked = false; });
+      update();
+      boxes[0].focus(); // focus was in the bar, which is leaving
+    });
+  });
+
+  // Fixed example.
+  const fixedBar = document.getElementById('fixed-bar');
+  const fixedSummary = fixedBar.querySelector('[data-summary]');
+  document.querySelectorAll('[data-fixed-add]').forEach((b) => b.addEventListener('kakao-button-action', () => {
+    const add = Number(b.dataset.fixedAdd);
+    const n = add ? (fixedBar.count || 0) + add : 0;
+    fixedBar.count = n;
+    fixedSummary.textContent = `${n} ${n === 1 ? 'row' : 'rows'} selected`;
+  }));
+
+  // Hidden example.
+  const hiddenBar = document.getElementById('hidden-bar');
+  document.getElementById('toggle-hidden').addEventListener('kakao-button-action', () => {
+    hiddenBar.hidden = !hiddenBar.hidden;
+  });
+</script>
+</body>
+</html>

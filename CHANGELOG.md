@@ -19,6 +19,16 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `<kakao-action-bar>`: a floating bar for actions on selected items - a
+  summary in the default slot ("3 marked to fix"), buttons in
+  `slot="actions"`. Sticky at the bottom (or `position="top"`) of its
+  container, or `fixed` to the viewport; with `count` it slides in while the
+  count is above 0 and away at 0 (fades when motion is reduced), and a polite
+  live region announces the new count (`count-label`, else the summary).
+  `hidden` hides it at once. Full width on phones, flush with the screen edge
+  and the safe-area inset as padding when fixed; a fixed bar writes its height
+  to `--kakao-action-bar-rendered-height`. The kitchen sink uses one for its
+  unsaved changes.
 - `shared/kakao.js`, a loader: one script in the head (not deferred) instead
   of a list of component files. It loads each kakao component on first use,
   also ones added later: component-api.js, the components it requires and

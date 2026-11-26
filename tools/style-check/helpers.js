@@ -41,6 +41,7 @@ const BOOL_TEXT = ['true', 'false'];
    with the same values. */
 const VALUES = {
   'kakao-accordion': { variant: ['card', 'tile', 'row'] },
+  'kakao-action-bar': { position: ['bottom', 'top'] },
   'kakao-alert': { tone: ['info', 'success', 'warning', 'danger'] },
   'kakao-animated-number': { 'sign-display': ['auto', 'always', 'except-zero', 'negative'] },
   'kakao-aside-menu': { position: ['left', 'right'], effect: ['push', 'squash'] },

@@ -47,6 +47,7 @@
   /* @generated:start map (node tools/loader.js, from custom-elements.json: tag: [script, css, requires, enhancedBy]) */
   const MAP = {
     "kakao-accordion": ["components/accordion/accordion.js",[],[],[]],
+    "kakao-action-bar": ["components/action-bar/action-bar.js",[],[],[]],
     "kakao-alert": ["components/alert/alert.js",[],[],[]],
     "kakao-animated-number": ["components/animated-number/animated-number.js",[],[],[]],
     "kakao-aside-menu": ["components/aside-menu/aside-menu.js",["components/aside-menu/aside-menu.css"],["kakao-button"],[]],
