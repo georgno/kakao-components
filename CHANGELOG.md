@@ -6,7 +6,16 @@ All notable changes to kakao-components are listed here. The format follows
 change a component's API. Entries under "Site only" change this project's
 pages (landing page, settings, demos), not the components.
 
+Every version starts with an upgrade note: **Upgrade:** none, or one line per
+breaking change saying what to change. Read those lines to decide whether an
+upgrade is safe; the entries below them give the detail.
+
 ## [Unreleased]
+
+**Upgrade:**
+
+- Load `stack.js` (components/stack/) before `toast.js`: the toast extends `KakaoStack`.
+- CSS that targets a toast card's `[data-toast-state]`: use `[data-stack-state]`.
 
 ### Added
 
@@ -95,6 +104,8 @@ pages (landing page, settings, demos), not the components.
 
 ## [0.10.0] - 2026-11-17
 
+**Upgrade:** none.
+
 ### Added
 
 - `tokens.json`: every design value in one machine-readable file, for
@@ -111,6 +122,10 @@ pages (landing page, settings, demos), not the components.
   staged sources. Published on the demo site as `/tokens.json`.
 
 ## [0.9.0] - 2026-11-16
+
+**Upgrade:**
+
+- `--kakao-radius` is no longer read: set the scale `--kakao-radius-xs` / `-sm` / `-md` / `-lg` / `-pill` instead.
 
 ### Added
 
@@ -200,6 +215,8 @@ pages (landing page, settings, demos), not the components.
 - Components page: a jump to a `#` link stops below the sticky page bar.
 
 ## [0.8.0] - 2026-11-15
+
+**Upgrade:** none.
 
 ### Added
 
@@ -441,6 +458,10 @@ pages (landing page, settings, demos), not the components.
 
 ## [0.5.0] - 2026-11-10
 
+**Upgrade:**
+
+- `--kakao-number-input-focus-ring-width` and `--kakao-multi-dropdown-focus-ring-width` are gone: use their `-focus-width` and `-focus-offset`.
+
 ### Changed
 
 - `kakao-text-input`, `kakao-textarea`, `kakao-number-input`,
@@ -480,6 +501,10 @@ pages (landing page, settings, demos), not the components.
   page's cards.
 
 ## [0.4.0] - 2026-11-10
+
+**Upgrade:**
+
+- `kakao-card` glows in the theme's colour after a theme change only with the new `theme-glow` attribute: add it where you relied on that glow.
 
 ### Added
 
@@ -605,6 +630,10 @@ pages (landing page, settings, demos), not the components.
   top; a link to a field on another tab opens that tab.
 
 ## [0.3.0] - 2026-11-10
+
+**Upgrade:**
+
+- `--kakao-alert-border-mix` is gone (alerts have no border): drop it.
 
 ### Added
 
@@ -844,6 +873,8 @@ pages (landing page, settings, demos), not the components.
 
 ## [0.2.2] - 2026-11-09
 
+**Upgrade:** none.
+
 ### Changed
 
 - `kakao-button` menus stay on screen sideways: a menu that would run off the
@@ -870,6 +901,8 @@ pages (landing page, settings, demos), not the components.
   sideways.
 
 ## [0.2.1] - 2026-11-09
+
+**Upgrade:** none.
 
 ### Added
 
@@ -899,6 +932,8 @@ pages (landing page, settings, demos), not the components.
 
 ## [0.2.0] - 2026-11-09
 
+**Upgrade:** none.
+
 ### Added
 
 - Breadcrumb component: title/url pairs or objects, a house icon (or start
@@ -920,6 +955,8 @@ pages (landing page, settings, demos), not the components.
 - The landing page's component count (24, not 20).
 
 ## [0.1.0] - 2026-11-09
+
+**Upgrade:** none.
 
 The first tagged version: everything built so far.
 

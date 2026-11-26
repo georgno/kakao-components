@@ -62,6 +62,9 @@ render into a shadow root (with slots where they take content).
   Every release gets an annotated tag on its release commit, pushed with it. Consumers
   (vendored copies, the Flutter mirror, other projects' agents) pin a tag, never a commit
   hash or a branch.
+- Every version in `CHANGELOG.md` (Unreleased too) opens with its upgrade note:
+  `**Upgrade:** none.`, or `**Upgrade:**` and one bullet per breaking change saying what
+  to change (a rename, a removed setting, a new load order). A breaking entry adds its bullet.
 - The component count on `index.html` (the hero fact and the written-out number in
   the lede) is not edited by hand: the pre-commit hook in `.githooks/` runs
   `node tools/count-components.js --staged`, which counts the staged `components/<name>/<name>.js` and
