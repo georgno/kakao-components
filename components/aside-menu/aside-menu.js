@@ -39,13 +39,14 @@
  * ----------------------------------------------------------------------------
  *   label         Accessible name / visible title of the panel.
  *                 Default "Menu".
- *   position      "left" (default) or "right". The side the panel slides in
+ *   position      left (default) · right. The side the panel slides in
  *                 from; the page gives way to the opposite side.
- *   effect        How the page gives way: "push" (default) slides the whole
- *                 <body> aside by the panel width, so the content keeps its
- *                 width and moves out of view; "squash" leaves the body where
- *                 it is and narrows it, so the content reflows beside the
- *                 panel. Anything other than "squash" means push.
+ *   effect        push (default) · squash. How the page gives way: push
+ *                 slides the whole <body> aside by the panel width, so the
+ *                 content keeps its width and moves out of view; squash
+ *                 leaves the body where it is and narrows it, so the content
+ *                 reflows beside the panel. Anything other than squash means
+ *                 push.
  *   width         Panel width as a CSS length, e.g. "320px" or "18rem".
  *                 Default 280px. Also settable via the --kakao-aside-width
  *                 custom property; the attribute wins while present.
@@ -70,16 +71,22 @@
  *   selected      Value of the nav item marked as current (aria-current).
  *                 Updated on pick.
  *
- * Methods:
+ * ----------------------------------------------------------------------------
+ * METHODS
+ * ----------------------------------------------------------------------------
  *   open()        Open the panel.
  *   close()       Close the panel.
  *   toggle()      Toggle the panel.
  *
- * Events (both bubble and are composed):
- *   aside-change  detail: { open: boolean }
- *   aside-select  detail: { value, item } - a nav item was picked
+ * ----------------------------------------------------------------------------
+ * EVENTS (bubble, composed)
+ * ----------------------------------------------------------------------------
+ *   aside-change  { open: boolean }
+ *   aside-select  { value, item }   a nav item was picked.
  *
- * Triggers (KakaoComponents, see shared/component-api.js):
+ * ----------------------------------------------------------------------------
+ * TRIGGERS (KakaoComponents, see shared/component-api.js)
+ * ----------------------------------------------------------------------------
  *   aside-open    detail: { position, width, clearance } - fired when the
  *                 menu opens. clearance is how far a fixed element in the
  *                 same viewport corner should move down so it does not block

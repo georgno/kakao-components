@@ -47,6 +47,12 @@
  *             submitted under this name, and form.reset() clears the list.
  *
  * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  button      Replaces the "Browse files" button (created as a light-DOM
+ *              kakao-button by default, so the page's button.css styles it).
+ *
+ * ----------------------------------------------------------------------------
  * PUBLIC API
  * ----------------------------------------------------------------------------
  *  files                     Array<File> currently in the list (read-only copy).

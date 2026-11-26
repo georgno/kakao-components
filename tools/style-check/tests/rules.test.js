@@ -62,6 +62,6 @@ test('dialog-main-button-corner reports the footer of a left dialog', () => {
 
 test('attribute-values names the allowed values', () => {
   const r = run('attribute-values.fail.html');
-  assert.equal(r.findings[0].message, 'tone="warning" on <kakao-badge>: warning is not one of neutral, primary, success, danger, ink.');
+  assert.equal(r.findings[0].message, 'tone="info" on <kakao-badge>: info is not one of neutral, primary, success, warning, danger, ink.');
   assert.deepEqual([r.findings[0].line, r.findings[0].column], [1, 14]);
 });

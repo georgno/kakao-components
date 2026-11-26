@@ -44,13 +44,14 @@
  *   placement  top (default) | bottom | left | right.
  *   inline     Boolean. Draws the label in the text flow, always visible and
  *              tied to nothing (previews, documentation).
- *   force      A boolean attribute read only by the style checker
- *              (tools/style-check.js). It marks this placement as a
- *              deliberate exception to the style rules and has no effect in
- *              the browser.
  *  Set by the component: role="tooltip" and an id on <kakao-tooltip>;
  *  data-kakao-tooltip-anchor on a dedicated tooltip's anchor; while a label
  *  shows, the anchor's own title is kept in data-kakao-tooltip-title.
+ *
+ * ----------------------------------------------------------------------------
+ * SLOTS · kakao-tooltip
+ * ----------------------------------------------------------------------------
+ *  (default)   The label (plain text is best; it is read as the description).
  *
  * ----------------------------------------------------------------------------
  * BEHAVIOUR
@@ -103,6 +104,10 @@
  *  --kakao-tooltip-anim-duration / -anim-easing
  *
  * Parts: bubble.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

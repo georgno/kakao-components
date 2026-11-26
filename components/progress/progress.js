@@ -38,8 +38,8 @@
  *  value-text  Text for the value instead of the percentage; also becomes
  *              aria-valuetext. Shown while indeterminate too.
  *  size        sm · md (default) · lg: bar height and label text size.
- *  tone        primary (default) · success · warning · danger ("error" is an
- *              alias of danger). Colours the fill.
+ *  tone        primary (default) · success · warning · danger. Colours the
+ *              fill. "error" is an alias of danger.
  *
  * ----------------------------------------------------------------------------
  * PROPERTIES

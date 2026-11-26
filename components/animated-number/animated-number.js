@@ -26,7 +26,8 @@
  *  locale         BCP 47 locale for Intl.NumberFormat (default en-US).
  *  decimals       Fixed fraction digits (optional).
  *  duration       Roll duration in ms (default 600).
- *  sign-display   auto · always · except-zero · negative (Intl signDisplay).
+ *  sign-display   auto (default) · always · except-zero · negative: Intl
+ *                 signDisplay.
  *
  * ----------------------------------------------------------------------------
  * METHODS

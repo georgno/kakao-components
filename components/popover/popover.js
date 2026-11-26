@@ -46,8 +46,7 @@
  *                          itself. Re-resolved automatically if the
  *                          target element is added to the DOM later.
  *
- *   trigger      string   "click" | "hover" | "manual"
- *                          Default: "click".
+ *   trigger      string   click (default) · hover · manual.
  *                          - click:  toggles open/closed on click of
  *                                    the anchor, closes on outside
  *                                    click or Escape.
@@ -59,8 +58,8 @@
  *                          - manual: no automatic triggers; use the
  *                                    open()/close()/toggle() methods.
  *
- *   placement    string   "top" | "bottom" | "left" | "right"
- *                          Default: "bottom". Preferred side of the
+ *   placement    string   top · bottom (default) · left · right.
+ *                          Preferred side of the
  *                          anchor the popover appears on. Flips to
  *                          the opposite side automatically if there
  *                          is not enough viewport space, and nudges
@@ -93,6 +92,12 @@
  * method call; if you set both, the attribute wins on next render.
  * Methods remain available as a fallback for environments where
  * attribute mutation is inconvenient (e.g. imperative frameworks).
+ *
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  content     The body. Wins over list-data.
+ *  header      An optional title row with the close button. Empty: no row.
  *
  * ---------------------------------------------------------------------
  * CSS CUSTOM PROPERTIES

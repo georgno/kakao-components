@@ -48,9 +48,10 @@
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
  *  keys         The keys (see above). Wins over the text content.
- *  platform     auto (default: detected from the browser) · mac · other.
- *               Decides what Mod means and whether modifiers are symbols.
- *  size         md (default) · sm
+ *  platform     auto (default) · mac · other. auto is detected from the
+ *               browser. Decides what Mod means and whether modifiers are
+ *               symbols.
+ *  size         sm · md (default)
  *  outline      No fill; border and text take the surrounding text colour, so
  *               the keys work on any background (a tooltip, a coloured row).
  *  then-label   The word between the steps of a sequence. Default "then".

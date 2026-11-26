@@ -48,14 +48,14 @@
  *  initials      Own initials (up to three characters) instead of the derived
  *                ones (first letter of the first and of the last word).
  *  size          xs · sm · md (default) · lg · xl
- *  shape         circle (default) · square (rounded corners)
+ *  shape         circle (default) · square. square has rounded corners.
  *  status        online · away · busy · offline: a dot at the lower end corner.
  *                The four differ in shape, not only in colour.
  *  status-label  The status as text for assistive technology. Default
  *                "Online", "Away", "Busy", "Offline".
- *  tone          auto (default): one of the tones below, always the same one
- *                for the same name. neutral · primary · success · warning ·
- *                danger pick one. Without a name the tone is neutral.
+ *  tone          auto (default) · neutral · primary · success · warning ·
+ *                danger. auto picks one of the others, always the same one
+ *                for the same name; without a name the tone is neutral.
  *  ring          Draws the ring a group draws, on a single avatar.
  *
  *  Fallback order: image, then an icon in slot="icon" if the page gave one,
@@ -67,7 +67,10 @@
  *  max           Show at most this many avatars; the rest becomes "+N".
  *  total         How many there are in all, when the page only renders the
  *                first few: "+N" then counts up to this number.
- *  size, shape   As on the avatar; apply to every avatar in the group.
+ *  size          xs · sm · md (default) · lg · xl. As on the avatar; applies
+ *                to every avatar in the group.
+ *  shape         circle (default) · square. As on the avatar; applies to
+ *                every avatar in the group.
  *  label         Names the group (role="group") for assistive technology.
  *  more-label    The text read for "+N". Default "{count} more".
  *

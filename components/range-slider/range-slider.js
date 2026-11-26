@@ -42,8 +42,9 @@
  *                thumbs may meet). Capped at max - min.
  *  unit          Unit shown in the badges and min / max labels ("px", "€").
  *  label         Visible label (default "Range").
- *  label-low · label-high   Accessible names of the thumbs and fields.
- *                Default "<label>, minimum" / "<label>, maximum".
+ *  low-label · high-label   Accessible names of the thumbs and fields.
+ *                Default "<label>, minimum" / "<label>, maximum". The older
+ *                names label-low / label-high still work (deprecated).
  *  name          Form field name. Submits TWO entries under this one name,
  *                low first: price=20&price=80 (FormData.getAll('price')
  *                → ["20", "80"]). Without a name nothing is submitted.
@@ -77,6 +78,8 @@
  *                       values changed.
  *  range-slider-focus   { thumb: "low" | "high", low, high }
  *  range-slider-blur    { thumb: "low" | "high", low, high }
+ *  input · change       Plain events, sent with range-slider-input and
+ *                       range-slider-change.
  *
  * ----------------------------------------------------------------------------
  * POINTER AND KEYBOARD
@@ -578,8 +581,8 @@
     }
 
     static get observedAttributes() {
-      return ['min', 'max', 'step', 'value', 'min-gap', 'unit', 'label', 'label-low', 'label-high',
-        'name', 'disabled', 'scroll-input', 'touch-steppers'];
+      return ['min', 'max', 'step', 'value', 'min-gap', 'unit', 'label', 'low-label', 'high-label',
+        'label-low', 'label-high', 'name', 'disabled', 'scroll-input', 'touch-steppers'];
     }
 
     constructor() {
@@ -825,7 +828,8 @@
     /* -------------------------- Drawing -------------------------- */
 
     _thumbName(which) {
-      const own = this.getAttribute(which === 'low' ? 'label-low' : 'label-high');
+      // label-low / label-high: the names before low-label / high-label.
+      const own = this.getAttribute(`${which}-label`) || this.getAttribute(`label-${which}`);
       return own || `${this._label}, ${which === 'low' ? 'minimum' : 'maximum'}`;
     }
 

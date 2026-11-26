@@ -51,8 +51,15 @@
  *                 on its own and plain inside a kakao-card, kakao-accordion,
  *                 kakao-dialog or kakao-aside-sheet (see LOOKS).
  *
- *  SLOTS: default (the rows), title, description, footer (a short note under
- *  the rows). Empty title, description and footer take no space.
+ * ----------------------------------------------------------------------------
+ * <kakao-settings-group> SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)    The rows.
+ *  title        The title (instead of heading).
+ *  description  The line under the title (instead of description).
+ *  footer       A short note under the rows.
+ *
+ *  Empty title, description and footer take no space.
  *
  * ----------------------------------------------------------------------------
  * <kakao-setting> ATTRIBUTES
@@ -69,11 +76,18 @@
  *  disabled   Dims the row; link and action rows stop working, and the
  *             control gets disabled too (removed again when the row is
  *             enabled, if the row set it).
- *  layout     auto (default) · inline · stack. See NARROW ROWS.
+ *  layout     auto (default) · inline · stacked. See NARROW ROWS. (stack, the
+ *             older name, still works.)
  *
- *  SLOTS: default (the control; in link and action rows only non-interactive
- *  trailing content such as a badge), label, hint, icon (a leading icon,
- *  ideally an inline SVG in currentColor; no icon, no space).
+ * ----------------------------------------------------------------------------
+ * <kakao-setting> SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The control; in link and action rows only non-interactive
+ *              trailing content such as a badge.
+ *  label       The row label (instead of label).
+ *  hint        The muted line under the label (instead of hint).
+ *  icon        A leading icon, ideally an inline SVG in currentColor; no icon,
+ *              no space.
  *
  * ----------------------------------------------------------------------------
  * EVENTS (bubble, composed)
@@ -116,7 +130,7 @@
  *  the label and fields (text input, select, combobox, slider, native
  *  fields) take the full width. Rows whose control is a switch group or a
  *  checkbox keep it beside the label, as phone settings do. layout="inline"
- *  or "stack" forces one layout. (A container query can't read a custom
+ *  or "stacked" forces one layout. (A container query can't read a custom
  *  property, so the 30rem breakpoint is fixed.)
  *  Wide controls are --kakao-settings-group-field-width wide beside the label.
  *  Inside a row, a slider's own label is hidden (the row's label names it).
@@ -663,7 +677,8 @@
       // Layout: auto stacks below 30rem, except for small controls.
       const layout = (this.getAttribute('layout') || '').trim().toLowerCase();
       const ctl = this.control;
-      let rowMode = layout === 'inline' || layout === 'stack' ? layout : 'auto';
+      // "stack": the older name of "stacked".
+      let rowMode = layout === 'inline' ? 'inline' : layout === 'stacked' || layout === 'stack' ? 'stack' : 'auto';
       if (rowMode === 'auto' && (mode !== 'control' || (ctl && this._isInlineControl(ctl)))) rowMode = 'inline';
       row.dataset.mode = rowMode;
 

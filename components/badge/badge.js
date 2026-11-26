@@ -26,12 +26,17 @@
  * ----------------------------------------------------------------------------
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
- *  tone      neutral (default) · primary · success · danger · ink
+ *  tone      neutral (default) · primary · success · warning · danger · ink
  *  outline   Hairline border, muted text, no fill (ignores tone).
  *
- *  Soft tones (primary, success, danger) tint the surface with the tone colour
+ *  Soft tones (primary, success, warning, danger) tint the surface with the tone colour
  *  and pull the text towards the theme's text colour, so they stay readable in
  *  every theme. Write the text in sentence case; it is never transformed.
+ *
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The text, in sentence case.
  *
  * ----------------------------------------------------------------------------
  * CSS CUSTOM PROPERTIES (defaults in the settings block; edit on construction.html)
@@ -40,7 +45,7 @@
  *  --kakao-badge-tint        how much tone colour goes into the fill
  *  --kakao-badge-text-mix    how much tone colour goes into the text
  *  --kakao-badge-neutral-bg / -neutral-text / -outline-border / -outline-text
- *  --kakao-badge-primary / -success / -danger / -ink / -on-ink
+ *  --kakao-badge-primary / -success / -warning / -danger / -ink / -on-ink
  *
  * Part: badge.
  *
@@ -75,6 +80,7 @@
         --_outline-text: var(--kakao-badge-outline-text, var(--kakao-color-muted, #62626c));
         --_primary: var(--kakao-badge-primary, var(--kakao-color-primary, #4f46e5));
         --_success: var(--kakao-badge-success, var(--kakao-color-success, #15803d));
+        --_warning: var(--kakao-badge-warning, var(--kakao-color-warning, #b45309));
         --_danger: var(--kakao-badge-danger, var(--kakao-color-danger, #dc2626));
         --_ink: var(--kakao-badge-ink, var(--kakao-color-ink, #18181b));
         --_on-ink: var(--kakao-badge-on-ink, var(--kakao-color-on-ink, #fafafa));
@@ -107,8 +113,9 @@
 
       :host([tone="primary"]) { --_tone: var(--_primary); }
       :host([tone="success"]) { --_tone: var(--_success); }
+      :host([tone="warning"]) { --_tone: var(--_warning); }
       :host([tone="danger"])  { --_tone: var(--_danger); }
-      :host(:is([tone="primary"], [tone="success"], [tone="danger"])) .badge {
+      :host(:is([tone="primary"], [tone="success"], [tone="warning"], [tone="danger"])) .badge {
         background: color-mix(in srgb, var(--_tone) var(--_tint), var(--_surface));
         color: color-mix(in srgb, var(--_tone) var(--_text-mix), var(--_text));
       }

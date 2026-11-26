@@ -56,16 +56,21 @@
  *             the page does not jump when the image arrives. With neither,
  *             the skeleton has the placeholder height from the settings and
  *             the image then takes its own size.
- *  fit        cover (default): the image fills the frame, cut where needed.
- *             contain: the whole image, with free space around it.
+ *  fit        cover (default) · contain. cover: the image fills the frame,
+ *             cut where needed. contain: the whole image, with free space
+ *             around it.
  *  radius     Corner radius (number or CSS length). Default: the setting.
  *  srcset     Passed on to the <img>.
  *  sizes      Passed on to the <img>.
- *  loading    lazy (default): loads when it comes near the viewport.
- *             eager: loads at once (for the image at the top of a page).
+ *  loading    lazy (default) · eager. lazy: loads when it comes near the
+ *             viewport. eager: loads at once (for the image at the top of a
+ *             page).
  *  hidden     The native attribute: no image, no space.
  *
- * SLOTS: caption (replaces the caption attribute; links and markup allowed).
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  caption     Replaces the caption attribute; links and markup allowed.
  *
  * ----------------------------------------------------------------------------
  * PROPERTIES AND METHODS

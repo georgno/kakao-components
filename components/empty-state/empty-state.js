@@ -38,13 +38,17 @@
  *  heading-level    Level of the heading element, 1 to 6, default 3: the block
  *                   usually sits in a section or card that has its own heading.
  *  message          The explanation. Content in the default slot replaces it.
- *  size             sm for tight places (a table body, a popover, a small
- *                   card). Anything else is the default size.
+ *  size             sm · md (default). sm for tight places (a table body, a
+ *                   popover, a small card).
  *  no-icon          Shows no icon.
  *
- * SLOTS: default (the message), icon (replaces the built-in tray glyph; an
- * inline SVG in currentColor is best), actions (buttons or links, in a
- * wrapping centred row).
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The message (instead of message).
+ *  icon        Replaces the built-in tray glyph; an inline SVG in currentColor
+ *              is best.
+ *  actions     Buttons or links, in a wrapping centred row.
  *
  * The built-in glyph is decoration (aria-hidden); the heading and message
  * carry the meaning. Give a slotted icon aria-hidden too, or an accessible

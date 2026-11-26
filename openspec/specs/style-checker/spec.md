@@ -71,15 +71,19 @@ The built-in rule `field-has-name` SHALL report a text input, textarea, radio gr
 - **THEN** `field-has-name` reports nothing
 
 ### Requirement: Attribute value rule
-The built-in rule `attribute-values` SHALL report an attribute with a fixed set of values whose static value is not one of them. The sets SHALL live in one table and cover button `variant` and `size`, badge and chip `tone`, dialog `size` and `button-position`, breadcrumb `start`, and the enumerated attributes the later components document (avatar, avatar group, copy button, image, kbd, menu, pagination, rating, skeleton, spinner, stepper, tree view).
+The built-in rule `attribute-values` SHALL report an attribute with a fixed set of values whose static value is not one of them. The sets SHALL live in one table (VALUES) that covers every attribute custom-elements.json lists with a fixed set of values, with the same values; a test SHALL fail when the two differ.
 
 #### Scenario: Unknown tone
-- **WHEN** a badge has `tone="warning"`
-- **THEN** `attribute-values` reports that warning is not one of neutral, primary, success, danger, ink
+- **WHEN** a badge has `tone="info"`
+- **THEN** `attribute-values` reports that info is not one of neutral, primary, success, warning, danger, ink
 
 #### Scenario: A later component
 - **WHEN** a skeleton has `shape="square"`
 - **THEN** `attribute-values` reports that square is not one of text, circle, block, row, card
+
+#### Scenario: Value added to a header only
+- **WHEN** a header gains a size and the manifest is regenerated, but VALUES is not updated
+- **THEN** `node --test` fails and names the attribute
 
 ### Requirement: Configuration
 The checker SHALL read `kakao-style.config.json` from the working directory, or the file given with `--config`. The config SHALL be able to set: the default paths, ignored paths, the file extensions, each rule's level (`error`, `warning` or `off`), extra rule folders, and the forced-placement documentation (`forced.file`, `forced.mandatory`). Every setting SHALL have a default, so the checker also runs without a config file.

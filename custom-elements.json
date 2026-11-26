@@ -75,6 +75,28 @@
               }
             }
           ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The body."
+            },
+            {
+              "name": "title",
+              "description": "The title (instead of heading)."
+            },
+            {
+              "name": "description",
+              "description": "The subline (instead of description)."
+            },
+            {
+              "name": "meta",
+              "description": "Short text or a badge after the title; never controls, since the whole header is one button."
+            },
+            {
+              "name": "actions",
+              "description": "Controls such as a small kakao-button, in the header row before the chevron. They sit outside the header button, so clicking them doesn't open or close the accordion, and they stay visible while closed."
+            }
+          ],
           "cssProperties": [
             {
               "name": "--kakao-accordion-bg",
@@ -292,6 +314,20 @@
               }
             }
           ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The message."
+            },
+            {
+              "name": "title",
+              "description": "The title (instead of heading)."
+            },
+            {
+              "name": "icon",
+              "description": "Replaces the tone's icon."
+            }
+          ],
           "cssProperties": [
             {
               "name": "--kakao-alert-radius",
@@ -436,7 +472,11 @@
             },
             {
               "name": "sign-display",
-              "description": "auto · always · except-zero · negative (Intl signDisplay)."
+              "description": "auto (default) · always · except-zero · negative: Intl signDisplay.",
+              "type": {
+                "text": "'auto' | 'always' | 'except-zero' | 'negative'"
+              },
+              "default": "'auto'"
             }
           ],
           "members": [
@@ -510,11 +550,19 @@
             },
             {
               "name": "position",
-              "description": "\"left\" (default) or \"right\". The side the panel slides in from; the page gives way to the opposite side."
+              "description": "left (default) · right. The side the panel slides in from; the page gives way to the opposite side.",
+              "type": {
+                "text": "'left' | 'right'"
+              },
+              "default": "'left'"
             },
             {
               "name": "effect",
-              "description": "How the page gives way: \"push\" (default) slides the whole <body> aside by the panel width, so the content keeps its width and moves out of view; \"squash\" leaves the body where it is and narrows it, so the content reflows beside the panel. Anything other than \"squash\" means push."
+              "description": "push (default) · squash. How the page gives way: push slides the whole <body> aside by the panel width, so the content keeps its width and moves out of view; squash leaves the body where it is and narrows it, so the content reflows beside the panel. Anything other than squash means push.",
+              "type": {
+                "text": "'push' | 'squash'"
+              },
+              "default": "'push'"
             },
             {
               "name": "width",
@@ -542,26 +590,39 @@
             {
               "name": "selected",
               "description": "Value of the nav item marked as current (aria-current). Updated on pick."
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "open",
+              "description": "Open the panel."
             },
+            {
+              "kind": "method",
+              "name": "close",
+              "description": "Close the panel."
+            },
+            {
+              "kind": "method",
+              "name": "toggle",
+              "description": "Toggle the panel."
+            }
+          ],
+          "events": [
             {
               "name": "aside-change",
-              "description": "detail: { open: boolean }"
+              "description": "{ open: boolean }",
+              "type": {
+                "text": "CustomEvent<{ open: boolean }>"
+              }
             },
             {
               "name": "aside-select",
-              "description": "detail: { value, item } - a nav item was picked"
-            },
-            {
-              "name": "aside-open",
-              "description": "detail: { position, width, clearance } - fired when the menu opens. clearance is how far a fixed element in the same viewport corner should move down so it does not block the panel's close button; it applies to both effects, since the panel covers that corner either way."
-            },
-            {
-              "name": "aside-close",
-              "description": "detail: { position } - fired when it starts sliding back."
-            },
-            {
-              "name": "aside-select",
-              "description": "detail: { value } - a nav item was picked."
+              "description": "{ value, item }   a nav item was picked.",
+              "type": {
+                "text": "CustomEvent<{ value, item }>"
+              }
             }
           ],
           "cssProperties": [
@@ -790,6 +851,20 @@
               }
             }
           ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The body."
+            },
+            {
+              "name": "header",
+              "description": "The title, e.g. <h2 slot=\"header\">; it names the sheet."
+            },
+            {
+              "name": "footer",
+              "description": "The buttons."
+            }
+          ],
           "cssProperties": [
             {
               "name": "--kakao-aside-sheet-scrim",
@@ -949,7 +1024,11 @@
             },
             {
               "name": "shape",
-              "description": "circle (default) · square (rounded corners)"
+              "description": "circle (default) · square. square has rounded corners.",
+              "type": {
+                "text": "'circle' | 'square'"
+              },
+              "default": "'circle'"
             },
             {
               "name": "status",
@@ -964,7 +1043,11 @@
             },
             {
               "name": "tone",
-              "description": "auto (default): one of the tones below, always the same one for the same name. neutral · primary · success · warning · danger pick one. Without a name the tone is neutral."
+              "description": "auto (default) · neutral · primary · success · warning · danger. auto picks one of the others, always the same one for the same name; without a name the tone is neutral.",
+              "type": {
+                "text": "'auto' | 'neutral' | 'primary' | 'success' | 'warning' | 'danger'"
+              },
+              "default": "'auto'"
             },
             {
               "name": "ring",
@@ -1153,6 +1236,22 @@
               "description": "How many there are in all, when the page only renders the first few: \"+N\" then counts up to this number."
             },
             {
+              "name": "size",
+              "description": "xs · sm · md (default) · lg · xl. As on the avatar; applies to every avatar in the group.",
+              "type": {
+                "text": "'xs' | 'sm' | 'md' | 'lg' | 'xl'"
+              },
+              "default": "'md'"
+            },
+            {
+              "name": "shape",
+              "description": "circle (default) · square. As on the avatar; applies to every avatar in the group.",
+              "type": {
+                "text": "'circle' | 'square'"
+              },
+              "default": "'circle'"
+            },
+            {
               "name": "label",
               "description": "Names the group (role=\"group\") for assistive technology."
             },
@@ -1202,15 +1301,21 @@
           "attributes": [
             {
               "name": "tone",
-              "description": "neutral (default) · primary · success · danger · ink",
+              "description": "neutral (default) · primary · success · warning · danger · ink",
               "type": {
-                "text": "'neutral' | 'primary' | 'success' | 'danger' | 'ink'"
+                "text": "'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'ink'"
               },
               "default": "'neutral'"
             },
             {
               "name": "outline",
               "description": "Hairline border, muted text, no fill (ignores tone)."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The text, in sentence case."
             }
           ],
           "cssProperties": [
@@ -1275,6 +1380,10 @@
               "default": "var(--kakao-color-success, #15803d)"
             },
             {
+              "name": "--kakao-badge-warning",
+              "default": "var(--kakao-color-warning, #b45309)"
+            },
+            {
               "name": "--kakao-badge-danger",
               "default": "var(--kakao-color-danger, #dc2626)"
             },
@@ -1329,7 +1438,11 @@
             },
             {
               "name": "start",
-              "description": "\"icon\" (default): a house icon, named by the start text. \"text\": the start text. \"none\": no start item."
+              "description": "icon (default) · text · none. icon: a house icon, named by the start text. text: the start text. none: no start item.",
+              "type": {
+                "text": "'icon' | 'text' | 'none'"
+              },
+              "default": "'icon'"
             },
             {
               "name": "start-text",
@@ -1503,9 +1616,9 @@
             },
             {
               "name": "type",
-              "description": "button (default) · submit",
+              "description": "button (default) · submit · reset",
               "type": {
-                "text": "'button' | 'submit'"
+                "text": "'button' | 'submit' | 'reset'"
               },
               "default": "'button'"
             },
@@ -1918,6 +2031,20 @@
               "description": "Don't animate height changes."
             }
           ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The body."
+            },
+            {
+              "name": "header",
+              "description": "The title row, e.g. <h3 slot=\"header\">. Empty: no header row."
+            },
+            {
+              "name": "footer",
+              "description": "Actions or a note under the body, e.g. a row of buttons. Empty: no footer row."
+            }
+          ],
           "cssProperties": [
             {
               "name": "--kakao-card-bg",
@@ -2215,9 +2342,9 @@
           "attributes": [
             {
               "name": "tone",
-              "description": "neutral (default) · primary · success · danger · ink",
+              "description": "neutral (default) · primary · success · warning · danger · ink",
               "type": {
-                "text": "'neutral' | 'primary' | 'success' | 'danger' | 'ink'"
+                "text": "'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'ink'"
               },
               "default": "'neutral'"
             },
@@ -2260,6 +2387,20 @@
               "type": {
                 "text": "CustomEvent<{ label, value }>"
               }
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The label, cut off with an ellipsis when it does not fit."
+            },
+            {
+              "name": "icon",
+              "description": "A leading icon, e.g. <i slot=\"icon\" class=\"fas fa-file\">."
+            },
+            {
+              "name": "meta",
+              "description": "Muted text after the label."
             }
           ],
           "cssProperties": [
@@ -2322,6 +2463,10 @@
             {
               "name": "--kakao-chip-success",
               "default": "var(--kakao-color-success, #15803d)"
+            },
+            {
+              "name": "--kakao-chip-warning",
+              "default": "var(--kakao-color-warning, #b45309)"
             },
             {
               "name": "--kakao-chip-danger",
@@ -2470,7 +2615,11 @@
             },
             {
               "name": "type",
-              "description": "\"numeric\" (default): digits, numeric keyboard. \"alphanumeric\": letters and digits, text keyboard."
+              "description": "numeric (default) · alphanumeric. numeric: digits, numeric keyboard. alphanumeric: letters and digits, text keyboard.",
+              "type": {
+                "text": "'numeric' | 'alphanumeric'"
+              },
+              "default": "'numeric'"
             },
             {
               "name": "pattern",
@@ -2744,6 +2893,12 @@
               "kind": "field",
               "name": "valid",
               "description": "false when that is not a CSS colour (or empty), read-only."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The colour as text; painted when there is no value."
             }
           ],
           "cssProperties": [
@@ -3087,6 +3242,30 @@
                 "text": "'sm' | 'md' | 'lg'"
               },
               "default": "'md'"
+            },
+            {
+              "name": "name",
+              "description": "Form participation. pattern / minlength / maxlength apply to free text (listed values always pass); maxlength also limits typing."
+            },
+            {
+              "name": "required",
+              "description": "Form participation. pattern / minlength / maxlength apply to free text (listed values always pass); maxlength also limits typing."
+            },
+            {
+              "name": "disabled",
+              "description": "Form participation. pattern / minlength / maxlength apply to free text (listed values always pass); maxlength also limits typing."
+            },
+            {
+              "name": "pattern",
+              "description": "Form participation. pattern / minlength / maxlength apply to free text (listed values always pass); maxlength also limits typing."
+            },
+            {
+              "name": "minlength",
+              "description": "Form participation. pattern / minlength / maxlength apply to free text (listed values always pass); maxlength also limits typing."
+            },
+            {
+              "name": "maxlength",
+              "description": "Form participation. pattern / minlength / maxlength apply to free text (listed values always pass); maxlength also limits typing."
             }
           ],
           "members": [
@@ -3611,13 +3790,17 @@
             },
             {
               "name": "variant",
-              "description": "secondary (default, a quiet fill) · ghost (no fill until hovered)"
+              "description": "secondary (default) · ghost. secondary is a quiet fill; ghost has no fill until hovered.",
+              "type": {
+                "text": "'secondary' | 'ghost'"
+              },
+              "default": "'secondary'"
             },
             {
               "name": "size",
-              "description": "md (default) · sm · lg: the heights of kakao-button.",
+              "description": "sm · md (default) · lg: the heights of kakao-button.",
               "type": {
-                "text": "'md' | 'sm' | 'lg'"
+                "text": "'sm' | 'md' | 'lg'"
               },
               "default": "'md'"
             },
@@ -4112,7 +4295,11 @@
             },
             {
               "name": "layout",
-              "description": "stacked puts the term above the value at every width. Anything else is side by side, which stacks by itself when a row is narrower than --kakao-description-list-stack-below."
+              "description": "auto (default) · stacked. stacked puts the term above the value at every width. auto is side by side, which stacks by itself when a row is narrower than --kakao-description-list-stack-below.",
+              "type": {
+                "text": "'auto' | 'stacked'"
+              },
+              "default": "'auto'"
             },
             {
               "name": "columns",
@@ -4124,7 +4311,11 @@
             },
             {
               "name": "size",
-              "description": "sm for the dense form. Anything else is the default size."
+              "description": "sm · md (default). sm is the dense form.",
+              "type": {
+                "text": "'sm' | 'md'"
+              },
+              "default": "'md'"
             },
             {
               "name": "align",
@@ -4341,6 +4532,20 @@
               }
             }
           ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The body."
+            },
+            {
+              "name": "header",
+              "description": "The title, e.g. <h2 slot=\"header\">; it names the dialog."
+            },
+            {
+              "name": "footer",
+              "description": "The buttons (see the dialog rules in the styleguide)."
+            }
+          ],
           "cssProperties": [
             {
               "name": "--kakao-dialog-scrim",
@@ -4464,11 +4669,29 @@
             },
             {
               "name": "size",
-              "description": "sm for tight places (a table body, a popover, a small card). Anything else is the default size."
+              "description": "sm · md (default). sm for tight places (a table body, a popover, a small card).",
+              "type": {
+                "text": "'sm' | 'md'"
+              },
+              "default": "'md'"
             },
             {
               "name": "no-icon",
               "description": "Shows no icon."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The message (instead of message)."
+            },
+            {
+              "name": "icon",
+              "description": "Replaces the built-in tray glyph; an inline SVG in currentColor is best."
+            },
+            {
+              "name": "actions",
+              "description": "Buttons or links, in a wrapping centred row."
             }
           ],
           "cssProperties": [
@@ -4656,6 +4879,20 @@
             {
               "name": "no-pattern",
               "description": "No background pattern."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The message (instead of message)."
+            },
+            {
+              "name": "actions",
+              "description": "Buttons or links, in a wrapping centred row."
+            },
+            {
+              "name": "details",
+              "description": "Longer content below, aligned to the start."
             }
           ],
           "cssProperties": [
@@ -4876,6 +5113,16 @@
               }
             }
           ],
+          "slots": [
+            {
+              "name": "",
+              "description": "Content after the box, e.g. the wrapped form."
+            },
+            {
+              "name": "description",
+              "description": "Text between the title and the list."
+            }
+          ],
           "cssProperties": [
             {
               "name": "--kakao-error-summary-link",
@@ -5061,6 +5308,12 @@
               "type": {
                 "text": "CustomEvent<{ file, name, reason }>"
               }
+            }
+          ],
+          "slots": [
+            {
+              "name": "button",
+              "description": "Replaces the \"Browse files\" button (created as a light-DOM kakao-button by default, so the page's button.css styles it)."
             }
           ],
           "cssProperties": [
@@ -5285,6 +5538,26 @@
             {
               "name": "hide-summary",
               "description": "No summary line."
+            },
+            {
+              "name": "empty-text",
+              "description": "Passed to the table the grid creates (sort only at the start, and when the attribute changes). A kakao-table written inside is used as it is."
+            },
+            {
+              "name": "empty-label",
+              "description": "Passed to the table the grid creates (sort only at the start, and when the attribute changes). A kakao-table written inside is used as it is."
+            },
+            {
+              "name": "empty-heading",
+              "description": "Passed to the table the grid creates (sort only at the start, and when the attribute changes). A kakao-table written inside is used as it is."
+            },
+            {
+              "name": "empty-message",
+              "description": "Passed to the table the grid creates (sort only at the start, and when the attribute changes). A kakao-table written inside is used as it is."
+            },
+            {
+              "name": "sort",
+              "description": "Passed to the table the grid creates (sort only at the start, and when the attribute changes). A kakao-table written inside is used as it is."
             }
           ],
           "members": [
@@ -5540,6 +5813,10 @@
               "description": "At the inline start (left): a menu button, a logo."
             },
             {
+              "name": "",
+              "description": "The title, centred in the bar while there is room."
+            },
+            {
               "name": "nav",
               "description": "Links, wrapped in a <nav> after the title. Without children no <nav> landmark is exposed."
             },
@@ -5698,7 +5975,11 @@
             },
             {
               "name": "fit",
-              "description": "cover (default): the image fills the frame, cut where needed. contain: the whole image, with free space around it."
+              "description": "cover (default) · contain. cover: the image fills the frame, cut where needed. contain: the whole image, with free space around it.",
+              "type": {
+                "text": "'cover' | 'contain'"
+              },
+              "default": "'cover'"
             },
             {
               "name": "radius",
@@ -5714,7 +5995,11 @@
             },
             {
               "name": "loading",
-              "description": "lazy (default): loads when it comes near the viewport. eager: loads at once (for the image at the top of a page)."
+              "description": "lazy (default) · eager. lazy: loads when it comes near the viewport. eager: loads at once (for the image at the top of a page).",
+              "type": {
+                "text": "'lazy' | 'eager'"
+              },
+              "default": "'lazy'"
             },
             {
               "name": "hidden",
@@ -5741,6 +6026,12 @@
             {
               "name": "image-error",
               "description": "the image failed; the error state is shown. detail: { src }"
+            }
+          ],
+          "slots": [
+            {
+              "name": "caption",
+              "description": "Replaces the caption attribute; links and markup allowed."
             }
           ],
           "cssProperties": [
@@ -5856,13 +6147,17 @@
             },
             {
               "name": "platform",
-              "description": "auto (default: detected from the browser) · mac · other. Decides what Mod means and whether modifiers are symbols."
+              "description": "auto (default) · mac · other. auto is detected from the browser. Decides what Mod means and whether modifiers are symbols.",
+              "type": {
+                "text": "'auto' | 'mac' | 'other'"
+              },
+              "default": "'auto'"
             },
             {
               "name": "size",
-              "description": "md (default) · sm",
+              "description": "sm · md (default)",
               "type": {
-                "text": "'md' | 'sm'"
+                "text": "'sm' | 'md'"
               },
               "default": "'md'"
             },
@@ -6860,7 +7155,11 @@
           "attributes": [
             {
               "name": "size",
-              "description": "sm: a compact control (styling hook via number-input.css)."
+              "description": "sm · md (default). sm is a compact control (styling hook via number-input.css).",
+              "type": {
+                "text": "'sm' | 'md'"
+              },
+              "default": "'md'"
             },
             {
               "name": "touch-steppers",
@@ -7078,11 +7377,19 @@
             },
             {
               "name": "collapse",
-              "description": "\"auto\" (default): compact when the page numbers do not fit the element's own width. \"always\": always compact. \"never\": the page numbers wrap instead."
+              "description": "auto (default) · always · never. auto: compact when the page numbers do not fit the element's own width. always: always compact. never: the page numbers wrap instead.",
+              "type": {
+                "text": "'auto' | 'always' | 'never'"
+              },
+              "default": "'auto'"
             },
             {
               "name": "size",
-              "description": "\"sm\" (36px) | \"md\" (44px, default) | \"lg\" (52px): the button heights."
+              "description": "sm · md (default) · lg: the button heights (36, 44, 52px).",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'"
             },
             {
               "name": "hide-single",
@@ -7320,6 +7627,30 @@
             {
               "name": "value",
               "description": "The default value. It is NOT reflected back while typing (the password never lands in the DOM); form reset returns to it."
+            },
+            {
+              "name": "name",
+              "description": "Form participation, passed to the field."
+            },
+            {
+              "name": "required",
+              "description": "Form participation, passed to the field."
+            },
+            {
+              "name": "disabled",
+              "description": "Form participation, passed to the field."
+            },
+            {
+              "name": "readonly",
+              "description": "Form participation, passed to the field."
+            },
+            {
+              "name": "minlength",
+              "description": "Form participation, passed to the field."
+            },
+            {
+              "name": "maxlength",
+              "description": "Form participation, passed to the field."
             },
             {
               "name": "autocomplete",
@@ -7598,17 +7929,19 @@
             },
             {
               "name": "trigger",
-              "description": "\"click\" | \"hover\" | \"manual\" Default: \"click\". - click:  toggles open/closed on click of the anchor, closes on outside click or Escape. - hover:  opens on mouseenter/focus of the anchor, closes on mouseleave/blur (with a small close-delay so the pointer can travel into the popover itself). - manual: no automatic triggers; use the open()/close()/toggle() methods.",
+              "description": "click (default) · hover · manual. - click:  toggles open/closed on click of the anchor, closes on outside click or Escape. - hover:  opens on mouseenter/focus of the anchor, closes on mouseleave/blur (with a small close-delay so the pointer can travel into the popover itself). - manual: no automatic triggers; use the open()/close()/toggle() methods.",
               "type": {
-                "text": "string"
-              }
+                "text": "'click' | 'hover' | 'manual'"
+              },
+              "default": "'click'"
             },
             {
               "name": "placement",
-              "description": "\"top\" | \"bottom\" | \"left\" | \"right\" Default: \"bottom\". Preferred side of the anchor the popover appears on. Flips to the opposite side automatically if there is not enough viewport space, and nudges along the cross-axis to stay on-screen.",
+              "description": "top · bottom (default) · left · right. Preferred side of the anchor the popover appears on. Flips to the opposite side automatically if there is not enough viewport space, and nudges along the cross-axis to stay on-screen.",
               "type": {
-                "text": "string"
-              }
+                "text": "'top' | 'bottom' | 'left' | 'right'"
+              },
+              "default": "'bottom'"
             },
             {
               "name": "open",
@@ -7676,6 +8009,16 @@
               "kind": "method",
               "name": "reposition",
               "description": "Forces a recalculation of position. Called automatically on resize/scroll; exposed for manual use after layout changes you control (e.g. content mutated via the default slot)."
+            }
+          ],
+          "slots": [
+            {
+              "name": "content",
+              "description": "The body. Wins over list-data."
+            },
+            {
+              "name": "header",
+              "description": "An optional title row with the close button. Empty: no row."
             }
           ],
           "cssProperties": [
@@ -7817,7 +8160,11 @@
             },
             {
               "name": "tone",
-              "description": "primary (default) · success · warning · danger (\"error\" is an alias of danger). Colours the fill."
+              "description": "primary (default) · success · warning · danger. Colours the fill. \"error\" is an alias of danger.",
+              "type": {
+                "text": "'primary' | 'success' | 'warning' | 'danger'"
+              },
+              "default": "'primary'"
             }
           ],
           "members": [
@@ -8242,12 +8589,12 @@
               "description": "Visible label (default \"Range\")."
             },
             {
-              "name": "label-low",
-              "description": "Accessible names of the thumbs and fields. Default \"<label>, minimum\" / \"<label>, maximum\"."
+              "name": "low-label",
+              "description": "Accessible names of the thumbs and fields. Default \"<label>, minimum\" / \"<label>, maximum\". The older names label-low / label-high still work (deprecated)."
             },
             {
-              "name": "label-high",
-              "description": "Accessible names of the thumbs and fields. Default \"<label>, minimum\" / \"<label>, maximum\"."
+              "name": "high-label",
+              "description": "Accessible names of the thumbs and fields. Default \"<label>, minimum\" / \"<label>, maximum\". The older names label-low / label-high still work (deprecated)."
             },
             {
               "name": "name",
@@ -8326,6 +8673,14 @@
               "type": {
                 "text": "CustomEvent<{ thumb: \"low\" | \"high\", low, high }>"
               }
+            },
+            {
+              "name": "input",
+              "description": "Plain events, sent with range-slider-input and range-slider-change."
+            },
+            {
+              "name": "change",
+              "description": "Plain events, sent with range-slider-input and range-slider-change."
             }
           ],
           "cssProperties": [
@@ -9075,6 +9430,24 @@
               }
             }
           ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The rows."
+            },
+            {
+              "name": "title",
+              "description": "The title (instead of heading)."
+            },
+            {
+              "name": "description",
+              "description": "The line under the title (instead of description)."
+            },
+            {
+              "name": "footer",
+              "description": "A short note under the rows."
+            }
+          ],
           "cssProperties": [
             {
               "name": "--kakao-settings-group-bg",
@@ -9247,11 +9620,29 @@
             },
             {
               "name": "layout",
-              "description": "auto (default) · inline · stack. See NARROW ROWS.",
+              "description": "auto (default) · inline · stacked. See NARROW ROWS. (stack, the older name, still works.)",
               "type": {
-                "text": "'auto' | 'inline' | 'stack'"
+                "text": "'auto' | 'inline' | 'stacked'"
               },
               "default": "'auto'"
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The control; in link and action rows only non-interactive trailing content such as a badge."
+            },
+            {
+              "name": "label",
+              "description": "The row label (instead of label)."
+            },
+            {
+              "name": "hint",
+              "description": "The muted line under the label (instead of hint)."
+            },
+            {
+              "name": "icon",
+              "description": "A leading icon, ideally an inline SVG in currentColor; no icon, no space."
             }
           ],
           "kakao": {
@@ -9323,7 +9714,11 @@
             },
             {
               "name": "animation",
-              "description": "shimmer (default): a light band moves across. pulse: the shapes fade in and out. none: static."
+              "description": "shimmer (default) · pulse · none. shimmer: a light band moves across. pulse: the shapes fade in and out. none: static.",
+              "type": {
+                "text": "'shimmer' | 'pulse' | 'none'"
+              },
+              "default": "'shimmer'"
             },
             {
               "name": "avatar",
@@ -9717,11 +10112,19 @@
           "attributes": [
             {
               "name": "size",
-              "description": "md (default, the button's spinner) · sm · lg"
+              "description": "sm · md (default) · lg. md is the button's spinner.",
+              "type": {
+                "text": "'sm' | 'md' | 'lg'"
+              },
+              "default": "'md'"
             },
             {
               "name": "tone",
-              "description": "none (default): the ring takes the surrounding text colour. primary · success · warning · danger · muted take a theme role. The label never takes the tone; it keeps the text colour."
+              "description": "none (default) · primary · success · warning · danger · muted. none: the ring takes the surrounding text colour; the others take a theme role. The label never takes the tone; it keeps the text colour.",
+              "type": {
+                "text": "'none' | 'primary' | 'success' | 'warning' | 'danger' | 'muted'"
+              },
+              "default": "'none'"
             },
             {
               "name": "label",
@@ -9870,7 +10273,11 @@
           "attributes": [
             {
               "name": "position",
-              "description": "inline (default: in the page flow, cards peek out below) · bottom-right · bottom-left · top-right · top-left (fixed to that corner of the viewport; bottom corners peek above). Below 30rem a corner stack spans the viewport width."
+              "description": "inline (default) · bottom-right · bottom-left · top-right · top-left. inline sits in the page flow, the cards peek out below; a corner fixes it to that corner of the viewport (bottom corners peek above). Below 30rem a corner stack spans the viewport width.",
+              "type": {
+                "text": "'inline' | 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'"
+              },
+              "default": "'inline'"
             },
             {
               "name": "max",
@@ -9883,18 +10290,36 @@
             {
               "name": "expanded",
               "description": "Set while the pile is fanned out (the stack toggles it)."
-            },
+            }
+          ],
+          "members": [
             {
+              "kind": "field",
               "name": "max",
               "description": "Same as the attribute."
             },
             {
+              "kind": "field",
               "name": "expanded",
               "description": "Read only."
             },
             {
+              "kind": "field",
               "name": "items",
               "description": "The cards, newest first (leaving ones left out)."
+            },
+            {
+              "kind": "method",
+              "name": "dismiss",
+              "description": "Slides the card out and removes it; returns a promise of the reason (default \"method\").",
+              "parameters": [
+                {
+                  "name": "el"
+                },
+                {
+                  "name": "reason"
+                }
+              ]
             }
           ],
           "events": [
@@ -9918,6 +10343,12 @@
               "type": {
                 "text": "CustomEvent<{ expanded }>"
               }
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The cards: every element child (the newest is the last)."
             }
           ],
           "cssProperties": [
@@ -10357,11 +10788,19 @@
             },
             {
               "name": "orientation",
-              "description": "\"horizontal\" (default): markers in a row, labels below. \"vertical\": markers in a column, labels beside them."
+              "description": "horizontal (default) · vertical. horizontal: markers in a row, labels below. vertical: markers in a column, labels beside them.",
+              "type": {
+                "text": "'horizontal' | 'vertical'"
+              },
+              "default": "'horizontal'"
             },
             {
               "name": "collapse",
-              "description": "What a horizontal stepper does when it is too narrow. \"auto\" (default): when a step would get less than --kakao-stepper-min-step-width, it becomes one line (\"Step 2 of 4\" and the current label) over a segmented bar. \"always\": always that compact form. \"never\": always the row."
+              "description": "auto (default) · always · never. What a horizontal stepper does when it is too narrow. auto: when a step would get less than --kakao-stepper-min-step-width, it becomes one line (\"Step 2 of 4\" and the current label) over a segmented bar. \"always\": always that compact form. \"never\": always the row.",
+              "type": {
+                "text": "'auto' | 'always' | 'never'"
+              },
+              "default": "'auto'"
             },
             {
               "name": "clickable",
@@ -10895,7 +11334,11 @@
             },
             {
               "name": "layout",
-              "description": "\"stacked\" wraps the rows at every width. Otherwise they wrap while the element is narrower than --kakao-table-stack-below (its own width, not the window's)."
+              "description": "auto (default) · stacked. stacked wraps the rows at every width; auto wraps them while the element is narrower than --kakao-table-stack-below (its own width, not the window's).",
+              "type": {
+                "text": "'auto' | 'stacked'"
+              },
+              "default": "'auto'"
             },
             {
               "name": "loading",
@@ -11766,6 +12209,42 @@
             {
               "name": "clearable",
               "description": "Show a clear (×) button while the field has a value."
+            },
+            {
+              "name": "maxlength",
+              "description": "Passed through to the field (and to its validity)."
+            },
+            {
+              "name": "minlength",
+              "description": "Passed through to the field (and to its validity)."
+            },
+            {
+              "name": "pattern",
+              "description": "Passed through to the field (and to its validity)."
+            },
+            {
+              "name": "min",
+              "description": "Passed through to the field (and to its validity)."
+            },
+            {
+              "name": "max",
+              "description": "Passed through to the field (and to its validity)."
+            },
+            {
+              "name": "step",
+              "description": "Passed through to the field (and to its validity)."
+            },
+            {
+              "name": "autocomplete",
+              "description": "Passed through to the field (and to its validity)."
+            },
+            {
+              "name": "inputmode",
+              "description": "Passed through to the field (and to its validity)."
+            },
+            {
+              "name": "spellcheck",
+              "description": "Passed through to the field (and to its validity)."
             }
           ],
           "members": [
@@ -12770,19 +13249,27 @@
             },
             {
               "name": "nested",
-              "description": "\"all\" (default) shows every level; \"active\" shows deeper levels only under the active top-level entry."
+              "description": "all (default) · active. all shows every level; active shows deeper levels only under the active top-level entry.",
+              "type": {
+                "text": "'all' | 'active'"
+              },
+              "default": "'all'"
             },
             {
               "name": "collapse",
-              "description": "\"never\" (default), \"always\" or \"auto\": fold the list behind a toggle that shows the title and the current section. \"auto\" folds while the viewport is narrower than collapse-below."
+              "description": "never (default) · always · auto. Fold the list behind a toggle that shows the title and the current section; auto folds while the viewport is narrower than collapse-below.",
+              "type": {
+                "text": "'never' | 'always' | 'auto'"
+              },
+              "default": "'never'"
+            },
+            {
+              "name": "collapse-below",
+              "description": "CSS length for collapse=\"auto\". Default \"48rem\"."
             },
             {
               "name": "data-folded",
               "description": "Set by the component while the list is folded (for page CSS)."
-            },
-            {
-              "name": "force",
-              "description": "A boolean attribute read only by the style checker (tools/style-check.js). It marks this placement as a deliberate exception to the style rules and has no effect in the browser."
             }
           ],
           "events": [
@@ -12976,10 +13463,12 @@
               "type": {
                 "text": "boolean"
               }
-            },
+            }
+          ],
+          "slots": [
             {
-              "name": "force",
-              "description": "A boolean attribute read only by the style checker (tools/style-check.js). It marks this placement as a deliberate exception to the style rules and has no effect in the browser."
+              "name": "",
+              "description": "The label (plain text is best; it is read as the description)."
             }
           ],
           "cssProperties": [
@@ -13082,7 +13571,11 @@
             },
             {
               "name": "selection",
-              "description": "\"single\" (default): one node is selected, filled like a selected list row. \"multiple\": a checkbox per node; a parent checks or clears everything under it and shows a dash when only some are checked. \"none\": rows only open and close."
+              "description": "single (default) · multiple · none. single: one node is selected, filled like a selected list row. multiple: a checkbox per node; a parent checks or clears everything under it and shows a dash when only some are checked. none: rows only open and close.",
+              "type": {
+                "text": "'single' | 'multiple' | 'none'"
+              },
+              "default": "'single'"
             },
             {
               "name": "name",

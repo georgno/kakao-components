@@ -27,11 +27,15 @@ A press on the track SHALL move the nearer thumb there and drag it until release
 - **THEN** the high thumb moves to 70 and the low thumb stays at 20
 
 ### Requirement: Keyboard and accessibility
-Each thumb SHALL be a focusable `role="slider"` with `aria-valuenow`, `aria-valuetext` (value and unit), `aria-valuemin` and `aria-valuemax` set to the limits it can actually reach, and an accessible name "<label>, minimum" / "<label>, maximum" (or `label-low` / `label-high`). Arrows SHALL step by `step`, Page Up / Down by ten steps, Home / End SHALL go to the thumb's limits. Focus SHALL show the shared 2px outline with 2px offset.
+Each thumb SHALL be a focusable `role="slider"` with `aria-valuenow`, `aria-valuetext` (value and unit), `aria-valuemin` and `aria-valuemax` set to the limits it can actually reach, and an accessible name "<label>, minimum" / "<label>, maximum" (or `low-label` / `high-label`; the older `label-low` / `label-high` still work when the new names are absent). Arrows SHALL step by `step`, Page Up / Down by ten steps, Home / End SHALL go to the thumb's limits. Focus SHALL show the shared 2px outline with 2px offset.
 
 #### Scenario: Home on the high thumb
 - **WHEN** the value is `20,80`, `min-gap` is 5 and the high thumb has focus
 - **THEN** Home moves it to 25
+
+#### Scenario: Old attribute name
+- **WHEN** a range slider has `label-low="From"` and no `low-label`
+- **THEN** the low thumb is named "From"
 
 ### Requirement: Number fields
 Each value SHALL have a number field. Typing SHALL move the thumb live while the typed value is within reach and SHALL be clamped on commit (blur or Enter). When `kakao-number-input` is registered, the fields SHALL use it, unless `scroll-input="false"`.

@@ -27,39 +27,85 @@
 'use strict';
 
 const SIZES = ['sm', 'md', 'lg'];
-const STATUS_TONES = ['neutral', 'primary', 'success', 'danger', 'ink'];
+const SIZES_SM = ['sm', 'md'];
+const AVATAR_SIZES = ['xs', 'sm', 'md', 'lg', 'xl'];
+const STATUS_TONES = ['neutral', 'primary', 'success', 'warning', 'danger', 'ink'];
 const COLLAPSE = ['auto', 'always', 'never'];
+const SIDES = ['top', 'bottom', 'left', 'right'];
+const LAYOUT = ['auto', 'stacked'];
+const ORIENTATION = ['horizontal', 'vertical'];
+const BOOL_TEXT = ['true', 'false'];
 
+/* One entry per tag, alphabetical. A test (tools/tests/vocabulary.test.js)
+   checks that it lists every enumerated attribute of custom-elements.json
+   with the same values. */
 const VALUES = {
-  'kakao-aside-menu': { effect: ['push', 'squash'] },
-  'kakao-button': { variant: ['primary', 'secondary', 'ghost', 'danger'], size: SIZES },
-  'kakao-badge': { tone: STATUS_TONES },
-  'kakao-chip': { tone: STATUS_TONES },
-  'kakao-dialog': { size: SIZES, 'button-position': ['left', 'center', 'right'] },
-  'kakao-breadcrumb': { start: ['icon', 'text', 'none'] },
+  'kakao-accordion': { variant: ['card', 'tile', 'row'] },
+  'kakao-alert': { tone: ['info', 'success', 'warning', 'danger'] },
+  'kakao-animated-number': { 'sign-display': ['auto', 'always', 'except-zero', 'negative'] },
+  'kakao-aside-menu': { position: ['left', 'right'], effect: ['push', 'squash'] },
+  'kakao-aside-sheet': { side: ['bottom', 'top', 'start', 'end'] },
   'kakao-avatar': {
-    size: ['xs', 'sm', 'md', 'lg', 'xl'],
+    size: AVATAR_SIZES,
     shape: ['circle', 'square'],
     status: ['online', 'away', 'busy', 'offline'],
     tone: ['auto', 'neutral', 'primary', 'success', 'warning', 'danger'],
   },
-  'kakao-avatar-group': { size: ['xs', 'sm', 'md', 'lg', 'xl'], shape: ['circle', 'square'] },
+  'kakao-avatar-group': { size: AVATAR_SIZES, shape: ['circle', 'square'] },
+  'kakao-badge': { tone: STATUS_TONES },
+  'kakao-breadcrumb': { start: ['icon', 'text', 'none'] },
+  'kakao-button': {
+    variant: ['primary', 'secondary', 'ghost', 'danger'],
+    size: SIZES,
+    'icon-position': ['left', 'right', 'only'],
+    type: ['button', 'submit', 'reset'],
+  },
+  'kakao-checkbox': { size: SIZES },
+  'kakao-chip': { tone: STATUS_TONES },
+  'kakao-code-input': { type: ['numeric', 'alphanumeric'], size: SIZES },
+  'kakao-combobox': { size: SIZES },
   'kakao-copy-button': { variant: ['secondary', 'ghost'], size: SIZES },
+  'kakao-date-input': { type: ['date', 'time', 'datetime-local', 'month', 'week'], size: SIZES },
+  'kakao-description-list': { layout: LAYOUT, size: SIZES_SM },
+  'kakao-dialog': { size: SIZES, 'button-position': ['left', 'center', 'right'] },
+  'kakao-empty-state': { size: SIZES_SM },
   'kakao-image': { fit: ['cover', 'contain'], loading: ['lazy', 'eager'] },
-  'kakao-kbd': { platform: ['auto', 'mac', 'other'], size: ['sm', 'md'] },
+  'kakao-kbd': { platform: ['auto', 'mac', 'other'], size: SIZES_SM },
+  'kakao-list': { groups: BOOL_TEXT },
   'kakao-menu': { placement: ['bottom-start', 'bottom-end', 'top-start', 'top-end'] },
+  'kakao-meter': { size: SIZES },
+  'kakao-number-input': {
+    size: SIZES_SM,
+    plus: ['left', 'right', 'false'],
+    minus: ['left', 'right', 'false'],
+    'group-position': ['left', 'right'],
+  },
   'kakao-pagination': { size: SIZES, collapse: COLLAPSE },
+  'kakao-password-input': { size: SIZES },
+  'kakao-popover': { trigger: ['click', 'hover', 'manual'], placement: SIDES },
+  'kakao-progress': { size: SIZES, tone: ['primary', 'success', 'warning', 'danger'] },
+  'kakao-radio-group': { orientation: ['vertical', 'horizontal'], size: SIZES },
   'kakao-rating': { size: SIZES, step: ['1', '0.5'] },
+  'kakao-select': { size: SIZES },
+  'kakao-setting': { layout: ['auto', 'inline', 'stacked'] },
+  'kakao-settings-group': { variant: ['box', 'plain'] },
   'kakao-skeleton': {
     shape: ['text', 'circle', 'block', 'row', 'card'],
     animation: ['shimmer', 'pulse', 'none'],
   },
+  'kakao-slider': { 'scroll-input': BOOL_TEXT },
   'kakao-spinner': { size: SIZES, tone: ['none', 'primary', 'success', 'warning', 'danger', 'muted'] },
   'kakao-stack': { position: ['inline', 'bottom-right', 'bottom-left', 'top-right', 'top-left'] },
+  'kakao-stepper': { orientation: ORIENTATION, collapse: COLLAPSE, clickable: ['', 'done', 'all'] },
+  'kakao-switch-group': { orientation: ORIENTATION },
+  'kakao-table': { layout: LAYOUT },
+  'kakao-tag-input': { size: SIZES },
+  'kakao-text-input': { size: SIZES },
+  'kakao-textarea': { resize: ['vertical', 'none', 'both', 'horizontal'], size: SIZES },
+  'kakao-time-input': { size: SIZES },
   'kakao-toast': { position: ['bottom-right', 'bottom-left', 'top-right', 'top-left'] },
-  'kakao-stepper': { orientation: ['horizontal', 'vertical'], collapse: COLLAPSE, clickable: ['', 'done', 'all'] },
-  'kakao-toc': { collapse: COLLAPSE, nested: ['all', 'active'] },
-  'kakao-tooltip': { placement: ['top', 'bottom', 'left', 'right'] },
+  'kakao-toc': { collapse: ['never', 'always', 'auto'], nested: ['all', 'active'] },
+  'kakao-tooltip': { placement: SIDES, 'data-tooltip-placement': SIDES },
   'kakao-tree-view': { selection: ['single', 'multiple', 'none'] },
 };
 

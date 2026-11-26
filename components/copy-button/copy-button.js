@@ -40,8 +40,9 @@
  *  copied-label  Shown in place of the label and announced after a successful
  *                copy. Default "Copied".
  *  error-label   The same when copying failed. Default "Copy failed".
- *  variant       secondary (default, a quiet fill) · ghost (no fill until hovered)
- *  size          md (default) · sm · lg: the heights of kakao-button.
+ *  variant       secondary (default) · ghost. secondary is a quiet fill;
+ *                ghost has no fill until hovered.
+ *  size          sm · md (default) · lg: the heights of kakao-button.
  *  reset-delay   Milliseconds the confirmation (or the failure) stays before
  *                the button is a copy button again. Default 1600. 0 keeps it
  *                until reset() is called.

@@ -140,7 +140,7 @@
   </div>
 
   <h2>Narrow</h2>
-  <p>Each row is a size container: below 30rem the control drops under the label and fields take the full width. Switches stay beside the label. <code>layout="inline"</code> or <code>"stack"</code> forces one layout.</p>
+  <p>Each row is a size container: below 30rem the control drops under the label and fields take the full width. Switches stay beside the label. <code>layout="inline"</code> or <code>"stacked"</code> forces one layout.</p>
   <div class="stack narrow" data-example>
     <kakao-settings-group heading="Display">
       <kakao-setting label="Theme">
@@ -167,7 +167,7 @@
     </kakao-settings-group>
   </div>
 
-  <footer><code>&lt;kakao-settings-group&gt;</code> attributes: <code>heading</code>, <code>description</code>, <code>heading-level</code>, <code>variant</code> (box, plain); slots: default (rows), <code>title</code>, <code>description</code>, <code>footer</code>. <code>&lt;kakao-setting&gt;</code> attributes: <code>label</code>, <code>hint</code>, <code>href</code> (+ <code>target</code>, <code>rel</code>), <code>action</code>, <code>value</code>, <code>variant</code> (danger), <code>disabled</code>, <code>layout</code> (auto, inline, stack); slots: default (the control), <code>label</code>, <code>hint</code>, <code>icon</code>. Event: <code>setting-action</code>. Full reference in the header of <code>settings-group.js</code>.</footer>
+  <footer><code>&lt;kakao-settings-group&gt;</code> attributes: <code>heading</code>, <code>description</code>, <code>heading-level</code>, <code>variant</code> (box, plain); slots: default (rows), <code>title</code>, <code>description</code>, <code>footer</code>. <code>&lt;kakao-setting&gt;</code> attributes: <code>label</code>, <code>hint</code>, <code>href</code> (+ <code>target</code>, <code>rel</code>), <code>action</code>, <code>value</code>, <code>variant</code> (danger), <code>disabled</code>, <code>layout</code> (auto, inline, stacked); slots: default (the control), <code>label</code>, <code>hint</code>, <code>icon</code>. Event: <code>setting-action</code>. Full reference in the header of <code>settings-group.js</code>.</footer>
 </main>
 <script>
   logEvents(document.getElementById('log'), ['setting-action']);

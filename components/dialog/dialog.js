@@ -62,6 +62,13 @@
  * left; centred, it comes last. Its corner then rounds to match it.
  *
  * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The body.
+ *  header      The title, e.g. <h2 slot="header">; it names the dialog.
+ *  footer      The buttons (see the dialog rules in the styleguide).
+ *
+ * ----------------------------------------------------------------------------
  * METHODS
  * ----------------------------------------------------------------------------
  *   open()                Show the dialog.

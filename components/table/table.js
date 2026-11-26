@@ -85,10 +85,10 @@
  *                   side that has more. --kakao-table-max-height also lets it
  *                   scroll down in the frame (the sticky header then sticks
  *                   to the frame).
- *  layout           "stacked" wraps the rows at every width. Otherwise they
- *                   wrap while the element is narrower than
- *                   --kakao-table-stack-below (its own width, not the
- *                   window's).
+ *  layout           auto (default) · stacked. stacked wraps the rows at
+ *                   every width; auto wraps them while the element is
+ *                   narrower than --kakao-table-stack-below (its own width,
+ *                   not the window's).
  *  loading          Placeholder rows instead of the rows (kakao-skeleton
  *                   where it is loaded), aria-busy and a spoken "Loading".
  *  loading-rows     How many placeholder rows. Default: as many as there were

@@ -43,11 +43,18 @@
  *                from the nesting depth (see NESTING).
  *  no-animate    Opens and closes at once.
  *
- * SLOTS: default (the body), title, description, meta (short text or a badge
- * after the title; never controls, since the whole header is one button),
- * actions (controls such as a small kakao-button, shown in the header row
- * before the chevron; they sit outside the header button, so clicking them
- * doesn't open or close the accordion, and they stay visible while closed).
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)    The body.
+ *  title        The title (instead of heading).
+ *  description  The subline (instead of description).
+ *  meta         Short text or a badge after the title; never controls, since the
+ *               whole header is one button.
+ *  actions      Controls such as a small kakao-button, in the header row before
+ *               the chevron. They sit outside the header button, so clicking them
+ *               doesn't open or close the accordion, and they stay visible while
+ *               closed.
  *
  * ----------------------------------------------------------------------------
  * METHODS

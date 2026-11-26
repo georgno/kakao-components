@@ -41,7 +41,12 @@
  *  hidden        Hidden. Set by hide() / the timer / the close button,
  *                removed by show().
  *
- * SLOTS: default (the message), title, icon (replaces the tone's icon).
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The message.
+ *  title       The title (instead of heading).
+ *  icon        Replaces the tone's icon.
  *
  * ROLES: the element gets role="alert" for warning and danger (assertive)
  * and role="status" for info and success (polite), kept in step with tone,

@@ -54,10 +54,11 @@
  *               without an id gets one from its position ("node-0-2").
  *               "lazy": true marks a node whose children come later (see
  *               tree-expand). Wins over a nested list in the element.
- *  selection    "single" (default): one node is selected, filled like a
- *               selected list row. "multiple": a checkbox per node; a parent
- *               checks or clears everything under it and shows a dash when
- *               only some are checked. "none": rows only open and close.
+ *  selection    single (default) · multiple · none. single: one node is
+ *               selected, filled like a selected list row. multiple: a
+ *               checkbox per node; a parent checks or clears everything under
+ *               it and shows a dash when only some are checked. none: rows
+ *               only open and close.
  *  name         With a form: every selected id is sent under this name
  *               (use "perm[]" for PHP / Yii2).
  *  leaves-only  Multiple: value and the form get only the checked nodes that

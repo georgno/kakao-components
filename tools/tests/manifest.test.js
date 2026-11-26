@@ -26,6 +26,16 @@ test('entries: names, a type column, continuation lines, several names', () => {
   assert.equal(e.length, 3);
 });
 
+test('entries: several names with the description on the next lines', () => {
+  const e = entriesOf([
+    '  name · required · disabled',
+    '                  Form participation.',
+    '  size            sm · md (default) · lg',
+  ]);
+  assert.deepEqual(e[0], { names: ['name', 'required', 'disabled'], description: 'Form participation.' });
+  assert.deepEqual(e[1].names, ['size']);
+});
+
 test('allowed values and the default come from "a · b (default) · c"', () => {
   assert.deepEqual(enumOf('sm · md (default) · lg: bar height'), { values: ['sm', 'md', 'lg'], default: 'md' });
   assert.deepEqual(enumOf('"click" | "hover" | "manual"'), { values: ['click', 'hover', 'manual'], default: null });

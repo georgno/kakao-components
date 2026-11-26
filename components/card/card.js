@@ -39,6 +39,14 @@
  *  no-animate   Don't animate height changes.
  *
  * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The body.
+ *  header      The title row, e.g. <h3 slot="header">. Empty: no header row.
+ *  footer      Actions or a note under the body, e.g. a row of buttons.
+ *              Empty: no footer row.
+ *
+ * ----------------------------------------------------------------------------
  * THEME TRIGGER GLOW
  * ----------------------------------------------------------------------------
  *  Opt-in with the theme-glow attribute; without it a theme change does

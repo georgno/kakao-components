@@ -31,6 +31,21 @@ upgrade is safe; the entries below them give the detail.
 - Every component header has a FILES section (script, css, requires,
   enhanced). The headers of button, slider, tabs, number-input,
   animated-number and list follow the shared header format now.
+- `<kakao-badge>` and `<kakao-chip>`: `tone="warning"` (settings
+  `--kakao-badge-warning`, `--kakao-chip-warning`), so every tone-taking
+  component has the warning tone.
+- One vocabulary, checked: `tools/tests/vocabulary.test.js` reads
+  custom-elements.json and checks the shared names (tones, sizes,
+  `<thing>-label` / `<thing>-text`, `list-data`, event names) and that every
+  rendered slot is documented. The style checker's value table (VALUES) now
+  covers every enumerated attribute in the manifest (alert and progress tone,
+  every field's size, aside-sheet side, accordion and settings-group variant,
+  …), and a test keeps the two equal. The checker now reports the old
+  aliases that still work in the browser (`tone="error"` on an alert or
+  progress, `layout="stack"` on a setting): write danger and stacked.
+- Every component with slots lists them in a SLOTS section, so the
+  manifest's `slots` is complete; enumerated values (size, tone, shape,
+  layout, …) are written so the manifest lists them.
 
 - `<kakao-stack>`: the toast's pile of cards as a component of its own. The
   newest child is in front, older ones smaller, paler (desaturated) and
@@ -89,6 +104,11 @@ upgrade is safe; the entries below them give the detail.
   `--kakao-toast-*` settings are unchanged. **Load `stack.js` before
   `toast.js`.** The card state attribute is now `data-stack-state` (was
   `data-toast-state`).
+- `<kakao-range-slider>`: the thumbs' names are `low-label` / `high-label`,
+  like every other `<thing>-label`. `label-low` / `label-high` still work
+  (deprecated).
+- `<kakao-setting>`: `layout="stacked"`, the name table and
+  description-list use; `layout="stack"` still works.
 
 ### Site only
 
@@ -99,6 +119,12 @@ upgrade is safe; the entries below them give the detail.
 
 ### Fixed
 
+- `<kakao-button type="reset">` resets its form (it rendered a plain button).
+- `tools/manifest.js`: an entry naming several attributes with its
+  description on the next line is read (combobox's and password-input's
+  `name`, `required`, `disabled`, … were missing), and a SLOTS or EVENTS
+  title may name its tag (`<kakao-setting> SLOTS`). aside-menu's methods
+  and events and stack's properties are no longer listed as attributes.
 - Components with a screen-reader-only `.sr` / `.visually-hidden` span no longer
   grow the page's scrollable height when they sit in a scroll container. The span is out of
   flow (`position: absolute`, 1×1, clipped), and nothing in the component was

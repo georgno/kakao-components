@@ -24,11 +24,19 @@ Every declaration SHALL carry a `kakao` field with its script, the light-DOM CSS
 - **THEN** it requires kakao-stack and kakao-alert, in that order
 
 ### Requirement: One header format
-Every component header SHALL follow the shared format (sections between dash lines, entries indented 1-4 spaces, a FILES section). A header that doesn't parse is fixed in the header; the tool reports a missing FILES section or an unknown component in it as an error.
+Every component header SHALL follow the shared format (sections between dash lines, entries indented 1-4 spaces, a FILES section). An entry naming several attributes (`name · required · disabled`) MAY put its description on the following, deeper-indented lines. A component that renders slots SHALL list them in a SLOTS section (`(default)` for the unnamed slot). A header that doesn't parse is fixed in the header; the tool reports a missing FILES section or an unknown component in it as an error.
 
 #### Scenario: Missing FILES section
 - **WHEN** a component header has no FILES section
 - **THEN** `node tools/manifest.js` exits with an error naming the file
+
+#### Scenario: Several names, description below
+- **WHEN** a header lists `name · required · disabled` with its description on the next line
+- **THEN** the manifest has the three attributes with that description
+
+#### Scenario: Slots
+- **WHEN** a component's shadow root has a default slot and a `footer` slot
+- **THEN** its manifest entry lists both
 
 ### Requirement: Manifest kept current
 `node tools/manifest.js --check` SHALL exit with code 1 when `custom-elements.json` differs from what the headers produce; the pre-commit hook and the deploy SHALL run it, and the deploy SHALL publish the file.

@@ -40,7 +40,7 @@
  *  disabled        Not clickable, dimmed.
  *  toggle          A toggle button: off dimmed at weight 400, pressed full at 600.
  *  pressed         The toggle's state.
- *  type            button (default) · submit
+ *  type            button (default) · submit · reset
  *  name · value · form   Form participation, as on a native button.
  *  href            Renders a link that looks like the button.
  *  aria-label      The name when there is no visible label.
@@ -643,7 +643,7 @@
         return;
       }
       const type = (this.getAttribute('type') || 'button').toLowerCase();
-      this._btn.type = type === 'submit' ? 'submit' : 'button';
+      this._btn.type = type === 'submit' || type === 'reset' ? type : 'button';
 
       if (this.hasAttribute('name')) {
         this._btn.setAttribute('name', this.getAttribute('name'));

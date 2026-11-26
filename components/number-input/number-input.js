@@ -30,7 +30,8 @@
  * ----------------------------------------------------------------------------
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
- *  size            sm: a compact control (styling hook via number-input.css).
+ *  size            sm · md (default). sm is a compact control (styling hook
+ *                  via number-input.css).
  *  touch-steppers  Always use the touch layout (it is used on touch screens
  *                  anyway): 44px − and + buttons instead of the stacked ▲▼.
  *  plus            left · right · false: where the + button sits in the touch

@@ -38,14 +38,15 @@
  *                {"term": …, "value": …}; a value is a text, a number or an
  *                array of them (one <dd> each). null, "" and [] are empty
  *                values. Texts are set as text, never as HTML.
- *  layout        stacked puts the term above the value at every width.
- *                Anything else is side by side, which stacks by itself when a
- *                row is narrower than --kakao-description-list-stack-below.
+ *  layout        auto (default) · stacked. stacked puts the term above the
+ *                value at every width. auto is side by side, which stacks by
+ *                itself when a row is narrower than
+ *                --kakao-description-list-stack-below.
  *  columns       2, 3 or 4: the pairs fill a grid of up to that many columns
  *                (row by row). Columns fall away while one would be narrower
  *                than --kakao-description-list-column-min-width.
  *  dividers      A hairline between the rows.
- *  size          sm for the dense form. Anything else is the default size.
+ *  size          sm · md (default). sm is the dense form.
  *  align         end puts the values at the end of the row (amounts in a
  *                summary). Not applied while stacked.
  *  empty-text    Shown for an empty value, default "—".

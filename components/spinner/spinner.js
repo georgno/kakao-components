@@ -31,10 +31,11 @@
  * ----------------------------------------------------------------------------
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
- *  size        md (default, the button's spinner) · sm · lg
- *  tone        none (default): the ring takes the surrounding text colour.
- *              primary · success · warning · danger · muted take a theme role.
- *              The label never takes the tone; it keeps the text colour.
+ *  size        sm · md (default) · lg. md is the button's spinner.
+ *  tone        none (default) · primary · success · warning · danger · muted.
+ *              none: the ring takes the surrounding text colour; the others
+ *              take a theme role. The label never takes the tone; it keeps
+ *              the text colour.
  *  label       What is loading, for assistive technology. Default "Loading".
  *  show-label  Also shows the label, beside the ring.
  *  stacked     With show-label: the label goes under the ring, centred.

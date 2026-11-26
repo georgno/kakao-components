@@ -48,10 +48,11 @@
  *               it upcoming. An index equal to the number of steps means the
  *               flow is finished: every step is done, none is current. The
  *               attribute always reflects the state.
- *  orientation  "horizontal" (default): markers in a row, labels below.
- *               "vertical": markers in a column, labels beside them.
- *  collapse     What a horizontal stepper does when it is too narrow.
- *               "auto" (default): when a step would get less than
+ *  orientation  horizontal (default) · vertical. horizontal: markers in a
+ *               row, labels below. vertical: markers in a column, labels
+ *               beside them.
+ *  collapse     auto (default) · always · never. What a horizontal stepper
+ *               does when it is too narrow. auto: when a step would get less than
  *               --kakao-stepper-min-step-width, it becomes one line
  *               ("Step 2 of 4" and the current label) over a segmented bar.
  *               "always": always that compact form. "never": always the row.

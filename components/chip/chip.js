@@ -27,7 +27,8 @@
  * ----------------------------------------------------------------------------
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
- *  tone          neutral (default) · primary · success · danger · ink
+ *  tone          neutral (default) · primary · success · warning · danger ·
+ *                ink
  *  swatch        A CSS colour: a small square before the label.
  *  href          Renders the label as a real link; target and rel pass through.
  *  action        Renders the label as a button that fires chip-action (ignored with href).
@@ -35,8 +36,12 @@
  *  remove-label  Accessible name of the remove button. Default "Remove <label>".
  *  value         Passed back in the chip-remove event.
  *
- * SLOTS: default (label, cut off with an ellipsis when it does not fit),
- *        icon (e.g. <i slot="icon" class="fas fa-file">), meta (muted text after the label).
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The label, cut off with an ellipsis when it does not fit.
+ *  icon        A leading icon, e.g. <i slot="icon" class="fas fa-file">.
+ *  meta        Muted text after the label.
  *
  * ----------------------------------------------------------------------------
  * EVENTS (bubble, composed)
@@ -86,6 +91,7 @@
         --_text-mix: var(--kakao-chip-text-mix, 72%);
         --_primary: var(--kakao-chip-primary, var(--kakao-color-primary, #4f46e5));
         --_success: var(--kakao-chip-success, var(--kakao-color-success, #15803d));
+        --_warning: var(--kakao-chip-warning, var(--kakao-color-warning, #b45309));
         --_danger: var(--kakao-chip-danger, var(--kakao-color-danger, #dc2626));
         --_ink: var(--kakao-chip-ink, var(--kakao-color-ink, #18181b));
         --_on-ink: var(--kakao-chip-on-ink, var(--kakao-color-on-ink, #fafafa));
@@ -120,8 +126,9 @@
       }
       :host([tone="primary"]) { --_tone: var(--_primary); }
       :host([tone="success"]) { --_tone: var(--_success); }
+      :host([tone="warning"]) { --_tone: var(--_warning); }
       :host([tone="danger"])  { --_tone: var(--_danger); }
-      :host(:is([tone="primary"], [tone="success"], [tone="danger"])) .chip {
+      :host(:is([tone="primary"], [tone="success"], [tone="warning"], [tone="danger"])) .chip {
         --_fill: color-mix(in srgb, var(--_tone) var(--_tint), var(--_surface));
         --_ink-text: color-mix(in srgb, var(--_tone) var(--_text-mix), var(--_text));
         --_meta: var(--_ink-text);

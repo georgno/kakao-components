@@ -39,11 +39,11 @@
  * ----------------------------------------------------------------------------
  * SLOTS
  * ----------------------------------------------------------------------------
- *  start     At the inline start (left): a menu button, a logo.
- *  (default) The title, centred in the bar while there is room.
- *  nav       Links, wrapped in a <nav> after the title. Without children no
- *            <nav> landmark is exposed.
- *  end       At the inline end (right): theme switch, settings, account.
+ *  start      At the inline start (left): a menu button, a logo.
+ *  (default)  The title, centred in the bar while there is room.
+ *  nav        Links, wrapped in a <nav> after the title. Without children no
+ *             <nav> landmark is exposed.
+ *  end        At the inline end (right): theme switch, settings, account.
  *  Empty regions take no space.
  *
  * ----------------------------------------------------------------------------

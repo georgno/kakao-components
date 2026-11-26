@@ -98,8 +98,11 @@
  *                 that the page announces another way).
  *  has-errors     Set by the component while errors are shown (read only).
  *
- * SLOTS: default (content after the box, e.g. the wrapped form),
- * description (text between the title and the list).
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)    Content after the box, e.g. the wrapped form.
+ *  description  Text between the title and the list.
  *
  * ----------------------------------------------------------------------------
  * PROPERTIES AND METHODS

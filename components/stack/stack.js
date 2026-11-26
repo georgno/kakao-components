@@ -43,23 +43,33 @@
  * ----------------------------------------------------------------------------
  * ATTRIBUTES
  * ----------------------------------------------------------------------------
- *  position   inline (default: in the page flow, cards peek out below) ·
- *             bottom-right · bottom-left · top-right · top-left (fixed to
- *             that corner of the viewport; bottom corners peek above).
- *             Below 30rem a corner stack spans the viewport width.
+ *  position   inline (default) · bottom-right · bottom-left · top-right ·
+ *             top-left. inline sits in the page flow, the cards peek out
+ *             below; a corner fixes it to that corner of the viewport
+ *             (bottom corners peek above). Below 30rem a corner stack spans
+ *             the viewport width.
  *  max        How many cards are visible at once (default 3). Older ones
  *             wait hidden behind the pile.
  *  label      Accessible name; with it the stack is a named region.
  *  expanded   Set while the pile is fanned out (the stack toggles it).
  *
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The cards: every element child (the newest is the last).
+ *
+ * ----------------------------------------------------------------------------
  * PROPERTIES / METHODS
+ * ----------------------------------------------------------------------------
  *  max                  Same as the attribute.
  *  expanded             Read only.
  *  items                The cards, newest first (leaving ones left out).
  *  dismiss(el, reason)  Slides the card out and removes it; returns a
  *                       promise of the reason (default "method").
  *
+ * ----------------------------------------------------------------------------
  * BEHAVIOUR
+ * ----------------------------------------------------------------------------
  *  - Fans out while the pointer is over the pile or focus is inside it; on
  *    touch a tap on the pile toggles it, a tap elsewhere collapses it. Taps
  *    on buttons and links inside a card don't toggle.

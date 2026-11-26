@@ -58,17 +58,13 @@
  *  sticky         Boolean. Sticks below the page bar (in a sidebar); a list
  *                 taller than the viewport scrolls inside, keeping the active
  *                 entry in view.
- *  nested         "all" (default) shows every level; "active" shows deeper
- *                 levels only under the active top-level entry.
- *  collapse       "never" (default), "always" or "auto": fold the list behind
- *                 a toggle that shows the title and the current section.
- *                 "auto" folds while the viewport is narrower than collapse-below.
- *  collapse-below CSS length for collapse="auto". Default "48rem".
+ *  nested         all (default) · active. all shows every level; active
+ *                 shows deeper levels only under the active top-level entry.
+ *  collapse       never (default) · always · auto. Fold the list behind a
+ *                 toggle that shows the title and the current section; auto
+ *                 folds while the viewport is narrower than collapse-below.
+ *  collapse-below  CSS length for collapse="auto". Default "48rem".
  *  data-folded    Set by the component while the list is folded (for page CSS).
- *  force          A boolean attribute read only by the style checker
- *                 (tools/style-check.js). It marks this placement as a
- *                 deliberate exception to the style rules and has no effect
- *                 in the browser.
  *
  * PROPERTIES: items (get / set, same shapes as list-data); activeId (get / set:
  *             setting it marks an entry by hand until the reader scrolls).
@@ -106,6 +102,10 @@
  *  --kakao-toc-panel-max-height
  *
  * Parts: nav, title, toggle, list, link, active, marker.
+ *
+ * force: a boolean attribute read only by the style checker
+ * (tools/style-check.js). It marks this placement as a deliberate exception
+ * to the style rules and has no effect in the browser.
  * ============================================================================
  */
 (function () {

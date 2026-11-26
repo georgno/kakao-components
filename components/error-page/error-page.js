@@ -52,8 +52,12 @@
  *                   on the page background. Default: an embedded box.
  *  no-pattern       No background pattern.
  *
- * SLOTS: default (the message), actions (buttons or links, in a wrapping
- * centred row), details (longer content below, aligned to the start).
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  (default)   The message (instead of message).
+ *  actions     Buttons or links, in a wrapping centred row.
+ *  details     Longer content below, aligned to the start.
  *
  * The heading element holds the big code and the title, so heading
  * navigation finds both. The background pattern is decorative: aria-hidden,

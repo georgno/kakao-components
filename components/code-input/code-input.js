@@ -28,8 +28,8 @@
  * ATTRIBUTES (all observed)
  * ----------------------------------------------------------------------------
  *  length        Number of boxes, 4 to 8 (default 6; out of range is clamped).
- *  type          "numeric" (default): digits, numeric keyboard.
- *                "alphanumeric": letters and digits, text keyboard.
+ *  type          numeric (default) · alphanumeric. numeric: digits, numeric
+ *                keyboard. alphanumeric: letters and digits, text keyboard.
  *  pattern       One character's allowed set as a regular expression, e.g.
  *                "[0-9A-F]"; overrides `type` for what is accepted (`type`
  *                still picks the keyboard). Anything else typed is ignored;

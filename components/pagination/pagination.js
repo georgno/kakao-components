@@ -62,10 +62,10 @@
  *  page-sizes   Comma-separated page sizes ("10,20,50"): adds a "Rows per
  *               page" select. A native select, or a kakao-select where
  *               select.js is loaded.
- *  collapse     "auto" (default): compact when the page numbers do not fit the
- *               element's own width. "always": always compact. "never": the
- *               page numbers wrap instead.
- *  size         "sm" (36px) | "md" (44px, default) | "lg" (52px): the button heights.
+ *  collapse     auto (default) · always · never. auto: compact when the page
+ *               numbers do not fit the element's own width. always: always
+ *               compact. never: the page numbers wrap instead.
+ *  size         sm · md (default) · lg: the button heights (36, 44, 52px).
  *  hide-single  Renders nothing while there is only one page.
  *  disabled     Nothing can be activated (while rows are loading).
  *  label        Accessible name of the navigation landmark. Default "Pagination".

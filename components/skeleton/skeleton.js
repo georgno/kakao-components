@@ -48,8 +48,8 @@
  *  ratio      Aspect ratio of a block, or of a card's media: "16/9", "4:3", "1".
  *  radius     Corner radius of a block, or of a card's frame (number or CSS
  *             length). Lines and circles keep theirs.
- *  animation  shimmer (default): a light band moves across. pulse: the shapes
- *             fade in and out. none: static.
+ *  animation  shimmer (default) · pulse · none. shimmer: a light band moves
+ *             across. pulse: the shapes fade in and out. none: static.
  *  avatar     Row and card: a circle in front of the title.
  *  media      Card: an image block on top.
  *  count      Row: how many rows, one under the other with a line between.

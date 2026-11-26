@@ -37,8 +37,8 @@
  *              { "title": "…", "url": "…" } or a pair ["Title", "/url"].
  *              The url is optional; the last item is always the current page
  *              (aria-current="page", not a link).
- *  start       "icon" (default): a house icon, named by the start text.
- *              "text": the start text. "none": no start item.
+ *  start       icon (default) · text · none. icon: a house icon, named by
+ *              the start text. text: the start text. none: no start item.
  *  start-text  The start text for this breadcrumb. Default: KakaoBreadcrumb.startText,
  *              which starts as START_TEXT ("Start").
  *  start-url   Where the start item links. Default "/".

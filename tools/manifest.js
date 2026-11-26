@@ -83,8 +83,8 @@ function sectionsOf(lines) {
 
 const KIND = [
   [/^ATTRIBUTES\b|\bATTRIBUTES\b/, 'attributes'],
-  [/^EVENTS\b/, 'events'],
-  [/^SLOTS\b/, 'slots'],
+  [/^EVENTS\b|\bEVENTS$/, 'events'],
+  [/^SLOTS\b|\bSLOTS$/, 'slots'],
   [/^FILES$/, 'files'],
   [/^(PROPERTIES|METHODS|PUBLIC API|PUBLIC METHODS|API)\b/, 'members'],
 ];
@@ -141,7 +141,7 @@ function entriesOf(lines) {
     const nextIndent = next.match(/^ */)[0].length;
     if (m && m[2] !== undefined && m[1].length <= 64 && !/[.;!?]$/.test(m[1])) {
       cur = { names: m[1], description: m[2] };
-    } else if (m && /^"?[a-z][\w-]*"?$/.test(text) && next.trim() && nextIndent > indent) {
+    } else if (m && /^"?[a-z][\w-]*"?(?: · "?[a-z][\w-]*"?)*$/.test(text) && next.trim() && nextIndent > indent) {
       cur = { names: text, description: '' };
     } else {
       cur = null; // prose
