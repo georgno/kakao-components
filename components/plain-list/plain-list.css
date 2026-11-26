@@ -1,0 +1,95 @@
+/*
+ * kakao-plain-list styles
+ *
+ * Light DOM: the list is drawn by this file alone. It styles the one <ul> or
+ * <ol> inside <kakao-plain-list>: no outer margins (spacing around the list
+ * is the page's or kakao-flow's job), one gap between visible items, muted
+ * markers, long unbroken text (a path) wrapping instead of pushing a phone
+ * layout sideways. Every rule is scoped under kakao-plain-list.
+ *
+ * Leads: when the items start with a kakao-badge, an <i> icon or an element
+ * marked data-lead, the list lays out as a table. The lead is one cell, the
+ * rest of the item (text and inline elements together) the other, so the
+ * leads form one column as wide as the widest lead and wrapped text stays in
+ * its own column. The gap then comes from border-spacing.
+ *
+ * Theming: every --kakao-plain-list-* property in the settings block below
+ * can be set on <kakao-plain-list> or any ancestor. The defaults live in that
+ * block: change them on construction.html.
+ */
+
+kakao-plain-list {
+  /* @kakao-settings:start prefix=--kakao-plain-list- (written by construction.html, edit there) */
+  --_gap: var(--kakao-plain-list-gap, 0.375rem);
+  --_gap-sm: var(--kakao-plain-list-gap-sm, 0.25rem);
+  --_font-size-sm: var(--kakao-plain-list-font-size-sm, 0.875rem);
+  --_indent: var(--kakao-plain-list-indent, 1.25rem);
+  --_marker-color: var(--kakao-plain-list-marker-color, var(--kakao-color-muted, #62626c));
+  --_lead-gap: var(--kakao-plain-list-lead-gap, 0.5rem);
+  /* @kakao-settings:end */
+  display: block;
+}
+
+kakao-plain-list[size="sm"] {
+  --_gap: var(--_gap-sm);
+  font-size: var(--_font-size-sm);
+}
+
+kakao-plain-list > :is(ul, ol) {
+  margin: 0;
+  padding-inline-start: var(--_indent);
+}
+
+kakao-plain-list > :is(ul, ol) > li {
+  margin: 0;
+  overflow-wrap: anywhere; /* a long path breaks rather than widening the page */
+}
+
+/* One gap between visible items; a hidden item leaves none. */
+kakao-plain-list > :is(ul, ol) > li:not([hidden]) ~ li:not([hidden]) {
+  margin-block-start: var(--_gap);
+}
+
+kakao-plain-list > :is(ul, ol) > li::marker {
+  color: var(--_marker-color);
+}
+
+kakao-plain-list > ol > li::marker {
+  font-variant-numeric: tabular-nums;
+}
+
+kakao-plain-list[marker="none"] > :is(ul, ol) {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+/* ---- Leads: one aligned column of badges or icons ---- */
+
+kakao-plain-list > :is(ul, ol):has(> li > :is(kakao-badge, i[class], [data-lead]):first-child) {
+  display: table;
+  width: 100%;
+  padding-inline-start: 0;
+  list-style: none;
+  border-collapse: separate;
+  border-spacing: 0 var(--_gap);
+  /* border-spacing also adds the gap above the first row and below the last */
+  margin-block: calc(-1 * var(--_gap));
+}
+
+kakao-plain-list > :is(ul, ol):has(> li > :is(kakao-badge, i[class], [data-lead]):first-child) > li:not([hidden]) {
+  display: table-row;
+}
+
+kakao-plain-list > :is(ul, ol) > li > :is(kakao-badge, i[class], [data-lead]):first-child:not([hidden]) {
+  display: table-cell;
+  width: 1%; /* the column shrinks to the widest lead */
+  padding-inline-end: var(--_lead-gap);
+  white-space: nowrap;
+  vertical-align: baseline;
+  text-align: start;
+}
+
+kakao-plain-list[hidden],
+kakao-plain-list > :is(ul, ol) > li[hidden] {
+  display: none;
+}

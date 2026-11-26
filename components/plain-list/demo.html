@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-plain-list - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../../shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../code/code.css" />
+<link rel="stylesheet" href="plain-list.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../code/code.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="plain-list.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Plain list"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Plain list</h1>
+    <p><code>&lt;kakao-plain-list&gt;</code> - a plain list of short items: file:line references, test names, findings. It wraps a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> and gives it even gaps, muted markers and long paths that wrap on a phone. Items can start with a badge or an icon: the leads then line up in one column. It is light DOM: <code>plain-list.css</code> draws it, so a server-rendered list needs no script. Not the <a href="../list/demo.html">list</a>, which is a 3D picker.</p>
+  </header>
+
+  <h2>References</h2>
+  <p>Bullets in the muted colour, one even gap. A long path breaks instead of pushing the page sideways.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Findings by file</h3>
+      <kakao-plain-list>
+        <ul role="list">
+          <li><kakao-code>src/app.js:42</kakao-code> Button without a label</li>
+          <li><kakao-code>src/form.js:7</kakao-code> Unused variable <kakao-code>draft</kakao-code></li>
+          <li><kakao-code>src/components/settings/notifications/email-preferences-panel.js:118</kakao-code> Colour hard-coded instead of a theme role</li>
+        </ul>
+      </kakao-plain-list>
+    </kakao-card>
+  </div>
+
+  <h2>Leading badges</h2>
+  <p>When every item starts with a <code>kakao-badge</code>, the badges form one column as wide as the widest, and the text starts at the same place in every row. A name that wraps stays in its column.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Test results</h3>
+      <kakao-plain-list>
+        <ul role="list">
+          <li><kakao-badge tone="success">Pass</kakao-badge> saves a draft while typing</li>
+          <li><kakao-badge tone="danger">Fail</kakao-badge> sends the form and shows the confirmation, also after the session expired and the user signed in again</li>
+          <li><kakao-badge>Skipped</kakao-badge> uploads two files at once</li>
+          <li><kakao-badge tone="success">Pass</kakao-badge> keeps the theme after a reload</li>
+        </ul>
+      </kakao-plain-list>
+    </kakao-card>
+  </div>
+
+  <h2>Leading icons</h2>
+  <p>An <code>&lt;i class="…"&gt;</code> icon works the same way. A decorative icon gets <code>aria-hidden="true"</code>; wrap an <code>&lt;svg&gt;</code> or <code>&lt;img&gt;</code> in <code>&lt;span data-lead&gt;</code>.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Changed files</h3>
+      <kakao-plain-list>
+        <ul role="list">
+          <li><i class="fas fa-file-code" aria-hidden="true"></i> <kakao-code>components/plain-list/plain-list.js</kakao-code></li>
+          <li><i class="fas fa-file-code" aria-hidden="true"></i> <kakao-code>components/plain-list/plain-list.css</kakao-code></li>
+          <li><i class="fas fa-file-lines" aria-hidden="true"></i> <kakao-code>CHANGELOG.md</kakao-code></li>
+        </ul>
+      </kakao-plain-list>
+    </kakao-card>
+  </div>
+
+  <h2>Numbered · small</h2>
+  <p>An <code>&lt;ol&gt;</code> keeps its numbers (tabular, so they line up). <code>size="sm"</code> sets smaller text and tighter gaps, for dense reports.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Steps to reproduce</h3>
+      <kakao-plain-list size="sm">
+        <ol role="list">
+          <li>Open the settings page.</li>
+          <li>Switch to the dark theme.</li>
+          <li>Reload the page.</li>
+          <li>The header bar flashes white before the theme applies.</li>
+        </ol>
+      </kakao-plain-list>
+    </kakao-card>
+  </div>
+
+  <h2>Without markers</h2>
+  <p><code>marker="none"</code> drops the bullets and the indent; the items keep their gap.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Test names</h3>
+      <kakao-plain-list marker="none">
+        <ul role="list">
+          <li>manifest writes one declaration per component</li>
+          <li>catalog lists every component once</li>
+          <li>loader loads light-DOM CSS before the script</li>
+        </ul>
+      </kakao-plain-list>
+    </kakao-card>
+  </div>
+
+  <h2>Hidden items</h2>
+  <p>An item with <code>hidden</code> leaves no gap behind.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">An item that comes and goes</h3>
+      <kakao-plain-list>
+        <ul role="list">
+          <li><kakao-badge tone="success">Done</kakao-badge> Tokens exported</li>
+          <li id="plain-list-note" hidden><kakao-badge tone="warning">Check</kakao-badge> Two themes need a contrast fix</li>
+          <li><kakao-badge tone="success">Done</kakao-badge> Manifest written</li>
+        </ul>
+      </kakao-plain-list>
+      <div class="toolbar" data-demo-only>
+        <kakao-button label="Show or hide the item" variant="secondary" size="sm" onclick="const n = document.getElementById('plain-list-note'); n.hidden = !n.hidden"></kakao-button>
+      </div>
+    </kakao-card>
+  </div>
+</main>
+</body>
+</html>

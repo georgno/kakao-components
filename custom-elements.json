@@ -6969,7 +6969,7 @@
           "name": "KakaoList",
           "tagName": "kakao-list",
           "summary": "A 3D picker: rows tilt in perspective as they scroll past the middle.",
-          "description": "A 3D picker list: rows tilt away in perspective as they scroll past the middle, with optional group headings. Vanilla JS, Shadow DOM, no deps. For a plain styled list of short items, use kakao-content-list instead.",
+          "description": "A 3D picker list: rows tilt away in perspective as they scroll past the middle, with optional group headings. Vanilla JS, Shadow DOM, no deps. For a plain styled list of short items, use kakao-plain-list instead.",
           "attributes": [
             {
               "name": "width",
@@ -7149,7 +7149,7 @@
             "lightDom": false,
             "requires": [],
             "enhancedBy": [],
-            "notFor": "A plain list of short items: <ul> or <ol>."
+            "notFor": "A plain list of short items (file:line, test names): kakao-plain-list."
           }
         }
       ],
@@ -8680,6 +8680,84 @@
           "declaration": {
             "name": "KakaoPasswordInput",
             "module": "components/password-input/password-input.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/plain-list/plain-list.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "KakaoPlainList",
+          "tagName": "kakao-plain-list",
+          "summary": "Short items in a list: file:line references, test names, findings, optionally with a leading badge or icon.",
+          "description": "A plain styled list of short items: file:line references, test names, findings. Wraps a <ul> or <ol>: even spacing, muted markers, long paths that wrap on a phone, and an aligned column of leading badges or icons. Light DOM: plain-list.css draws it, so a server-rendered list looks right before (and without) this script; the script only defines the tag and keeps the list a list for screen readers (role=\"list\"). Vanilla JS, no deps.",
+          "attributes": [
+            {
+              "name": "marker",
+              "description": "auto (default: bullets for <ul>, numbers for <ol>) · none. Leads replace the markers either way."
+            },
+            {
+              "name": "size",
+              "description": "sm · md (default): sm is smaller text with tighter gaps, for dense reports.",
+              "type": {
+                "text": "'sm' | 'md'"
+              },
+              "default": "'md'"
+            },
+            {
+              "name": "hidden",
+              "description": "Not shown (also on a single <li>: it leaves no gap)."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--kakao-plain-list-gap",
+              "default": "0.375rem"
+            },
+            {
+              "name": "--kakao-plain-list-gap-sm",
+              "default": "0.25rem"
+            },
+            {
+              "name": "--kakao-plain-list-font-size-sm",
+              "default": "0.875rem"
+            },
+            {
+              "name": "--kakao-plain-list-indent",
+              "default": "1.25rem"
+            },
+            {
+              "name": "--kakao-plain-list-marker-color",
+              "default": "var(--kakao-color-muted, #62626c)"
+            },
+            {
+              "name": "--kakao-plain-list-lead-gap",
+              "default": "0.5rem"
+            }
+          ],
+          "kakao": {
+            "script": "components/plain-list/plain-list.js",
+            "css": [
+              "components/plain-list/plain-list.css"
+            ],
+            "lightDom": true,
+            "requires": [],
+            "enhancedBy": [],
+            "notFor": "A 3D picker: kakao-list; label and value pairs: kakao-description-list; rows with several columns: kakao-table."
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "kakao-plain-list",
+          "declaration": {
+            "name": "KakaoPlainList",
+            "module": "components/plain-list/plain-list.js"
           }
         }
       ]

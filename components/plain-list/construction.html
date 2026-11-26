@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-plain-list - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../code/code.css" />
+<link rel="stylesheet" href="plain-list.css" />
+<script src="../code/code.js" defer></script>
+<script src="../badge/badge.js" defer></script>
+<script src="plain-list.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="plain-list" data-source="plain-list.css" data-title="Plain list">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Default: bullets, gap md</figcaption>
+      <kakao-plain-list>
+        <ul role="list">
+          <li><kakao-code>src/app.js:42</kakao-code> Button without a label</li>
+          <li><kakao-code>src/form.js:7</kakao-code> Unused variable</li>
+          <li><kakao-code>src/theme.js:19</kakao-code> Colour hard-coded</li>
+        </ul>
+      </kakao-plain-list>
+    </figure>
+    <figure>
+      <figcaption>Leading badges</figcaption>
+      <kakao-plain-list>
+        <ul role="list">
+          <li><kakao-badge tone="success">Pass</kakao-badge> saves a draft while typing</li>
+          <li><kakao-badge tone="danger">Fail</kakao-badge> sends the form</li>
+          <li><kakao-badge>Skipped</kakao-badge> uploads two files at once</li>
+        </ul>
+      </kakao-plain-list>
+    </figure>
+    <figure>
+      <figcaption>Numbered, size sm</figcaption>
+      <kakao-plain-list size="sm">
+        <ol role="list">
+          <li>Open the settings page.</li>
+          <li>Switch to the dark theme.</li>
+          <li>Reload the page.</li>
+        </ol>
+      </kakao-plain-list>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-plain-list-gap", "label": "Gap (md)", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "between items" },
+    { "property": "--kakao-plain-list-gap-sm", "label": "Gap (sm)", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "between items at size sm" },
+    { "property": "--kakao-plain-list-indent", "label": "Indent", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "room for the markers" },
+    { "property": "--kakao-plain-list-lead-gap", "label": "Lead gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "between a badge or icon and its text" },
+    { "property": "--kakao-plain-list-font-size-sm", "label": "Font size (sm)", "group": "Typography", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-plain-list-marker-color", "label": "Marker colour", "group": "Colour", "type": "color" }
+  ]
+  </script>
+</main>
+</body>
+</html>

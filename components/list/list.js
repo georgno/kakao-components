@@ -3,14 +3,15 @@
  * ============================================================================
  * A 3D picker list: rows tilt away in perspective as they scroll past the
  * middle, with optional group headings. Vanilla JS, Shadow DOM, no deps.
- * For a plain styled list of short items, use kakao-content-list instead.
+ * For a plain styled list of short items, use kakao-plain-list instead.
  *
  * ----------------------------------------------------------------------------
  * CATALOG
  * ----------------------------------------------------------------------------
  *  for        A 3D picker: rows tilt in perspective as they scroll past the
  *             middle.
- *  not for    A plain list of short items: <ul> or <ol>.
+ *  not for    A plain list of short items (file:line, test names):
+ *             kakao-plain-list.
  *
  * ----------------------------------------------------------------------------
  * FILES

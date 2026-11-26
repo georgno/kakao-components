@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="components/page/page.css" />
 <link rel="stylesheet" href="components/grid/grid.css" />
 <link rel="stylesheet" href="components/flow/flow.css" />
+<link rel="stylesheet" href="components/plain-list/plain-list.css" />
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
 <script src="components/stepper/stepper.js" defer></script>
@@ -91,6 +92,7 @@
 <script src="components/page/page.js" defer></script>
 <script src="components/grid/grid.js" defer></script>
 <script src="components/flow/flow.js" defer></script>
+<script src="components/plain-list/plain-list.js" defer></script>
 <style>
   /* The table of contents: a sticky sidebar column from 75rem, a sticky
      folded bar under the page bar below that. */
@@ -1472,6 +1474,38 @@ npm test
         <div class="example">
           <h3>New password · <code>requirements</code></h3>
           <kakao-password-input label="New password" requirements></kakao-password-input>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Plain list ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Plain list</h2>
+        <code>&lt;kakao-plain-list&gt;</code>
+        <a href="components/plain-list/construction.html">Construction</a>
+        <a href="components/plain-list/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">A plain list of short items: file:line references, test names, findings. Wraps a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code>: one even gap, muted markers (or <code>marker="none"</code>), <code>size</code> sm or md, long paths that wrap on a phone. Items that start with a badge or an icon get their leads lined up in one column, the text beside it. Light DOM: <code>plain-list.css</code> draws it, no script needed. Not the 3D picker list.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>References</h3>
+          <kakao-plain-list>
+            <ul role="list">
+              <li><kakao-code>src/app.js:42</kakao-code> Button without a label</li>
+              <li><kakao-code>src/form.js:7</kakao-code> Unused variable</li>
+            </ul>
+          </kakao-plain-list>
+        </div>
+        <div class="example">
+          <h3>Leading badges</h3>
+          <kakao-plain-list>
+            <ul role="list">
+              <li><kakao-badge tone="success">Pass</kakao-badge> saves a draft while typing</li>
+              <li><kakao-badge tone="danger">Fail</kakao-badge> sends the form</li>
+              <li><kakao-badge>Skipped</kakao-badge> uploads two files at once</li>
+            </ul>
+          </kakao-plain-list>
         </div>
       </div>
     </article>

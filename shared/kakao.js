@@ -90,6 +90,7 @@
     "kakao-page": ["components/page/page.js",["components/page/page.css"],[],[]],
     "kakao-pagination": ["components/pagination/pagination.js",[],[],["kakao-select"]],
     "kakao-password-input": ["components/password-input/password-input.js",[],[],["kakao-progress"]],
+    "kakao-plain-list": ["components/plain-list/plain-list.js",["components/plain-list/plain-list.css"],[],[]],
     "kakao-popover": ["components/popover/popover.js",[],[],[]],
     "kakao-progress": ["components/progress/progress.js",[],[],[]],
     "kakao-radio-group": ["components/radio-group/radio-group.js",[],[],[]],

@@ -19,6 +19,14 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `<kakao-plain-list>`: a plain list of short items (file:line references,
+  test names, findings). Light DOM, drawn by `plain-list.css` alone: it wraps
+  a `<ul>` or `<ol>` with no outer margins, one gap between items, muted
+  markers (`marker="none"` hides them), `size` sm or md, and long paths that
+  wrap on a phone. Items that start with a `kakao-badge`, an `<i>` icon or
+  an element marked `data-lead` get their leads lined up in one column, the
+  text beside it. The script only keeps the list a list (`role="list"`).
+  Named apart from `kakao-list`, the 3D picker.
 - Layout primitives, light DOM and drawn by their CSS alone (no script needed;
   load `page.css`, `grid.css`, `flow.css`), spaced from the tokens:
   `<kakao-page>`, the page container (centred at `width` narrow 45rem,

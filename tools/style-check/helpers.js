@@ -86,6 +86,7 @@ const VALUES = {
   },
   'kakao-page': { width: ['narrow', 'normal', 'wide', 'full'] },
   'kakao-pagination': { size: SIZES, collapse: COLLAPSE },
+  'kakao-plain-list': { marker: ['auto', 'none'], size: SIZES_SM },
   'kakao-password-input': { size: SIZES },
   'kakao-popover': { trigger: ['click', 'hover', 'manual'], placement: SIDES },
   'kakao-progress': { size: SIZES, tone: ['primary', 'success', 'warning', 'danger'] },
