@@ -6,15 +6,29 @@ Web components for server-rendered pages: plain JS, no build step. Full API per 
 
 ## Page head
 
-The library in `kakao/`, vendored from a release tag (never a branch):
+The library in `kakao/`, vendored from a release tag (never a branch) with
+`node tools/vendor.js <dest> [component…]` (copies those components and what they need, all
+without a list, and writes `VERSION`):
+
+```html
+<link rel="stylesheet" href="kakao/shared/kakao.css">
+<!-- Not deferred: applies the saved theme before the first paint (no flash). -->
+<script src="kakao/shared/kakao.js"></script>
+```
+
+`kakao.css` is tokens, font and themes in one file. `kakao.js` loads each component on first
+use (also tags added later): component-api.js, the components it needs, its light-DOM CSS, its
+script, in order; tags stay hidden until defined (at most 3 s, or until a file fails). Before calling a component's methods:
+`kakaoLoader.ready.then(…)` (everything the page uses) or `kakaoLoader.load('kakao-toast').then(…)`.
+
+Or load single files (the loader skips what a page loads itself):
 
 ```html
 <link rel="stylesheet" href="kakao/shared/tokens.css">
 <link rel="stylesheet" href="kakao/shared/font.css">
 <link rel="stylesheet" href="kakao/shared/themes.css">
 <script src="kakao/shared/component-api.js"></script>
-<!-- Not deferred: sets the saved theme before the first paint (no flash). -->
-<script src="kakao/components/theme-switch/theme-switch.js"></script>
+<script src="kakao/components/theme-switch/theme-switch.js"></script><!-- not deferred -->
 <!-- Per component: its light-DOM CSS, the components it needs, its script. -->
 <link rel="stylesheet" href="kakao/components/tabs/tabs.css">
 <script src="kakao/components/tabs/tabs.js" defer></script>
@@ -23,15 +37,17 @@ The library in `kakao/`, vendored from a release tag (never a branch):
 <script src="kakao/components/toast/toast.js" defer></script>
 ```
 
-- `font.css` (Inter Tight) is optional. Put `<kakao-theme-switch>` in the `<kakao-header-bar>`;
-  without one the page follows the OS (light or dark).
+- The font (Inter Tight, `font.css`) is optional: leave it out, or set `--kakao-font-family`
+  (its files load only when used). Put `<kakao-theme-switch>` in the `<kakao-header-bar>`.
+  The page follows the OS (light or dark) until a visitor picks a theme; that choice is
+  saved and applied on every page that loads the loader or theme-switch.js.
 - Colours: the `--kakao-color-*` tokens; spacing: `--kakao-space-*`; per component
   `--kakao-<component>-*`.
 - Without JS: `kakao-table` styles a server-rendered `<table>` with `table.css` alone;
   `kakao-number-input`'s own `<input>` works (arrows need JS); `kakao-chip-list` wraps by
   CSS. All other components need their script.
 - `node tools/style-check.js` (this repo) reports a file a page's tags need that is missing
-  or loaded in the wrong order.
+  or loaded in the wrong order (not on a page with the loader).
 
 ## Shared contract
 

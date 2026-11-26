@@ -4,7 +4,8 @@
 #
 # - The component count on index.html (tools/count-components.js).
 # - tokens.json (tools/export-tokens.js), exported from the staged sources.
-# - custom-elements.json and CATALOG.md are checked, not rewritten.
+# - custom-elements.json, CATALOG.md, shared/kakao.css and the loader map are
+#   checked, not rewritten.
 set -e
 root=$(git rev-parse --show-toplevel)
 
@@ -55,5 +56,12 @@ node "$root/tools/manifest.js" --check >/dev/null || {
 # Its component list is generated from custom-elements.json (tools/catalog.js).
 node "$root/tools/catalog.js" --check >/dev/null || {
   echo "pre-commit: CATALOG.md is out of date. Run node tools/catalog.js and stage it."
+  exit 1
+}
+
+# ---- shared/kakao.css and the loader's map ------------------------------------
+# Generated from tokens/font/themes and custom-elements.json (tools/loader.js).
+node "$root/tools/loader.js" --check >/dev/null || {
+  echo "pre-commit: shared/kakao.css or the map in shared/kakao.js is out of date. Run node tools/loader.js and stage them."
   exit 1
 }

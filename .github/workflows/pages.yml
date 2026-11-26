@@ -46,6 +46,11 @@ jobs:
       - name: Catalog up to date
         run: node tools/catalog.js --check
 
+      # shared/kakao.css and the loader's map (tools/loader.js) must match
+      # tokens, font, themes and custom-elements.json.
+      - name: Loader up to date
+        run: node tools/loader.js --check
+
       # Only publish the demo pages and what they load; archive/, openspec/
       # and tools/ stay in the repo but off the site.
       - name: Assemble site

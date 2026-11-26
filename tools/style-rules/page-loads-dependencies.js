@@ -7,7 +7,9 @@
  * checked.
  *
  * Reported once per missing file, at the first placement of the tag that
- * needs it. A file without a <head> (a partial or fragment) is skipped; in a
+ * needs it. A page that loads the loader (shared/kakao.js) is skipped: the
+ * loader loads all of this itself. A file without a <head> (a partial or
+ * fragment) is skipped; in a
  * template file (.php, .phtml, .twig) or a head with template code, which may
  * load files in code, the findings are warnings. Tags the manifest doesn't
  * know are skipped.
@@ -24,7 +26,7 @@ module.exports = {
   check(el, ctx) {
     if (!ctx.manifest || !ctx.doc) return [];
     const page = loads(ctx.doc, ctx.file, ctx.source);
-    if (!page.hasHead) return [];
+    if (!page.hasHead || page.loader) return [];
     const state = page.state;
     state.tags = state.tags || new Set();
     state.reported = state.reported || new Set();

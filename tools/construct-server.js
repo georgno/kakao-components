@@ -221,6 +221,8 @@ function save(request) {
   const tmp = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(tmp, next);
   fs.renameSync(tmp, file);
+  // shared/kakao.css holds a copy of tokens.css (tools/loader.js): keep it in step.
+  if (isTokens) fs.writeFileSync(path.join(ROOT, 'shared/kakao.css'), require('./loader').css(ROOT));
   return { file: rel(file), changed: true };
 }
 

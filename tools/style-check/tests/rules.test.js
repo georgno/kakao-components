@@ -84,3 +84,7 @@ test('page-loads-dependencies: warnings in a template, nothing in a partial', ()
   assert.match(t.findings[0].message, /needs <\?= \$base \?>\/components\/alert\/alert\.js/);
   assert.deepEqual(run('page-loads-dependencies.partial.php').findings, []);
 });
+
+test('page-loads-dependencies: a page with the loader (shared/kakao.js) loads everything', () => {
+  assert.deepEqual(run('page-loads-dependencies.loader.html').findings, []);
+});

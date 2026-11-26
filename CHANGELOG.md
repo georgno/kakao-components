@@ -19,6 +19,22 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `shared/kakao.js`, a loader: one script in the head (not deferred) instead
+  of a list of component files. It loads each kakao component on first use,
+  also ones added later: component-api.js, the components it requires and
+  the ones it is enhanced by, its light-DOM CSS, then its script, in order.
+  It applies the saved theme before the first paint, hides a tag until it is
+  defined (shown anyway after 3 s, or when its file or one it requires fails), keeps the query of its own URL (`kakao.js?v=3`) and skips files
+  the page loads itself. `kakaoLoader.ready` and `kakaoLoader.load(tag)` for
+  code that calls a component. With `shared/kakao.css` (tokens, font and
+  themes in one file) a page head is two lines. Both are generated from the
+  sources by `node tools/loader.js`; `--check` runs in the pre-commit hook
+  and the deploy. Pages that load single files work as before; the style
+  checker's `page-loads-dependencies` skips a page that loads the loader.
+- `node tools/vendor.js <dest> [component…]` copies the library into another
+  project: exactly the files the named components need (dependencies and
+  enhancers included; all without a list), the shared files, CATALOG.md and
+  custom-elements.json, and writes `VERSION` with the release tag.
 - `CATALOG.md`: the short guide for projects that use the library (about
   3k tokens): the page head, the shared contract (label, size, tone,
   list-data, hidden, events, escaping JSON in attributes with one-line

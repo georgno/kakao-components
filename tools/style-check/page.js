@@ -6,9 +6,11 @@
  * (each declaration's `kakao` field: script, css, requires), never from a list
  * kept here.
  *
- *   loads(doc, file)          { scripts, styles, hasHead, templated }:
+ *   loads(doc, file)          { scripts, styles, hasHead, templated, loader }:
  *                             scripts and stylesheets in document order,
- *                             each { src|href, line, column }
+ *                             each { src|href, line, column }; loader: the
+ *                             page loads shared/kakao.js, which loads every
+ *                             component it uses (with dependencies and CSS)
  *   needs(manifest, tag)      the files a tag needs, dependencies first:
  *                             [{ tag, script, css: [], requires: [] }]
  *   matches(url, file, pageFile)
@@ -35,6 +37,7 @@ const path = require('path');
 
 const TEMPLATE_EXT = ['.php', '.phtml', '.twig'];
 const TEMPLATE_CODE = /<\?|\{\{|\{%/;
+const LOADER = 'shared/kakao.js';
 
 const strip = (url) => url.trim().replace(/[?#][^/]*$/, '');
 
@@ -72,7 +75,8 @@ function loads(doc, file, source) {
   }
   const head = /<head[\s>][\s\S]*?<\/head\s*>/i.exec(source || '');
   const templated = TEMPLATE_EXT.includes(path.extname(file).toLowerCase()) || !!(head && TEMPLATE_CODE.test(head[0]));
-  const out = { scripts, styles, hasHead, templated, state: {} };
+  const loader = scripts.some((s) => matches(s.src, LOADER, file));
+  const out = { scripts, styles, hasHead, templated, loader, state: {} };
   cache.set(doc, out);
   return out;
 }
@@ -134,4 +138,4 @@ function namer(manifest, pageFile, page, prefer = []) {
   return (other) => other;
 }
 
-module.exports = { loads, needs, matches, namer };
+module.exports = { loads, needs, matches, namer, LOADER };
