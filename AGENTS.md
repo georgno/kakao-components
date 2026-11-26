@@ -2,9 +2,10 @@
 
 Web components plus shared tokens and themes. No build step: open the HTML
 directly, or run `node tools/construct-server.js` (port 8790) to use the
-construction pages. Six components are light DOM (no shadow root) because they
-style page-level things: aside-menu, button, chip-list, number-input, table and
-tabs (table wraps and enhances a server-rendered `<table>`). All the others
+construction pages. Eight components are light DOM (no shadow root) because they
+style page-level things: aside-menu, button, chip-list, code, grid-view,
+number-input, table and tabs (table wraps and enhances a server-rendered
+`<table>`; code is drawn by its CSS alone). All the others
 render into a shadow root (with slots where they take content).
 
 ## Rules that bite

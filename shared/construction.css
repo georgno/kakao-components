@@ -263,6 +263,11 @@ code {
 }
 .construction-chip.is-follow { --kakao-chip-bg: var(--kakao-color-subtle, #f3f4f6); --kakao-chip-text: var(--kakao-color-text-soft, #374151); }
 .construction-chip::part(meta) { font-size: 0.72rem; }
+/* A long value (a font stack) shortens with an ellipsis instead of widening the page. */
+.construction-chip { min-width: 0; }
+.construction-chip::part(chip), .construction-chip::part(main) { max-width: 100%; min-width: 0; }
+.construction-chip::part(label) { flex: none; }
+.construction-chip::part(meta) { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 
 /* ---- the page bar: <kakao-header-bar>, first in <body> ------------------- */
 /* The page bar publishes its rendered height (see header-bar.js), so this

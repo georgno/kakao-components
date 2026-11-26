@@ -19,6 +19,20 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `<kakao-code-block>`: preformatted text, code or logs. Monospace in the
+  theme's colours, scrolling past `max-height` (24rem) or wrapping with
+  `wrap`, an optional label row (`label`, a display-only `language`) and copy
+  built in through kakao-copy-button (load copy-button.js first; `no-copy`
+  leaves it out). `mode="log"` follows the end unless the reader scrolled up
+  (keeping their place while old lines past `max-lines` go, with a "Jump to
+  latest" button and `follow-change`), `append()`, `clear()`, carriage
+  returns rewrite the line and ANSI colour codes are dropped. The content is
+  always text: the markup's text (indentation removed), `text` and `append()`
+  never parse HTML. The scroller takes focus while it overflows. The kitchen
+  sink's submitted values are a log block.
+- `<kakao-code>`: inline code for file:line references, commands and names,
+  in light DOM: `code.css` draws it, so it works before and without its script.
+- `--kakao-font-mono`: a monospace font token, used by both.
 - `<kakao-action-bar>`: a floating bar for actions on selected items - a
   summary in the default slot ("3 marked to fix"), buttons in
   `slot="actions"`. Sticky at the bottom (or `position="top"`) of its

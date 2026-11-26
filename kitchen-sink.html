@@ -62,6 +62,8 @@
 <script src="components/settings-group/settings-group.js" defer></script>
 <script src="components/error-summary/error-summary.js" defer></script>
 <script src="components/action-bar/action-bar.js" defer></script>
+<script src="components/copy-button/copy-button.js" defer></script>
+<script src="components/code-block/code-block.js" defer></script>
 <style>
   /* The unsaved-changes bar is fixed: keep the end of the page above it. */
   main { padding-bottom: calc(var(--kakao-action-bar-rendered-height, 0px) + 1rem); }
@@ -500,13 +502,15 @@
 
   <h2>Submitted values</h2>
   <p>What a save would send, collected from the component APIs.</p>
-  <div class="log" id="log" role="log" aria-label="Submitted values"></div>
+  <kakao-code-block id="log" mode="log" label="Submitted values" wrap max-height="16rem"></kakao-code-block>
 </main>
 
 <script>
   const $ = (id) => document.getElementById(id);
   const form = $('settings');
   const log = $('log');
+  // One line per action in the code block: its name, then the values as JSON (always as text).
+  const logTo = (name, detail) => log.append(`${name}${detail === undefined ? '' : ` ${safeStringify(detail)}`}\n`);
 
   // ---- price ----
   const PLAN_PRICE = { sd: 6.99, hd: 10.99, uhd: 15.99 };
@@ -552,7 +556,7 @@
     const refused = e.detail.name === 'live';
     e.detail.waitUntil(new Promise((resolve, reject) => setTimeout(refused ? () => reject(new Error('Not available in your region')) : resolve, 1000)));
   });
-  $('notify-push').addEventListener('switch-error', (e) => logLine(log, 'push sync failed', { name: e.detail.name, reason: e.detail.error.message }));
+  $('notify-push').addEventListener('switch-error', (e) => logTo('push sync failed', { name: e.detail.name, reason: e.detail.error.message }));
 
   // ---- favourite genres: × moves a genre to "More genres", + moves it back ----
   const GENRE_ORDER = ['sci-fi', 'documentary', 'cooking', 'anime', 'comedy', 'drama', 'thriller', 'romance', 'kids'];
@@ -607,7 +611,7 @@
   $('delete').addEventListener('kakao-button-action', () => deleteConfirm.open());
   deleteConfirm.addEventListener('dialog-close', (e) => {
     if (e.detail.returnValue !== 'delete') return;
-    logLine(log, 'delete', { removeDownloads: $('delete-downloads').checked, note: 'Pretend the account is gone.' });
+    logTo('delete', { removeDownloads: $('delete-downloads').checked, note: 'Pretend the account is gone.' });
   });
 
   // ---- collect, save, reset ----
@@ -660,7 +664,7 @@
     if (summary.validate && !summary.validate()) return;
     $('save').run(() => new Promise((resolve) => setTimeout(resolve, 900)))
       .then(() => {
-        logLine(log, 'saved', collect());
+        logTo('saved', collect());
         KakaoToast.show({ tone: 'success', message: 'Changes saved.' });
         baseline = collect();
         countChanges();
@@ -698,7 +702,7 @@
     $('language-out').textContent = language;
     // setData() on the switch groups applies in a microtask
     Promise.resolve().then(() => Promise.resolve()).then(() => { updatePrice(); updateProfile(); });
-    logLine(log, 'reset');
+    logTo('reset');
   });
 
   // ---- unsaved changes: the action bar counts the values that differ from the last save ----

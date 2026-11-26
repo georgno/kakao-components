@@ -61,6 +61,8 @@
     "kakao-checkbox": ["components/checkbox/checkbox.js",[],[],[]],
     "kakao-chip": ["components/chip/chip.js",[],[],[]],
     "kakao-chip-list": ["components/chip-list/chip-list.js",["components/chip-list/chip-list.css"],[],[]],
+    "kakao-code": ["components/code/code.js",["components/code/code.css"],[],[]],
+    "kakao-code-block": ["components/code-block/code-block.js",[],["kakao-copy-button"],[]],
     "kakao-code-input": ["components/code-input/code-input.js",[],[],[]],
     "kakao-color-code": ["components/color-code/color-code.js",[],[],[]],
     "kakao-color-picker": ["components/color-picker/color-picker.js",[],[],[]],

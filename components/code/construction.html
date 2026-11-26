@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-code - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="code.css" />
+<script src="../button/button.js" defer></script>
+<script src="code.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="code" data-source="code.css" data-title="Inline code">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>In a sentence</figcaption>
+      <p>The test fails at <kakao-code>src/app.js:42</kakao-code>; run <kakao-code>npm test -- --watch</kakao-code> to see it again.</p>
+    </figure>
+    <figure>
+      <figcaption>In a link, and a long path that wraps</figcaption>
+      <p><a href="#"><kakao-code>components/code-block/code-block.js:212</kakao-code></a> · <kakao-code>tools/style-check/tests/fixtures/page-loads-dependencies/toast-without-stack.html</kakao-code></p>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-code-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-font", "label": "Font", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-code-font-size", "label": "Font size", "group": "Typography", "type": "length", "units": ["em", "rem", "px"], "hint": "in em of the surrounding text" },
+    { "property": "--kakao-code-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length", "units": ["em", "rem", "px"] },
+    { "property": "--kakao-code-padding-y", "label": "Padding y", "group": "Size & spacing", "type": "length", "units": ["em", "rem", "px"] },
+    { "property": "--kakao-code-radius", "label": "Radius", "group": "Shape", "type": "radius" }
+  ]
+  </script>
+</main>
+</body>
+</html>

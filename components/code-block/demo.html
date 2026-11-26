@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-code-block - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="../code/code.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="../code/code.js" defer></script>
+<script src="../copy-button/copy-button.js" defer></script>
+<script src="code-block.js" defer></script>
+<style>
+  /* The log example's follow state, under the log. */
+  .follow-state { margin: 0.5rem 0 0; color: var(--muted); font-size: 0.875rem; }
+</style>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Code block"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Code block</h1>
+    <p><code>&lt;kakao-code-block&gt;</code> - preformatted text: a snippet, a config file, a command's output or a running log. Monospace in the theme's colours, scrolling past a maximum height, with an optional label row and a copy button (<a href="../copy-button/demo.html">kakao-copy-button</a>). The content is always shown as text. For a reference inside a sentence, such as <kakao-code>src/app.js:42</kakao-code>, there is <a href="../code/demo.html">kakao-code</a>.</p>
+  </header>
+
+  <h2>A snippet · <code>label</code> · <code>language</code></h2>
+  <p>The label row names the block (a file name, "Install") and shows the language, which is display only: there is no highlighting. The copy button sits at the end of the row and copies the whole text.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Install and test</h3>
+      <kakao-code-block label="Install" language="sh"><pre>
+npm install
+npm test -- --watch
+</pre></kakao-code-block>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">A config file</h3>
+      <kakao-code-block label="kakao.config.json" language="json"><pre>
+{
+  "theme": "dark",
+  "components": ["button", "code-block", "toast"],
+  "vendor": { "dest": "public/kakao", "tag": "v0.10.0" }
+}
+</pre></kakao-code-block>
+    </kakao-card>
+  </div>
+
+  <h2>Without a label row</h2>
+  <p>No label and no language: the copy button sits in the top corner, and the text keeps clear of it. Markup can be indented with the page: the indentation all lines share is removed.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">A command</h3>
+      <kakao-code-block>
+        git config core.hooksPath .githooks
+      </kakao-code-block>
+    </kakao-card>
+  </div>
+
+  <h2>Long lines · <code>wrap</code></h2>
+  <p>Long lines scroll sideways by default, so the columns of a table or a stack trace stay lined up. With <code>wrap</code> they wrap instead; good for prose-like output on a phone.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Scrolls sideways</h3>
+      <kakao-code-block label="Stack trace"><pre>
+TypeError: Cannot read properties of undefined (reading 'length')
+    at countChanges (https://example.org/assets/kitchen-sink.js:712:31)
+    at HTMLFormElement.queueCount (https://example.org/assets/kitchen-sink.js:726:44)
+</pre></kakao-code-block>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Wraps</h3>
+      <kakao-code-block label="Stack trace" wrap><pre>
+TypeError: Cannot read properties of undefined (reading 'length')
+    at countChanges (https://example.org/assets/kitchen-sink.js:712:31)
+    at HTMLFormElement.queueCount (https://example.org/assets/kitchen-sink.js:726:44)
+</pre></kakao-code-block>
+    </kakao-card>
+  </div>
+
+  <h2>Height · <code>max-height</code></h2>
+  <p>Taller content scrolls inside the block (24rem by default). An overflowing block takes focus with Tab, so the arrow keys, Page Up / Down, Home and End can scroll it.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">A longer file</h3>
+      <kakao-code-block label="components/toast/toast.js" language="js" max-height="12rem"><pre>
+(function () {
+  'use strict';
+
+  const TAG_NAME = 'kakao-toast';
+  if (customElements.get(TAG_NAME)) return;
+
+  const DEFAULT_DURATION = 5000;
+  const MAX_VISIBLE = 4;
+
+  class KakaoToast extends HTMLElement {
+    static show(options) {
+      const toast = document.createElement(TAG_NAME);
+      Object.assign(toast, options);
+      KakaoToast.region().append(toast);
+      return toast;
+    }
+
+    static region() {
+      let stack = document.querySelector('kakao-stack[data-toasts]');
+      if (!stack) {
+        stack = document.createElement('kakao-stack');
+        stack.dataset.toasts = '';
+        document.body.append(stack);
+      }
+      return stack;
+    }
+  }
+
+  customElements.define(TAG_NAME, KakaoToast);
+})();
+</pre></kakao-code-block>
+    </kakao-card>
+  </div>
+
+  <h2>A running log · <code>mode="log"</code></h2>
+  <p>A log follows its end while lines arrive. Scroll up to read: it keeps your place, also while old lines past <code>max-lines</code> are dropped above, and offers "Jump to latest". A carriage return rewrites the line (the progress counter), and ANSI colour codes are dropped.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Build output</h3>
+      <div class="row" data-demo-only>
+        <kakao-button id="log-start" label="Start" size="sm"></kakao-button>
+        <kakao-button id="log-stop" label="Stop" variant="secondary" size="sm"></kakao-button>
+        <kakao-button id="log-clear" label="Clear" variant="ghost" size="sm"></kakao-button>
+      </div>
+      <kakao-code-block id="build-log" mode="log" label="Build output" max-lines="200" max-height="14rem"></kakao-code-block>
+      <p id="follow-state" class="follow-state" data-demo-only aria-live="polite">Following the end.</p>
+      <template data-code>
+        <script>
+          log.append('Compiling 12 files…\n');
+          log.append('\rDownloading 40%');   // \r rewrites the line
+          log.clear();
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <h2>Always text · <code>text</code></h2>
+  <p>Markup in the content is shown as text, never run: from the page (escaped, as any text), from <code>text</code> and from <code>append()</code>. Tags written into the element unescaped are parsed by the browser first, so only their text is left.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Set from a script</h3>
+      <kakao-code-block id="as-text" label="Untrusted input" language="html"></kakao-code-block>
+      <template data-code>
+        <script>
+          block.text = '<img src="x" onerror="alert(1)">';
+          block.append('\n<b>not bold</b>');
+        </script>
+      </template>
+    </kakao-card>
+  </div>
+
+  <h2>Without copy · <code>no-copy</code> · <code>hidden</code></h2>
+  <p><code>no-copy</code> leaves the button out, for output nobody needs to paste. <code>hidden</code> hides the block.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Plain output</h3>
+      <kakao-code-block no-copy><pre>
+✓ 214 tests passed (3.2s)
+</pre></kakao-code-block>
+    </kakao-card>
+  </div>
+</main>
+
+<script>
+  // The script-driven text example.
+  const asText = document.getElementById('as-text');
+  customElements.whenDefined('kakao-code-block').then(() => {
+    asText.text = '<img src="x" onerror="alert(1)">';
+    asText.append('\n<b>not bold</b>');
+  });
+
+  // The build log: a few hundred lines with a progress counter in between.
+  const log = document.getElementById('build-log');
+  const state = document.getElementById('follow-state');
+  const FILES = ['button', 'card', 'code-block', 'copy-button', 'dialog', 'menu', 'select', 'table', 'tabs', 'toast'];
+  let timer = 0;
+  let step = 0;
+  function tick() {
+    const file = FILES[step % FILES.length];
+    if (step % 15 === 14) {
+      let pct = 0;
+      const bar = setInterval(() => {
+        pct += 20;
+        log.append(`\rDownloading fixtures ${pct}%`);
+        if (pct >= 100) { clearInterval(bar); log.append('\n'); }
+      }, 90);
+    } else {
+      const ms = 20 + ((step * 37) % 180);
+      log.append(`\x1b[32m✓\x1b[0m [${String(step + 1).padStart(3, '0')}] compiled components/${file}/${file}.js in ${ms}ms\n`);
+    }
+    step += 1;
+  }
+  document.getElementById('log-start').addEventListener('kakao-button-action', () => {
+    clearInterval(timer);
+    timer = setInterval(tick, 260);
+  });
+  document.getElementById('log-stop').addEventListener('kakao-button-action', () => clearInterval(timer));
+  document.getElementById('log-clear').addEventListener('kakao-button-action', () => { log.clear(); step = 0; });
+  log.addEventListener('follow-change', (e) => {
+    state.textContent = e.detail.following ? 'Following the end.' : 'Paused: you scrolled up.';
+  });
+</script>
+</body>
+</html>

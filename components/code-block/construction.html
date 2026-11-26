@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-code-block - Construction</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/construction.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<script src="../button/button.js" defer></script>
+<script src="../copy-button/copy-button.js" defer></script>
+<script src="code-block.js" defer></script>
+<script src="../../shared/construction.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body>
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main data-construction data-target="code-block" data-source="code-block.js" data-title="Code block">
+  <div class="construction-preview">
+    <figure>
+      <figcaption>Label row, language and copy</figcaption>
+      <kakao-code-block label="kakao.config.json" language="json"><pre>
+{
+  "theme": "dark",
+  "components": ["button", "code-block", "toast"]
+}
+</pre></kakao-code-block>
+    </figure>
+    <figure>
+      <figcaption>No label row: copy in the corner</figcaption>
+      <kakao-code-block>git config core.hooksPath .githooks</kakao-code-block>
+    </figure>
+    <figure>
+      <figcaption>A log, following its end</figcaption>
+      <kakao-code-block mode="log" label="Build output" max-height="9rem"><pre>
+✓ [001] compiled components/button/button.js in 23ms
+✓ [002] compiled components/button/button.js in 26ms
+✓ [003] compiled components/button/button.js in 29ms
+✓ [004] compiled components/button/button.js in 32ms
+✓ [005] compiled components/button/button.js in 35ms
+✓ [006] compiled components/button/button.js in 38ms
+✓ [007] compiled components/button/button.js in 41ms
+✓ [008] compiled components/button/button.js in 44ms
+✓ [009] compiled components/button/button.js in 47ms
+✓ [010] compiled components/button/button.js in 50ms
+✓ [011] compiled components/button/button.js in 53ms
+✓ [012] compiled components/button/button.js in 56ms
+</pre></kakao-code-block>
+    </figure>
+  </div>
+
+  <script type="application/json" class="construction-manifest">
+  [
+    { "property": "--kakao-code-block-bg", "label": "Background", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-text", "label": "Text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-border", "label": "Border", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-head-text", "label": "Label", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-language", "label": "Language", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-divider", "label": "Label row divider", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-latest-bg", "label": "Jump to latest fill", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-latest-text", "label": "Jump to latest text", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-latest-shadow", "label": "Jump to latest shadow", "group": "Shape", "type": "shadow", "hint": "the ring keeps the pill visible on dark fills" },
+    { "property": "--kakao-code-block-focus", "label": "Focus ring", "group": "Colour", "type": "color" },
+    { "property": "--kakao-code-block-font", "label": "Font", "group": "Typography", "type": "font-family" },
+    { "property": "--kakao-code-block-font-size", "label": "Font size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-code-block-line-height", "label": "Line height", "group": "Typography", "type": "number", "min": 1, "max": 2.4, "step": 0.05 },
+    { "property": "--kakao-code-block-tab-size", "label": "Tab size", "group": "Typography", "type": "number", "min": 1, "max": 8, "step": 1, "hint": "spaces per tab" },
+    { "property": "--kakao-code-block-head-size", "label": "Label size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
+    { "property": "--kakao-code-block-head-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-code-block-radius", "label": "Radius", "group": "Shape", "type": "radius" },
+    { "property": "--kakao-code-block-padding-x", "label": "Padding x", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-code-block-padding-y", "label": "Padding y", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
+    { "property": "--kakao-code-block-max-height", "label": "Maximum height", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "vh"], "hint": "taller content scrolls; the max-height attribute wins" },
+    { "property": "--kakao-code-block-copy-inset", "label": "Copy button inset", "group": "Size & spacing", "type": "length", "units": ["px", "rem"] },
+    { "property": "--kakao-code-block-duration", "label": "Jump to latest fade", "group": "Motion", "type": "duration" }
+  ]
+  </script>
+</main>
+</body>
+</html>

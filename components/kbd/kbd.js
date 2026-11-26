@@ -10,7 +10,7 @@
  * CATALOG
  * ----------------------------------------------------------------------------
  *  for        Keyboard keys and shortcuts in text: "Ctrl + K".
- *  not for    Code and file names: <code>.
+ *  not for    Code and file names: kakao-code; several lines: kakao-code-block.
  *
  * ----------------------------------------------------------------------------
  * FILES

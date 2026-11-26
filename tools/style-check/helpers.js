@@ -63,6 +63,7 @@ const VALUES = {
   },
   'kakao-checkbox': { size: SIZES },
   'kakao-chip': { tone: STATUS_TONES },
+  'kakao-code-block': { mode: ['code', 'log'] },
   'kakao-code-input': { type: ['numeric', 'alphanumeric'], size: SIZES },
   'kakao-combobox': { size: SIZES },
   'kakao-copy-button': { variant: ['secondary', 'ghost'], size: SIZES },

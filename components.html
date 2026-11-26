@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="components/button/button.css" />
 <link rel="stylesheet" href="components/number-input/number-input.css" />
 <link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
+<link rel="stylesheet" href="components/code/code.css" />
 <script src="components/switch-group/switch-group.js" defer></script>
 <script src="components/step-switch/step-switch.js" defer></script>
 <script src="components/stepper/stepper.js" defer></script>
@@ -82,6 +83,8 @@
 <script src="components/empty-state/empty-state.js" defer></script>
 <script src="components/copy-button/copy-button.js" defer></script>
 <script src="components/action-bar/action-bar.js" defer></script>
+<script src="components/code/code.js" defer></script>
+<script src="components/code-block/code-block.js" defer></script>
 <style>
   /* The table of contents: a sticky sidebar column from 75rem, a sticky
      folded bar under the page bar below that. */
@@ -631,6 +634,57 @@
               <kakao-chip removable>Family friendly</kakao-chip>
             </kakao-chip-list>
           </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Code ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Code</h2>
+        <code>&lt;kakao-code&gt;</code>
+        <a href="components/code/construction.html">Construction</a>
+        <a href="components/code/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Code inside a sentence: a file:line reference, a command, a setting name. Monospace on a tinted fill, in the colour of the text around it; long paths wrap anywhere. Light DOM: <code>code.css</code> draws it, so server-rendered text looks right before any script runs.</p>
+      <div class="examples">
+        <div class="example">
+          <h3>A file:line reference</h3>
+          <p>2 tests failed at <kakao-code>tools/tests/manifest.test.js:41</kakao-code>.</p>
+        </div>
+        <div class="example">
+          <h3>A command in a link</h3>
+          <p>Run <a href="components/code/demo.html"><kakao-code>node --test</kakao-code></a> after the fix.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ============================== Code block ============================== -->
+    <article class="card">
+      <div class="component-head">
+        <h2>Code block</h2>
+        <code>&lt;kakao-code-block&gt;</code>
+        <a href="components/code-block/construction.html">Construction</a>
+        <a href="components/code-block/demo.html">Open demo →</a>
+      </div>
+      <p class="component-desc">Preformatted text: code, a config file, a command's output or a running log. Monospace in the theme's colours, scrolling past a maximum height or wrapping, an optional label row with a display-only <code>language</code>, and copy built in. <code>mode="log"</code> follows the end unless the reader scrolled up, with <code>append()</code>, <code>clear()</code> and <code>max-lines</code>. Content is always text, never HTML.</p>
+      <div class="examples wide">
+        <div class="example">
+          <h3>Label row · language</h3>
+          <kakao-code-block label="Install" language="sh"><pre>
+npm install
+npm test
+</pre></kakao-code-block>
+        </div>
+        <div class="example">
+          <h3>A log</h3>
+          <kakao-code-block mode="log" label="Build output" max-height="7rem"><pre>
+✓ compiled components/button/button.js in 41ms
+✓ compiled components/card/card.js in 38ms
+✓ compiled components/code-block/code-block.js in 52ms
+✓ compiled components/toast/toast.js in 47ms
+✓ 4 files in 178ms
+</pre></kakao-code-block>
         </div>
       </div>
     </article>

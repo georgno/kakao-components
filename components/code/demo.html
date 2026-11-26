@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>kakao-code - Demo</title>
+<link rel="stylesheet" href="../../shared/tokens.css" />
+<link rel="stylesheet" href="../../shared/font.css" />
+<link rel="stylesheet" href="../../shared/themes.css" />
+<script src="../../shared/component-api.js"></script>
+<script src="../../shared/page-cloak.js"></script>
+<script src="../../components/theme-switch/theme-switch.js"></script>
+<link rel="stylesheet" href="../../shared/demo.css" />
+<link rel="stylesheet" href="../button/button.css" />
+<link rel="stylesheet" href="code.css" />
+<script src="../../shared/demo.js"></script>
+<script src="../button/button.js" defer></script>
+<script src="code.js" defer></script>
+<script src="../card/card.js" defer></script>
+<script src="../accordion/accordion.js" defer></script>
+<script src="../breadcrumb/breadcrumb.js" defer></script>
+<script src="../header-bar/header-bar.js" defer></script>
+</head>
+<body class="demo-page">
+<kakao-header-bar>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="../../index.html" list-data='[["Components", "../../components.html"], ["Inline code"]]'></kakao-breadcrumb>
+      <a class="back" href="construction.html">Construction page →</a>
+    </div>
+    <h1>Inline code</h1>
+    <p><code>&lt;kakao-code&gt;</code> - code inside a sentence: a file:line reference, a command, a setting name. Monospace on a tinted fill, in the colour of the text around it. It is light DOM: <code>code.css</code> draws it, so a server-rendered page looks right before any script runs. For several lines or a log there is the <a href="../code-block/demo.html">code block</a>; for keyboard keys, <a href="../kbd/demo.html">kbd</a>.</p>
+  </header>
+
+  <h2>In running text</h2>
+  <p>File and line, a command, a name: each reads as part of its sentence.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Test results</h3>
+      <p>2 tests failed: <kakao-code>tools/tests/manifest.test.js:41</kakao-code> and <kakao-code>tools/tests/catalog.test.js:18</kakao-code>. Run <kakao-code>node --test</kakao-code> again after the fix.</p>
+    </kakao-card>
+  </div>
+
+  <h2>As a link · on a phone</h2>
+  <p>Inside a link it takes the link's colour and underline. A long path breaks anywhere rather than pushing the page sideways, and each line keeps its fill.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">Where it fails</h3>
+      <p>Open <a href="../code-block/code-block.js"><kakao-code>components/code-block/code-block.js:212</kakao-code></a>, or the fixture <kakao-code>tools/style-check/tests/fixtures/page-loads-dependencies/toast-without-stack.html</kakao-code>.</p>
+    </kakao-card>
+  </div>
+
+  <h2>In other text sizes</h2>
+  <p>The size is in em, so it follows the text it sits in: a heading, a small note.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">The <kakao-code>max-lines</kakao-code> attribute</h3>
+      <p><small>Default <kakao-code>1000</kakao-code>; <kakao-code>0</kakao-code> keeps every line.</small></p>
+    </kakao-card>
+  </div>
+</main>
+</body>
+</html>

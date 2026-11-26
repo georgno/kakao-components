@@ -50,6 +50,7 @@
   --kakao-color-warning: #b45309;
   --kakao-space-below-bar: 8px;
   --kakao-scroll-fade: 1.5rem;
+  --kakao-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   /* @kakao-settings:end */
   color-scheme: light;
 }

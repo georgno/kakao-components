@@ -1,0 +1,45 @@
+/*
+ * kakao-code styles
+ *
+ * Light DOM: the text stays in the page, so a server-rendered reference
+ * (<kakao-code>src/app.js:42</kakao-code>) is styled before any script runs,
+ * and it selects, copies and finds like the words around it. Every rule is
+ * scoped under kakao-code.
+ *
+ * Theming: every --kakao-code-* property in the settings block below can be
+ * set on <kakao-code> or any ancestor. The defaults live in that block:
+ * change them on construction.html.
+ */
+
+kakao-code {
+  /* @kakao-settings:start prefix=--kakao-code- (written by construction.html, edit there) */
+  --_font: var(--kakao-code-font, var(--kakao-font-mono, ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace));
+  --_font-size: var(--kakao-code-font-size, 0.875em);
+  --_bg: var(--kakao-code-bg, var(--kakao-color-subtle, #f0f0f1));
+  --_padding-x: var(--kakao-code-padding-x, 0.375em);
+  --_padding-y: var(--kakao-code-padding-y, 0.125em);
+  --_radius: var(--kakao-code-radius, var(--kakao-radius-xs, 4px));
+  /* @kakao-settings:end */
+  display: inline;
+  padding: var(--_padding-y) var(--_padding-x);
+  border-radius: var(--_radius);
+  background: var(--_bg);
+  /* The colour is the surrounding text's: a reference inside a link stays a link. */
+  color: inherit;
+  font-family: var(--_font);
+  font-size: var(--_font-size);
+  font-weight: inherit;
+  /* Monospace fonts set their own letter widths; the page's tracking would skew them. */
+  letter-spacing: normal;
+  /* A long path breaks anywhere rather than pushing a phone layout sideways;
+     each line of a broken reference keeps its padding and corners. */
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+kakao-code[hidden] { display: none; }
+
+@media (forced-colors: active) {
+  kakao-code { outline: 1px solid CanvasText; outline-offset: -1px; }
+}

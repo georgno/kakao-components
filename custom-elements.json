@@ -2792,6 +2792,316 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/code/code.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "KakaoCode",
+          "tagName": "kakao-code",
+          "summary": "Code in a sentence: a file:line reference, a command, a name.",
+          "description": "Inline code in running text: a file:line reference, a command, a setting name. Monospace on a tinted fill, wrapping anywhere on a narrow screen. Light DOM: code.css draws it, so it looks right before (and without) this script; the script only keeps translators off it (translate=\"no\"). Vanilla JS, no deps.",
+          "attributes": [
+            {
+              "name": "hidden",
+              "description": "Not shown."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--kakao-code-font",
+              "default": "var(--kakao-font-mono, ui-monospace, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace)"
+            },
+            {
+              "name": "--kakao-code-font-size",
+              "default": "0.875em"
+            },
+            {
+              "name": "--kakao-code-bg",
+              "default": "var(--kakao-color-subtle, #f0f0f1)"
+            },
+            {
+              "name": "--kakao-code-padding-x",
+              "default": "0.375em"
+            },
+            {
+              "name": "--kakao-code-padding-y",
+              "default": "0.125em"
+            },
+            {
+              "name": "--kakao-code-radius",
+              "default": "var(--kakao-radius-xs, 4px)"
+            }
+          ],
+          "kakao": {
+            "script": "components/code/code.js",
+            "css": [
+              "components/code/code.css"
+            ],
+            "lightDom": true,
+            "requires": [],
+            "enhancedBy": [],
+            "notFor": "Several lines or a log: kakao-code-block; keyboard keys: kakao-kbd."
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "kakao-code",
+          "declaration": {
+            "name": "KakaoCode",
+            "module": "components/code/code.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/code-block/code-block.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "KakaoCodeBlock",
+          "tagName": "kakao-code-block",
+          "summary": "Code, preformatted text or a running log, with copy.",
+          "description": "Preformatted text: a snippet of code, a config file, a command's output, a running log. Monospace in the theme's colours, scrolling past a maximum height (or wrapping long lines), with an optional label row and a copy button. In log mode it follows the end as lines arrive, unless the reader scrolled up. The content is always shown as text, never as HTML. Vanilla JS, Shadow DOM; the copy button is kakao-copy-button.",
+          "attributes": [
+            {
+              "name": "label",
+              "description": "The label row's title (a file name, \"Output\") and the scroller's accessible name. Default name \"Code\" (\"Log\")."
+            },
+            {
+              "name": "language",
+              "description": "Shown in the label row (\"sh\", \"json\"); display only, there is no highlighting."
+            },
+            {
+              "name": "mode",
+              "description": "code (default) · log. log: follows the end, drops old lines past max-lines, overwrites a line on a carriage return and drops ANSI colour codes.",
+              "type": {
+                "text": "'code' | 'log'"
+              },
+              "default": "'code'"
+            },
+            {
+              "name": "wrap",
+              "description": "Wraps long lines instead of scrolling sideways."
+            },
+            {
+              "name": "max-height",
+              "description": "Height cap, any CSS length (\"none\": no cap). Default from the settings (24rem). Taller content scrolls."
+            },
+            {
+              "name": "max-lines",
+              "description": "Log mode: the most lines it keeps; older ones are dropped. Default 1000; 0 keeps all."
+            },
+            {
+              "name": "no-copy",
+              "description": "No copy button."
+            },
+            {
+              "name": "copy-label",
+              "description": "The copy button's name. Default \"Copy\" + the label, else \"Copy code\" (\"Copy log\")."
+            },
+            {
+              "name": "latest-label",
+              "description": "The button that scrolls a log back to its end. Default \"Jump to latest\"."
+            },
+            {
+              "name": "announce",
+              "description": "Log mode: screen readers read new lines as they arrive (a polite live log). Off by default: a busy log would talk without pause."
+            },
+            {
+              "name": "hidden",
+              "description": "Not shown."
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "text",
+              "description": "get / set: the whole text. Setting replaces it (as plain text; the markup's text is not read again until it changes)."
+            },
+            {
+              "kind": "field",
+              "name": "following",
+              "description": "true while a log stays at its end (read-only)."
+            },
+            {
+              "kind": "method",
+              "name": "append",
+              "description": "Adds text at the end, as plain text. Include the \"\\n\": a chunk without one continues the last line.",
+              "parameters": [
+                {
+                  "name": "text"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "clear",
+              "description": "Empties the block (and follows the end again)."
+            },
+            {
+              "kind": "method",
+              "name": "scrollToEnd",
+              "description": "Scrolls to the end; a log follows again."
+            }
+          ],
+          "events": [
+            {
+              "name": "follow-change",
+              "description": "detail { following }   a log stopped following the end (the reader scrolled up) or follows again",
+              "type": {
+                "text": "CustomEvent<{ following }>"
+              }
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--kakao-code-block-font",
+              "default": "var(--kakao-font-mono, ui-monospace, \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace)"
+            },
+            {
+              "name": "--kakao-code-block-font-size",
+              "default": "0.875rem"
+            },
+            {
+              "name": "--kakao-code-block-line-height",
+              "default": "1.6"
+            },
+            {
+              "name": "--kakao-code-block-tab-size",
+              "default": "4"
+            },
+            {
+              "name": "--kakao-code-block-bg",
+              "default": "var(--kakao-color-subtle, #f0f0f1)"
+            },
+            {
+              "name": "--kakao-code-block-text",
+              "default": "var(--kakao-color-text, #18181b)"
+            },
+            {
+              "name": "--kakao-code-block-border",
+              "default": "var(--kakao-color-line, #e5e7eb)"
+            },
+            {
+              "name": "--kakao-code-block-radius",
+              "default": "var(--kakao-radius-md, 10px)"
+            },
+            {
+              "name": "--kakao-code-block-padding-x",
+              "default": "1rem"
+            },
+            {
+              "name": "--kakao-code-block-padding-y",
+              "default": "0.75rem"
+            },
+            {
+              "name": "--kakao-code-block-max-height",
+              "default": "24rem"
+            },
+            {
+              "name": "--kakao-code-block-head-text",
+              "default": "var(--kakao-color-text-soft, #3f3f46)"
+            },
+            {
+              "name": "--kakao-code-block-head-size",
+              "default": "0.8125rem"
+            },
+            {
+              "name": "--kakao-code-block-head-weight",
+              "default": "550"
+            },
+            {
+              "name": "--kakao-code-block-language",
+              "default": "var(--kakao-color-muted, #62626c)"
+            },
+            {
+              "name": "--kakao-code-block-divider",
+              "default": "var(--kakao-color-line, #e5e7eb)"
+            },
+            {
+              "name": "--kakao-code-block-copy-inset",
+              "default": "4px"
+            },
+            {
+              "name": "--kakao-code-block-latest-bg",
+              "default": "var(--kakao-color-ink, #18181b)"
+            },
+            {
+              "name": "--kakao-code-block-latest-text",
+              "default": "var(--kakao-color-on-ink, #fafafa)"
+            },
+            {
+              "name": "--kakao-code-block-latest-shadow",
+              "default": "0 4px 12px rgb(0 0 0 / .14), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent)"
+            },
+            {
+              "name": "--kakao-code-block-focus",
+              "default": "var(--kakao-color-focus, #2563eb)"
+            },
+            {
+              "name": "--kakao-code-block-duration",
+              "default": "150ms"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "box"
+            },
+            {
+              "name": "head"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "language"
+            },
+            {
+              "name": "scroller"
+            },
+            {
+              "name": "pre"
+            },
+            {
+              "name": "code"
+            },
+            {
+              "name": "copy"
+            },
+            {
+              "name": "latest"
+            }
+          ],
+          "kakao": {
+            "script": "components/code-block/code-block.js",
+            "css": [],
+            "lightDom": false,
+            "requires": [
+              "kakao-copy-button"
+            ],
+            "enhancedBy": [],
+            "notFor": "Code in a sentence (file:line): kakao-code; editable text: kakao-textarea."
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "kakao-code-block",
+          "declaration": {
+            "name": "KakaoCodeBlock",
+            "module": "components/code-block/code-block.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/code-input/code-input.js",
       "declarations": [
         {
@@ -6483,7 +6793,7 @@
             "lightDom": false,
             "requires": [],
             "enhancedBy": [],
-            "notFor": "Code and file names: <code>."
+            "notFor": "Code and file names: kakao-code; several lines: kakao-code-block."
           }
         }
       ],
