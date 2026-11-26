@@ -48,15 +48,25 @@ render into a shadow root (with slots where they take content).
   <dest> [component…]` copies what consumers need, from the same data.
 - A new component is added to `components.html` (the list page), to the styleguide's
   component audit and, if it fits, to `kitchen-sink.html`. `index.html` is the hero page.
-- Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`:
-  it keeps the page hidden until the deferred component scripts have drawn, so
-  reloads don't flicker. It's for this project's pages only, not part of any component.
-- A page that switches screens without a reload loads `shared/page-transition.js` and opts
-  in with markup: `data-page-transition` on the in-app links or their container,
-  `data-page-transition-content="<key>"` on each region a swap replaces (paired by key;
-  screens an in-app link leads to must render the same regions, else the link navigates
-  for real), `data-page-transition-script` on the scripts that must run again after a swap.
-  Its CSS gives the content region its own `view-transition-name`, or the whole shell fades.
+- Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`
+  (or right after `shared/kakao.js` on a page with the loader head): it keeps the page hidden
+  until the component scripts have drawn, so reloads don't flicker. It's for this project's
+  pages only, not part of any component.
+- `shared/page-transition.js` is a library utility for consumers (in CATALOG.md, vendored
+  with the library): pages with a shared shell swap their content regions instead of
+  reloading. Its markup: `data-page-transition` on the in-app links or their container,
+  `data-page-transition-content="<key>"` on each region (paired by key), and
+  `data-page-transition-script` on the page scripts, which then run again after a swap and
+  must be re-runnable (in a block, listeners outside the content bound with
+  `kakaoPageTransition.signal`, no waiting for `load`). It tells the page what happens
+  through `page-transition-start` / `-swap` / `-end` events on `document`; a component that
+  must follow a swap listens to them in its own file (kakao-tabs, the header bar), the
+  script never reaches into components. Keep it generic: no app-specific code or docs.
+- The top-level pages (index, components, kitchen-sink, styleguide, tokens, changelog) use
+  it: loader head, the same header bar (site links, theme menu, settings; its styles in
+  `shared/site-shell.css`), regions `bar-start` (the header's start slot) and `content`
+  (`<main tabindex="-1">`). A new top-level page that joins copies that shell; demo and
+  construction pages stay ordinary navigations.
 - Demo pages (`<body class="demo-page">`) show every example as a `<kakao-card>`, title in
   `<h3 slot="header">`, one card per row (a `.grid` of them is one column there). A layout
   the example needs inside the card (a row of buttons, a form) goes in a `data-demo-wrap`

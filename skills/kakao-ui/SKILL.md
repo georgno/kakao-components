@@ -41,6 +41,8 @@ h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.
 a { color: var(--kakao-color-primary); }
 ```
 
+Several pages with the same shell can swap their content instead of reloading: add `<script src="kakao/shared/page-transition.js"></script>` after kakao.js, `data-page-transition` on the header bar, `data-page-transition-content="content" tabindex="-1"` on `<main>` of every page, `data-page-transition-script` on page scripts (wrap them in `{ … }`, bind document/window listeners with `{ signal: kakaoPageTransition.signal }`). Details: CATALOG.md and the file's header.
+
 Shell: `<kakao-header-bar>` first in `<body>` (title, `slot="nav"` links, `<kakao-theme-switch slot="end">`), then `<main><kakao-page><kakao-flow gap="lg">…`. Space comes from `kakao-flow` / `kakao-grid` and `--kakao-space-*`, colours from `--kakao-color-*`: no hard-coded colours, no margins of your own between blocks.
 
 ## Rules that bite

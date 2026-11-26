@@ -49,6 +49,14 @@ Or load single files (the loader skips what a page loads itself):
   `kakao-number-input`'s own `<input>` works (arrows need JS); `kakao-chip-list` wraps by
   CSS; `kakao-code` is drawn by `code.css` alone, the layout primitives `kakao-page`, `kakao-grid`,
   `kakao-flow` and the `<ul>` / `<ol>` in `kakao-plain-list` by their CSS. All other components need their script.
+- Page transitions (optional): `shared/page-transition.js` in the head (no defer) swaps the
+  content of pages that share a shell instead of reloading them. Mark the shell's links
+  `data-page-transition`, each swapped region `data-page-transition-content="<key>"` (same keys
+  on every page; `tabindex="-1"` on the main one takes the focus) and the page's own scripts
+  `data-page-transition-script` (they run again after a swap: wrap them in a block, bind
+  document/window listeners with `{ signal: kakaoPageTransition.signal }`). Events on
+  `document`: `page-transition-start` (cancelable), `page-transition-swap`, `page-transition-end`.
+  Set `kakaoPageTransition.busy = true` while a swap would lose work. Full guide: the file's header.
 - `node tools/style-check.js` (this repo) reports a file a page's tags need that is missing
   or loaded in the wrong order (not on a page with the loader).
 

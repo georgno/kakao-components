@@ -15,7 +15,7 @@
  *    components it requires or is enhanced by, transitively (custom-elements.json's
  *    `kakao` field; the same order shared/kakao.js loads them in);
  *  - shared/kakao.js, kakao.css, tokens.css, themes.css, font.css and the font
- *    files, component-api.js;
+ *    files, component-api.js, page-transition.js (optional page swaps);
  *  - CATALOG.md and custom-elements.json (the guide and the full API);
  *  - as reference, pinned with the code: skills/kakao-ui (the consumer skill;
  *    install it as .claude/skills/kakao-ui or .pi/skills/kakao-ui), templates/
@@ -47,6 +47,7 @@ const SHARED = [
   'shared/font.css',
   'shared/fonts',
   'shared/component-api.js',
+  'shared/page-transition.js',
   'CATALOG.md',
   'custom-elements.json',
   'skills/kakao-ui',

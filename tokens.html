@@ -4,32 +4,32 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Main variables - Construction</title>
-<link rel="stylesheet" href="shared/tokens.css" />
-<link rel="stylesheet" href="shared/font.css" />
-<link rel="stylesheet" href="shared/themes.css" />
-<script src="shared/component-api.js"></script>
+<link rel="stylesheet" href="shared/kakao.css" />
+<script src="shared/kakao.js"></script>
 <script src="shared/page-cloak.js"></script>
-<script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/construction.css" />
-<link rel="stylesheet" href="components/button/button.css" />
-<link rel="stylesheet" href="components/tabs/tabs.css" />
-<link rel="stylesheet" href="components/number-input/number-input.css" />
-<script src="components/button/button.js" defer></script>
-<script src="components/tabs/tabs.js" defer></script>
-<script src="components/number-input/number-input.js" defer></script>
-<script src="components/switch-group/switch-group.js" defer></script>
-<script src="components/step-switch/step-switch.js" defer></script>
-<script src="components/slider/slider.js" defer></script>
-<script src="components/multi-dropdown/multi-dropdown.js" defer></script>
-<script src="components/file-upload/file-upload.js" defer></script>
-<script src="shared/construction.js" defer></script>
-<script src="components/header-bar/header-bar.js" defer></script>
+<script src="shared/construction.js" defer data-page-transition-script></script>
+<link rel="stylesheet" href="shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="shared/site-shell.css" />
+<script src="shared/settings-dialog.js" defer></script>
+<script src="shared/page-transition.js"></script>
 </head>
 <body>
-<kakao-header-bar>
-  <kakao-theme-switch slot="end"></kakao-theme-switch>
+<kakao-header-bar nav-label="Pages" data-page-transition>
+  <!-- The site's shell: it stays while the pages swap their <main> (shared/page-transition.js).
+       The start slot is a region too: the kitchen sink puts its section menu there. -->
+  <span slot="start" data-page-transition-content="bar-start"></span>
+  <a slot="nav" href="index.html">Home</a>
+  <a slot="nav" href="components.html">Components</a>
+  <a slot="nav" href="kitchen-sink.html">Kitchen sink</a>
+  <a slot="nav" href="styleguide.html">Style guide</a>
+  <a slot="nav" href="tokens.html" aria-current="page">Main variables</a>
+  <a slot="nav" href="changelog.html">Changelog</a>
+  <kakao-button slot="end" class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+    list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+  <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
 </kakao-header-bar>
-<main data-construction data-target="tokens" data-source="shared/tokens.css" data-title="Main variables">
+<main data-page-transition-content="content" tabindex="-1" data-construction data-target="tokens" data-source="shared/tokens.css" data-title="Main variables">
   <div class="construction-preview">
     <figure>
       <figcaption>Buttons</figcaption>

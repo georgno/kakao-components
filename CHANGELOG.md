@@ -165,30 +165,29 @@ upgrade is safe; the entries below them give the detail.
   scaffold for other widgets: extend it and use the documented hooks
   instead of copying the mechanics.
 
-- `shared/page-transition.js`: switch screens without a reload. In-app links
-  (`data-page-transition`, on the link or on a container of them) fetch their
-  page, replace only the marked content regions
-  (`data-page-transition-content="<key>"`, paired by key with the fetched
-  page) and wrap that in `document.startViewTransition`, so the shell stays in
-  the DOM and the page-cloak never runs again - which is why a cross-document
-  transition is not used: the new document's first snapshot is still hidden.
-  Keeps the title and the `kakao-tabs` selection in step, pushes history entries
-  and handles Back/Forward, keeps an open aside-menu open, and runs the page's
-  own scripts (`script[data-page-transition-script]`) again so the swapped-in
-  screen gets its behaviour. Browsers without View Transitions and
-  `prefers-reduced-motion: reduce` swap at once; without the script every link
-  navigates as before. Each page gives its content region its own
-  `view-transition-name`, so only the content animates and the shell around it
-  stays put. A swap is refused - ordinary navigation instead - when the fetched
-  screen renders a region the current one lacks (a 404 or `/agents` has no chat
-  list), when it is not same-origin, or while a screen reports a turn in flight
-  (`window.kakaoPageTransition.busy`, set by chat.js while a reply streams); the
-  region marked `tabindex="-1"` takes the focus after a swap and the page
-  scrolls to the top, as a normal navigation does. A link carrying a `#fragment`
-  navigates as before, so the browser still scrolls to its target. Limits:
-  inline scripts written into a swapped region do not run (behaviour comes as a
-  marked script), and a screen the fetched page renders *fewer* regions for
-  keeps the ones it has.
+- `shared/page-transition.js`: pages that share a shell (a header bar, a side
+  menu) swap their content instead of reloading. A generic library utility,
+  vendored with the library and described in CATALOG.md and the kakao-ui skill.
+  In-app links (`data-page-transition`, on the link or a container) fetch their
+  page and replace the regions marked `data-page-transition-content="<key>"`
+  (paired by key) inside `document.startViewTransition`; instantly under
+  reduced motion or without View Transitions. The fetched page's stylesheets and
+  head `<style>`s come along (loaded before the swap; the previous page's own
+  are dropped, shared ones stay), its new head scripts load once and, with the
+  loader, its components are loaded first. Title, URL and history follow, Back
+  and Forward swap back, the region with `tabindex="-1"` takes the focus, and
+  shell links get `aria-current="page"` for the new page. Page scripts
+  (`data-page-transition-script`) are taken from the new page and run again;
+  `kakaoPageTransition.signal` aborts when their screen is swapped out and
+  `kakaoPageTransition.wait(promise)` holds the new screen until their content
+  is in (capped at 1 s). Events on `document`: `page-transition-start`
+  (cancelable: an ordinary navigation instead), `page-transition-swap`,
+  `page-transition-end`. A link navigates normally when the fetch fails, the
+  server redirects, the fetched page has a region this one lacks or none in
+  common, or `kakaoPageTransition.busy` is set (work a swap would lose).
+- `<kakao-tabs>` selects the tab for the new URL on `page-transition-swap`;
+  `<kakao-header-bar>` stays solid from `page-transition-start` to
+  `page-transition-end`, as during a theme transition.
 
 - `kakao-aside-menu`: `effect` attribute - `push` (the default, unchanged): the
   whole `<body>` slides aside by the panel width, so the content keeps its width
@@ -220,6 +219,13 @@ upgrade is safe; the entries below them give the detail.
 
 ### Site only
 
+- The top-level pages (home, components, kitchen sink, style guide, main
+  variables, changelog) load the library through the loader head and use page
+  transitions: one header bar on all six with the site links, the theme menu and
+  the settings (its styles in the new `shared/site-shell.css`), and only `<main>`
+  (plus the kitchen sink's section menu) swaps. `shared/page-cloak.js` waits for
+  the loader; the main-variables page navigates normally while it has unsaved
+  edits. Demo and construction pages navigate as before.
 - `shared/demo.css`, `shared/construction.css`: the page-bar counter-move (which
   keeps `<kakao-header-bar>` on screen while an aside menu pushes the page) is
   skipped for `effect="squash"` menus, where the content narrows and the bar

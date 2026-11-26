@@ -43,6 +43,11 @@
         rel: 'stylesheet', href: new URL('vendor/fontawesome/css/all.min.css', ENGINE_URL).href,
       }));
     }
+    // With the loader (shared/kakao.js) on the page, it loads the components.
+    if (window.kakaoLoader) {
+      window.kakaoLoader.load('kakao-number-input', 'kakao-color-picker', 'kakao-chip').catch(() => {});
+      return;
+    }
     if (!document.querySelector('link[href*="number-input.css"]')) {
       head.append(Object.assign(document.createElement('link'), {
         rel: 'stylesheet', href: new URL('../components/number-input/number-input.css', ENGINE_URL).href,
@@ -278,9 +283,11 @@
       this.applyAll();
       this.refresh();
       this.checkServer();
+      // On a page that swaps (shared/page-transition.js) the listener goes with the screen.
+      const signal = window.kakaoPageTransition ? window.kakaoPageTransition.signal : undefined;
       window.addEventListener('beforeunload', (e) => {
         if (this.changedCount() > 0) { e.preventDefault(); e.returnValue = ''; }
-      });
+      }, { signal });
     }
 
     /** Value used for a manifest entry that has no line in the block yet. */
@@ -702,6 +709,9 @@
       });
       const changed = this.changedCount();
       const invalid = this.invalidCount();
+      // Unsaved edits: links navigate normally (shared/page-transition.js), so
+      // the beforeunload question below still asks.
+      if (window.kakaoPageTransition) window.kakaoPageTransition.busy = changed > 0;
       setDisabled(this.resetAllBtn, changed === 0);
       setDisabled(this.saveBtn, !this.serverOnline || changed === 0 || invalid > 0);
       this.saveBtn.setAttribute('label', changed ? `Save ${changed} change${changed > 1 ? 's' : ''}` : 'Save');

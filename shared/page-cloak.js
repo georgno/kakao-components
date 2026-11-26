@@ -1,14 +1,17 @@
 /**
  * page-cloak.js - show a page only once its components have drawn themselves.
  *
- * Load it synchronously in <head> (not defer), before the component scripts:
+ * Load it synchronously in <head> (not defer), before the component scripts,
+ * or right after the loader (shared/kakao.js):
  *
  *   <script src="shared/page-cloak.js"></script>
  *
  * The component scripts load with `defer`, and deferred scripts always run
  * before DOMContentLoaded. So at DOMContentLoaded every component is defined
  * and has rendered: the page is revealed in one piece instead of components
- * popping in one by one (no flicker, no layout jumps on reload).
+ * popping in one by one (no flicker, no layout jumps on reload). With the
+ * loader, the cloak also waits for kakaoLoader.ready (every component the
+ * parsed page uses has loaded).
  *
  * It also waits for the web fonts (Inter Tight and the Font Awesome icons, both
  * served from shared/): otherwise the text redraws in the new font and the
@@ -60,6 +63,7 @@
   // microtask is in place too. A background tab paints nothing: reveal at once.
   document.addEventListener('DOMContentLoaded', () => {
     if (document.hidden) return reveal();
+    if (window.kakaoLoader) window.kakaoCloak.wait(window.kakaoLoader.ready);
     const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
     Promise.all([Promise.race([fonts, wait(1500)]), ...pending]).then(() => requestAnimationFrame(reveal));
   }, { once: true });

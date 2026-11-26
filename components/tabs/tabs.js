@@ -48,6 +48,10 @@
  * ----------------------------------------------------------------------------
  *  select(target)   Select a tab by its controls value, its URL, or the element.
  *
+ * Page transitions (shared/page-transition.js): tabs that stay on screen while
+ * the page content swaps select the tab whose URL has the new page's path, on
+ * the page-transition-swap event (through select(), so tab-change fires).
+ *
  * ----------------------------------------------------------------------------
  * EVENTS (bubble)
  * ----------------------------------------------------------------------------
@@ -170,6 +174,12 @@
   // ─── KakaoTabs ─────────────────────────────────────────────────────────────
   class KakaoTabs extends HTMLElement {
     connectedCallback() {
+      this._onPageSwap = this._onPageSwap || (() => {
+        const path = location.pathname;
+        const item = this._items().find((i) => i.url && new URL(i.url, location.href).pathname === path);
+        if (item) this.select(item);
+      });
+      document.addEventListener('page-transition-swap', this._onPageSwap);
       if (this._initialized) return;
       this._initialized = true;
 
@@ -204,6 +214,7 @@
     }
 
     disconnectedCallback() {
+      document.removeEventListener('page-transition-swap', this._onPageSwap);
       this._ro?.disconnect();
       this._mo?.disconnect();
       this._listeners.forEach((_, item) => this._removeListeners(item));

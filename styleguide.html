@@ -4,32 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Kakao style guide</title>
-<link rel="stylesheet" href="shared/tokens.css" />
-<link rel="stylesheet" href="shared/font.css" />
-<link rel="stylesheet" href="shared/themes.css" />
-<script src="shared/component-api.js"></script>
+<link rel="stylesheet" href="shared/kakao.css" />
+<script src="shared/kakao.js"></script>
 <script src="shared/page-cloak.js"></script>
-<script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
-<link rel="stylesheet" href="components/button/button.css" />
-<link rel="stylesheet" href="components/tabs/tabs.css" />
-<link rel="stylesheet" href="components/number-input/number-input.css" />
-<script src="components/button/button.js" defer></script>
-<script src="components/tabs/tabs.js" defer></script>
-<script src="components/number-input/number-input.js" defer></script>
-<script src="components/switch-group/switch-group.js" defer></script>
-<script src="components/step-switch/step-switch.js" defer></script>
-<script src="components/slider/slider.js" defer></script>
-<script src="components/multi-dropdown/multi-dropdown.js" defer></script>
-<script src="components/color-picker/color-picker.js" defer></script>
-<script src="components/text-input/text-input.js" defer></script>
-<script src="components/textarea/textarea.js" defer></script>
-<script src="components/checkbox/checkbox.js" defer></script>
-<script src="components/radio-group/radio-group.js" defer></script>
-<script src="components/badge/badge.js" defer></script>
-<script src="components/color-code/color-code.js" defer></script>
-<script src="components/chip/chip.js" defer></script>
-<script src="components/alert/alert.js" defer></script>
+<link rel="stylesheet" href="shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="shared/site-shell.css" />
+<script src="shared/settings-dialog.js" defer></script>
+<script src="shared/page-transition.js"></script>
 <style>
   /* ---- page-only styles; the guide itself, not the components ---- */
   main { max-width: 960px; }
@@ -188,13 +170,23 @@
     .lane .dot { transition: none !important; }
   }
 </style>
-<script src="components/header-bar/header-bar.js" defer></script>
 </head>
 <body>
-<kakao-header-bar>
-  <kakao-theme-switch slot="end"></kakao-theme-switch>
+<kakao-header-bar nav-label="Pages" data-page-transition>
+  <!-- The site's shell: it stays while the pages swap their <main> (shared/page-transition.js).
+       The start slot is a region too: the kitchen sink puts its section menu there. -->
+  <span slot="start" data-page-transition-content="bar-start"></span>
+  <a slot="nav" href="index.html">Home</a>
+  <a slot="nav" href="components.html">Components</a>
+  <a slot="nav" href="kitchen-sink.html">Kitchen sink</a>
+  <a slot="nav" href="styleguide.html" aria-current="page">Style guide</a>
+  <a slot="nav" href="tokens.html">Main variables</a>
+  <a slot="nav" href="changelog.html">Changelog</a>
+  <kakao-button slot="end" class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+    list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+  <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
 </kakao-header-bar>
-<main>
+<main data-page-transition-content="content" tabindex="-1">
   <header>
     <a class="back" href="components.html">← All components</a>
     <h1>Style guide</h1>
@@ -879,7 +871,7 @@ KakaoComponents.meta('kakao-card');</pre>
   <footer>Kakao components · <a href="components.html">All components</a> · <a href="tokens.html">Main variables</a> · <a href="kitchen-sink.html">Kitchen sink</a></footer>
 </main>
 
-<script>
+<script data-page-transition-script>
   // Live swatches for the main colour variables.
   (function () {
     const tokens = [

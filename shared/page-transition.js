@@ -1,178 +1,355 @@
 /**
- * page-transition.js - switch screens by swapping their content, without a reload.
+ * page-transition.js - switch pages by swapping their content, without a reload.
+ * ============================================================================
+ * Pages that share a shell (a header bar, a side menu) keep it on screen while
+ * only their content changes: a click on an in-app link fetches the page and
+ * replaces the marked content regions, under document.startViewTransition, so
+ * the old content cross-fades into the new. Nothing is reloaded. Without this
+ * script every link is an ordinary navigation, so it is a pure enhancement.
  *
- * Cross-document view transitions (`@view-transition { navigation: auto }`) cannot
- * be used here: the new document's first snapshot is taken while shared/page-cloak.js
- * still has the page hidden, so the cross-fade would land on a blank page. Instead
- * the shell stays in the DOM and only the marked content regions are replaced, under
- * document.startViewTransition. Nothing is reloaded, so the cloak never runs again.
+ * Load it in the head of every page that takes part, without defer (after the
+ * loader if you use it), so the page's own scripts find it when they run:
+ *
+ *   <script src="kakao/shared/page-transition.js"><\/script>
  *
  * Opt in with markup:
  *
- *   <main data-page-transition-content="content" data-page-transition>...</main>
- *   <section data-page-transition-content="chats" data-page-transition>...</section>
+ *   <kakao-header-bar data-page-transition>
+ *     <a slot="nav" href="index.html" aria-current="page">Home</a>
+ *     <a slot="nav" href="reports.html">Reports</a>
+ *   </kakao-header-bar>
+ *   <main data-page-transition-content="content" tabindex="-1">…</main>
+ *   <script src="reports.js" data-page-transition-script><\/script>
  *
- *   - data-page-transition links (or a container of links) are in-app: a click
- *     fetches the page and swaps it instead of navigating. Everything else - other
- *     sites, /login, /logout, form posts - is left to the browser.
- *   - data-page-transition-content marks a region the swap replaces. The attribute's
- *     value pairs it with the same key in the fetched page. A swap only happens when the
- *     fetched screen adds no region the current one lacks: a page without the chat list
- *     (a 404, /agents) still reaches /chat with an ordinary navigation, so the swapped-in
- *     screen never misses a region the shell would then never render again.
- *   - the region marked tabindex="-1" (the page's content) takes the focus after a swap
- *     and the page scrolls to the top, as a normal navigation does.
- *   - script[data-page-transition-script] names the page's own scripts. They bind
- *     their screen when they load, so they are run again after a swap: that is how
- *     the swapped-in screen gets its behaviour. Scripts written into the markup of a
- *     region are inert once the region is imported: a screen that needs behaviour
- *     brings it as a marked script, never as an inline one.
+ *  - data-page-transition: links inside it (or the link itself) are in-app. Other
+ *    origins, links with a target, `download`, a #fragment or a modifier key, and
+ *    form posts are left to the browser.
+ *  - data-page-transition-content="<key>": a region the swap replaces, paired by
+ *    key with the fetched page. Every page that takes part renders the same
+ *    regions. When the fetched page has a region this one lacks, or none with a
+ *    key of this one (a page outside the shell), the link navigates normally; a
+ *    region only this page has stays as it is.
+ *  - The region with tabindex="-1" takes the focus after a swap and the page
+ *    scrolls to the top, as on a normal navigation (give it `outline: none` on
+ *    :focus in your CSS).
+ *  - Links in the opted-in containers outside the regions (the shell's
+ *    navigation) get aria-current="page" when they point at the new page.
  *
- * The URL, the title and the kakao-tabs selection follow the new screen, and
- * history entries are pushed, so Back and Forward work. An open aside-menu stays
- * open: the shell is not reloaded, so a panel the user opened keeps its state.
- * Browsers without View Transitions and `prefers-reduced-motion: reduce` swap at once.
- * Without this script every link is an ordinary navigation.
+ * Head: the fetched page's stylesheets and head <style>s are added (loaded
+ * before the swap, so nothing shows unstyled); the previous page's own ones the
+ * new page lacks are removed; ones both pages have stay, and so does anything a
+ * script inserted. Head scripts with a src the current page lacks load once,
+ * before the swap. With the loader (kakao.js), the components the new content
+ * uses are loaded before the swap too. Title and URL follow, history entries are
+ * pushed, Back and Forward swap back.
  *
- * A component that handles its own clicks can navigate through:
+ * Page scripts: script[data-page-transition-script] is the page's own behaviour.
+ * After a swap the new page's marked scripts run (in document order; inline ones
+ * too), and the old page's marked scripts are dropped. They run again on every
+ * visit, so write them to be re-run:
+ *  - wrap inline code in a block or a function (a second top-level `const` throws);
+ *  - don't wait for DOMContentLoaded or load, they have passed: check
+ *    document.readyState first;
+ *  - bind listeners outside the content (document, window) with the screen's
+ *    signal, which aborts when the screen is swapped out:
+ *      const signal = window.kakaoPageTransition && kakaoPageTransition.signal;
+ *      document.addEventListener('keydown', onKey, { signal });
+ *      if (signal) signal.addEventListener('abort', stopTimers);
+ *  - a script that fills the screen after it runs (a fetch) can hold the new
+ *    screen until it is done (capped at 1 s):
+ *      kakaoPageTransition.wait(fetch('data.json').then(render));
+ * Unmarked scripts inside a region don't run after a swap.
  *
- *   window.kakaoPageTransition.navigate('/chat');
+ * Events, on document, detail { url, from }:
+ *   page-transition-start  a swap is about to begin; cancelable: preventDefault()
+ *                          makes it an ordinary navigation.
+ *   page-transition-swap   the new regions are in (before the page scripts run):
+ *                          update shell state that depends on the URL here.
+ *   page-transition-end    the transition has finished (also after an instant swap).
+ * kakao-tabs selects the tab for the new URL on page-transition-swap; the header
+ * bar stays solid from start to end.
  *
- * A screen with work in flight sets `window.kakaoPageTransition.busy` (chat.js does while
- * a reply streams); the next navigation is then an ordinary one, so a swap cannot reset
- * the screen and drop the reply.
+ * API, window.kakaoPageTransition:
+ *   navigate(url)   swap to url (a component that handles its own clicks).
+ *   busy            set it while the screen has work in flight that a swap would
+ *                   lose (an unsaved form, a running upload): links then navigate
+ *                   normally, so the browser's own beforeunload handling applies.
+ *   signal          the current screen's AbortSignal.
+ *   wait(promise)   during a swap: hold the new screen until promise settles.
  *
- * For this project's pages only, like page-cloak.js.
+ * Browsers without View Transitions and `prefers-reduced-motion: reduce` swap at
+ * once. The whole page cross-fades by default (the shell is identical, so it
+ * looks still); give a region a view-transition-name in your CSS to animate it
+ * on its own.
+ * ============================================================================
  */
 (function () {
   'use strict';
 
+  if (window.kakaoPageTransition) return;
+
   const REGION = '[data-page-transition-content]';
   const OPT_IN = '[data-page-transition]';
   const PAGE_SCRIPT = 'script[data-page-transition-script]';
+  const HEAD_ASSET = 'link[rel~="stylesheet"][href], style, script';
+  const PREPARE_CAP = 3000; // ms: styles, scripts and components before the swap
+  const WAIT_CAP = 1000; // ms: page scripts holding the new screen
+
   const regionKey = (el) => el.getAttribute('data-page-transition-content') || '';
+  const withoutHash = (href) => href.replace(/#.*$/, '');
+  const capped = (promises, ms) => Promise.race([
+    Promise.all(promises.map((p) => Promise.resolve(p).catch(() => {}))),
+    new Promise((resolve) => setTimeout(resolve, ms)),
+  ]);
 
   // Two navigations overlap: the last one wins, the one still fetching is dropped.
   let latest = 0;
+  let shown = withoutHash(location.href); // the page whose regions are on screen
+  let controller = new AbortController();
+  let waits = null; // collects kakaoPageTransition.wait() during a swap
 
-  function swap(doc) {
+  /* ---- head ------------------------------------------------------------- */
+
+  /** Identity of a head element: the same file or text is the same asset. */
+  function headKey(el, base) {
+    if (el.localName === 'link') return `link ${new URL(el.getAttribute('href'), base).href} ${el.media || ''}`;
+    if (el.localName === 'style') return `style ${el.media || ''} ${el.textContent.trim()}`;
+    const src = el.getAttribute('src');
+    return src ? `script ${new URL(src, base).href}` : `script ${el.textContent.trim()}`;
+  }
+
+  /**
+   * The current page's own head (as written in its source): only those are
+   * removed when the next page lacks them, never what a script inserted. A page
+   * reached by a swap knows it; the first page reads its source once.
+   */
+  let ownHead = null;
+  function sourceHead() {
+    if (!ownHead) {
+      const url = shown;
+      ownHead = fetch(url)
+        .then((r) => r.text())
+        .then((html) => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          return new Set([...doc.head.querySelectorAll(HEAD_ASSET)].map((el) => headKey(el, url)));
+        })
+        .catch(() => new Set()); // unknown: remove nothing
+    }
+    return ownHead;
+  }
+
+  /** Copy an element from the fetched document, URLs made absolute. */
+  function copyOf(el, base) {
+    const copy = document.createElement(el.localName);
+    for (const { name, value } of el.attributes) copy.setAttribute(name, value);
+    if (el.hasAttribute('href')) copy.setAttribute('href', new URL(el.getAttribute('href'), base).href);
+    if (el.hasAttribute('src')) copy.setAttribute('src', new URL(el.getAttribute('src'), base).href);
+    copy.textContent = el.textContent;
+    return copy;
+  }
+
+  const settled = (el) => new Promise((resolve) => {
+    el.addEventListener('load', resolve, { once: true });
+    el.addEventListener('error', resolve, { once: true });
+  });
+
+  /**
+   * Before the swap: load the new page's styles (switched off with a media
+   * query that never matches, so the current page is untouched), its new head
+   * scripts, and the components its regions use. Returns what the swap applies.
+   */
+  function prepareHead(doc, base) {
+    const current = new Map();
+    for (const el of document.head.querySelectorAll(HEAD_ASSET)) current.set(headKey(el, location.href), el);
+    const keys = new Set();
+    const styles = []; // [element, its real media]
+    const loading = [];
+    let anchor = null; // the last element of the new head that is already here
+    for (const el of doc.head.querySelectorAll(HEAD_ASSET)) {
+      const key = headKey(el, base);
+      keys.add(key);
+      if (current.has(key)) {
+        anchor = current.get(key);
+        continue;
+      }
+      if (el.localName === 'script') {
+        // Page scripts run after the swap; inline head scripts don't run.
+        if (el.matches(PAGE_SCRIPT) || !el.hasAttribute('src')) continue;
+        const script = copyOf(el, base);
+        script.async = false;
+        loading.push(settled(script));
+        document.head.append(script);
+        continue;
+      }
+      const copy = copyOf(el, base);
+      styles.push([copy, copy.getAttribute('media')]);
+      copy.setAttribute('media', 'not all');
+      if (copy.localName === 'link') loading.push(settled(copy));
+      if (anchor) anchor.after(copy);
+      else document.head.append(copy);
+      anchor = copy;
+    }
+    if (window.kakaoLoader) {
+      const tags = new Set();
+      for (const region of doc.querySelectorAll(REGION)) {
+        for (const el of [region, ...region.querySelectorAll('*')]) {
+          if (el.localName.includes('-') && !customElements.get(el.localName)) tags.add(el.localName);
+        }
+      }
+      for (const tag of tags) loading.push(window.kakaoLoader.load(tag)); // unknown tags reject at once
+    }
+    return { keys, styles, loading };
+  }
+
+  /** In the swap: switch the new styles on, drop the previous page's own. */
+  function applyHead(head, own) {
+    for (const [el, media] of head.styles) {
+      if (media === null) el.removeAttribute('media');
+      else el.setAttribute('media', media);
+    }
+    for (const el of [...document.head.querySelectorAll('link[rel~="stylesheet"][href], style')]) {
+      const key = headKey(el, location.href);
+      if (own.has(key) && !head.keys.has(key)) el.remove();
+    }
+  }
+
+  /* ---- regions and scripts ---------------------------------------------- */
+
+  /** The fetched page's regions all exist here, and at least one does. */
+  function sameShell(doc) {
+    const current = new Set([...document.querySelectorAll(REGION)].map(regionKey));
+    const fetched = [...doc.querySelectorAll(REGION)].map(regionKey);
+    return fetched.length > 0 && fetched.every((key) => current.has(key));
+  }
+
+  function swapRegions(doc) {
     const fetched = new Map();
     doc.querySelectorAll(REGION).forEach((el) => fetched.set(regionKey(el), el));
     document.querySelectorAll(REGION).forEach((el) => {
       const next = fetched.get(regionKey(el));
-      // shortcut: a region the fetched page does not render is left alone (no insertion).
-      // That is invisible only because navigate() navigates for real when the fetched page
-      // has a region this one lacks; two screens with different region sets swap badly.
       if (next) el.replaceWith(document.importNode(next, true));
     });
   }
 
-  // A region only this document has would survive the swap as the old screen's leftovers.
-  function addsRegion(doc) {
-    const current = new Set([...document.querySelectorAll(REGION)].map(regionKey));
-    return [...doc.querySelectorAll(REGION)].some((el) => !current.has(regionKey(el)));
+  /** The shell's own links point at the page now shown. */
+  function markCurrent() {
+    for (const link of document.querySelectorAll(`${OPT_IN} a[href], a${OPT_IN}[href]`)) {
+      if (link.closest(REGION)) continue;
+      if (withoutHash(link.href) === shown) link.setAttribute('aria-current', 'page');
+      else if (link.getAttribute('aria-current') === 'page') link.removeAttribute('aria-current');
+    }
   }
 
-  // kakao-tabs owns the thumb under the selected tab, so the new route goes through
-  // select() (which keeps aria, the thumb and the event) rather than the attribute.
-  function syncTabs() {
-    const path = location.pathname;
-    document.querySelectorAll('kakao-tabs').forEach((tabs) => {
-      const tab = [...tabs.querySelectorAll('kakao-tab')]
-        .find((item) => item.url && new URL(item.url, location.href).pathname === path);
-      if (tab && tabs.select) tabs.select(tab);
-    });
+  /**
+   * Run the new page's marked scripts in document order, one after the other
+   * (an inline one may need the src one before it). Those outside the regions
+   * replace the old page's; those inside a region are run in place.
+   */
+  async function runPageScripts(doc, base) {
+    const outside = (el) => !el.parentElement.closest(REGION);
+    document.querySelectorAll(PAGE_SCRIPT).forEach((el) => { if (outside(el)) el.remove(); });
+    const regionScripts = [...document.querySelectorAll(`${REGION} ${PAGE_SCRIPT}`)];
+    const fetchedInRegions = [...doc.querySelectorAll(`${REGION} ${PAGE_SCRIPT}`)];
+    for (const el of doc.querySelectorAll(PAGE_SCRIPT)) {
+      const script = copyOf(el, base);
+      const inRegion = fetchedInRegions.indexOf(el);
+      if (inRegion >= 0) {
+        const old = regionScripts[inRegion];
+        if (!old) continue;
+        old.replaceWith(script);
+      } else if (doc.head.contains(el)) {
+        document.head.append(script);
+      } else {
+        document.body.append(script);
+      }
+      if (script.src) await Promise.race([settled(script), new Promise((r) => setTimeout(r, WAIT_CAP))]);
+    }
   }
 
-  // The page's scripts bind when they load; a fresh run against the new DOM is what
-  // re-initialises them (they are written to bail when their screen is not there).
-  function rerunPageScripts() {
-    document.querySelectorAll(PAGE_SCRIPT).forEach((old) => {
-      const next = document.createElement('script');
-      next.async = false; // a script inserted later is async by default: keep the page's order
-      next.setAttribute('data-page-transition-script', '');
-      if (old.src) next.src = old.src;
-      else next.textContent = old.textContent;
-      old.replaceWith(next);
-    });
+  function emit(name, detail, cancelable) {
+    return document.dispatchEvent(new CustomEvent(name, { detail, cancelable: !!cancelable }));
   }
 
-  function update(doc) {
-    swap(doc);
-    document.title = doc.title;
-    syncTabs();
-    rerunPageScripts();
-    // An open menu stays open: the shell is not reloaded, so the user's panel keeps its state.
-    // A normal navigation lands at the top with the focus on the new page, so a swap does too.
-    window.scrollTo(0, 0);
-    const content = document.querySelector(REGION + '[tabindex="-1"]');
-    if (content) content.focus({ preventScroll: true });
-  }
+  /* ---- navigation ------------------------------------------------------- */
 
   async function navigate(url, push) {
     const target = new URL(url, location.href);
-    // Same-origin only; this is also the entry point components call, not just the click handler.
-    if (target.origin !== location.origin) {
-      location.href = target.href;
-      return;
-    }
-
-    // Mid-turn, a swap would re-initialise the screen and drop the reply that is streaming
-    // into it, so go the ordinary way. shortcut: that navigation cancels the turn; keeping
-    // it alive would need the stream to outlive the DOM.
-    if (window.kakaoPageTransition.busy) {
-      location.href = target.href;
-      return;
-    }
+    const go = (href) => { location.href = href; };
+    // Same-origin only; this is also the entry point components call.
+    if (target.origin !== location.origin) return go(target.href);
+    // Work in flight on this screen: the ordinary way, so the page's own
+    // beforeunload handling (or its loss) is what the user expects.
+    if (window.kakaoPageTransition.busy) return go(target.href);
 
     const run = ++latest;
+    const from = shown;
+    const own = sourceHead(); // in parallel with the fetch
 
     let response = null;
     try {
       response = await fetch(target.href);
     } catch {
-      response = null; // the fallback below is the ordinary navigation
+      response = null;
     }
-    // A newer navigation started meanwhile: this one may not touch the page or the URL.
+    // A newer navigation started meanwhile: this one may not touch the page.
     if (run !== latest) return;
-
     const type = response ? response.headers.get('content-type') || '' : '';
+    // Not a page we can swap (a failed fetch, an error page, a file).
+    if (!response || !response.ok || !type.includes('text/html')) return go(target.href);
 
-    // Not a page we can swap (a failed fetch, a redirect out of the app, a file):
-    // let the browser do the ordinary navigation.
-    if (!response || !response.ok || !type.includes('text/html')) {
-      location.href = target.href;
-      return;
-    }
-
-    const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+    const html = await response.text();
     if (run !== latest) return;
-
     const landed = new URL(response.url || target.href, location.href);
-    // The server redirected (a guest sent to /login, an expired session): navigate for real.
-    if (landed.href !== target.href) {
-      location.href = landed.href;
-      return;
-    }
+    // The server redirected (to a login page, say): navigate for real.
+    if (withoutHash(landed.href) !== withoutHash(target.href)) return go(landed.href);
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    if (!sameShell(doc)) return go(landed.href);
 
-    // The fetched screen renders a region this one does not: swapping would keep the old
-    // screen's shell, so navigate for real instead.
-    if (addsRegion(doc)) {
-      location.href = landed.href;
-      return;
-    }
+    const href = withoutHash(landed.href);
+    const head = prepareHead(doc, href);
+    const [ownKeys] = await Promise.all([own, capped(head.loading, PREPARE_CAP)]);
+    // Overtaken: drop the styles prepared for this page (its scripts have run, harmlessly).
+    if (run !== latest) return head.styles.forEach(([el]) => el.remove());
 
+    const detail = { url: href, from };
+    if (!emit('page-transition-start', detail, true)) {
+      head.styles.forEach(([el]) => el.remove());
+      return go(landed.href);
+    }
     if (push !== false) history.pushState({}, '', landed.href);
 
+    const update = async () => {
+      shown = href;
+      applyHead(head, ownKeys);
+      ownHead = Promise.resolve(head.keys);
+      controller.abort();
+      controller = new AbortController();
+      swapRegions(doc);
+      document.title = doc.title;
+      markCurrent();
+      emit('page-transition-swap', detail);
+      waits = [];
+      await runPageScripts(doc, href);
+      // A normal navigation lands at the top with the focus on the new page.
+      window.scrollTo(0, 0);
+      const content = document.querySelector(`${REGION}[tabindex="-1"]`);
+      if (content) content.focus({ preventScroll: true });
+      const pending = waits;
+      waits = null;
+      if (pending.length) await capped(pending, WAIT_CAP);
+    };
+
     if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      update(doc);
+      await update();
+      emit('page-transition-end', detail);
       return;
     }
-    // A skipped transition (a hidden tab, a resize) rejects both promises; the swap has run
-    // or runs anyway, so neither is an error.
-    const transition = document.startViewTransition(() => update(doc));
+    // A skipped transition (a hidden tab, a newer swap) rejects ready and
+    // finished; the update runs anyway, so neither is an error.
+    const transition = document.startViewTransition(update);
     transition.ready.catch(() => {});
-    transition.finished.catch(() => {});
+    await transition.finished.catch(() => {});
+    emit('page-transition-end', detail);
   }
 
   document.addEventListener('click', (event) => {
@@ -187,16 +364,24 @@
     if (url.origin !== location.origin || url.href === location.href) return;
     // An in-page link scrolls to its target; a swap scrolls to the top instead.
     if (url.hash) return;
-
     event.preventDefault();
     navigate(url.href);
   });
 
-  window.addEventListener('popstate', () => navigate(location.href, false));
+  // Back and Forward. A popstate within the same page (a #fragment) is not a swap.
+  window.addEventListener('popstate', () => {
+    if (withoutHash(location.href) !== shown) navigate(location.href, false);
+  });
 
   window.kakaoPageTransition = {
     navigate: (url) => navigate(url),
-    // Set by a screen with a turn in flight (chat.js while a reply streams): see navigate().
     busy: false,
+    get signal() {
+      return controller.signal;
+    },
+    wait(promise) {
+      if (waits) waits.push(Promise.resolve(promise).catch(() => {}));
+      return promise;
+    },
   };
 })();

@@ -4,97 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Components · Kakao Components</title>
-<link rel="stylesheet" href="shared/tokens.css" />
-<link rel="stylesheet" href="shared/font.css" />
-<link rel="stylesheet" href="shared/themes.css" />
-<script src="shared/component-api.js"></script>
+<link rel="stylesheet" href="shared/kakao.css" />
+<script src="shared/kakao.js"></script>
 <script src="shared/page-cloak.js"></script>
-<script src="components/theme-switch/theme-switch.js"></script>
 <link rel="stylesheet" href="shared/demo.css" />
-<link rel="stylesheet" href="components/tabs/tabs.css" />
-<link rel="stylesheet" href="components/table/table.css" />
-<link rel="stylesheet" href="components/grid-view/grid-view.css" />
 <link rel="stylesheet" href="shared/vendor/fontawesome/css/all.min.css" />
-<link rel="stylesheet" href="components/chip-list/chip-list.css" />
-<link rel="stylesheet" href="components/button/button.css" />
-<link rel="stylesheet" href="components/number-input/number-input.css" />
-<link rel="stylesheet" href="components/aside-menu/aside-menu.css" />
-<link rel="stylesheet" href="components/code/code.css" />
-<link rel="stylesheet" href="components/page/page.css" />
-<link rel="stylesheet" href="components/grid/grid.css" />
-<link rel="stylesheet" href="components/flow/flow.css" />
-<link rel="stylesheet" href="components/plain-list/plain-list.css" />
-<link rel="stylesheet" href="components/section-header/section-header.css" />
-<script src="components/switch-group/switch-group.js" defer></script>
-<script src="components/step-switch/step-switch.js" defer></script>
-<script src="components/stepper/stepper.js" defer></script>
-<script src="components/pagination/pagination.js" defer></script>
-<script src="components/popover/popover.js" defer></script>
-<script src="components/table/table.js" defer></script>
-<script src="components/grid-view/grid-view.js" defer></script>
-<script src="components/tabs/tabs.js" defer></script>
-<script src="components/list/list.js" defer></script>
-<script src="components/button/button.js" defer></script>
-<script src="components/number-input/number-input.js" defer></script>
-<script src="components/skeleton/skeleton.js" defer></script>
-<script src="components/image/image.js" defer></script>
-<script src="components/avatar/avatar.js" defer></script>
-<script src="components/slider/slider.js" defer></script>
-<script src="components/range-slider/range-slider.js" defer></script>
-<script src="components/rating/rating.js" defer></script>
-<script src="components/animated-number/animated-number.js" defer></script>
-<script src="components/file-upload/file-upload.js" defer></script>
-<script src="components/multi-dropdown/multi-dropdown.js" defer></script>
-<script src="components/aside-menu/aside-menu.js" defer></script>
-<script src="components/dialog/dialog.js" defer></script>
-<script src="components/aside-sheet/aside-sheet.js" defer></script>
-<script src="components/header-bar/header-bar.js" defer></script>
+<link rel="stylesheet" href="shared/site-shell.css" />
 <script src="shared/settings-dialog.js" defer></script>
-<script src="components/card/card.js" defer></script>
-<script src="components/color-picker/color-picker.js" defer></script>
-<script src="components/text-input/text-input.js" defer></script>
-<script src="components/textarea/textarea.js" defer></script>
-<script src="components/checkbox/checkbox.js" defer></script>
-<script src="components/radio-group/radio-group.js" defer></script>
-<script src="components/badge/badge.js" defer></script>
-<script src="components/color-code/color-code.js" defer></script>
-<script src="components/chip/chip.js" defer></script>
-<script src="components/chip-list/chip-list.js" defer></script>
-<script src="components/breadcrumb/breadcrumb.js" defer></script>
-<script src="components/alert/alert.js" defer></script>
-<script src="components/stack/stack.js" defer></script>
-<script src="components/toast/toast.js" defer></script>
-<script src="components/toc/toc.js" defer></script>
-<script src="components/tooltip/tooltip.js" defer></script>
-<script src="components/tree-view/tree-view.js" defer></script>
-<script src="components/menu/menu.js" defer></script>
-<script src="components/progress/progress.js" defer></script>
-<script src="components/meter/meter.js" defer></script>
-<script src="components/accordion/accordion.js" defer></script>
-<script src="components/select/select.js" defer></script>
-<script src="components/combobox/combobox.js" defer></script>
-<script src="components/command-palette/command-palette.js" defer></script>
-<script src="components/date-input/date-input.js" defer></script>
-<script src="components/time-input/time-input.js" defer></script>
-<script src="components/password-input/password-input.js" defer></script>
-<script src="components/code-input/code-input.js" defer></script>
-<script src="components/tag-input/tag-input.js" defer></script>
-<script src="components/settings-group/settings-group.js" defer></script>
-<script src="components/kbd/kbd.js" defer></script>
-<script src="components/spinner/spinner.js" defer></script>
-<script src="components/error-summary/error-summary.js" defer></script>
-<script src="components/error-page/error-page.js" defer></script>
-<script src="components/description-list/description-list.js" defer></script>
-<script src="components/empty-state/empty-state.js" defer></script>
-<script src="components/copy-button/copy-button.js" defer></script>
-<script src="components/action-bar/action-bar.js" defer></script>
-<script src="components/code/code.js" defer></script>
-<script src="components/code-block/code-block.js" defer></script>
-<script src="components/page/page.js" defer></script>
-<script src="components/grid/grid.js" defer></script>
-<script src="components/flow/flow.js" defer></script>
-<script src="components/plain-list/plain-list.js" defer></script>
-<script src="components/section-header/section-header.js" defer></script>
+<script src="shared/page-transition.js"></script>
 <style>
   /* The table of contents: a sticky sidebar column from 75rem, a sticky
      folded bar under the page bar below that. */
@@ -128,9 +45,7 @@
       repeating-linear-gradient(115deg, color-mix(in srgb, var(--accent) 55%, transparent) 0 14px, transparent 14px 34px),
       var(--card);
   }
-  /* Links in a bar's nav: the page bar's page links and the bar examples'. */
-  kakao-header-bar > [slot="nav"] { color: var(--ink); text-decoration: none; font-size: 0.92rem; }
-  kakao-header-bar > [slot="nav"]:hover { text-decoration: underline; }
+  /* Links in a bar's nav (the page bar's and the bar examples'): shared/site-shell.css. */
   /* Action bar examples: resting in a page-coloured frame, not floating. */
   .ov-action-frame { padding: 1rem 0; border-radius: 10px; background: var(--kakao-color-page, #f6f7f9); }
   .ov-action-frame kakao-action-bar { position: relative; bottom: auto; top: auto; z-index: auto; }
@@ -140,9 +55,12 @@
 </style>
 </head>
 <body>
-<kakao-header-bar nav-label="Pages">
-  <!-- The site's pages; the sections of this page are in the toc below. -->
+<kakao-header-bar nav-label="Pages" data-page-transition>
+  <!-- The site's shell: it stays while the pages swap their <main> (shared/page-transition.js).
+       The start slot is a region too: the kitchen sink puts its section menu there. -->
+  <span slot="start" data-page-transition-content="bar-start"></span>
   <a slot="nav" href="index.html">Home</a>
+  <a slot="nav" href="components.html" aria-current="page">Components</a>
   <a slot="nav" href="kitchen-sink.html">Kitchen sink</a>
   <a slot="nav" href="styleguide.html">Style guide</a>
   <a slot="nav" href="tokens.html">Main variables</a>
@@ -151,7 +69,7 @@
     list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
   <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
 </kakao-header-bar>
-<main class="has-toc">
+<main data-page-transition-content="content" tabindex="-1" class="has-toc">
   <header>
     <div class="demo-nav">
       <kakao-breadcrumb start-text="Home" start-url="index.html" list-data='[["Components"]]'></kakao-breadcrumb>
@@ -2300,7 +2218,9 @@ npm test
   <footer>Structure: <code>components/&lt;name&gt;/&lt;name&gt;.js</code> + <code>demo.html</code>, shared page styles in <code>shared/</code>.</footer>
 </main>
 
-<script>
+<script data-page-transition-script>
+  // In a block: the page swaps (shared/page-transition.js) run it again.
+  {
   const wait = (ms, fail) => new Promise((resolve, reject) => setTimeout(fail ? reject : resolve, ms));
   document.getElementById('ov-run-ok').addEventListener('kakao-button-action', (e) => {
     e.currentTarget.run(() => wait(1200));
@@ -2335,9 +2255,9 @@ npm test
 
   // Error summary example: the summary checks on submit; a valid form is not sent.
   document.getElementById('ov-summary-form').addEventListener('submit', (e) => e.preventDefault());
-
+  }
 </script>
-<script>
+<script data-page-transition-script>
   // Toast examples.
   customElements.whenDefined('kakao-toast').then(() => {
     const text = { success: 'Settings saved.', info: 'A new version is available.', warning: 'Your trial ends in 3 days.', danger: 'Could not reach the server.' };

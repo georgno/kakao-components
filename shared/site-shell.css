@@ -1,0 +1,39 @@
+/*
+ * site-shell.css - the page bar shared by this project's top-level pages
+ * (index, components, kitchen-sink, styleguide, tokens, changelog). Those pages
+ * swap their <main> through shared/page-transition.js and keep this bar, so its
+ * styles live here once, whatever page CSS (demo.css, construction.css) the
+ * page brings. Not part of any component.
+ */
+
+/* The site's pages in the bar's nav: the current one in weight, not colour. */
+kakao-header-bar > [slot="nav"] { color: var(--kakao-color-text, #18181b); text-decoration: none; font-size: 0.92rem; }
+kakao-header-bar > [slot="nav"]:hover { text-decoration: underline; }
+kakao-header-bar > [slot="nav"][aria-current="page"] { font-weight: 650; }
+
+/* The content region takes the focus after a swap, like a fresh page: no ring
+   around the whole page (the focus is a starting point, not a control). */
+main[data-page-transition-content]:focus { outline: none; }
+
+/* The tools in the bar's end slot: theme switch or menu, settings gear. */
+.page-icon-link {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--kakao-radius-pill, 999px);
+  background: var(--kakao-color-subtle, #f0f0f1);
+  color: var(--kakao-color-text, #18181b);
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background-color 150ms ease;
+  /* also used on a <button> (the settings gear) */
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+.page-icon-link:hover { background: var(--kakao-color-subtle-strong, #e6e6e8); }
+.page-icon-link:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; }

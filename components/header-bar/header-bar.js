@@ -91,7 +91,9 @@
  * the blur would show the page through. The bar reacts to the
  * "theme-transition-start" / "theme-transition-end" triggers
  * (shared/component-api.js) and puts the blur back afterwards. Without the
- * trigger API on the page nothing changes.
+ * trigger API on the page nothing changes. The same for a page transition
+ * (shared/page-transition.js): solid from the page-transition-start event on
+ * document to page-transition-end.
  *
  * Parts: bar, surface, start, center, title, nav, end.
  *
@@ -310,6 +312,8 @@
         this._sizes.observe(this._nav);
         if (this._isPageBar) this._sizes.observe(this);
       }
+      document.addEventListener('page-transition-start', this._onThemeStart);
+      document.addEventListener('page-transition-end', this._onThemeEnd);
       if (typeof KakaoComponents !== 'undefined') {
         KakaoComponents.on('theme-transition-start', this._onThemeStart);
         KakaoComponents.on('theme-transition-end', this._onThemeEnd);
@@ -318,6 +322,8 @@
 
     disconnectedCallback() {
       this._unwatch();
+      document.removeEventListener('page-transition-start', this._onThemeStart);
+      document.removeEventListener('page-transition-end', this._onThemeEnd);
       if (typeof KakaoComponents !== 'undefined') {
         KakaoComponents.off('theme-transition-start', this._onThemeStart);
         KakaoComponents.off('theme-transition-end', this._onThemeEnd);
@@ -362,7 +368,7 @@
     }
 
     /**
-     * Solid for the length of a theme transition. The blur comes back one
+     * Solid for the length of a theme or page transition. The blur comes back one
      * frame after it ended, when the transition's snapshots are gone: the
      * backdrop-filter is then computed and painted anew.
      */

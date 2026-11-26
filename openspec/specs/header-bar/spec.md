@@ -94,3 +94,10 @@ A header bar that is a direct child of `<body>` SHALL publish its rendered heigh
 #### Scenario: Page offsets follow the height setting
 - **WHEN** the bar's height setting is changed and the page reloaded
 - **THEN** `--kakao-header-bar-rendered-height` on the root element equals the bar's new rendered height, and page CSS that uses it (scroll padding) follows
+
+### Requirement: Solid during a page transition
+The bar SHALL use its solid surface from `page-transition-start` to `page-transition-end` (shared/page-transition.js), as during a theme transition, and get its blur back one frame after the end.
+
+#### Scenario: Scrolled page swaps
+- **WHEN** the page is scrolled and a page transition runs
+- **THEN** the bar's surface has no backdrop-filter until the transition ends, then the blur returns
