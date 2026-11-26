@@ -51,6 +51,10 @@
  *                (--kakao-header-bar-rendered-height).
  *  fixed         Fixed to the viewport, centred, instead of sticky inside
  *                its container.
+ *  size          md (default) · sm. Match it to the size of the buttons in
+ *                the actions slot: it sets the bar's height and radius so
+ *                the space around the buttons is even and the corners stay
+ *                concentric (bar radius = button radius + padding).
  *  count         number. With it the bar is shown while the count is above
  *                0, and slides out at 0 (also when empty or not a number).
  *                Without it the bar is shown.
@@ -71,8 +75,8 @@
  * SLOTS
  * ----------------------------------------------------------------------------
  *  (default)   The summary: what is selected, ideally with the number.
- *  actions     Buttons (kakao-button, size md or sm) or links, in a row that
- *              wraps; the main action last.
+ *  actions     Buttons (kakao-button, the bar's size) or links, in a row
+ *              that wraps; the main action last.
  *
  * ----------------------------------------------------------------------------
  * BEHAVIOUR
@@ -100,11 +104,15 @@
  * ----------------------------------------------------------------------------
  *  --kakao-action-bar-bg / -text / -shadow
  *  --kakao-action-bar-font-size / -summary-weight
- *  --kakao-action-bar-radius / -padding / -summary-padding-x / -gap / -summary-gap
- *  --kakao-action-bar-min-height / -min-width / -max-width / -gutter / -z-index
- *  --kakao-action-bar-duration / -ease
- *  The radius is the md button's (14px) plus the padding (6px), so the
- *  corners of a bar with md buttons are concentric.
+ *  --kakao-action-bar-radius / -radius-sm / -padding / -summary-padding-x
+ *  --kakao-action-bar-gap / -summary-gap
+ *  --kakao-action-bar-min-height / -min-height-sm / -min-width / -max-width
+ *  --kakao-action-bar-gutter / -z-index / -duration / -ease
+ *  Radius and min-height follow the button of the bar's size plus the
+ *  padding on every side: md 14 + 6 = 20 and 44 + 2·6 = 56, sm 10 + 6 = 16
+ *  and 36 + 2·6 = 48. So the space around the buttons is the padding all
+ *  round and the corners are concentric. The defaults are computed from the
+ *  button's settings and the padding, so the link survives a change to either.
  *
  * Parts: bar, summary, actions.
  *
@@ -133,12 +141,14 @@
         --_shadow: var(--kakao-action-bar-shadow, 0 8px 24px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--kakao-color-text, #18181b) 10%, transparent));
         --_font-size: var(--kakao-action-bar-font-size, var(--kakao-font-size, 0.95rem));
         --_summary-weight: var(--kakao-action-bar-summary-weight, 500);
-        --_radius: var(--kakao-action-bar-radius, 20px);
+        --_radius: var(--kakao-action-bar-radius, calc(var(--kakao-button-md-radius, var(--kakao-radius-lg, 14px)) + var(--kakao-action-bar-padding, 6px)));
+        --_radius-sm: var(--kakao-action-bar-radius-sm, calc(var(--kakao-button-sm-radius, var(--kakao-radius-md, 10px)) + var(--kakao-action-bar-padding, 6px)));
         --_padding: var(--kakao-action-bar-padding, 6px);
         --_summary-padding-x: var(--kakao-action-bar-summary-padding-x, 0.625rem);
         --_gap: var(--kakao-action-bar-gap, 0.5rem);
         --_summary-gap: var(--kakao-action-bar-summary-gap, 1rem);
-        --_min-height: var(--kakao-action-bar-min-height, 56px);
+        --_min-height: var(--kakao-action-bar-min-height, calc(var(--kakao-button-md-height, 44px) + 2 * var(--kakao-action-bar-padding, 6px)));
+        --_min-height-sm: var(--kakao-action-bar-min-height-sm, calc(var(--kakao-button-sm-height, 36px) + 2 * var(--kakao-action-bar-padding, 6px)));
         --_min-width: var(--kakao-action-bar-min-width, 20rem);
         --_max-width: var(--kakao-action-bar-max-width, 48rem);
         --_gutter: var(--kakao-action-bar-gutter, 1rem);
@@ -156,6 +166,10 @@
         pointer-events: none;
       }
       :host([hidden]) { display: none; }
+      :host([size="sm"]) {
+        --_radius: var(--_radius-sm);
+        --_min-height: var(--_min-height-sm);
+      }
       :host([position="top"]) {
         --_slide: calc(-100% - var(--_gutter));
         bottom: auto;
@@ -205,7 +219,10 @@
 
       .summary {
         flex: 1 1 auto;
+        display: flex;
+        align-items: center;
         min-width: 0;
+        min-height: calc(var(--_min-height) - 2 * var(--_padding));
         padding-inline: var(--_summary-padding-x) 0;
         font-weight: var(--_summary-weight);
         overflow-wrap: anywhere;

@@ -267,6 +267,14 @@
               "description": "Fixed to the viewport, centred, instead of sticky inside its container."
             },
             {
+              "name": "size",
+              "description": "md (default) · sm. Match it to the size of the buttons in the actions slot: it sets the bar's height and radius so the space around the buttons is even and the corners stay concentric (bar radius = button radius + padding).",
+              "type": {
+                "text": "'md' | 'sm'"
+              },
+              "default": "'md'"
+            },
+            {
               "name": "count",
               "description": "number. With it the bar is shown while the count is above 0, and slides out at 0 (also when empty or not a number). Without it the bar is shown."
             },
@@ -302,7 +310,7 @@
             },
             {
               "name": "actions",
-              "description": "Buttons (kakao-button, size md or sm) or links, in a row that wraps; the main action last."
+              "description": "Buttons (kakao-button, the bar's size) or links, in a row that wraps; the main action last."
             }
           ],
           "cssProperties": [
@@ -328,7 +336,11 @@
             },
             {
               "name": "--kakao-action-bar-radius",
-              "default": "20px"
+              "default": "calc(var(--kakao-button-md-radius, var(--kakao-radius-lg, 14px)) + var(--kakao-action-bar-padding, 6px))"
+            },
+            {
+              "name": "--kakao-action-bar-radius-sm",
+              "default": "calc(var(--kakao-button-sm-radius, var(--kakao-radius-md, 10px)) + var(--kakao-action-bar-padding, 6px))"
             },
             {
               "name": "--kakao-action-bar-padding",
@@ -348,7 +360,11 @@
             },
             {
               "name": "--kakao-action-bar-min-height",
-              "default": "56px"
+              "default": "calc(var(--kakao-button-md-height, 44px) + 2 * var(--kakao-action-bar-padding, 6px))"
+            },
+            {
+              "name": "--kakao-action-bar-min-height-sm",
+              "default": "calc(var(--kakao-button-sm-height, 36px) + 2 * var(--kakao-action-bar-padding, 6px))"
             },
             {
               "name": "--kakao-action-bar-min-width",

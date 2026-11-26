@@ -81,12 +81,12 @@
   </div>
 
   <h2>At the top · <code>position="top"</code></h2>
-  <p>The bar goes at the start of its container and floats at the top edge; on a page it stays below the header bar. Smaller buttons suit a dense list.</p>
+  <p>The bar goes at the start of its container and floats at the top edge; on a page it stays below the header bar. Smaller buttons suit a dense list: give the bar the same <code>size="sm"</code>, so the space around them stays even and the corners concentric.</p>
   <div class="grid">
     <kakao-card>
       <h3 slot="header">Selected files</h3>
       <div class="pick-list" data-pick>
-        <kakao-action-bar position="top" count="0">
+        <kakao-action-bar position="top" size="sm" count="0">
           <span data-summary>0 files selected</span>
           <kakao-button slot="actions" label="Clear" variant="ghost" size="sm" data-clear></kakao-button>
           <kakao-button slot="actions" label="Move" variant="secondary" size="sm"></kakao-button>

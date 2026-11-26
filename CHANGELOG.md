@@ -67,7 +67,8 @@ upgrade is safe; the entries below them give the detail.
   container, or `fixed` to the viewport; with `count` it slides in while the
   count is above 0 and away at 0 (fades when motion is reduced), and a polite
   live region announces the new count (`count-label`, else the summary).
-  `hidden` hides it at once. Full width on phones, flush with the screen edge
+  `hidden` hides it at once; `size="sm"` matches small buttons (height
+  and radius follow the button, so the corners stay concentric). Full width on phones, flush with the screen edge
   and the safe-area inset as padding when fixed; a fixed bar writes its height
   to `--kakao-action-bar-rendered-height`. The kitchen sink uses one for its
   unsaved changes.

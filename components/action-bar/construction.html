@@ -41,7 +41,7 @@
     <figure>
       <figcaption>Small buttons, a ghost action</figcaption>
       <div class="bar-stage">
-        <kakao-action-bar label="Preview actions, small">
+        <kakao-action-bar label="Preview actions, small" size="sm">
           12 files selected
           <kakao-button slot="actions" label="Clear" variant="ghost" size="sm"></kakao-button>
           <kakao-button slot="actions" label="Move" variant="secondary" size="sm"></kakao-button>
@@ -59,11 +59,13 @@
     { "property": "--kakao-action-bar-font-size", "label": "Font size", "group": "Typography", "type": "length", "units": ["rem", "px", "em"] },
     { "property": "--kakao-action-bar-summary-weight", "label": "Summary weight", "group": "Typography", "type": "number", "min": 100, "max": 900, "step": 100 },
     { "property": "--kakao-action-bar-radius", "label": "Radius", "group": "Shape", "type": "radius", "hint": "md button radius + padding, so the corners are concentric" },
+    { "property": "--kakao-action-bar-radius-sm", "label": "Radius (sm)", "group": "Shape", "type": "radius", "hint": "sm button radius + padding" },
     { "property": "--kakao-action-bar-padding", "label": "Padding", "group": "Size & spacing", "type": "length", "units": ["px", "rem"] },
     { "property": "--kakao-action-bar-summary-padding-x", "label": "Summary inset", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "extra space before the summary" },
     { "property": "--kakao-action-bar-gap", "label": "Actions gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "between actions, and between wrapped rows" },
     { "property": "--kakao-action-bar-summary-gap", "label": "Summary gap", "group": "Size & spacing", "type": "length", "units": ["rem", "px", "em"], "hint": "between the summary and the actions" },
     { "property": "--kakao-action-bar-min-height", "label": "Minimum height", "group": "Size & spacing", "type": "length", "units": ["px", "rem"] },
+    { "property": "--kakao-action-bar-min-height-sm", "label": "Minimum height (sm)", "group": "Size & spacing", "type": "length", "units": ["px", "rem"], "hint": "sm button height + 2 × padding" },
     { "property": "--kakao-action-bar-min-width", "label": "Minimum width", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
     { "property": "--kakao-action-bar-max-width", "label": "Maximum width", "group": "Size & spacing", "type": "length", "units": ["rem", "px"] },
     { "property": "--kakao-action-bar-gutter", "label": "Distance from the edge", "group": "Size & spacing", "type": "length", "units": ["rem", "px"], "hint": "to the screen or scroll edge; none on phones when fixed" },
