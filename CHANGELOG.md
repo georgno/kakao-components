@@ -227,6 +227,8 @@ upgrade is safe; the entries below them give the detail.
 
 ### Fixed
 
+- Button: primary (the default) and danger buttons show the keyboard focus
+  ring again; their own shadow outranked it, so tabbing to them showed nothing.
 - Header bar: removing a page header bar while the page itself is torn down
   no longer throws in `disconnectedCallback`.
 - `<kakao-button type="reset">` resets its form (it rendered a plain button).

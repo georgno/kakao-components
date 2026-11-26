@@ -192,6 +192,13 @@ kakao-button[variant="danger"] .kakao-button-inner {
   box-shadow: var(--_danger-shadow);
 }
 
+/* The variant shadows above outrank the plain :focus-visible rule; keep the
+   keyboard focus ring on primary and danger buttons. */
+kakao-button[variant] .kakao-button-inner:focus-visible,
+kakao-button:not([variant]) .kakao-button-inner:focus-visible {
+  box-shadow: 0 0 0 var(--_focus-ring-width) var(--_ring, var(--_primary-ring));
+}
+
 kakao-button[variant="danger"] .kakao-button-inner:hover {
   background: var(--_danger-hover-bg);
 }
