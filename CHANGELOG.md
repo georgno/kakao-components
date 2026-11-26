@@ -205,6 +205,8 @@ upgrade is safe; the entries below them give the detail.
 
 ### Fixed
 
+- Header bar: removing a page header bar while the page itself is torn down
+  no longer throws in `disconnectedCallback`.
 - `<kakao-button type="reset">` resets its form (it rendered a plain button).
 - `tools/manifest.js`: an entry naming several attributes with its
   description on the next line is read (combobox's and password-input's

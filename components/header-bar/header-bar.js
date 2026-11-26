@@ -328,7 +328,7 @@
       if (this._sizes) this._sizes.disconnect();
       cancelAnimationFrame(this._fadeFrame);
       this._fadeFrame = 0;
-      if (this._isPageBar) document.documentElement.style.removeProperty('--kakao-header-bar-rendered-height');
+      if (this._isPageBar) document.documentElement?.style.removeProperty('--kakao-header-bar-rendered-height');
       this._isPageBar = false;
     }
 
