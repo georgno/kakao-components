@@ -27,8 +27,13 @@ You are continuing a multi-item job on georgno/kakao-components. The maintainer'
 | fix | 6ad4aeb | header-bar disconnectedCallback no longer throws when the document is torn down |
 | fix (maintainer) | 4fba219 | action-bar `size="sm"`: radius/min-height derived from the button tokens + padding (concentric corners, even spacing) |
 | A7 recipes | 4253456 | templates/page.html + recipes/{report,dashboard,form,table,list-detail}.html, loader head, deploy copy list |
+| A9 consumer skill | f5225ef | skills/kakao-ui (source) + checked copies in .claude/skills and .pi/skills (tools/skills.js --check); vendor.js ships skill, templates, recipes |
+| A10 visual check | 57fc5a5 | tools/visual-check.js: desktop/phone × light/dark shots + errors, overflow, names, focus, reduced motion; Playwright optional |
+| fix | 1da6801, 1f5757c | button focus: primary/danger had no ring; now the styleguide's 2px outline on every variant (Upgrade line: -ring settings gone) |
+| C1 page transitions | 47b526d | generic page-transition.js (events page-transition-start/-swap/-end, head carried across, signal/wait); six top-level pages use it + loader head + shared/site-shell.css |
+| fix | b90b2a7 | site bar: nav no longer shifts on swap (data-text bold reserve), gear 36px, styles scoped to the site bar |
 
-## Next: A9, A10, C1, then the final summary
+## Status: all items done (A1–A10, B1–B5, C1). Waiting for the maintainer: final summary, decisions below, then push / tags.
 
 Second session (2026-11-26, maintainer's machine, repo /home/georg/projects_priv/kakao-components) did B3–A7. Playwright: none in the repo; a scratchpad install was used (`npm i playwright` in a temp dir, `NODE_PATH=…/node_modules`).
 
@@ -108,6 +113,9 @@ Rules for the new components (learned along the way):
 - B5: `level` (not `heading-level`) because the element is the heading. Questions: muted count by default and badge only for status counts? A documented rule for page spacing around section headers?
 - Action bar: should "bar radius = button radius + padding, height = button height + 2·padding" become a styleguide rule?
 - A7: kakao.css has no body base (every page needs a small base `<style>`); `form.reset()` does not clear kakao-text-input (maybe textarea/checkbox too): bug; stat tiles are a page-only `.stat` class: pattern candidate. Review questions: links use the accent (`--kakao-color-primary`) though the styleguide reserves it for state; nav links underline on hover/current (styleguide selection = weight); the body/h1/a base style repeats in six files: one shared page-base stylesheet (or a body base in kakao.css)?
+
+- Button focus: menu items use an inset outline (-2px offset) unlike the 2px-offset rule: deliberate inside a panel? Should the styleguide require 4px clearance from clipping edges (dialog overflow:hidden)?
+- C1 / site bar: promote "current page by weight 650, hover underline, never accent" to a header-bar rule? The bold reserve makes every nav link as wide as its bold label (row slightly wider). tabs thumb sometimes draws too wide on a direct load (pre-existing). index checkbox focus finding from visual-check (pre-existing).
 
 **Open bugs and questions for the maintainer**
 - About 18 components ignore `hidden`: animated-number, aside-menu, button, file-upload, list, multi-dropdown, slider, step-switch, switch-group, tabs, …. CATALOG.md tells consumers to hide a wrapper for now. Needs a real fix.
