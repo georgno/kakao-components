@@ -1,93 +1,75 @@
 /**
- * @element kakao-slider
- * @version 2.0.0
+ * <kakao-slider>
+ * ============================================================================
+ * An accessible value slider with animated friction points, a numeric input
+ * and a unit append. Visual design: system-native, plain - no gradients on
+ * interactive elements, no drop shadows, borders for separation. Vanilla JS,
+ * Shadow DOM, no deps.
  *
- * A production-ready, accessible value slider Web Component with animated
- * friction points, a numeric input, and a unit append.
- * Visual design: system-native, plain - no gradients on interactive elements,
- * no drop shadows, borders for separation.
+ * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     slider.js
+ *  css        none
+ *  requires   none
+ *  enhanced   number-input   (used when loaded, optional)
  *
- * ---
- * ## Attributes
- *
- * | Attribute | Type    | Default | Description                                           |
- * |-----------|---------|---------|-------------------------------------------------------|
- * | min       | number  | 0       | Minimum value                                         |
- * | max       | number  | 100     | Maximum value                                         |
- * | value     | number  | 0       | Current value                                         |
- * | step      | number  | 1       | Step increment (controls friction point density)      |
- * | unit      | string  | ""      | Unit label appended to the number input (e.g. "px")   |
- * | label     | string  | "Value" | Accessible label for the slider                       |
- * | disabled  | boolean | false   | Disables all interaction                              |
- * | touch-steppers | boolean | false | Always show the big | < | value | > | step buttons  |
- * |              |         |      | (they show on touch screens anyway).                   |
- * | scroll-input | boolean | auto | When `kakao-number-input` is registered on the page, wrap
- * |              |         |      | the numeric field with it (stepper arrows). Set
- * |              |         |      | `scroll-input="false"` to force the native input.
- * |              |         |      | Set `scroll-input="true"` to prefer kakao-number-input
- * |              |         |      | (falls back to native if the component is not loaded).
- *
- * Load order when using kakao-number-input:
- *   <script src="number-input.js"><\/script>
+ * ----------------------------------------------------------------------------
+ * USAGE
+ * ----------------------------------------------------------------------------
  *   <script src="slider.js"><\/script>
  *
- * ---
- * ## CSS Custom Properties
+ *   <kakao-slider min="0" max="200" step="10" value="60" unit="px" label="Width"></kakao-slider>
  *
- * Set them on the element or any ancestor. Their defaults live in the settings
- * block of this file: change them on construction.html.
+ *   With kakao-number-input (stepper arrows on the numeric field), load it first:
+ *   <link rel="stylesheet" href="../number-input/number-input.css">
+ *   <script src="../number-input/number-input.js"><\/script>
+ *   <script src="slider.js"><\/script>
  *
- * | Property                  | Default                              | Description                    |
- * |---------------------------|--------------------------------------|--------------------------------|
- * | --kakao-slider-font-family          | --kakao-font-family, else system-ui  | Font family                    |
- * | --kakao-slider-accent               | #111                                 | Fill, active thumb border      |
- * | --kakao-slider-track-bg             | #e0e0e0                              | Unfilled track colour          |
- * | --kakao-slider-track-height         | 4px                                  | Track height                   |
- * | --kakao-slider-thumb-size           | 16px                                 | Thumb diameter                 |
- * | --kakao-slider-tick-color           | #ccc                                 | Friction point tick colour     |
- * | --kakao-slider-tick-active-color    | #999                                 | Tick colour behind fill        |
- * | --kakao-slider-input-bg             | #fff                                 | Number input background        |
- * | --kakao-slider-input-border         | #ccc                                 | Input / unit border colour     |
- * | --kakao-slider-unit-bg              | #f7f7f7                              | Unit badge background          |
- * | --kakao-slider-unit-color           | #555                                 | Unit badge text colour         |
- * | --kakao-slider-label-color          | #111                                 | Label text colour              |
- * | --kakao-slider-range-color          | #999                                 | Min/max range label colour     |
- * | --kakao-slider-disabled-opacity     | 0.4                                  | Opacity when disabled          |
- * | --kakao-slider-transition-speed     | 150ms                                | Thumb / fill transition speed  |
- * | --kakao-slider-range-font-size      | 11px                                 | Min/max range label size       |
+ * ----------------------------------------------------------------------------
+ * ATTRIBUTES
+ * ----------------------------------------------------------------------------
+ *  min              Minimum value (default 0).
+ *  max              Maximum value (default 100).
+ *  value            Current value (default 0).
+ *  step             Step increment (default 1; sets the friction point density).
+ *  unit             Unit label appended to the number input (e.g. "px").
+ *  label            Accessible label for the slider (default "Value").
+ *  disabled         Disables all interaction.
+ *  touch-steppers   Always show the big | < | value | > | step buttons (they
+ *                   show on touch screens anyway).
+ *  scroll-input     true · false: wrap the numeric field in kakao-number-input.
+ *                   Without the attribute it does so when kakao-number-input is
+ *                   registered; "false" forces the native input; "true" prefers
+ *                   kakao-number-input (native when it is not loaded).
  *
- * ---
- * ## Public Methods
+ * ----------------------------------------------------------------------------
+ * METHODS
+ * ----------------------------------------------------------------------------
+ *  setValue(v)      Set the value (a number).
+ *  setData(opts)    Configure at once: { min?, max?, step?, value?, unit?, label? }.
+ *  getValue()       The current value (a number).
  *
- * | Method   | Signature                     | Description                       |
- * |----------|-------------------------------|-----------------------------------|
- * | setValue | (v: number) => void           | Programmatically set the value    |
- * | setData  | (opts: SliderOptions) => void | Bulk-configure min/max/step/value |
- * | getValue | () => number                  | Return current numeric value      |
+ * ----------------------------------------------------------------------------
+ * EVENTS (bubble, composed)
+ * ----------------------------------------------------------------------------
+ *  slider-change   { value, min, max, step, percent }   every committed change
+ *  slider-input    { value, min, max, step, percent }   continuously while dragging
+ *  slider-focus    { value }   the thumb received focus
+ *  slider-blur     { value }   the thumb lost focus
  *
- * SliderOptions: { min?, max?, step?, value?, unit?, label? }
- *
- * ---
- * ## Events
- *
- * | Event     | Detail                             | Description                    |
- * |-----------|------------------------------------|--------------------------------|
- * | slider-change | { value, min, max, step, percent } | Fired on every committed change|
- * | slider-input  | { value, min, max, step, percent } | Fired continuously while dragging |
- * | slider-focus  | { value }                          | Slider thumb received focus    |
- * | slider-blur   | { value }                          | Slider thumb lost focus        |
- *
- * ---
- * ## Usage
- *
- * ```html
- * <script src="slider.js"><\/script>
- * <kakao-slider min="0" max="200" step="10" value="60" unit="px" label="Width"></kakao-slider>
- * ```
+ * ----------------------------------------------------------------------------
+ * CSS CUSTOM PROPERTIES (defaults in the settings block; edit on construction.html)
+ * ----------------------------------------------------------------------------
+ *  --kakao-slider-font-family / -accent / -track-bg / -track-height / -thumb-size
+ *  --kakao-slider-tick-color / -tick-active-color / -input-bg / -input-border
+ *  --kakao-slider-unit-bg / -unit-color / -label-color / -range-color
+ *  --kakao-slider-disabled-opacity / -transition-speed / -range-font-size
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
  * to the style rules and has no effect in the browser.
+ * ============================================================================
  */
 
 class KakaoSlider extends HTMLElement {

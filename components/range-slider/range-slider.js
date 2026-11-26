@@ -7,6 +7,14 @@
  * the two thumbs. Form-associated. Vanilla JS, Shadow DOM, no deps.
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     range-slider.js
+ *  css        none
+ *  requires   none
+ *  enhanced   number-input   (used when loaded, optional)
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  *   <script src="range-slider.js"><\/script>

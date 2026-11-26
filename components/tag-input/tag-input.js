@@ -13,6 +13,14 @@
  * the tags show as plain grey labels without the remove button).
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     tag-input.js
+ *  css        none
+ *  requires   chip   (load these first, in this order)
+ *  enhanced   none
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  *   <script src="../chip/chip.js"><\/script>

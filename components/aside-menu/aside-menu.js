@@ -11,6 +11,14 @@
  * Vanilla JS, no dependencies.
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     aside-menu.js
+ *  css        aside-menu.css   (light DOM: load it in the page head)
+ *  requires   button   (load these first, in this order)
+ *  enhanced   none
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  *   <link rel="stylesheet" href="aside-menu.css">

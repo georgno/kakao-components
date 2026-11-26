@@ -9,6 +9,14 @@
  * corner placement) and needs alert.js. Load stack.js and alert.js first.
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     toast.js
+ *  css        none
+ *  requires   stack, alert   (load these first, in this order)
+ *  enhanced   button   (used when loaded, optional)
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  *   <script src="stack.js" defer><\/script>

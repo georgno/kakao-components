@@ -1,79 +1,119 @@
 /**
- * @element kakao-button
+ * <kakao-button>
+ * ============================================================================
+ * Light-DOM button web component with variants, sizes, icons, toggle, a
+ * dropdown menu form and async loading states (via .run(promise)). Load
+ * button.css in the page.
  *
- * Light-DOM button web component with variants, sizes, icons, toggle and
- * async loading states (via .run(promise)).
+ * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     button.js
+ *  css        button.css   (light DOM: load it in the page head)
+ *  requires   none
+ *  enhanced   tooltip   (used when loaded, optional)
  *
- * Attributes:
- *   label, icon, icon-position (left|right|only), variant (primary|secondary|ghost|danger),
- *   size (sm|md|lg), disabled, toggle, pressed, type (button|submit), name, value, form,
- *   href, aria-label
+ * ----------------------------------------------------------------------------
+ * USAGE
+ * ----------------------------------------------------------------------------
+ *   <link rel="stylesheet" href="button.css">
+ *   <script src="button.js"><\/script>
  *
- * Icons - no icon font needed; the button draws its own glyphs (chevron,
- * spinner, success check) as inline SVG:
- *   slot="icon"     A child element with slot="icon" is the icon: an inline <svg>
- *                   (sized 1em, coloured with currentColor), an <img>, or an icon-font
- *                   element. Light DOM has no real slots, so the button moves that
- *                   child into the icon position and keeps it there across updates.
- *                     <kakao-button label="Save"><svg slot="icon" viewBox="0 0 24 24"
- *                       aria-hidden="true">…</svg></kakao-button>
- *                     <kakao-button label="Settings"><i slot="icon" class="fas fa-gear"
- *                       aria-hidden="true"></i></kakao-button>
- *   icon            Optional shortcut: icon-font classes put on an <i>, e.g.
- *                   icon="fas fa-gear". Only draws when the page loads that icon
- *                   font (Font Awesome is not part of the library). A slotted icon
- *                   wins over it.
- *   icon-position   left (default with a label), right, or only (default without one;
- *                   give it an aria-label or a label, which then names the button
- *                   and is shown as its hover tooltip).
- *   title           Hover tooltip. An icon-only button defaults it to its name;
- *                   title="" turns that off. With kakao-tooltip loaded (before
- *                   or after this script), every button with a title (its own,
- *                   on any button, or the icon-only default) puts that text in
- *                   data-tooltip on the inner <button> instead, so the themed
- *                   tooltip shows it (also on focus and touch long-press) and no
- *                   native one; a data-tooltip of your own on the host wins. The button reacts
- *                   to the tooltip's "tooltip-ready" trigger (KakaoComponents).
+ *   <kakao-button label="Save"></kakao-button>
+ *   <kakao-button label="Delete" variant="danger" size="sm"></kakao-button>
+ *   <kakao-button label="Save"><svg slot="icon" viewBox="0 0 24 24"
+ *     aria-hidden="true">…</svg></kakao-button>
  *
- * Menu (dropdown) form - works with every variant and size:
- *   list-data       JSON array of items (never "data"):
- *                     [{ "value": "light", "label": "Light", "disabled"?: true }, …]
- *                   Turns the button into a menu button: a trailing chevron, and a
- *                   click (or ↓ / ↑ / Enter / Space) opens the list below it.
- *                   The list stays on screen: it opens upwards when there is no
- *                   room below, and from the button's right edge when it would
- *                   run off the right side (shifted in if neither edge fits).
- *   selected        Value of the checked item (role="menuitemradio"). Updated on pick.
- *   show-selected   Show the selected item's label instead of `label`
- *                   (`label` is then the menu's accessible name: "Theme: Dark").
- *   no-chevron      Hide the chevron (e.g. a "⋯" actions button). An icon-only
- *                   dropdown then stays a circle; with the chevron it is a pill.
- *   Keyboard in the open menu: ↑ / ↓ / Home / End move, a letter jumps,
- *   Enter / Space pick, Escape closes and returns focus, Tab closes.
+ * ----------------------------------------------------------------------------
+ * ATTRIBUTES
+ * ----------------------------------------------------------------------------
+ *  label           The button's text (and its name).
+ *  variant         primary (default) · secondary · ghost · danger
+ *  size            sm · md (default) · lg
+ *  icon            Optional shortcut: icon-font classes put on an <i>, e.g.
+ *                  icon="fas fa-gear". Only draws when the page loads that icon
+ *                  font (Font Awesome is not part of the library). A slotted icon
+ *                  wins over it.
+ *  icon-position   left · right · only: left is the default with a label, only
+ *                  without one (give it an aria-label or a label, which then
+ *                  names the button and is shown as its hover tooltip).
+ *  disabled        Not clickable, dimmed.
+ *  toggle          A toggle button: off dimmed at weight 400, pressed full at 600.
+ *  pressed         The toggle's state.
+ *  type            button (default) · submit
+ *  name · value · form   Form participation, as on a native button.
+ *  href            Renders a link that looks like the button.
+ *  aria-label      The name when there is no visible label.
+ *  title           Hover tooltip. An icon-only button defaults it to its name;
+ *                  title="" turns that off. With kakao-tooltip loaded (before
+ *                  or after this script), every button with a title (its own,
+ *                  on any button, or the icon-only default) puts that text in
+ *                  data-tooltip on the inner <button> instead, so the themed
+ *                  tooltip shows it (also on focus and touch long-press) and no
+ *                  native one; a data-tooltip of your own on the host wins. The
+ *                  button reacts to the tooltip's "tooltip-ready" trigger.
+ *  list-data       JSON array of items (never "data"):
+ *                  [{ "value": "light", "label": "Light", "disabled"?: true }, …]
+ *                  Turns the button into a menu button: a trailing chevron, and a
+ *                  click (or ↓ / ↑ / Enter / Space) opens the list below it.
+ *                  The list stays on screen: it opens upwards when there is no
+ *                  room below, and from the button's right edge when it would
+ *                  run off the right side (shifted in if neither edge fits).
+ *  selected        Value of the checked item (role="menuitemradio"). Updated on pick.
+ *  show-selected   Show the selected item's label instead of label (label is
+ *                  then the menu's accessible name: "Theme: Dark").
+ *  no-chevron      Hide the chevron (e.g. a "⋯" actions button). An icon-only
+ *                  dropdown then stays a circle; with the chevron it is a pill.
  *
- * data-* attributes on the host are mirrored onto the inner <button> so Yii
- * (data-confirm / data-method) and any custom data-* hooks keep working.
+ *  data-* attributes on the host are mirrored onto the inner <button> so Yii
+ *  (data-confirm / data-method) and any custom data-* hooks keep working.
  *
- * Events:
- *   kakao-button-action - bubbles on click (not while loading; not for menu buttons)
- *   kakao-button-select - bubbles when a menu item is picked:
- *                         { value, label, previous, x, y } (x / y: viewport point
- *                         of the pick, for effects that start there)
- *   kakao-button-menu   - bubbles when the menu opens or closes: { open }
- *   kakao-button-menu-hover - bubbles when the pointer moves onto a different
- *                         menu item: { value, label, index }. Mouse only (keys
- *                         and taps don't fire it), so a listener can follow the
- *                         pointer, e.g. a theme menu switching the page as the
- *                         pointer passes. It fires again after the pointer left
- *                         the menu or the menu was reopened.
+ * ----------------------------------------------------------------------------
+ * SLOTS
+ * ----------------------------------------------------------------------------
+ *  icon            A child with slot="icon" is the icon: an inline <svg> (sized
+ *                  1em, coloured with currentColor), an <img>, or an icon-font
+ *                  element. Light DOM has no real slots, so the button moves that
+ *                  child into the icon position and keeps it there across updates.
+ *                  The button draws its own glyphs (chevron, spinner, success
+ *                  check) as inline SVG: no icon font needed.
  *
- * Public methods:
- *   run(promiseOrFactory, { successHold? }) - loading → success/fail animation
- *   openMenu(), closeMenu()                 - menu buttons only
+ * ----------------------------------------------------------------------------
+ * KEYBOARD (open menu)
+ * ----------------------------------------------------------------------------
+ *  ↑ / ↓ / Home / End move, a letter jumps, Enter / Space pick, Escape closes
+ *  and returns focus, Tab closes.
+ *
+ * ----------------------------------------------------------------------------
+ * EVENTS (bubble)
+ * ----------------------------------------------------------------------------
+ *  kakao-button-action       on click (not while loading; not for menu buttons)
+ *  kakao-button-select       { value, label, previous, x, y }  a menu item was
+ *                            picked (x / y: viewport point of the pick, for
+ *                            effects that start there)
+ *  kakao-button-menu         { open }  the menu opened or closed
+ *  kakao-button-menu-hover   { value, label, index }  the pointer moved onto a
+ *                            different menu item. Mouse only (keys and taps
+ *                            don't fire it), so a listener can follow the
+ *                            pointer, e.g. a theme menu switching the page as
+ *                            the pointer passes. It fires again after the
+ *                            pointer left the menu or the menu was reopened.
+ *
+ * ----------------------------------------------------------------------------
+ * METHODS
+ * ----------------------------------------------------------------------------
+ *  run(promiseOrFactory, { successHold? })   loading → success / fail animation
+ *  openMenu() · closeMenu()                  menu buttons only
+ *
+ * ----------------------------------------------------------------------------
+ * CSS CUSTOM PROPERTIES (defaults in the settings block of button.css)
+ * ----------------------------------------------------------------------------
+ *  --kakao-button-*: see the settings block; edit on construction.html.
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
  * to the style rules and has no effect in the browser.
+ * ============================================================================
  */
 (function () {
   'use strict';

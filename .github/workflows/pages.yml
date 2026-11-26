@@ -38,12 +38,16 @@ jobs:
       - name: Token export up to date
         run: node tools/export-tokens.js --check
 
+      # custom-elements.json (tools/manifest.js) must match the component headers.
+      - name: Manifest up to date
+        run: node tools/manifest.js --check
+
       # Only publish the demo pages and what they load; archive/, openspec/
       # and tools/ stay in the repo but off the site.
       - name: Assemble site
         run: |
           mkdir _site
-          cp -r index.html components.html kitchen-sink.html tokens.html styleguide.html changelog.html CHANGELOG.md tokens.json components shared _site/
+          cp -r index.html components.html kitchen-sink.html tokens.html styleguide.html changelog.html CHANGELOG.md tokens.json custom-elements.json components shared _site/
 
       # Minify the copy (never the repo): no comments or extra whitespace in
       # HTML, JS and CSS. The minifiers are installed for this run only; the

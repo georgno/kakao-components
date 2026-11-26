@@ -9,6 +9,14 @@
  * pops). Form-associated. Vanilla JS, Shadow DOM, no icon font.
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     password-input.js
+ *  css        none
+ *  requires   none
+ *  enhanced   progress   (used when loaded, optional)
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  *   <script src="../progress/progress.js"><\/script>   (only for requirements)

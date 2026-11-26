@@ -24,6 +24,14 @@ render into a shadow root (with slots where they take content).
   by hand. The pre-commit hook regenerates it from the staged sources and the deploy
   runs `--check`. New CSS syntax in a settings block makes the exporter stop: extend
   `tools/export-tokens/parse.js` (with a test), don't work around it.
+- Every component header follows one format, because `tools/manifest.js` reads it into
+  `custom-elements.json`: sections are a title between two dash lines (ATTRIBUTES, PROPERTIES,
+  METHODS, EVENTS, SLOTS, FILES; prose sections are free); an entry is `name  description`
+  indented 1-4 spaces, several names joined with ` · `, allowed values as `a (default) · b · c`,
+  an event's detail as `{ … }`. The FILES section names the script, its light-DOM CSS, the
+  components it `requires` (load first, in order) and the ones it is `enhanced` by. Fix a header
+  that doesn't parse; never special-case it in the tool. The pre-commit hook and the deploy run
+  `node tools/manifest.js --check`.
 - A new component is added to `components.html` (the list page), to the styleguide's
   component audit and, if it fits, to `kitchen-sink.html`. `index.html` is the hero page.
 - Every page loads `shared/page-cloak.js` synchronously right after `shared/component-api.js`:

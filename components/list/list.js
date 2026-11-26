@@ -1,62 +1,62 @@
-/*
- * list.js - Web Component
- * ==========================================================
+/**
+ * <kakao-list>
+ * ============================================================================
+ * A 3D picker list: rows tilt away in perspective as they scroll past the
+ * middle, with optional group headings. Vanilla JS, Shadow DOM, no deps.
+ * For a plain styled list of short items, use kakao-content-list instead.
  *
+ * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     list.js
+ *  css        none
+ *  requires   none
+ *  enhanced   none
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
- * -----
+ * ----------------------------------------------------------------------------
  *   <script src="list.js"><\/script>
- *   <kakao-list
- *     width="260"
- *     height="360"
- *     groups="true"
- *     item-height="44"
- *     max-tilt="65"
- *     list-data='[{"group":"Label","names":["Item 1","Item 2"]}]'>
- *   </kakao-list>
  *
+ *   <kakao-list width="260" height="360" groups="true" item-height="44" max-tilt="65"
+ *     list-data='[{"group":"Label","names":["Item 1","Item 2"]}]'></kakao-list>
+ *
+ * ----------------------------------------------------------------------------
  * ATTRIBUTES
- * ----------
- *   width        - Component width in px (default: 260)
- *   height       - Component height in px (default: 360)
- *   item-height  - Row height in px (default: 44)
- *   max-tilt     - Max perspective tilt in degrees (default: 65)
- *   groups       - Show group headings: "true" | "false" (default: true)
- *   list-data    - JSON string: [{group, names[]}]
- *   disabled     - Disables interaction when present
+ * ----------------------------------------------------------------------------
+ *  width         Component width in px (default 260).
+ *  height        Component height in px (default 360).
+ *  item-height   Row height in px (default 44).
+ *  max-tilt      Max perspective tilt in degrees (default 65).
+ *  groups        true (default) · false: show group headings.
+ *  list-data     JSON array of groups (never "data"): [{ "group", "names": [] }].
+ *  disabled      Disables interaction when present.
  *
- * CSS CUSTOM PROPERTIES
- * ----------------------
- *   Set them on the element or any ancestor. Their defaults live in the
- *   settings block of this file: change them on construction.html.
- *   --kakao-list-bg              Background color (default: #fff)
- *   --kakao-list-border-color    Item divider color (default: #eee)
- *   --kakao-list-item-color      Item text color (default: #111)
- *   --kakao-list-item-font       Item font (default: --kakao-font-family, else system-ui)
- *   --kakao-list-item-hover-bg   Item hover bg (default: #f5f5f5)
- *   --kakao-list-item-active-bg  Item press bg (default: #ebebeb)
- *   --kakao-list-item-selected-bg Selected item bg (default: #e8e8e8)
- *   --kakao-list-group-bg        Group header bg (default: #f7f7f7)
- *   --kakao-list-group-color     Group header text (default: #999)
- *   --kakao-list-scrollbar-track Scrollbar track color (default: #f0f0f0)
- *   --kakao-list-scrollbar-thumb Scrollbar thumb color (default: #bbb)
- *   --kakao-list-fade-color      Edge fade colour (default: --kakao-color-bg, else #ffffff)
- *   …and more (item/group sizes, chevron, focus, scrollbar hover): see the
- *   settings block or construction.html for the full list.
- *
+ * ----------------------------------------------------------------------------
  * METHODS
- * -------
- *   setData(data, withGroups) - Load data programmatically
- *   scrollBy(delta)           - Scroll by delta pixels
+ * ----------------------------------------------------------------------------
+ *  setData(data, withGroups)   Load data programmatically.
+ *  scrollBy(delta)             Scroll by delta pixels.
  *
- * EVENTS
- * ------
- *   item-select  - { detail: { name, index } }
- *   item-action  - { detail: { name, index } } (chevron button)
- *   scroll-end   - Fired when scroll reaches top or bottom
+ * ----------------------------------------------------------------------------
+ * EVENTS (bubble)
+ * ----------------------------------------------------------------------------
+ *  item-select   { name, index }   a row was picked
+ *  item-action   { name, index }   a row's chevron button was pressed
+ *  scroll-end    the list reached its top or bottom
+ *
+ * ----------------------------------------------------------------------------
+ * CSS CUSTOM PROPERTIES (defaults in the settings block; edit on construction.html)
+ * ----------------------------------------------------------------------------
+ *  --kakao-list-bg / -border-color / -item-color / -item-font / -item-hover-bg
+ *  --kakao-list-item-active-bg / -item-selected-bg / -group-bg / -group-color
+ *  --kakao-list-scrollbar-track / -scrollbar-thumb / -fade-color, and more
+ *  (item and group sizes, chevron, focus, scrollbar hover): see the settings block.
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
  * to the style rules and has no effect in the browser.
+ * ============================================================================
  */
 
 class KakaoList extends HTMLElement {

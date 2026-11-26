@@ -1,47 +1,62 @@
 /**
  * <kakao-number-input>
+ * ============================================================================
  * Wraps a child <input type="number"> with custom stepper arrows and wheel
- * on the arrow strip. Native browser spin buttons are hidden.
+ * on the arrow strip. Native browser spin buttons are hidden. Vanilla JS,
+ * light DOM: load number-input.css.
  *
- * Usage:
+ * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     number-input.js
+ *  css        number-input.css   (light DOM: load it in the page head)
+ *  requires   none
+ *  enhanced   none
+ *
+ * ----------------------------------------------------------------------------
+ * USAGE
+ * ----------------------------------------------------------------------------
  *   <link rel="stylesheet" href="number-input.css">
  *   <script src="number-input.js"><\/script>
+ *
  *   <kakao-number-input>
  *     <input type="number" min="0" max="100" step="1" value="10" />
  *   </kakao-number-input>
  *
- * Attributes (on <kakao-number-input>):
- *   size            "sm" for a compact control (styling hook via number-input.css)
- *   touch-steppers  always use the touch layout (it is used on touch screens
- *                   anyway): 44px − and + buttons instead of the stacked ▲▼
- *   plus            Where the + button sits in the touch layout:
- *                     "left" | "right"  that side
- *                     (no value)        the default side, right
- *                     "false" | "off" | "0" | "no"   no + button
- *   minus           Same for the − button. Default: right.
- *   grouped         Keep the two buttons together as one joined cluster (the
- *                   default). "false" / "off" / "0" / "no" gives two separate
- *                   buttons with a gap instead. A visible group sits on
- *                   group-position, whatever plus / minus say.
- *   group-position  "left" | "right" (default right): the side of that group.
+ *   <kakao-number-input touch-steppers group-position="left">…</kakao-number-input>
+ *   <kakao-number-input touch-steppers grouped="false" plus="left">…</kakao-number-input>
+ *   <kakao-number-input touch-steppers minus="false">…</kakao-number-input>
  *
- *   Defaults reproduce the first layout: | value | − + |, one joined pair on
- *   the right. On a fine pointer (a mouse) the arrows stay stacked on the right
- *   and only the hiding options apply; the sides are the touch layout's.
+ * ----------------------------------------------------------------------------
+ * ATTRIBUTES
+ * ----------------------------------------------------------------------------
+ *  size            sm: a compact control (styling hook via number-input.css).
+ *  touch-steppers  Always use the touch layout (it is used on touch screens
+ *                  anyway): 44px − and + buttons instead of the stacked ▲▼.
+ *  plus            left · right · false: where the + button sits in the touch
+ *                  layout ("off", "0" and "no" also hide it). Default right.
+ *  minus           left · right · false: the same for the − button.
+ *  grouped         Keep the two buttons together as one joined cluster (the
+ *                  default). "false" / "off" / "0" / "no" gives two separate
+ *                  buttons with a gap instead. A visible group sits on
+ *                  group-position, whatever plus / minus say.
+ *  group-position  left · right (default): the side of that group.
  *
- *   Examples:
- *     <kakao-number-input touch-steppers group-position="left">…</kakao-number-input>
- *     <kakao-number-input touch-steppers grouped="false" plus="left">…</kakao-number-input>
- *     <kakao-number-input touch-steppers minus="false">…</kakao-number-input>
+ *  Defaults reproduce the first layout: | value | − + |, one joined pair on
+ *  the right. On a fine pointer (a mouse) the arrows stay stacked on the right
+ *  and only the hiding options apply; the sides are the touch layout's.
  *
- * Hold a button to repeat the step.
- *
- * The inner input keeps min, max, step, value, disabled, and class names
- * (e.g. your form framework). Changes bubble as input/change on the input.
+ * ----------------------------------------------------------------------------
+ * BEHAVIOUR
+ * ----------------------------------------------------------------------------
+ *  Hold a button to repeat the step. The inner input keeps min, max, step,
+ *  value, disabled, and class names (e.g. your form framework). Changes bubble
+ *  as input / change on the input.
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
  * to the style rules and has no effect in the browser.
+ * ============================================================================
  */
 
 class KakaoNumberInput extends HTMLElement {

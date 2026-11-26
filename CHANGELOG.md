@@ -19,6 +19,19 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- `custom-elements.json`: every component in the Custom Elements Manifest
+  format (schema 2.1.0) - attributes with their allowed values and defaults,
+  properties, methods, events with their detail, slots, CSS custom properties
+  with defaults, parts - plus the library's own `kakao` field per element:
+  its script, the light-DOM CSS a page must load, the components it requires
+  (in load order) and the ones it uses when loaded. Generated from the
+  component headers by `node tools/manifest.js`; `--check` reports a stale
+  file, and the pre-commit hook and the deploy run it. Published on the
+  demo site.
+- Every component header has a FILES section (script, css, requires,
+  enhanced). The headers of button, slider, tabs, number-input,
+  animated-number and list follow the shared header format now.
+
 - `<kakao-stack>`: the toast's pile of cards as a component of its own. The
   newest child is in front, older ones smaller, paler (desaturated) and
   tilted back behind it, fanned out into a list on hover or focus (tap on

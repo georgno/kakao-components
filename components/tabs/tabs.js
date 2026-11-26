@@ -1,10 +1,61 @@
 /**
- * Tab Switcher web components: <kakao-tabs> and <kakao-tab>
- * Dispatches a bubbling "tab-change" event with detail: { controls, item, url }
+ * <kakao-tabs> and <kakao-tab>
+ * ============================================================================
+ * A row of tabs with a sliding thumb under the selected one. Each tab can
+ * show its panel (controls) or carry a URL; the row scrolls sideways with an
+ * edge fade when it doesn't fit. Vanilla JS, light DOM: load tabs.css.
+ *
+ * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     tabs.js
+ *  css        tabs.css   (light DOM: load it in the page head)
+ *  requires   none
+ *  enhanced   none
+ *
+ * ----------------------------------------------------------------------------
+ * USAGE
+ * ----------------------------------------------------------------------------
+ *   <link rel="stylesheet" href="tabs.css">
+ *   <script src="tabs.js"><\/script>
+ *
+ *   <kakao-tabs>
+ *     <kakao-tab selected controls="panel-a">Overview</kakao-tab>
+ *     <kakao-tab controls="panel-b">Details</kakao-tab>
+ *     <kakao-tab disabled>Archive</kakao-tab>
+ *   </kakao-tabs>
+ *   <section id="panel-a">…</section>
+ *   <section id="panel-b" hidden>…</section>
+ *
+ * ----------------------------------------------------------------------------
+ * ATTRIBUTES · kakao-tab
+ * ----------------------------------------------------------------------------
+ *  selected         The selected tab (one per row).
+ *  disabled         Can't be selected; a press shakes it.
+ *  controls         Id of the panel it shows (the others' panels get hidden).
+ *                   data-controls is read too.
+ *  data-url         A URL it stands for (href is read too); comes with tab-change.
+ *  data-no-select   Hosts an embedded control (a dropdown); a press doesn't select.
+ *
+ * ----------------------------------------------------------------------------
+ * METHODS · kakao-tabs
+ * ----------------------------------------------------------------------------
+ *  select(target)   Select a tab by its controls value, its URL, or the element.
+ *
+ * ----------------------------------------------------------------------------
+ * EVENTS (bubble)
+ * ----------------------------------------------------------------------------
+ *  tab-change   { controls, item, url }   a tab was selected.
+ *
+ * ----------------------------------------------------------------------------
+ * CSS CUSTOM PROPERTIES (defaults in the settings block of tabs.css)
+ * ----------------------------------------------------------------------------
+ *  --kakao-tabs-*: see the settings block; edit on construction.html.
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
  * to the style rules and has no effect in the browser.
+ * ============================================================================
  */
 (function () {
   'use strict';

@@ -5,6 +5,14 @@
  * "squash and stretch" animation, built with vanilla JS + Shadow DOM.
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     switch-group.js
+ *  css        none
+ *  requires   none
+ *  enhanced   none
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  * <\/script>  <!-- safe to inline in HTML, see note below -->
@@ -26,18 +34,18 @@
  * ----------------------------------------------------------------------------
  * ATTRIBUTES (all observed, all reflect into the public API)
  * ----------------------------------------------------------------------------
- *  - label            string   Accessible group label (used as aria-label on
+ *  label              string   Accessible group label (used as aria-label on
  *                               the group container). Default: "Switch group".
- *  - list-data         JSON     Array of switch definitions. NEVER use the
+ *  list-data           JSON     Array of switch definitions. NEVER use the
  *                               reserved `data` attribute name.
  *                               Shape: [{ name, label, checked, disabled }]
  *                               An item with label "" draws no label and is
  *                               named by the group's label (a single switch
  *                               beside its own label, e.g. in a kakao-setting).
- *  - orientation       string   "horizontal" (default) | "vertical"
- *  - disabled          boolean  Disables the entire group, sets aria-disabled
+ *  orientation         string   "horizontal" (default) | "vertical"
+ *  disabled            boolean  Disables the entire group, sets aria-disabled
  *                               on the host, and blocks all interaction.
- *  - thumb-drag        boolean  Lets the user grab the thumb (the dot) with a
+ *  thumb-drag          boolean  Lets the user grab the thumb (the dot) with a
  *                               finger or mouse and drag it along the track.
  *                               On release the thumb snaps to whichever end it
  *                               is nearer to. Dragging past either end squashes
@@ -55,13 +63,13 @@
  *                               (Deliberately not called `draggable`: that is a
  *                               native HTML attribute which would switch on
  *                               browser drag-and-drop for the host element.)
- *  - color-labels      boolean  Default OFF. When present, the label of a checked
+ *  color-labels        boolean  Default OFF. When present, the label of a checked
  *                               switch takes the "on" colour
  *                               (--kakao-switch-label-color-on, which follows
  *                               --kakao-switch-track-bg-on unless set) and fades
  *                               back when it is turned off. "false" / "off" /
  *                               "0" / "no" turn it off. JS property: colorLabels.
- *  - async             boolean  Default OFF. Every user toggle first fires a
+ *  async               boolean  Default OFF. Every user toggle first fires a
  *                               cancelable "switch-request" event whose detail has
  *                               waitUntil(promise). If a listener hands it a promise,
  *                               the thumb moves to the new end and shows a spinning
@@ -71,7 +79,7 @@
  *                               thumb shows an X, and after a moment it springs back
  *                               ("switch-error"). Without waitUntil the toggle is
  *                               immediate. JS property: async.
- *  - loading-delay     number   Default 300. Milliseconds an async toggle waits
+ *  loading-delay       number   Default 300. Milliseconds an async toggle waits
  *                               before showing its loader. Requests that finish
  *                               sooner show no loader and no checkmark, the switch
  *                               just stays (failures always show red + X). Once

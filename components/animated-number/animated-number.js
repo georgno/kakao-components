@@ -1,24 +1,47 @@
 /**
  * <kakao-animated-number>
- * Odometer-style rolling digits when the value changes (vanilla, no external deps).
+ * ============================================================================
+ * Odometer-style rolling digits when the value changes. Vanilla JS, Shadow
+ * DOM, no deps.
  *
- * Attributes:
- *   value          - initial number (also observed)
- *   locale         - BCP 47 locale for Intl (default: en-US)
- *   decimals       - fixed fraction digits (optional)
- *   duration       - transition ms (default: 600)
- *   sign-display   - auto | always | except-zero | negative (maps to Intl signDisplay)
+ * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     animated-number.js
+ *  css        none
+ *  requires   none
+ *  enhanced   none
  *
- * Methods:
- *   update(n)      - animate to number n (same as setting value)
+ * ----------------------------------------------------------------------------
+ * USAGE
+ * ----------------------------------------------------------------------------
+ *   <script src="animated-number.js"><\/script>
  *
- * CSS custom properties (on the element or any ancestor; defaults live in the
- * settings block of this file, change them on construction.html):
- *   --kakao-animated-number-font-family, --kakao-animated-number-font-size, --kakao-animated-number-font-weight, --kakao-animated-number-color, --kakao-animated-number-duration
+ *   <kakao-animated-number value="1280" decimals="2"></kakao-animated-number>
+ *
+ * ----------------------------------------------------------------------------
+ * ATTRIBUTES (all observed)
+ * ----------------------------------------------------------------------------
+ *  value          The number to show (also observed: a new value rolls to it).
+ *  locale         BCP 47 locale for Intl.NumberFormat (default en-US).
+ *  decimals       Fixed fraction digits (optional).
+ *  duration       Roll duration in ms (default 600).
+ *  sign-display   auto · always · except-zero · negative (Intl signDisplay).
+ *
+ * ----------------------------------------------------------------------------
+ * METHODS
+ * ----------------------------------------------------------------------------
+ *  update(n)      Animate to the number n (the same as setting value).
+ *
+ * ----------------------------------------------------------------------------
+ * CSS CUSTOM PROPERTIES (defaults in the settings block; edit on construction.html)
+ * ----------------------------------------------------------------------------
+ *  --kakao-animated-number-font-family / -font-size / -font-weight / -color / -duration
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
  * to the style rules and has no effect in the browser.
+ * ============================================================================
  */
 
 const BLANK = 10; // strip slot after the last digit: rolls a digit out of view

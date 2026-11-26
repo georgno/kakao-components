@@ -13,6 +13,14 @@
  * Vanilla JS, no deps.
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     table.js
+ *  css        table.css   (light DOM: load it in the page head)
+ *  requires   none
+ *  enhanced   empty-state, skeleton   (used when loaded, optional)
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  *   <link rel="stylesheet" href="table.css" />

@@ -12,6 +12,14 @@
  * a plain still block and everything else works the same.
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     image.js
+ *  css        none
+ *  requires   skeleton   (load these first, in this order)
+ *  enhanced   none
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  *   <script src="../skeleton/skeleton.js"><\/script>

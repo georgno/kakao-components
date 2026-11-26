@@ -41,3 +41,11 @@ if ! cmp -s "$tmp/tokens.json" "$tokens"; then
   git add "$tokens"
   echo "pre-commit: tokens.json updated from the staged sources."
 fi
+
+# ---- custom-elements.json -----------------------------------------------------
+# Generated from the component headers (tools/manifest.js). Checked, not
+# rewritten: a header edit means the manifest is regenerated on purpose.
+node "$root/tools/manifest.js" --check >/dev/null || {
+  echo "pre-commit: custom-elements.json is out of date. Run node tools/manifest.js and stage it."
+  exit 1
+}

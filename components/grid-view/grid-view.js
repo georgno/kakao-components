@@ -20,6 +20,14 @@
  * (through the table). Vanilla JS, no deps.
  *
  * ----------------------------------------------------------------------------
+ * FILES
+ * ----------------------------------------------------------------------------
+ *  script     grid-view.js
+ *  css        grid-view.css   (light DOM: load it in the page head)
+ *  requires   table   (load these first, in this order)
+ *  enhanced   button, dialog, empty-state, pagination, select, skeleton, text-input   (used when loaded, optional)
+ *
+ * ----------------------------------------------------------------------------
  * USAGE
  * ----------------------------------------------------------------------------
  *   <link rel="stylesheet" href="table.css" />
