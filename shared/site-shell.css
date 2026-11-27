@@ -1,23 +1,26 @@
 /*
  * site-shell.css - the page bar shared by this project's top-level pages
- * (index, components, kitchen-sink, styleguide, tokens, changelog). Those pages
- * swap their <main> through shared/page-transition.js and keep this bar, so its
- * styles live here once, whatever page CSS (demo.css, construction.css) the
- * page brings. Not part of any component.
+ * (index, components, styleguide, tokens, changelog, examples and the example
+ * pages, like kitchen-sink). Those pages swap their <main> through
+ * shared/page-transition.js and keep this bar, so its styles live here once,
+ * whatever page CSS (demo.css, construction.css) the page brings. Not part of
+ * any component.
  */
 
 /* The site's pages in the bar's nav: the current one in weight, not colour.
    Scoped to the site's own bar, so header-bar examples on a page keep their
    look. Each link carries its text in data-text: a hidden bold copy reserves
    the bold width, so the row does not shift when the current page changes. */
-kakao-header-bar[data-page-transition] > [slot="nav"] {
+kakao-header-bar[data-page-transition] > a[slot="nav"],
+kakao-header-bar[data-page-transition] > .site-nav-menu > [data-text] {
   display: inline-flex;
   flex-direction: column;
   color: var(--kakao-color-text, #18181b);
   text-decoration: none;
   font-size: 0.92rem;
 }
-kakao-header-bar[data-page-transition] > [slot="nav"][data-text]::after {
+kakao-header-bar[data-page-transition] > a[slot="nav"][data-text]::after,
+kakao-header-bar[data-page-transition] > .site-nav-menu > [data-text]::after {
   content: attr(data-text);
   height: 0;
   overflow: hidden;
@@ -26,8 +29,36 @@ kakao-header-bar[data-page-transition] > [slot="nav"][data-text]::after {
   user-select: none;
   pointer-events: none;
 }
-kakao-header-bar[data-page-transition] > [slot="nav"]:hover { text-decoration: underline; }
-kakao-header-bar[data-page-transition] > [slot="nav"][aria-current="page"] { font-weight: 650; }
+kakao-header-bar[data-page-transition] > a[slot="nav"]:hover,
+kakao-header-bar[data-page-transition] > .site-nav-menu:hover > [data-text] { text-decoration: underline; }
+kakao-header-bar[data-page-transition] > a[slot="nav"][aria-current="page"],
+kakao-header-bar[data-page-transition] > .site-nav-menu[aria-current] > [data-text] { font-weight: 650; }
+
+/* "Examples": a button that opens the menu of example pages
+   (shared/site-nav.js). It reads like the links beside it, plus a chevron. */
+.site-nav-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--kakao-color-text, #18181b);
+  font: inherit;
+  cursor: pointer;
+}
+.site-nav-menu svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex: none;
+  transition: transform 150ms var(--kakao-ease-standard, ease);
+}
+.site-nav-menu[aria-expanded="true"] svg { transform: rotate(180deg); }
+.site-nav-menu:focus-visible { outline: 2px solid var(--kakao-color-focus, #2563eb); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .site-nav-menu svg { transition: none; }
+}
 
 /* The content region takes the focus after a swap, like a fresh page: no ring
    around the whole page (the focus is a starting point, not a control). */

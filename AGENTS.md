@@ -68,11 +68,13 @@ render into a shadow root (with slots where they take content).
   through `page-transition-start` / `-swap` / `-end` events on `document`; a component that
   must follow a swap listens to them in its own file (kakao-tabs, the header bar), the
   script never reaches into components. Keep it generic: no app-specific code or docs.
-- The top-level pages (index, components, kitchen-sink, styleguide, tokens, changelog) use
-  it: loader head, the same header bar (site links, theme menu, settings; its styles in
-  `shared/site-shell.css`), regions `bar-start` (the header's start slot) and `content`
+- The top-level pages (index, components, styleguide, tokens, changelog, examples and the
+  example page kitchen-sink) use it: loader head, the same header bar
+  (site links, the Examples menu, theme menu, settings; its styles in `shared/site-shell.css`), regions `bar-start` (the header's start slot) and `content`
   (`<main tabindex="-1">`). A new top-level page that joins copies that shell; demo and
-  construction pages stay ordinary navigations.
+  construction pages stay ordinary navigations. The example pages are listed once, in
+  `shared/site-nav.js`: the bar's Examples menu shows the first five and, once there are
+  more, "All examples" (`examples.html`, which lists them all).
 - Demo pages (`<body class="demo-page">`) show every example as a `<kakao-card>`, title in
   `<h3 slot="header">`, one card per row (a `.grid` of them is one column there). A layout
   the example needs inside the card (a row of buttons, a form) goes in a `data-demo-wrap`

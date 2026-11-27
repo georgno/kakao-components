@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Examples · Kakao Components</title>
+<link rel="stylesheet" href="shared/kakao.css" />
+<script src="shared/kakao.js"></script>
+<script src="shared/page-cloak.js"></script>
+<link rel="stylesheet" href="shared/demo.css" />
+<link rel="stylesheet" href="shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="shared/site-shell.css" />
+<script src="shared/settings-dialog.js" defer></script>
+<script src="shared/page-transition.js"></script>
+<script src="shared/site-nav.js"></script>
+<style>
+  .example-card h2 { margin: 0; font-size: 1.05rem; }
+  .example-card h2 a { color: inherit; text-decoration: none; }
+  .example-card h2 a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .example-card p { margin: 0; color: var(--kakao-color-text-soft, #3f3f46); font-size: 0.92rem; }
+</style>
+</head>
+<body>
+<kakao-header-bar nav-label="Pages" data-page-transition>
+  <!-- The site's shell: it stays while the pages swap their <main> (shared/page-transition.js).
+       The start slot is a region too: the kitchen sink puts its section menu there. -->
+  <span slot="start" data-page-transition-content="bar-start"></span>
+  <a slot="nav" href="index.html" data-text="Home">Home</a>
+  <a slot="nav" href="components.html" data-text="Components">Components</a>
+  <button slot="nav" type="button" id="site-examples" class="site-nav-menu" aria-current="true"><span data-text="Examples">Examples</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <kakao-menu slot="nav" for="site-examples" label="Examples" data-site-examples></kakao-menu>
+  <a slot="nav" href="styleguide.html" data-text="Style guide">Style guide</a>
+  <a slot="nav" href="tokens.html" data-text="Main variables">Main variables</a>
+  <a slot="nav" href="changelog.html" data-text="Changelog">Changelog</a>
+  <kakao-button slot="end" class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+    list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+  <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
+</kakao-header-bar>
+<main data-page-transition-content="content" tabindex="-1">
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="index.html" list-data='[["Examples"]]'></kakao-breadcrumb>
+    </div>
+    <h1>Examples</h1>
+    <p>Whole pages built from the library: how the components work together, in every theme.</p>
+  </header>
+
+  <!-- Filled from the list in shared/site-nav.js, the same one the bar's menu shows. -->
+  <kakao-grid min="md" id="example-list" data-page-transition></kakao-grid>
+</main>
+
+<script data-page-transition-script>
+  {
+    const list = document.getElementById('example-list');
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    list.innerHTML = (window.kakaoSiteExamples || []).map((e) => `
+      <kakao-card class="example-card">
+        <kakao-flow gap="sm">
+          <h2><a href="${escapeHtml(e.href)}">${escapeHtml(e.label)}</a></h2>
+          <p>${escapeHtml(e.text)}</p>
+        </kakao-flow>
+      </kakao-card>`).join('');
+  }
+</script>
+</body>
+</html>

@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="shared/site-shell.css" />
 <script src="shared/settings-dialog.js" defer></script>
 <script src="shared/page-transition.js"></script>
+<script src="shared/site-nav.js"></script>
 <style>
   .releases { display: grid; gap: 1rem; margin-top: 2rem; }
   .release h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; margin: 0; font-size: 1.25rem; }
@@ -33,7 +34,8 @@
   <span slot="start" data-page-transition-content="bar-start"></span>
   <a slot="nav" href="index.html" data-text="Home">Home</a>
   <a slot="nav" href="components.html" data-text="Components">Components</a>
-  <a slot="nav" href="kitchen-sink.html" data-text="Kitchen sink">Kitchen sink</a>
+  <button slot="nav" type="button" id="site-examples" class="site-nav-menu"><span data-text="Examples">Examples</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <kakao-menu slot="nav" for="site-examples" label="Examples" data-site-examples></kakao-menu>
   <a slot="nav" href="styleguide.html" data-text="Style guide">Style guide</a>
   <a slot="nav" href="tokens.html" data-text="Main variables">Main variables</a>
   <a slot="nav" href="changelog.html" aria-current="page" data-text="Changelog">Changelog</a>
