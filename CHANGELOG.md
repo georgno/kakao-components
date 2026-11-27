@@ -20,6 +20,8 @@ upgrade is safe; the entries below them give the detail.
   focus, so a value whose first digits are below `min` (120 on a 20–300 slider) can be typed;
   the thumb and `slider-input` follow only numbers inside min…max, and blur or Enter clamps,
   snaps and rewrites. A commit sends one `slider-change`, not two.
+- Animated number: setting the value it is already rolling to (a page that updates on two
+  events in a row) no longer snaps the roll to its end.
 
 ## [0.11.0] - 2026-11-27
 

@@ -105,6 +105,10 @@ class KakaoAnimatedNumber extends HTMLElement {
       return;
     }
 
+    // Already rolling to this value: a second set (a page that updates on two
+    // events in a row) leaves the roll alone instead of snapping it to the end.
+    if (next === this._targetValue && this._animating) return;
+
     const from = this._displayValue;
     this._targetValue = next;
     if (from === next && !this._animating) {
