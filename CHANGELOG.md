@@ -12,6 +12,8 @@ upgrade is safe; the entries below them give the detail.
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-11-27
+
 **Upgrade:**
 
 - Button: the focus halo settings are gone. `--kakao-button-primary-ring`,
@@ -1179,7 +1181,8 @@ demo page and a construction page.
   `index.html` (the hero page).
 - Specs and change history in `openspec/`.
 
-[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/georgno/kakao-components/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/georgno/kakao-components/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/georgno/kakao-components/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/georgno/kakao-components/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/georgno/kakao-components/compare/v0.5.0...v0.8.0

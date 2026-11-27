@@ -2,7 +2,7 @@
   "schemaVersion": "2.1.0",
   "readme": "CATALOG.md",
   "kakao": {
-    "version": "0.10.0"
+    "version": "0.11.0"
   },
   "modules": [
     {
