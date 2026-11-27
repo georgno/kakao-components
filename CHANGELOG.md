@@ -33,6 +33,8 @@ upgrade is safe; the entries below them give the detail.
   `value-text` is set; `show-value` shows the band name; new read-only `band` property. New
   settings `--kakao-meter-primary`, `-neutral`, `-mark-color`, `-mark-width`, `-scale-gap`,
   `-scale-font-size`, `-scale-color`. Without `list-data` nothing changes.
+- `tools/visual-check.js --state <name>=<selector>`: also checks the page after clicks (a view
+  hidden at load), with its own screenshots and sideways-scroll check in all four variants.
 
 ### Fixed
 
@@ -44,6 +46,10 @@ upgrade is safe; the entries below them give the detail.
   events in a row) no longer snaps the roll to its end.
 - Number input: a stepper press sends `input` per step and one `change` when it ends, like a
   native field (it sent both on every step and every repeat). A step at min or max sends nothing.
+- `tools/visual-check.js`: the phone shots show touch layouts. A full-page screenshot drops
+  Chromium's touch emulation, so `(pointer: coarse)` stopped matching and number-input and
+  slider drew their mouse steppers; the phone is now shot screen by screen while scrolling
+  (`phone-light.png`, `phone-light-2.png`, …, at most 8). Old shots of a page are cleared first.
 
 ## [0.11.0] - 2026-11-27
 

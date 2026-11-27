@@ -16,14 +16,27 @@
  *                  folder; the page's links to ../shared/… must stay inside it)
  *   --wait <ms>    extra wait after the page is ready (default 300)
  *   --tabs <n>     at most this many Tab stops in the focus check (default 60)
+ *   --state <name>=<selector>
+ *                  also check the page after clicking <selector> (a Playwright
+ *                  selector; it reaches into shadow roots), e.g. a view the page
+ *                  hides at load: --state imperial='#units [value="imperial"]'.
+ *                  Repeat a name to click several things in order; repeat the
+ *                  option for more states. Each state starts from a fresh load
+ *                  and gets its own screenshots (<name>-desktop-light.png …)
+ *                  and sideways-scroll check, in all four variants.
  *
  * Local files are served over http from --root by a small built-in server
  * (like the live site, not file://). A URL (a PHP or Python dev server) is
  * opened as it is.
  *
  * Per page, in Chromium:
- *  - Screenshots, full page: desktop (1280 px) and phone (390 px), each in the
- *    light and the dark colour scheme (prefers-color-scheme; no saved theme).
+ *  - Screenshots: desktop (1280 px, full page) and phone (390 px, a touch
+ *    screen: isMobile and hasTouch, so (pointer: coarse) matches and touch
+ *    layouts show), each in the light and the dark colour scheme
+ *    (prefers-color-scheme; no saved theme). The phone is shot screen by
+ *    screen while scrolling (phone-light.png, phone-light-2.png, …, at most
+ *    8): a full-page shot drops the touch emulation, so (pointer: coarse)
+ *    stops matching and the page draws its mouse layout.
  *  - Errors: console errors, uncaught exceptions, failed requests and
  *    responses >= 400, in any of the four.
  *  - Sideways scroll: the page is wider than the viewport, naming the
@@ -74,12 +87,15 @@ const MIME = {
   '.ttf': 'font/ttf', '.txt': 'text/plain',
 };
 
-const USAGE = 'usage: node tools/visual-check.js <page.html | url>… [--out dir] [--root dir] [--wait ms] [--tabs n]';
+const USAGE = 'usage: node tools/visual-check.js <page.html | url>… [--out dir] [--root dir] [--wait ms] [--tabs n] [--state name=selector]…';
+
+// Phone shots: at most this many screens per variant and state.
+const MAX_SCREENS = 8;
 
 class UsageError extends Error {}
 
 function parseArgs(argv, cwd = process.cwd()) {
-  const opts = { pages: [], out: path.join(os.tmpdir(), 'kakao-visual-check'), root: cwd, wait: 300, tabs: 60 };
+  const opts = { pages: [], out: path.join(os.tmpdir(), 'kakao-visual-check'), root: cwd, wait: 300, tabs: 60, states: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const value = () => {
@@ -90,6 +106,15 @@ function parseArgs(argv, cwd = process.cwd()) {
     else if (a === '--root') opts.root = path.resolve(cwd, value());
     else if (a === '--wait') opts.wait = Number(value());
     else if (a === '--tabs') opts.tabs = Number(value());
+    else if (a === '--state') {
+      const v = value();
+      const m = v.match(/^([a-z0-9][a-z0-9-]*)=(.+)$/i);
+      if (!m) throw new UsageError(`--state takes name=selector (name: letters, digits, -), not "${v}"`);
+      const name = m[1].toLowerCase();
+      let state = opts.states.find((st) => st.name === name);
+      if (!state) opts.states.push(state = { name, clicks: [] });
+      state.clicks.push(m[2]);
+    }
     else if (a === '-h' || a === '--help') opts.help = true;
     else if (a.startsWith('--')) throw new UsageError(`unknown option ${a}`);
     else opts.pages.push(a);
@@ -361,11 +386,52 @@ function motion(page) {
   }, DESCRIBE);
 }
 
+/**
+ * Screenshots of one variant: the full page on a desktop; on a phone one shot
+ * per screen while scrolling, because a full-page shot resets the touch
+ * emulation ((pointer: coarse) stops matching). Returns { files, cut }.
+ */
+async function shoot(page, base, phone) {
+  if (!phone) {
+    await page.screenshot({ path: `${base}.png`, fullPage: true });
+    return { files: [`${base}.png`], cut: false };
+  }
+  const { total, screen } = await page.evaluate(() => ({ total: document.documentElement.scrollHeight, screen: window.innerHeight }));
+  const screens = Math.max(1, Math.ceil(total / screen));
+  const files = [];
+  for (let i = 0; i < Math.min(screens, MAX_SCREENS); i++) {
+    await page.evaluate((y) => new Promise((r) => {
+      window.scrollTo(0, y);
+      requestAnimationFrame(() => requestAnimationFrame(r));
+    }), i * screen);
+    const file = i ? `${base}-${i + 1}.png` : `${base}.png`;
+    await page.screenshot({ path: file });
+    files.push(file);
+  }
+  await page.evaluate(() => window.scrollTo(0, 0));
+  return { files, cut: screens > MAX_SCREENS };
+}
+
+/** Runs a state's clicks; returns null, or why it could not. */
+async function enter(page, state, wait) {
+  for (const selector of state.clicks) {
+    try {
+      await page.locator(selector).first().click({ timeout: 5000 });
+    } catch (e) {
+      return `state "${state.name}": could not click ${selector} (${e.message.split('\n')[0]})`;
+    }
+    await settle(page, wait);
+  }
+  return null;
+}
+
 // ---- per page ----------------------------------------------------------------
 
 async function checkPage(browser, url, dir, opts) {
   fs.mkdirSync(dir, { recursive: true });
-  const report = { shots: [], errors: new Set(), overflow: [], a11y: [], keyboard: null, motion: [], busy: [] };
+  // Shots of an earlier run (more screens, other states) would mix in.
+  for (const f of fs.readdirSync(dir)) if (f.endsWith('.png')) fs.rmSync(path.join(dir, f));
+  const report = { shots: [], errors: new Set(), overflow: [], a11y: [], keyboard: null, motion: [], busy: [], notes: [] };
   const watch = (page) => {
     page.on('console', (m) => { if (m.type() === 'error') report.errors.add(`console: ${m.text()}`); });
     page.on('pageerror', (e) => report.errors.add(`exception: ${e.message}`));
@@ -381,14 +447,28 @@ async function checkPage(browser, url, dir, opts) {
     return { context, page };
   };
 
+  // The page as it loads, then each --state from a fresh load.
+  const states = [{ name: '', clicks: [] }, ...(opts.states || [])];
   for (const v of VARIANTS) {
     const { context, page } = await open({ viewport: v.viewport, colorScheme: v.colorScheme, isMobile: !!v.isMobile, hasTouch: !!v.hasTouch, reducedMotion: 'no-preference' }, opts.wait);
-    const file = path.join(dir, `${v.name}.png`);
-    await page.screenshot({ path: file, fullPage: true });
-    report.shots.push(file);
-    const o = await overflow(page);
-    if (o) report.overflow.push(`${v.name}: the page scrolls sideways (${o.width}px wide in ${o.viewport}px)${o.offenders.map((d) => '\n            ' + d).join('')}`);
-    if (v.name === 'desktop-light') report.a11y = await accessibility(page);
+    for (const state of states) {
+      if (state.name) {
+        await page.goto(url, { waitUntil: 'load' });
+        await settle(page, opts.wait);
+        const failed = await enter(page, state, opts.wait);
+        if (failed) {
+          report.errors.add(failed);
+          continue;
+        }
+      }
+      const label = state.name ? `${state.name} ${v.name}` : v.name;
+      const { files, cut } = await shoot(page, path.join(dir, state.name ? `${state.name}-${v.name}` : v.name), !!v.isMobile);
+      report.shots.push(...files);
+      if (cut) report.notes.push(`${label}: shots stop after ${MAX_SCREENS} screens`);
+      const o = await overflow(page);
+      if (o) report.overflow.push(`${label}: the page scrolls sideways (${o.width}px wide in ${o.viewport}px)${o.offenders.map((d) => '\n            ' + d).join('')}`);
+      if (v.name === 'desktop-light' && !state.name) report.a11y = await accessibility(page);
+    }
     await context.close();
   }
 
@@ -419,6 +499,7 @@ function print(name, r) {
   section('focus', r.keyboard.findings);
   section('motion', r.motion);
   for (const b of r.busy) lines.push(`  note      ${b}: a busy indicator, fine if it is calm (look)`);
+  for (const n of r.notes || []) lines.push(`  note      ${n}`);
   console.log(lines.join('\n'));
   return count;
 }
@@ -485,4 +566,4 @@ if (require.main === module) {
   main().then((code) => { process.exitCode = code; }, (e) => { console.error(e); process.exitCode = 2; });
 }
 
-module.exports = { parseArgs, slug, serve, loadPlaywright, checkPage };
+module.exports = { parseArgs, slug, serve, loadPlaywright, checkPage, MAX_SCREENS };

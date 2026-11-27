@@ -121,7 +121,9 @@ render into a shadow root (with slots where they take content).
 - To see a page or demo you changed, run `node tools/visual-check.js <page.html>…`: desktop
   and 390px screenshots in light and dark (written to the OS temp folder, never the repo;
   open and look at them), plus console/request errors, sideways scroll, unnamed controls,
-  missing focus rings and motion under reduced motion. It needs Playwright with Chromium,
+  missing focus rings and motion under reduced motion. The phone is a touch screen
+  (`(pointer: coarse)` matches) shot screen by screen; `--state name=selector` also checks a
+  view the page shows only after a click. It needs Playwright with Chromium,
   which is not a dependency (no package.json here): it is required lazily, like the
   code-block browser test, and says how to install it. Keep it that way; no other packages.
 - Planning goes through OpenSpec (`/opsx:propose` → `/opsx:apply` → `/opsx:archive`).
