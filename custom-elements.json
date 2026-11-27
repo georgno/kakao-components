@@ -7453,7 +7453,7 @@
           "customElement": true,
           "name": "KakaoMeter",
           "tagName": "kakao-meter",
-          "summary": "A measurement in a known range: \"55 GB of 100 GB used\".",
+          "summary": "A measurement in a known range (\"55 GB of 100 GB used\"), or on a scale of named bands (BMI).",
           "description": "A gauge, like native <meter>: a measurement within a known range (\"55 GB of 100 GB used\"). One bar, styled as a sibling of <kakao-progress>; the fill colour shows whether the value is good (optimum region), so-so (suboptimal) or bad (even less good), with the native low / high / optimum rules. Vanilla JS, Shadow DOM, no deps.",
           "attributes": [
             {
@@ -7483,6 +7483,10 @@
                 "text": "'sm' | 'md' | 'lg'"
               },
               "default": "'md'"
+            },
+            {
+              "name": "list-data",
+              "description": "JSON array of bands (never \"data\"), in order from min: [{ \"to\": 18.5, \"label\": \"Underweight\", \"tone\": \"warning\" }, …] A band runs from the previous band's \"to\" (or min) up to its own \"to\", which it does not include; the last band's \"to\" defaults to max and includes it. tone: neutral (default) · primary · success · warning · danger. With bands the fill takes the tone of the band the value is in (low, high and optimum are ignored), the bar gets a mark at each boundary, and under it go the boundary values and the band names, the current one in weight. aria-valuetext becomes \"23.1, Normal\" (value-text still wins), and show-value shows the band name. A band without \"to\" before the last, or a \"to\" not above the one before, is dropped. Without list-data nothing changes."
             }
           ],
           "members": [
@@ -7495,6 +7499,11 @@
               "kind": "field",
               "name": "region",
               "description": "\"optimum\" · \"suboptimal\" · \"bad\" (read-only)."
+            },
+            {
+              "kind": "field",
+              "name": "band",
+              "description": "The band the value is in, { index, label, tone, from, to }, or null without list-data (read-only)."
             }
           ],
           "cssProperties": [
@@ -7559,6 +7568,34 @@
               "default": "var(--kakao-color-danger, #dc2626)"
             },
             {
+              "name": "--kakao-meter-primary",
+              "default": "var(--kakao-color-primary, #2563eb)"
+            },
+            {
+              "name": "--kakao-meter-neutral",
+              "default": "var(--kakao-color-muted, #62626c)"
+            },
+            {
+              "name": "--kakao-meter-mark-color",
+              "default": "var(--kakao-color-bg, #ffffff)"
+            },
+            {
+              "name": "--kakao-meter-mark-width",
+              "default": "2px"
+            },
+            {
+              "name": "--kakao-meter-scale-gap",
+              "default": "0.35rem"
+            },
+            {
+              "name": "--kakao-meter-scale-font-size",
+              "default": "0.8125em"
+            },
+            {
+              "name": "--kakao-meter-scale-color",
+              "default": "var(--kakao-color-muted, #62626c)"
+            },
+            {
               "name": "--kakao-meter-fill-duration",
               "default": "var(--kakao-motion-duration, 320ms)"
             },
@@ -7582,6 +7619,15 @@
             },
             {
               "name": "fill"
+            },
+            {
+              "name": "scale"
+            },
+            {
+              "name": "ticks"
+            },
+            {
+              "name": "names"
             }
           ],
           "kakao": {

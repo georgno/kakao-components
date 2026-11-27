@@ -142,7 +142,7 @@ Or load single files (the loader skips what a page loads itself):
 - `kakao-kbd`: Keyboard keys and shortcuts in text: "Ctrl + K". Not for code and file names: kakao-code; several lines: kakao-code-block.
 - `kakao-list`: A 3D picker: rows tilt in perspective as they scroll past the middle. Not for a plain list of short items (file:line, test names): kakao-plain-list.
 - `kakao-menu`: A menu of actions from a trigger or a right-click. Not for picking a value: kakao-select; navigation: kakao-aside-menu.
-- `kakao-meter`: A measurement in a known range: "55 GB of 100 GB used". Not for the progress of a task: kakao-progress.
+- `kakao-meter`: A measurement in a known range ("55 GB of 100 GB used"), or on a scale of named bands (BMI). Not for the progress of a task: kakao-progress.
 - `kakao-multi-dropdown`: Several dropdowns that form one value (day | month | year). Not for one choice: kakao-select; a date with a picker: kakao-date-input.
 - `kakao-number-input`: A number field with − / + steppers (44px on touch), label, hint and error. Not for a value on a scale: kakao-slider; a number typed, never stepped: kakao-text-input. (light DOM, number-input.css)
 - `kakao-page`: The page's content column: max-width, side padding, space below the header bar. Not for columns of cards: kakao-grid; space between sections: kakao-flow; a framed box: kakao-card. (light DOM, page.css)

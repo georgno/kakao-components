@@ -90,6 +90,24 @@
     </kakao-card>
   </div>
 
+  <h2>Named bands · <code>list-data</code></h2>
+  <p>A scale with categories (BMI, air quality, credit scores): the fill takes the tone of the band the value is in, and the bar is marked at each boundary with the band names under it. <code>aria-valuetext</code> reads the value and the band.</p>
+  <div class="grid">
+    <kakao-card>
+      <h3 slot="header">BMI</h3>
+      <div class="bars" data-demo-wrap>
+        <kakao-meter label="BMI" min="10" max="40" value="23.1" show-value list-data='[{"to": 18.5, "label": "Underweight", "tone": "warning"}, {"to": 25, "label": "Normal", "tone": "success"}, {"to": 30, "label": "Overweight", "tone": "warning"}, {"label": "Obese", "tone": "danger"}]'></kakao-meter>
+        <kakao-meter label="BMI" min="10" max="40" value="31.4" show-value list-data='[{"to": 18.5, "label": "Underweight", "tone": "warning"}, {"to": 25, "label": "Normal", "tone": "success"}, {"to": 30, "label": "Overweight", "tone": "warning"}, {"label": "Obese", "tone": "danger"}]'></kakao-meter>
+      </div>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Air quality</h3>
+      <div class="bars" data-demo-wrap>
+        <kakao-meter label="Air quality index" max="200" value="64" show-value list-data='[{"to": 50, "label": "Good", "tone": "success"}, {"to": 100, "label": "Moderate", "tone": "neutral"}, {"to": 150, "label": "Unhealthy for some", "tone": "warning"}, {"label": "Unhealthy", "tone": "danger"}]'></kakao-meter>
+      </div>
+    </kakao-card>
+  </div>
+
   <h2>Sizes · <code>size</code></h2>
   <div class="grid">
     <kakao-card>
@@ -107,7 +125,7 @@
     </kakao-card>
   </div>
 
-  <footer>Attributes: <code>value</code> (default 0), <code>min</code> (default 0), <code>max</code> (default 1), <code>low</code>, <code>high</code>, <code>optimum</code>, <code>label</code>, <code>show-value</code>, <code>value-text</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>). Properties: the same numbers, plus read-only <code>position</code> and <code>region</code>. Full reference in the header of <code>meter.js</code>.</footer>
+  <footer>Attributes: <code>value</code> (default 0), <code>min</code> (default 0), <code>max</code> (default 1), <code>low</code>, <code>high</code>, <code>optimum</code>, <code>label</code>, <code>show-value</code>, <code>value-text</code>, <code>size</code> (<code>sm</code> · <code>md</code> · <code>lg</code>), <code>list-data</code> (named bands). Properties: the same numbers, plus read-only <code>position</code>, <code>region</code> and <code>band</code>. Full reference in the header of <code>meter.js</code>.</footer>
 </main>
 <script>
   customElements.whenDefined('kakao-meter').then(() => {

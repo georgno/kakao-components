@@ -39,6 +39,12 @@
       </div>
     </figure>
     <figure>
+      <figcaption>Named bands · list-data</figcaption>
+      <div class="bars">
+        <kakao-meter label="BMI" min="10" max="40" value="23.1" show-value list-data='[{"to": 18.5, "label": "Underweight", "tone": "warning"}, {"to": 25, "label": "Normal", "tone": "success"}, {"to": 30, "label": "Overweight", "tone": "warning"}, {"label": "Obese", "tone": "danger"}]'></kakao-meter>
+      </div>
+    </figure>
+    <figure>
       <figcaption>Sizes and colours</figcaption>
       <div class="bars">
         <kakao-meter size="sm" label="Small, good" value="0.45" show-value></kakao-meter>
@@ -66,7 +72,14 @@
     { "property": "--kakao-meter-label-weight", "label": "Label weight", "group": "Typography", "type": "number", "min": 300, "max": 800, "step": 50 },
     { "property": "--kakao-meter-radius", "label": "Radius", "group": "Shape", "type": "radius" },
     { "property": "--kakao-meter-fill-duration", "label": "Fill", "group": "Motion", "type": "duration", "hint": "length only; the colour switches at once" },
-    { "property": "--kakao-meter-fill-ease", "label": "Fill easing", "group": "Motion", "type": "easing" }
+    { "property": "--kakao-meter-fill-ease", "label": "Fill easing", "group": "Motion", "type": "easing" },
+    { "property": "--kakao-meter-primary", "label": "Primary fill", "group": "Bands", "type": "color", "hint": "band tone primary" },
+    { "property": "--kakao-meter-neutral", "label": "Neutral fill", "group": "Bands", "type": "color", "hint": "band tone neutral" },
+    { "property": "--kakao-meter-mark-color", "label": "Boundary mark", "group": "Bands", "type": "color", "hint": "the gap in the bar; the card background" },
+    { "property": "--kakao-meter-mark-width", "label": "Mark width", "group": "Bands", "type": "length" },
+    { "property": "--kakao-meter-scale-gap", "label": "Scale gap", "group": "Bands", "type": "length", "hint": "bar to values" },
+    { "property": "--kakao-meter-scale-font-size", "label": "Scale text size", "group": "Bands", "type": "length" },
+    { "property": "--kakao-meter-scale-color", "label": "Scale text", "group": "Bands", "type": "color", "hint": "the current band takes the label colour" }
   ]
   </script>
 </main>

@@ -26,6 +26,13 @@ upgrade is safe; the entries below them give the detail.
   border. New settings: `--kakao-number-input-label-color`, `-label-weight`, `-label-gap`,
   `-hint-color`, `-danger`, `-message-gap`. Without these attributes the markup is the same as
   before. CATALOG.md: number-input vs text-input `type="number"` vs slider.
+- Meter: named bands in `list-data` (`[{"to": 18.5, "label": "Underweight", "tone": "warning"}, …]`)
+  for scales with categories (BMI, air quality, credit scores). The fill takes the tone of the
+  band the value is in, the bar is marked at each boundary, and the boundary values and band
+  names go under it, the current name in weight. `aria-valuetext` reads "23.1, Normal" unless
+  `value-text` is set; `show-value` shows the band name; new read-only `band` property. New
+  settings `--kakao-meter-primary`, `-neutral`, `-mark-color`, `-mark-width`, `-scale-gap`,
+  `-scale-font-size`, `-scale-color`. Without `list-data` nothing changes.
 
 ### Fixed
 

@@ -10,7 +10,7 @@
  * ----------------------------------------------------------------------------
  * CATALOG
  * ----------------------------------------------------------------------------
- *  for        A measurement in a known range: "55 GB of 100 GB used".
+ *  for        A measurement in a known range ("55 GB of 100 GB used"), or on a scale of named bands (BMI).
  *  not for    The progress of a task: kakao-progress.
  *
  * ----------------------------------------------------------------------------
@@ -29,6 +29,13 @@
  *   <kakao-meter label="Battery" value="0.7"></kakao-meter>
  *   <kakao-meter label="Storage" value="55" max="100" low="30" high="80"
  *                optimum="20" show-value value-text="55 GB of 100 GB"></kakao-meter>
+ *
+ *   Named bands (a scale with categories), drawn under the bar:
+ *   <kakao-meter label="BMI" min="10" max="40" value="23.1" show-value list-data='[
+ *     {"to": 18.5, "label": "Underweight", "tone": "warning"},
+ *     {"to": 25,   "label": "Normal",      "tone": "success"},
+ *     {"to": 30,   "label": "Overweight",  "tone": "warning"},
+ *     {"label": "Obese", "tone": "danger"}]'></kakao-meter>
  *
  * ----------------------------------------------------------------------------
  * ATTRIBUTES (all observed)
@@ -50,6 +57,19 @@
  *  value-text  Text for the value instead of the percentage; also becomes
  *              aria-valuetext ("92 GB of 100 GB, almost full").
  *  size        sm · md (default) · lg: bar height and label text size.
+ *  list-data   JSON array of bands (never "data"), in order from min:
+ *              [{ "to": 18.5, "label": "Underweight", "tone": "warning" }, …]
+ *              A band runs from the previous band's "to" (or min) up to its
+ *              own "to", which it does not include; the last band's "to"
+ *              defaults to max and includes it. tone: neutral (default) ·
+ *              primary · success · warning · danger. With bands the fill takes
+ *              the tone of the band the value is in (low, high and optimum are
+ *              ignored), the bar gets a mark at each boundary, and under it go
+ *              the boundary values and the band names, the current one in
+ *              weight. aria-valuetext becomes "23.1, Normal" (value-text still
+ *              wins), and show-value shows the band name. A band without "to"
+ *              before the last, or a "to" not above the one before, is dropped.
+ *              Without list-data nothing changes.
  *
  * ----------------------------------------------------------------------------
  * PROPERTIES
@@ -57,6 +77,8 @@
  *  value, min, max, low, high, optimum   numbers (clamped), reflect the attributes.
  *  position    (value − min) / (max − min), 0…1 (read-only).
  *  region      "optimum" · "suboptimal" · "bad" (read-only).
+ *  band        The band the value is in, { index, label, tone, from, to }, or
+ *              null without list-data (read-only).
  *
  * ----------------------------------------------------------------------------
  * MOTION
@@ -75,6 +97,8 @@
  *  value-text. The visible label row is hidden from assistive technology, so
  *  nothing is read twice. Never focusable. The region is shown by colour
  *  only (as on native <meter>): put its meaning in value-text when it matters.
+ *  With list-data the band name is in aria-valuetext by default, and the
+ *  scale under the bar is hidden from assistive technology.
  *
  * ----------------------------------------------------------------------------
  * CSS CUSTOM PROPERTIES (defaults in the settings block; edit on construction.html)
@@ -82,10 +106,11 @@
  *  --kakao-meter-height / -sm-height / -lg-height / -radius
  *  --kakao-meter-font-size / -sm-font-size / -lg-font-size / -label-weight / -label-gap
  *  --kakao-meter-track / -label-color / -value-color
- *  --kakao-meter-success / -warning / -danger
+ *  --kakao-meter-success / -warning / -danger / -primary / -neutral
+ *  --kakao-meter-mark-color / -mark-width / -scale-gap / -scale-font-size / -scale-color
  *  --kakao-meter-fill-duration / -fill-ease
  *
- * Parts: head, label, value, bar, fill.
+ * Parts: head, label, value, bar, fill, scale, ticks, names.
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
@@ -118,6 +143,13 @@
         --_success: var(--kakao-meter-success, var(--kakao-color-success, #15803d));
         --_warning: var(--kakao-meter-warning, var(--kakao-color-warning, #b45309));
         --_danger: var(--kakao-meter-danger, var(--kakao-color-danger, #dc2626));
+        --_primary: var(--kakao-meter-primary, var(--kakao-color-primary, #2563eb));
+        --_neutral: var(--kakao-meter-neutral, var(--kakao-color-muted, #62626c));
+        --_mark-color: var(--kakao-meter-mark-color, var(--kakao-color-bg, #ffffff));
+        --_mark-width: var(--kakao-meter-mark-width, 2px);
+        --_scale-gap: var(--kakao-meter-scale-gap, 0.35rem);
+        --_scale-font-size: var(--kakao-meter-scale-font-size, 0.8125em);
+        --_scale-color: var(--kakao-meter-scale-color, var(--kakao-color-muted, #62626c));
         --_fill-duration: var(--kakao-meter-fill-duration, var(--kakao-motion-duration, 320ms));
         --_fill-ease: var(--kakao-meter-fill-ease, var(--kakao-ease-standard, cubic-bezier(.2, 0, 0, 1)));
         /* @kakao-settings:end */
@@ -156,6 +188,35 @@
       }
       .bar[data-region="suboptimal"] { --_tone: var(--_warning); }
       .bar[data-region="bad"]        { --_tone: var(--_danger); }
+      .bar[data-tone="success"] { --_tone: var(--_success); }
+      .bar[data-tone="warning"] { --_tone: var(--_warning); }
+      .bar[data-tone="danger"]  { --_tone: var(--_danger); }
+      .bar[data-tone="primary"] { --_tone: var(--_primary); }
+      .bar[data-tone="neutral"] { --_tone: var(--_neutral); }
+
+      /* Bands: a gap in the bar at each boundary, values and names under it. */
+      .mark {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: var(--_mark-width);
+        margin-left: calc(var(--_mark-width) / -2);
+        background: var(--_mark-color);
+      }
+      .scale {
+        margin-top: var(--_scale-gap);
+        font-size: var(--_scale-font-size);
+        line-height: 1.35;
+        color: var(--_scale-color);
+      }
+      .scale[hidden] { display: none; }
+      .ticks { position: relative; height: 1.35em; font-variant-numeric: tabular-nums; }
+      .ticks span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+      .names { display: grid; }
+      /* Columns follow the band widths but never get narrower than a name's
+         longest word (minmax(min-content, …fr)): names wrap between words, not inside one. */
+      .names span { padding: 0 0.15rem; text-align: center; }
+      .names span[aria-current] { color: var(--_label-color); font-weight: var(--_label-weight); }
 
       /* The fill slides in from the left, so its leading edge stays round. */
       .fill {
@@ -175,6 +236,7 @@
       @media (forced-colors: active) {
         .bar { background: Canvas; outline: 1px solid CanvasText; outline-offset: -1px; }
         .fill { forced-color-adjust: none; background: Highlight; }
+        .mark { forced-color-adjust: none; background: CanvasText; }
       }
     </style>
     <div class="head" part="head" aria-hidden="true" hidden>
@@ -182,13 +244,19 @@
       <span class="value" part="value"></span>
     </div>
     <div class="bar" part="bar"><span class="fill" part="fill"></span></div>
+    <div class="scale" part="scale" aria-hidden="true" hidden>
+      <div class="ticks" part="ticks"></div>
+      <div class="names" part="names"></div>
+    </div>
   `;
+
+  const TONES = ['neutral', 'primary', 'success', 'warning', 'danger'];
 
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
 
   class KakaoMeter extends HTMLElement {
     static get observedAttributes() {
-      return ['value', 'min', 'max', 'low', 'high', 'optimum', 'label', 'show-value', 'value-text', 'aria-label'];
+      return ['value', 'min', 'max', 'low', 'high', 'optimum', 'label', 'show-value', 'value-text', 'aria-label', 'list-data'];
     }
 
     constructor() {
@@ -199,6 +267,10 @@
       this._label = shadow.querySelector('.label');
       this._valueEl = shadow.querySelector('.value');
       this._bar = shadow.querySelector('.bar');
+      this._scale = shadow.querySelector('.scale');
+      this._ticks = shadow.querySelector('.ticks');
+      this._names = shadow.querySelector('.names');
+      this._bandsKey = null;
       this._ownsRole = null;    // decided on first connect
       this._ownsLabel = null;
       this._writingLabel = false;
@@ -221,6 +293,11 @@
     set optimum(v) { this.setAttribute('optimum', String(v)); }
     get position() { return this._state().position; }
     get region() { return this._state().region; }
+    get band() {
+      const s = this._state();
+      const b = s.bands[s.bandIndex];
+      return b ? { index: s.bandIndex, label: b.label, tone: b.tone, from: b.from, to: b.to } : null;
+    }
 
     // ---------------------------------------------------------- lifecycle
 
@@ -280,14 +357,86 @@
       } else {
         region = value >= high ? 'optimum' : value >= low ? 'suboptimal' : 'bad';
       }
-      return { min, max, value, low, high, optimum, position, region };
+      const bands = this._bands({ min, max });
+      let bandIndex = -1;
+      if (bands.length) {
+        bandIndex = bands.findIndex((b, i) => value < b.to || i === bands.length - 1);
+      }
+      return { min, max, value, low, high, optimum, position, region, bands, bandIndex };
+    }
+
+    /** The bands from list-data, inside min…max: [{ label, tone, from, to }]. */
+    _bands({ min, max }) {
+      const raw = this.getAttribute('list-data');
+      if (!raw) return [];
+      let list;
+      try { list = JSON.parse(raw); } catch (e) {
+        if (this._warned !== raw) { this._warned = raw; console.warn('kakao-meter: list-data is not valid JSON', e); }
+        return [];
+      }
+      if (!Array.isArray(list)) return [];
+      const out = [];
+      let from = min;
+      list.forEach((item, i) => {
+        if (!item || typeof item !== 'object' || from >= max) return;
+        const last = i === list.length - 1;
+        let to = item.to === undefined || item.to === null ? (last ? max : NaN) : Number(item.to);
+        if (!Number.isFinite(to) || to <= from) return;
+        to = Math.min(to, max);
+        const tone = TONES.includes(item.tone) ? item.tone : 'neutral';
+        out.push({ label: String(item.label ?? ''), tone, from, to });
+        from = to;
+      });
+      // A list that stops short of max: its last band runs on to max.
+      if (out.length) out[out.length - 1].to = max;
+      return out;
+    }
+
+    _fmt(n) {
+      const lang = (this.closest('[lang]') || document.documentElement).getAttribute('lang') || undefined;
+      try { return new Intl.NumberFormat(lang, { maximumFractionDigits: 2 }).format(n); } catch (e) { return String(n); }
+    }
+
+    /** Marks in the bar and the scale under it, rebuilt only when the bands change. */
+    _renderBands(s) {
+      const span = s.max - s.min;
+      const pct = (v) => `${(span > 0 ? ((v - s.min) / span) * 100 : 0).toFixed(4)}%`;
+      const key = JSON.stringify([s.min, s.max, s.bands]);
+      if (key !== this._bandsKey) {
+        this._bandsKey = key;
+        this._bar.querySelectorAll('.mark').forEach((m) => m.remove());
+        this._ticks.textContent = '';
+        this._names.textContent = '';
+        s.bands.slice(0, -1).forEach((b) => {
+          const mark = document.createElement('span');
+          mark.className = 'mark';
+          mark.style.left = pct(b.to);
+          this._bar.append(mark);
+          const tick = document.createElement('span');
+          tick.style.left = pct(b.to);
+          tick.textContent = this._fmt(b.to);
+          this._ticks.append(tick);
+        });
+        this._names.style.gridTemplateColumns = s.bands.map((b) => `minmax(min-content, ${b.to - b.from}fr)`).join(' ');
+        s.bands.forEach((b) => {
+          const name = document.createElement('span');
+          name.textContent = b.label;
+          this._names.append(name);
+        });
+        this._scale.hidden = !s.bands.length;
+      }
+      [...this._names.children].forEach((el, i) => el.toggleAttribute('aria-current', i === s.bandIndex));
     }
 
     // ------------------------------------------------------------- render
 
     _render() {
       const s = this._state();
+      const band = s.bands[s.bandIndex];
       this._bar.dataset.region = s.region;
+      if (band) this._bar.dataset.tone = band.tone;
+      else delete this._bar.dataset.tone;
+      this._renderBands(s);
       this._bar.style.setProperty('--p', s.position.toFixed(4));
 
       this.setAttribute('aria-valuemin', String(s.min));
@@ -295,6 +444,7 @@
       this.setAttribute('aria-valuenow', String(+s.value.toFixed(6)));
       const custom = this.getAttribute('value-text');
       if (custom) this.setAttribute('aria-valuetext', custom);
+      else if (band && band.label) this.setAttribute('aria-valuetext', `${this._fmt(s.value)}, ${band.label}`);
       else this.removeAttribute('aria-valuetext');
 
       const label = (this.getAttribute('label') || '').trim();
@@ -307,6 +457,7 @@
       let valueText = '';
       if (this.hasAttribute('show-value')) {
         if (custom) valueText = custom;
+        else if (band && band.label) valueText = band.label;
         else {
           const lang = (this.closest('[lang]') || document.documentElement).getAttribute('lang') || undefined;
           try {
