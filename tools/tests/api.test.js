@@ -45,6 +45,10 @@ test('unknown names and no names are usage errors', () => {
   assert.equal(run(['kakao-nope']).code, 2);
   assert.match(run(['kakao-nope']).err, /unknown component kakao-nope/);
   assert.equal(run([]).code, 2);
+  const mixed = run(['kakao-badge', 'kakao-stat']);
+  assert.equal(mixed.code, 2);
+  assert.match(mixed.out, /^kakao-badge /);
+  assert.match(mixed.err, /kakao-stat/);
 });
 
 test('usage() reads BASIC USAGE too and stops at the next section', () => {

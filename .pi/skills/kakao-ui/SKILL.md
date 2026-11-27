@@ -14,7 +14,7 @@ Paths below assume the library sits in `kakao/` (relative to the page and to whe
 ## Workflow (follow it in this order)
 
 1. **Pick the components.** Read `kakao/CATALOG.md`: one line per component (what for, what not, what to use instead) and a "which one?" table for look-alikes.
-2. **Start from a copy, never from a blank page.** `kakao/templates/page.html` is a starting page; `kakao/recipes/` has complete pages: `report.html` (summary tiles, badges, tabs, accordions), `dashboard.html` (stat tiles, progress, table), `form.html` (validation, error summary), `table.html` (filtered, paged grid-view), `list-detail.html` (list plus aside-sheet). Copy the closest one and change `../shared/` to the path of `kakao/shared/`.
+2. **Start from a copy, never from a blank page.** `kakao/templates/page.html` is a starting page; `kakao/recipes/` has complete pages: `report.html` (summary tiles, badges, tabs, accordions), `dashboard.html` (stat tiles, progress, table), `form.html` (validation, error summary), `table.html` (filtered, paged grid-view), `list-detail.html` (list plus aside-sheet). Copy the closest one and change `../shared/` to the path of `kakao/shared/`. If none fits the whole page, start from the template and copy sections from several recipes.
 3. **Look up every tag before you write it:** `node kakao/tools/api.js kakao-tabs` prints its attributes with their allowed values, slots, events, methods and an example (about 1k tokens). Use only what it lists. Several at once: `node kakao/tools/api.js tabs toast badge`.
 4. **Check:** `node kakao/tools/style-check.js path/to/page.html` must report 0 errors. Fix what it names and run it again.
 5. **Look:** `node kakao/tools/visual-check.js path/to/page.html` (or a dev server URL) takes light, dark and 390px phone screenshots and checks console errors, sideways scroll, unnamed controls, focus rings and reduced motion. It needs Playwright and says how to install it. Open the screenshots.
@@ -54,6 +54,10 @@ Shell of every page:
 </main>
 </body>
 ```
+
+Things the library has no component for, and what to use:
+- **Stat tiles** (a label and a big number): `<kakao-grid min="sm">` of `<kakao-card>`, each with `<h3 slot="header">Label</h3><p class="stat">12</p>` and the `.stat` rule from `recipes/dashboard.html` in the page's `<style>`.
+- **A row of buttons** in a form: a plain `<div>` (they wrap with a small gap by themselves).
 
 Space comes from `kakao-flow` (vertical gaps) and `kakao-grid` (columns that wrap), colours from the `--kakao-color-*` tokens, spacing from `--kakao-space-*`.
 

@@ -15,7 +15,8 @@
  * Source: custom-elements.json (attributes, slots, events, members, the
  * `kakao` field) and the USAGE section of the component's header (the
  * <link>/<script> lines are left out: the loader loads the files).
- * Exit codes: 0 printed, 2 usage error (unknown component).
+ * Exit codes: 0 printed, 2 usage error (an unknown component; the known ones
+ * still print).
  * ============================================================================
  */
 'use strict';
@@ -125,10 +126,9 @@ function main(argv, root = ROOT, out = process.stdout, err = process.stderr) {
     return 2;
   }
   const { tags, unknown } = resolve(map, args);
-  if (unknown.length) {
-    err.write(`unknown component ${unknown.join(', ')} (node tools/api.js --list shows every tag)\n`);
-    return 2;
-  }
+  // Unknown names are reported, the known ones still print.
+  if (unknown.length) err.write(`unknown component ${unknown.join(', ')}: it does not exist, don't use it (node tools/api.js --list shows every tag)\n`);
+  if (!tags.length) return 2;
   // Tags from one file (tabs + tab) share the example: print it once.
   const seen = new Set();
   const parts = tags.map((t) => {
@@ -140,7 +140,7 @@ function main(argv, root = ROOT, out = process.stdout, err = process.stderr) {
     return text;
   });
   out.write(parts.join('\n'));
-  return 0;
+  return unknown.length ? 2 : 0;
 }
 
 module.exports = { declarations, resolve, usage, describe, main };
