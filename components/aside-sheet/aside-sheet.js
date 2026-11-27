@@ -179,6 +179,7 @@
   const TEMPLATE = document.createElement('template');
   TEMPLATE.innerHTML = `
     <style>
+      :host([hidden]) { display: none; }
       :host {
         /* @kakao-settings:start prefix=--kakao-aside-sheet- (written by construction.html, edit there) */
         --_scrim: var(--kakao-aside-sheet-scrim, rgb(0 0 0 / .45));

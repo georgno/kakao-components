@@ -353,3 +353,8 @@ kakao-aside-menu[data-persistent] .kakao-aside-panel {
     transition: none;
   }
 }
+
+/* The hidden attribute wins over the display set above. */
+kakao-aside-menu[hidden] {
+  display: none;
+}

@@ -248,6 +248,8 @@
 
     connectedCallback() {
       this._connected = true;
+      // Recorded once: form.reset() returns to it (formResetCallback).
+      if (this._defaultSet !== true) { this._defaultSet = true; this._defaultValue = this.getAttribute('value'); }
       this._optionsEl.addEventListener('change', (e) => this._onChange(e));
       this._readItems();
       this._render();
@@ -274,6 +276,14 @@
       if (name === 'list-data') this._readItems();
       if (name === 'list-data' || name === 'disabled' || name === 'name') this._render();
       this._sync();
+    }
+
+    /** form.reset(): back to the choice the element was created with. */
+    formResetCallback() {
+      if (this._defaultValue == null) this.removeAttribute('value');
+      else this.setAttribute('value', this._defaultValue);
+      this._syncChecked();
+      this._syncForm();
     }
 
     /* -------------------------- Public API -------------------------- */

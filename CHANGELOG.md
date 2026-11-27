@@ -20,9 +20,19 @@ upgrade is safe; the entries below them give the detail.
   `-focus-offset` instead.
 - Load `stack.js` (components/stack/) before `toast.js`: the toast extends `KakaoStack`.
 - CSS that targets a toast card's `[data-toast-state]`: use `[data-stack-state]`.
+- `shared/kakao.css` now includes a page base (`shared/base.css`: body margin 0, page
+  background, text colour and font, h1, links, header-bar nav links). Its rules have no
+  specificity, so the page's own CSS still wins; a page that relied on the browser's 8px body
+  margin or default h1 size from kakao.css alone sets them itself.
 
 ### Added
 
+- `tools/api.js <tag|folder…>`: one component's API in about 1k tokens (attributes with their
+  values, slots, events, methods, the example from its header), from custom-elements.json;
+  `--list` names every tag, `--css` adds the CSS properties. For agents with little context,
+  instead of reading the whole manifest.
+- `shared/base.css`: the page base every template and recipe repeated, now part of kakao.css
+  (and linkable on its own). The template and recipes no longer carry a copy.
 - `tools/visual-check.js <page|url>…`: desktop and 390px phone screenshots in
   light and dark (into the OS temp folder), plus checks for console and request
   errors, sideways scroll, controls and images without an accessible name,
@@ -211,6 +221,12 @@ upgrade is safe; the entries below them give the detail.
 
 ### Changed
 
+- `tools/vendor.js` also copies `tools/api.js`, the style checker and `tools/visual-check.js`
+  (without their tests), so a project runs them from its vendored copy
+  (`node kakao/tools/style-check.js`).
+- The kakao-ui skill (1.1) is a numbered workflow: catalog, copy a recipe, `api.js` per tag,
+  style check, visual check; the `hidden` and `form.reset()` caveats are gone.
+- The deploy also runs `node --test` and `node tools/check-themes.js`.
 - `<kakao-toast>` extends `KakaoStack`; behaviour, API, events and its
   `--kakao-toast-*` settings are unchanged. **Load `stack.js` before
   `toast.js`.** The card state attribute is now `data-stack-state` (was
@@ -237,6 +253,12 @@ upgrade is safe; the entries below them give the detail.
 
 ### Fixed
 
+- `hidden` now hides every component: animated-number, aside-menu, aside-sheet, button,
+  dialog, file-upload, list, multi-dropdown, number-input, popover, slider, stack,
+  step-switch, switch-group, tabs, tab and toast ignored it (their display won).
+- `form.reset()` now resets kakao-text-input, kakao-textarea, kakao-checkbox and
+  kakao-radio-group to the value they were created with.
+- Number input: no border transition under reduced motion.
 - Button: keyboard focus is the styleguide's 2px outline in the focus colour
   (2px offset) on every variant and segment item, instead of the soft halo,
   which failed 3:1, vanished in forced-colors mode, was missing on primary

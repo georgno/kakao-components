@@ -181,6 +181,7 @@ class KakaoAnimatedNumber extends HTMLElement {
   _renderShell() {
     this._shadow.innerHTML = `
       <style>
+        :host([hidden]) { display: none; }
         :host {
           /* @kakao-settings:start prefix=--kakao-animated-number- (written by construction.html, edit there) */
           --_font-family: var(--kakao-animated-number-font-family, ui-monospace, SFMono-Regular, Menlo, monospace);

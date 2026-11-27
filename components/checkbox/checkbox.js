@@ -210,6 +210,8 @@
 
     connectedCallback() {
       this._connected = true;
+      // Recorded once: form.reset() returns to it (formResetCallback).
+      if (this._defaultSet !== true) { this._defaultSet = true; this._defaultChecked = this.hasAttribute('checked'); }
       this._input.addEventListener('change', () => {
         // Clicking a box leaves the indeterminate state, as native checkboxes do.
         if (this._input.indeterminate) {
@@ -248,6 +250,12 @@
         return;
       }
       if (this._connected) this._sync();
+    }
+
+    /** form.reset(): back to the checked state the element was created with. */
+    formResetCallback() {
+      this.indeterminate = false;
+      this.checked = !!this._defaultChecked;
     }
 
     /* -------------------------- Public API -------------------------- */

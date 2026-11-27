@@ -18,7 +18,7 @@ test('kakao.css and the map in kakao.js are up to date', () => {
   assert.equal(current, js(current, manifest));
 });
 
-test('kakao.css holds tokens, font and themes in that order, unchanged', () => {
+test('kakao.css holds tokens, font, themes and the page base in that order, unchanged', () => {
   const text = css(ROOT);
   let at = 0;
   for (const f of CSS_PARTS) {

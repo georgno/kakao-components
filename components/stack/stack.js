@@ -151,6 +151,7 @@
   const DEFAULT_MAX = 3;
 
   const STYLE = `
+      :host([hidden]) { display: none; }
       :host {
         /* @kakao-settings:start prefix=--kakao-stack- (written by construction.html, edit there) */
         --_width: var(--kakao-stack-width, 22rem);

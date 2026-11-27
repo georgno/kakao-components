@@ -248,6 +248,8 @@
 
     connectedCallback() {
       this._connected = true;
+      // Recorded once: form.reset() returns to it (formResetCallback).
+      if (this._defaultSet !== true) { this._defaultSet = true; this._defaultValue = this.getAttribute('value') || ''; }
       this._area.addEventListener('input', () => {
         this._reflectValue(this._area.value);
         this._syncCounter();
@@ -285,6 +287,11 @@
         return;
       }
       if (this._connected) this._sync();
+    }
+
+    /** form.reset(): back to the value the element was created with. */
+    formResetCallback() {
+      this.value = this._defaultValue || '';
     }
 
     /* -------------------------- Public API -------------------------- */

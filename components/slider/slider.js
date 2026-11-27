@@ -176,6 +176,7 @@ class KakaoSlider extends HTMLElement {
           padding: 0;
         }
 
+        :host([hidden]) { display: none; }
         :host {
           /* @kakao-settings:start prefix=--kakao-slider- (written by construction.html, edit there) */
           --_font-family: var(--kakao-slider-font-family, var(--kakao-font-family, system-ui, -apple-system, BlinkMacSystemFont, sans-serif));

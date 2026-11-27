@@ -20,3 +20,10 @@ Copying the library into another project: exactly the files the chosen component
 #### Scenario: The skill arrives with the code
 - **WHEN** any vendor run finishes
 - **THEN** `<dest>/skills/kakao-ui/SKILL.md`, `<dest>/templates/page.html` and `<dest>/recipes/` are there, from the same commit as the components
+
+### Requirement: Tools arrive with the code
+Every vendor run SHALL also copy `tools/api.js`, `tools/style-check.js` with `tools/style-check/` and `tools/style-rules/` (without their tests) and `tools/visual-check.js`, so a project runs them from its copy and they find the copy's custom-elements.json.
+
+#### Scenario: Style check in a project
+- **WHEN** `node kakao/tools/style-check.js page.html` runs in a project with a vendored copy
+- **THEN** it checks the page against the vendored manifest without a library checkout

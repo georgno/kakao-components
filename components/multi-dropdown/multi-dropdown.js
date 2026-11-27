@@ -170,6 +170,7 @@
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+      :host([hidden]) { display: none; }
       :host {
         /* @kakao-settings:start prefix=--kakao-multi-dropdown- (written by construction.html, edit there) */
         --_accent: var(--kakao-multi-dropdown-accent, var(--kakao-color-primary, #4f46e5));

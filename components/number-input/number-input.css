@@ -230,3 +230,11 @@ kakao-number-input[data-touch] .kakao-number-input-arrows span[data-side='right'
   border-left: 1px solid var(--_divider);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  kakao-number-input input[type="number"] { transition: none; }
+}
+
+/* The hidden attribute wins over the display set above. */
+kakao-number-input[hidden] {
+  display: none;
+}

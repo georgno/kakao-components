@@ -1,0 +1,21 @@
+/*
+ * base.css - the page base: body, headings, links and the header bar's nav
+ * links, from the tokens. Part of kakao.css (after tokens, font and themes).
+ * Every rule is wrapped in :where(), so it has no specificity: any rule of
+ * the page wins over it without !important.
+ */
+:where(body) {
+  margin: 0;
+  background: var(--kakao-color-page);
+  color: var(--kakao-color-text);
+  font: 1rem/1.5 var(--kakao-font-family);
+  -webkit-font-smoothing: antialiased;
+}
+
+:where(h1) { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
+
+:where(a) { color: var(--kakao-color-primary); }
+
+/* Nav links in the header bar: text colour, underline on hover and for the current page. */
+:where(kakao-header-bar > [slot="nav"]) { color: var(--kakao-color-text); text-decoration: none; }
+:where(kakao-header-bar > [slot="nav"]:hover, kakao-header-bar > [aria-current="page"]) { text-decoration: underline; }

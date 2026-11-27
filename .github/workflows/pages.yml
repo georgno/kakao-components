@@ -28,6 +28,13 @@ jobs:
         with:
           node-version: 22
 
+      # The tools' own tests (node:test, no packages) and the theme contrast check.
+      - name: Tool tests
+        run: node --test
+
+      - name: Theme contrast
+        run: node tools/check-themes.js
+
       # The style checker (tools/style-check.js) checks every kakao placement
       # against the styleguide's rules; an error stops the deploy.
       - name: Style check

@@ -185,3 +185,9 @@ kakao-tab.shaking .label {
   pointer-events: none;
   transition: opacity 0.15s ease;
 }
+
+/* The hidden attribute wins over the display set above. */
+kakao-tabs[hidden],
+kakao-tab[hidden] {
+  display: none;
+}

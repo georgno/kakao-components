@@ -126,6 +126,7 @@
   // Replaces the stack's settings (same aliases, toast names) and makes the
   // cards' corners the alert's.
   const STYLE = `
+      :host([hidden]) { display: none; }
       :host {
         /* @kakao-settings:start prefix=--kakao-toast- (written by construction.html, edit there) */
         --_width: var(--kakao-toast-width, 22rem);

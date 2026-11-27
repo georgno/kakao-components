@@ -251,6 +251,7 @@
         padding: 0;
       }
 
+      :host([hidden]) { display: none; }
       :host {
         /* @kakao-settings:start prefix=--kakao-step-switch- (written by construction.html, edit there) */
         --_track-width: var(--kakao-step-switch-track-width, min(100%, 18rem));

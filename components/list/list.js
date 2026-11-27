@@ -129,6 +129,7 @@ class KakaoList extends HTMLElement {
 
     this.shadowRoot.innerHTML =
       `<style>
+        :host([hidden]) { display: none; }
         :host {
           /* @kakao-settings:start prefix=--kakao-list- (written by construction.html, edit there) */
           --_bg: var(--kakao-list-bg, var(--kakao-color-bg, #fff));

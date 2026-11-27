@@ -219,6 +219,7 @@
         padding: 0;
       }
 
+      :host([hidden]) { display: none; }
       :host {
         /* @kakao-settings:start prefix=--kakao-popover- (written by construction.html, edit there) */
         --_bg: var(--kakao-popover-bg, var(--kakao-color-bg, #fff));

@@ -14,21 +14,8 @@
 -->
 <link rel="stylesheet" href="../shared/kakao.css" />
 <script src="../shared/kakao.js"></script>
-<style>
-  /* The page base: kakao.css brings tokens, font and themes, not body styles. */
-  body {
-    margin: 0;
-    background: var(--kakao-color-page);
-    color: var(--kakao-color-text);
-    font: 1rem/1.5 var(--kakao-font-family);
-    -webkit-font-smoothing: antialiased;
-  }
-  h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
-  a { color: var(--kakao-color-primary); }
-  kakao-header-bar > [slot="nav"] { color: var(--kakao-color-text); text-decoration: none; }
-  kakao-header-bar > [slot="nav"]:hover,
-  kakao-header-bar > [aria-current="page"] { text-decoration: underline; }
-</style>
+<!-- kakao.css also brings the page base (body, h1, links, header-bar nav links),
+     with no specificity: your own rules win over it. -->
 </head>
 <body>
 <!-- The sticky top bar: first in <body>. Title in the default slot, links in

@@ -499,3 +499,8 @@ kakao-button[data-menu-end][data-menu-up] .kakao-button-menu {
     transition: none;
   }
 }
+
+/* The hidden attribute wins over the display set above. */
+kakao-button[hidden] {
+  display: none;
+}

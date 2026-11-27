@@ -4,16 +4,80 @@ description: Build web pages with kakao-components (kakao-* web components, plai
 license: MIT
 metadata:
   author: kakao-components
-  version: "1.0"
+  version: "1.1"
 ---
 
 kakao-components: web components for server-rendered pages (PHP, Python, plain HTML). Plain JS, no build step, no framework, light and dark themes. Use it for every UI piece it has; write your own markup only for what CATALOG.md lists nothing for.
 
-**Read `kakao/CATALOG.md` first** (a few thousand tokens): one line per component (what for, what not, what to use instead), the "which one?" table for look-alikes, the shared attribute contract. The full API per tag is `kakao/custom-elements.json`. Copy from `kakao/templates/page.html` (a starting page) and `kakao/recipes/` (report, dashboard, form, table, list-detail) rather than starting blank.
+Paths below assume the library sits in `kakao/` (relative to the page and to where you run the commands); adjust them if the project put it elsewhere.
 
-## Vendor and pin
+## Workflow (follow it in this order)
 
-The library is copied into the project, never linked to a branch. In a checkout of kakao-components, on a release tag:
+1. **Pick the components.** Read `kakao/CATALOG.md`: one line per component (what for, what not, what to use instead) and a "which one?" table for look-alikes.
+2. **Start from a copy, never from a blank page.** `kakao/templates/page.html` is a starting page; `kakao/recipes/` has complete pages: `report.html` (summary tiles, badges, tabs, accordions), `dashboard.html` (stat tiles, progress, table), `form.html` (validation, error summary), `table.html` (filtered, paged grid-view), `list-detail.html` (list plus aside-sheet). Copy the closest one and change `../shared/` to the path of `kakao/shared/`.
+3. **Look up every tag before you write it:** `node kakao/tools/api.js kakao-tabs` prints its attributes with their allowed values, slots, events, methods and an example (about 1k tokens). Use only what it lists. Several at once: `node kakao/tools/api.js tabs toast badge`.
+4. **Check:** `node kakao/tools/style-check.js path/to/page.html` must report 0 errors. Fix what it names and run it again.
+5. **Look:** `node kakao/tools/visual-check.js path/to/page.html` (or a dev server URL) takes light, dark and 390px phone screenshots and checks console errors, sideways scroll, unnamed controls, focus rings and reduced motion. It needs Playwright and says how to install it. Open the screenshots.
+
+## Page head and shell
+
+```html
+<link rel="stylesheet" href="kakao/shared/kakao.css">
+<script src="kakao/shared/kakao.js"></script><!-- in <head>, no defer: theme before first paint -->
+```
+
+- `kakao.js` loads every `<kakao-*>` tag the page uses (also tags added later), with its dependencies and CSS. Add no other kakao script or link tags.
+- `kakao.css` brings tokens, font, themes and the page base (body, h1, links). Its rules have no specificity, so your own CSS always wins.
+- Before calling a component's methods from a script: `kakaoLoader.ready.then(() => …)`, or `kakaoLoader.load('kakao-toast').then(() => …)`.
+
+Shell of every page:
+
+```html
+<body>
+<kakao-header-bar>
+  <strong>App name</strong>
+  <a slot="nav" href="/" aria-current="page">Overview</a>
+  <kakao-theme-switch slot="end"></kakao-theme-switch>
+</kakao-header-bar>
+<main>
+  <kakao-page>
+    <kakao-flow gap="lg">
+      <h1>Title</h1>
+      <section>
+        <kakao-flow>
+          <kakao-section-header heading="Section" count="3"></kakao-section-header>
+          …
+        </kakao-flow>
+      </section>
+    </kakao-flow>
+  </kakao-page>
+</main>
+</body>
+```
+
+Space comes from `kakao-flow` (vertical gaps) and `kakao-grid` (columns that wrap), colours from the `--kakao-color-*` tokens, spacing from `--kakao-space-*`.
+
+## Rules
+
+- **Never invent attributes or values.** If `api.js` doesn't list it, it doesn't exist.
+- `tone`: neutral · primary · success · warning · danger (write `danger`, never `error`). `size`: sm · md · lg.
+- JSON configuration goes in `list-data`, never `data`. Escape it in HTML attributes: PHP `htmlspecialchars(json_encode($d), ENT_QUOTES)`, Python `html.escape(json.dumps(d))`, JS `el.setAttribute('list-data', JSON.stringify(d))`.
+- `label` is the accessible name; an icon-only control always gets one.
+- Every action is a `<kakao-button>` (variant primary · secondary · ghost · danger); links in text stay `<a>`.
+- No hard-coded colours, no margins between blocks (use kakao-flow), no CSS for things a component already draws.
+- Text in sentence case, never uppercase. No thick coloured stripe on one side of a box; use a tint, a full thin border or weight.
+- Events have no `kakao-` prefix (`tab-change`, `sheet-show`), except the button's: `kakao-button-action`. `api.js` lists each tag's events.
+- A bar's size matches its buttons: `<kakao-action-bar size="sm">` holds `size="sm"` buttons.
+
+## Without the loader
+
+Only if the project loads single files: load each light-DOM component's CSS (CATALOG.md marks it "light DOM, x.css") and the components it needs first ("after …"), and `shared/component-api.js` before any component script. `style-check` reports what is missing or in the wrong order.
+
+Several pages with the same shell can swap their content instead of reloading: `shared/page-transition.js` (see CATALOG.md).
+
+## Vendor and pin (setting the library up, or upgrading it)
+
+In a checkout of kakao-components, on a release tag:
 
 ```sh
 git checkout vX.Y.Z
@@ -21,50 +85,12 @@ node tools/vendor.js ../myproject/web/kakao            # everything
 node tools/vendor.js ../myproject/web/kakao toast tabs  # only these and what they need
 ```
 
-`kakao/VERSION` holds the tag; the vendored copy also brings this skill (`kakao/skills/kakao-ui/`: copy it to `.claude/skills/` or `.pi/skills/` so it matches the code). To upgrade, vendor a newer tag into the same folder (it is replaced) and read that version's `**Upgrade:**` lines in the library's CHANGELOG.md. Never edit files under `kakao/`.
-
-## Page head and base
-
-```html
-<link rel="stylesheet" href="kakao/shared/kakao.css">
-<script src="kakao/shared/kakao.js"></script><!-- no defer: theme before first paint -->
-```
-
-`kakao.js` loads every `<kakao-*>` tag the page uses (also tags added later), with its dependencies and light-DOM CSS; no other script tags. Before calling a component's methods: `kakaoLoader.ready.then(…)` (everything in the parsed page) or `kakaoLoader.load('kakao-toast').then(…)`.
-
-`kakao.css` is tokens, font and themes only: it has **no body styles**. Every page needs the base from `templates/page.html`:
-
-```css
-body { margin: 0; background: var(--kakao-color-page); color: var(--kakao-color-text);
-  font: 1rem/1.5 var(--kakao-font-family); -webkit-font-smoothing: antialiased; }
-h1 { font-size: 1.75rem; font-weight: 650; line-height: 1.2; letter-spacing: -0.02em; }
-a { color: var(--kakao-color-primary); }
-```
-
-Several pages with the same shell can swap their content instead of reloading: add `<script src="kakao/shared/page-transition.js"></script>` after kakao.js, `data-page-transition` on the header bar, `data-page-transition-content="content" tabindex="-1"` on `<main>` of every page, `data-page-transition-script` on page scripts (wrap them in `{ … }`, bind document/window listeners with `{ signal: kakaoPageTransition.signal }`). Details: CATALOG.md and the file's header.
-
-Shell: `<kakao-header-bar>` first in `<body>` (title, `slot="nav"` links, `<kakao-theme-switch slot="end">`), then `<main><kakao-page><kakao-flow gap="lg">…`. Space comes from `kakao-flow` / `kakao-grid` and `--kakao-space-*`, colours from `--kakao-color-*`: no hard-coded colours, no margins of your own between blocks.
-
-## Rules that bite
-
-- **Without the loader**, load each light-DOM component's CSS file yourself (button.css, tabs.css, table.css, … : CATALOG.md marks them "light DOM, x.css") and the components it needs first ("after …"), then `shared/component-api.js` before any component script.
-- JSON configuration goes in `list-data`, never `data`. Escape it as HTML in attributes: PHP `htmlspecialchars(json_encode($d), ENT_QUOTES)`, Python `html.escape(json.dumps(d))`, JS `el.setAttribute('list-data', JSON.stringify(d))`.
-- Only the documented values: `tone` neutral · primary · success · warning · danger (write `danger`, never `error`); `size` sm · md · lg. Check a tag's values in custom-elements.json before using one.
-- `label` is the accessible name; icon-only controls always get one. Text in sentence case, never all caps.
-- `hidden` is not honoured by every component yet: hide a wrapper element instead.
-- Events have no `kakao-` prefix (`tab-change`, `sheet-show`), except the button's: `kakao-button-action`, `kakao-button-select`, `kakao-button-menu`.
-- A bar's size matches its buttons: `<kakao-action-bar size="sm">` holds `size="sm"` buttons.
-- Links in text stay `<a>`; every action is a `<kakao-button>` (variant primary · secondary · ghost · danger).
-
-## Known gotchas
-
-- `form.reset()` does not clear `kakao-text-input` (nor `kakao-textarea`, `kakao-checkbox`): reset their `value` / `checked` yourself.
-- `KakaoToast.show({ tone, message })` exists only once a `<kakao-toast>` is in the page or after `kakaoLoader.load('kakao-toast')`: wait for that promise.
+`kakao/VERSION` holds the tag. Copy `kakao/skills/kakao-ui/` to `.claude/skills/` (or `.pi/skills/`) so the skill matches the code. To upgrade, vendor a newer tag into the same folder and read that version's `**Upgrade:**` lines in the library's CHANGELOG.md. Never edit files under `kakao/`.
 
 ## Before you finish
 
-1. Run the style checker from the library checkout on your pages: `node <kakao-checkout>/tools/style-check.js path/to/pages` (0 errors; it also reports missing or misordered files on pages without the loader).
-2. Look at every page in the light and the dark theme, and at 390px width (no sideways scroll). `node <kakao-checkout>/tools/visual-check.js page.html` (or a dev server URL) takes those screenshots into the temp folder and checks console errors, sideways scroll, unnamed controls, focus rings and reduced motion; it needs Playwright (`npm i playwright && npx playwright install chromium`, and it says so). Open the screenshots; the checks don't replace looking.
-3. Use it with the keyboard only: every control reachable, focus visible, dialogs and sheets trap and return focus.
-4. Turn on reduced motion: nothing slides or rolls that matters.
+1. `node kakao/tools/style-check.js <your pages>`: 0 errors.
+2. Light and dark theme, and 390px width without sideways scroll (`visual-check.js` does all three).
+3. Keyboard only: every control reachable, focus visible, dialogs and sheets trap and return focus.
+4. Reduced motion: nothing important slides or rolls.
 5. No console errors.

@@ -17,6 +17,9 @@
  *  - shared/kakao.js, kakao.css, tokens.css, themes.css, font.css and the font
  *    files, component-api.js, page-transition.js (optional page swaps);
  *  - CATALOG.md and custom-elements.json (the guide and the full API);
+ *  - the checkers and the API lookup, so a project runs them from its copy:
+ *    tools/api.js, tools/style-check.js (+ style-check/, style-rules/, without
+ *    their tests) and tools/visual-check.js;
  *  - as reference, pinned with the code: skills/kakao-ui (the consumer skill;
  *    install it as .claude/skills/kakao-ui or .pi/skills/kakao-ui), templates/
  *    and recipes/ (they load ../shared/kakao.js, so they run in place; with a
@@ -44,6 +47,7 @@ const SHARED = [
   'shared/kakao.css',
   'shared/tokens.css',
   'shared/themes.css',
+  'shared/base.css',
   'shared/font.css',
   'shared/fonts',
   'shared/component-api.js',
@@ -53,6 +57,11 @@ const SHARED = [
   'skills/kakao-ui',
   'templates',
   'recipes',
+  'tools/api.js',
+  'tools/style-check.js',
+  'tools/style-check',
+  'tools/style-rules',
+  'tools/visual-check.js',
 ];
 
 class VendorError extends Error {}
@@ -136,7 +145,8 @@ function main(argv, root = ROOT, log = process.stdout, err = process.stderr) {
   for (const f of picked.files) {
     const to = path.join(dest, f);
     fs.mkdirSync(path.dirname(to), { recursive: true });
-    fs.cpSync(path.join(root, f), to, { recursive: true });
+    // The tools' own tests and fixtures stay here.
+    fs.cpSync(path.join(root, f), to, { recursive: true, filter: (src) => !/(^|[\\/])tests([\\/]|$)/.test(path.relative(root, src)) });
   }
   const v = version(root);
   fs.writeFileSync(path.join(dest, 'VERSION'), `${v.tag}\n`);

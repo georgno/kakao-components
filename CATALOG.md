@@ -1,8 +1,8 @@
 # kakao-components catalog
 
-Web components for server-rendered pages: plain JS, no build step. Full API per component
-(attributes, events, slots, CSS properties, files): `custom-elements.json`; examples:
-`components/<name>/demo.html`.
+Web components for server-rendered pages: plain JS, no build step. One component's API
+(attributes and their values, slots, events, methods, an example): `node tools/api.js <tag>`
+(`kakao/tools/api.js` in a vendored copy); everything at once: `custom-elements.json`.
 Working rules for agents (head, page base, the rules that bite, a checklist): the skill in
 `skills/` (its SKILL.md); a starting page and copy-paste pages: `templates/page.html`, `recipes/`.
 
@@ -18,7 +18,7 @@ without a list, and writes `VERSION`):
 <script src="kakao/shared/kakao.js"></script>
 ```
 
-`kakao.css` is tokens, font and themes in one file. `kakao.js` loads each component on first
+`kakao.css` is tokens, font, themes and the page base (body, h1, links; no specificity, your CSS wins) in one file. `kakao.js` loads each component on first
 use (also tags added later): component-api.js, the components it needs, its light-DOM CSS, its
 script, in order; tags stay hidden until defined (at most 3 s, or until a file fails). Before calling a component's methods:
 `kakaoLoader.ready.then(…)` (everything the page uses) or `kakaoLoader.load('kakao-toast').then(…)`.
@@ -29,6 +29,7 @@ Or load single files (the loader skips what a page loads itself):
 <link rel="stylesheet" href="kakao/shared/tokens.css">
 <link rel="stylesheet" href="kakao/shared/font.css">
 <link rel="stylesheet" href="kakao/shared/themes.css">
+<link rel="stylesheet" href="kakao/shared/base.css"><!-- optional: the page base -->
 <script src="kakao/shared/component-api.js"></script>
 <script src="kakao/components/theme-switch/theme-switch.js"></script><!-- not deferred -->
 <!-- Per component: its light-DOM CSS, the components it needs, its script. -->
@@ -57,8 +58,8 @@ Or load single files (the loader skips what a page loads itself):
   document/window listeners with `{ signal: kakaoPageTransition.signal }`). Events on
   `document`: `page-transition-start` (cancelable), `page-transition-swap`, `page-transition-end`.
   Set `kakaoPageTransition.busy = true` while a swap would lose work. Full guide: the file's header.
-- `node tools/style-check.js` (this repo) reports a file a page's tags need that is missing
-  or loaded in the wrong order (not on a page with the loader).
+- `node tools/style-check.js <pages>` (`kakao/tools/` in a vendored copy) checks attribute
+  values, names, list-data and, on pages without the loader, missing or misordered files.
 
 ## Shared contract
 
@@ -69,11 +70,11 @@ Or load single files (the loader skips what a page loads itself):
   lists them; extras `ink` (badge, chip), `info` (alert, toast), `auto` (avatar), `none` ·
   `muted` (spinner). Write `danger`, not `error`.
 - `list-data`: JSON configuration, never `data`.
-- `hidden`: hides a component; not all honour it yet, so hide a wrapper when in doubt.
+- `hidden`: hides a component (all of them honour it; kakao-tooltip drops it when its script runs).
   Overlays (dialog, aside-sheet, menu, popover, toast) open and close through their API.
 - Events: `<thing>-<verb>` in kebab-case (`tab-change`), no `kakao-` prefix (old exception:
   the button's `kakao-button-*`). They bubble, are composed, carry `event.detail`. Fields
-  also send `input` / `change` and are form-associated (`name`, `value`).
+  also send `input` / `change` and are form-associated (`name`, `value`; `form.reset()` resets them).
 - Text in sentence case, never all caps; components never transform it.
 - JSON in an attribute: escape it as HTML, then either quote style is safe.
   - Python: `html.escape(json.dumps(data))`
