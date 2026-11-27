@@ -114,6 +114,7 @@
  *  theme-change   { theme, previous, scheme,
  *                   source: "user" | "api" | "storage" | "demo",
  *                   color }
+ *                 ("storage": the theme was changed in another window)
  *                 after the theme on <html> changed: on the switch, or on
  *                 document for the page-level setTheme(). color is the new
  *                 theme's primary colour (--kakao-color-primary), so other
@@ -155,6 +156,30 @@
  *  headings flicker while it sweeps over them. The origin is rounded to whole
  *  pixels, and where masks aren't animatable the same reveal runs as a
  *  clipping circle.
+ *
+ * ----------------------------------------------------------------------------
+ * OTHER WINDOWS
+ * ----------------------------------------------------------------------------
+ *  A remembered theme (any storage key but "") is announced to the page's
+ *  other windows and tabs (BroadcastChannel "kakao-theme"), and they follow it
+ *  the way it changed: a fade fades, an instant change is instant. A ripple
+ *  continues across the screen: it is announced in screen coordinates with
+ *  its start time, and every other window plays its part of the same circle,
+ *  so it enters a window beside this one from the side facing it, when the
+ *  circle gets there. Past the sender's own window the circle keeps growing
+ *  at the speed it had (its average speed, where it slowed down below it); a
+ *  window far away waits at most 600 ms. A hidden window, or one with reduced
+ *  motion, changes at once.
+ *
+ *  The viewport's place on the screen comes from window.screenX / screenY,
+ *  corrected by the pointer (screen and viewport coordinates of the same
+ *  event; also the browser zoom) once it has moved over the window, and
+ *  estimated from the window's outer and inner size before that. Where a
+ *  browser reports no window position (Linux on Wayland, anti-fingerprinting
+ *  modes) every window counts as being at 0,0: the ripple then starts at the
+ *  same viewport point in each. A window follows announcements under the
+ *  default key and under the keys of its switches. Without BroadcastChannel
+ *  a switch follows the storage event instead, without animation.
  *
  * ----------------------------------------------------------------------------
  * CSS CUSTOM PROPERTIES
@@ -431,6 +456,167 @@
   }
 
   /*
+   * Other windows (see OTHER WINDOWS in the header). A remembered theme is
+   * announced on a BroadcastChannel; the page's other windows and tabs follow
+   * it the way it changed here. A ripple is announced in screen coordinates
+   * with its start time, so another window plays its own part of the same
+   * circle: it starts where the circle would reach its edge, at the speed the
+   * circle has there.
+   */
+  const CHANNEL_NAME = 'kakao-theme';
+  const MAX_WAVE_DELAY = 600; // ms: a window far away waits at most this long
+  const WAVE_LEAD = 32;       // ms: start the view transition this early (snapshot time)
+  const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel(CHANNEL_NAME) : null;
+
+  function announce(message) {
+    if (!channel || !message.key) return;
+    try { channel.postMessage(message); } catch { /* closed, or not cloneable */ }
+  }
+
+  /*
+   * Where this window's viewport sits on the screen. window.screenX / screenY
+   * place the window, not its viewport (toolbars, borders); the pointer tells
+   * the rest: every pointer event has both screen and viewport coordinates.
+   * The zoom (screen px per CSS px) comes from two pointer positions, snapped
+   * to the browsers' zoom levels. Until the pointer has moved over this
+   * window, the toolbars are estimated from the outer and inner size.
+   */
+  const ZOOM_LEVELS = [0.25, 0.33, 0.5, 0.67, 0.75, 0.8, 0.9, 1, 1.1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4, 5];
+  const screenGeometry = { dx: null, dy: null, zoom: 1, ref: null };
+
+  function calibrate(e) {
+    if (!e.isTrusted || !Number.isFinite(e.screenX) || !Number.isFinite(e.clientX)) return;
+    const g = screenGeometry;
+    const ref = g.ref;
+    if (!ref || Math.abs(e.clientX - ref.clientX) >= 40) {
+      if (ref) {
+        const z = (e.screenX - ref.screenX) / (e.clientX - ref.clientX);
+        if (z > 0.2 && z < 6) {
+          g.zoom = ZOOM_LEVELS.reduce((best, level) => (Math.abs(level - z) < Math.abs(best - z) ? level : best), 1);
+        }
+      }
+      g.ref = { clientX: e.clientX, screenX: e.screenX };
+    }
+    g.dx = e.screenX - e.clientX * g.zoom - window.screenX;
+    g.dy = e.screenY - e.clientY * g.zoom - window.screenY;
+  }
+  if (channel) {
+    window.addEventListener('pointermove', calibrate, { capture: true, passive: true });
+    window.addEventListener('pointerdown', calibrate, { capture: true, passive: true });
+  }
+
+  /** The viewport's top left on the screen (screen px), and the zoom. */
+  function viewportOrigin() {
+    const g = screenGeometry;
+    const z = g.zoom;
+    let { dx, dy } = g;
+    if (dx === null) {
+      const side = Math.max(0, (window.outerWidth - window.innerWidth * z) / 2);
+      dx = side;
+      dy = Math.max(0, window.outerHeight - window.innerHeight * z - side);
+    }
+    return { x: (window.screenX || 0) + dx, y: (window.screenY || 0) + dy, zoom: z };
+  }
+
+  /** A CSS easing (keyword or cubic-bezier) as a function of 0…1; others run linear. */
+  const EASING_CURVES = {
+    linear: [0, 0, 1, 1], ease: [0.25, 0.1, 0.25, 1], 'ease-in': [0.42, 0, 1, 1],
+    'ease-out': [0, 0, 0.58, 1], 'ease-in-out': [0.42, 0, 0.58, 1],
+  };
+  function easingFunction(easing) {
+    const text = String(easing || '').trim();
+    let p = EASING_CURVES[text];
+    const m = text.match(/^cubic-bezier\(([^)]+)\)$/);
+    if (m) {
+      const n = m[1].split(',').map(Number);
+      if (n.length === 4 && n.every(Number.isFinite)) p = n;
+    }
+    if (!p) p = EASING_CURVES.linear;
+    const [x1, y1, x2, y2] = p;
+    const bezier = (a, b, t) => 3 * a * t * (1 - t) ** 2 + 3 * b * t * t * (1 - t) + t ** 3;
+    return (x) => {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      let lo = 0;
+      let hi = 1;
+      for (let i = 0; i < 30; i++) {
+        const mid = (lo + hi) / 2;
+        if (bezier(x1, x2, mid) < x) lo = mid; else hi = mid;
+      }
+      return bezier(y1, y2, (lo + hi) / 2);
+    };
+  }
+
+  /*
+   * The announced ripple as radius over time (screen px, ms from its start):
+   * the sender's own curve while it lasts, then onwards at a steady speed, so
+   * the circle keeps growing past the sender's window. An ease-out curve slows
+   * towards its end; from where it falls to its average speed, it keeps that
+   * speed instead of stopping. Returns { at(t), timeOf(r) }.
+   */
+  function waveCurve({ radius, duration, easing }) {
+    const ease = easingFunction(easing);
+    const R = Math.max(1, radius);
+    const D = Math.max(1, duration);
+    const average = R / D;
+    const h = D / 200;
+    const speedAt = (t) => ((ease(Math.min(1, (t + h) / D)) - ease(t / D)) * R) / h;
+    let knee = D;
+    let speed = Math.max(average, speedAt(D - h)); // an ease-in ends fast: keep its end speed
+    for (let t = D / 2; t < D; t += h) {
+      if (speedAt(t) <= average) { knee = t; speed = average; break; }
+    }
+    const kneeRadius = ease(knee / D) * R;
+    const at = (t) => (t <= knee ? ease(Math.max(0, t) / D) * R : kneeRadius + (t - knee) * speed);
+    const timeOf = (r) => {
+      if (r <= 0) return 0;
+      if (r >= kneeRadius) return knee + (r - kneeRadius) / speed;
+      let lo = 0;
+      let hi = knee;
+      for (let i = 0; i < 40; i++) {
+        const mid = (lo + hi) / 2;
+        if (at(mid) < r) lo = mid; else hi = mid;
+      }
+      return hi;
+    };
+    return { at, timeOf };
+  }
+
+  /**
+   * This window's part of an announced ripple: the circle's centre in this
+   * viewport (often outside it), and keyframes from when the circle reaches
+   * the viewport to when it covers it. null when that is already over.
+   */
+  function planWave(message) {
+    const origin = viewportOrigin();
+    const z = origin.zoom;
+    const cx = Math.round((message.x - origin.x) / z);
+    const cy = Math.round((message.y - origin.y) / z);
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    // Screen px: the circle's radius is measured on the screen.
+    const near = Math.hypot(Math.max(0, -cx, cx - w), Math.max(0, -cy, cy - h)) * z;
+    const far = Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy)) * z;
+    const curve = waveCurve(message);
+    const tIn = curve.timeOf(near);
+    const tOut = Math.max(tIn + 1, curve.timeOf(far));
+    let startsAt = message.start + tIn;
+    // Far away: arrive within MAX_WAVE_DELAY, the wave's own pace from there.
+    startsAt = Math.min(startsAt, Date.now() + MAX_WAVE_DELAY);
+    const span = tOut - tIn;
+    if (Date.now() > startsAt + span) return null;
+    const steps = Math.min(60, Math.max(2, Math.ceil(span / 16)));
+    const frames = [];
+    for (let i = 0; i <= steps; i++) {
+      const r = Math.ceil(curve.at(tIn + (span * i) / steps) / z);
+      frames.push(MASK_SUPPORTED
+        ? { offset: i / steps, maskSize: `${2 * r}px ${2 * r}px`, maskPosition: `${cx - r}px ${cy - r}px` }
+        : { offset: i / steps, clipPath: `circle(${r}px at ${cx}px ${cy}px)` });
+    }
+    return { cx, cy, frames, duration: span, startsAt, feather: Math.max(0, (message.feather || 0) / z) };
+  }
+
+  /*
    * One ripple at a time. A switch requested while a ripple runs is queued:
    * the running ripple completes, then one more ripple goes to the latest
    * requested theme (however many requests came in). Interrupting instead
@@ -455,7 +641,12 @@
    * remembers it. Resolves once that theme (or a later request) is applied.
    */
   function switchTheme(value, options = {}) {
-    storage.set(options.storageKey === undefined ? DEFAULT_KEY : options.storageKey, value);
+    const key = options.storageKey === undefined ? DEFAULT_KEY : options.storageKey;
+    storage.set(key, value);
+    // Remembered themes are announced to the other windows ("" remembers nothing).
+    options = { ...options, announceKey: key };
+    // A choice made here wins over another window's wave still on its way.
+    if (!options.remote) clearTimeout(waveTimer);
     if (options.fade) return fadeTheme(value, options);
     queue.target = value;
     // Switches show the target at once (icon, label), even while a ripple runs.
@@ -479,6 +670,7 @@
    */
   function fadeTheme(value, options) {
     if (value !== ROOT.getAttribute(THEME_ATTR)) {
+      announce({ theme: value, key: options.announceKey, mode: 'fade' });
       startFade(value, options.timing || fadeTiming(document.querySelector(TAG_NAME)));
       if (queue.running) finishFade();
       reportTransition(); // a fade began, or the one that ran was dropped
@@ -487,7 +679,7 @@
     return Promise.resolve();
   }
 
-  function runSwitch(value, { animate = true, x, y, timing } = {}) {
+  function runSwitch(value, { animate = true, x, y, timing, wave, announceKey } = {}) {
     queue.running = true;
     const applied = () => {
       const waiters = queue.waiters.splice(0);
@@ -514,6 +706,7 @@
       return;
     }
     if (!animate || reducedMotion() || typeof document.startViewTransition !== 'function') {
+      announce({ theme: value, key: announceKey, mode: 'instant' });
       update();
       applied();
       finished();
@@ -521,20 +714,24 @@
     }
 
     // Ripple: the new theme is revealed as a growing circle from (x, y). Whole
-    // pixels, so the revealed text never sits on a half-pixel edge.
-    const cx = Math.round(Number.isFinite(x) ? x : window.innerWidth / 2);
-    const cy = Math.round(Number.isFinite(y) ? y : window.innerHeight / 2);
+    // pixels, so the revealed text never sits on a half-pixel edge. Another
+    // window's ripple (wave) brings its own centre and keyframes.
+    const cx = wave ? wave.cx : Math.round(Number.isFinite(x) ? x : window.innerWidth / 2);
+    const cy = wave ? wave.cy : Math.round(Number.isFinite(y) ? y : window.innerHeight / 2);
     const radius = Math.ceil(Math.hypot(
       Math.max(cx, window.innerWidth - cx),
       Math.max(cy, window.innerHeight - cy),
     ));
-    const { duration, easing, feather } = timing || rippleTiming(document.querySelector(TAG_NAME));
+    const own = timing || rippleTiming(document.querySelector(TAG_NAME));
+    const duration = wave ? wave.duration : own.duration;
+    const easing = wave ? 'linear' : own.easing; // a wave's keyframes carry its curve
+    const feather = wave ? wave.feather : own.feather;
 
     // The mask image is a circle that fills its box, so a box of 2r × 2r shows
     // a circle of radius r; growing the box grows the reveal. Its top left sits
     // at the centre minus r, which keeps the circle centred on (x, y). The mask
     // image itself (and its soft edge) comes from the page styles.
-    const reveal = MASK_SUPPORTED
+    const reveal = wave ? wave.frames : MASK_SUPPORTED
       ? {
           maskSize: ['0px 0px', `${2 * radius}px ${2 * radius}px`],
           maskPosition: [`${cx}px ${cy}px`, `${cx - radius}px ${cy - radius}px`],
@@ -554,6 +751,7 @@
     try {
       transition = document.startViewTransition(update);
     } catch {
+      announce({ theme: value, key: announceKey, mode: 'instant' });
       ROOT.classList.remove(RIPPLE_CLASS);
       ROOT.style.removeProperty('--kakao-ripple-x');
       ROOT.style.removeProperty('--kakao-ripple-y');
@@ -566,11 +764,33 @@
       return;
     }
     transition.ready.then(() => {
-      ROOT.animate(
+      const anim = ROOT.animate(
         reveal,
         // forwards: stay fully revealed until the transition itself ends
         { duration, easing, fill: 'forwards', pseudoElement: '::view-transition-new(root)' },
       );
+      if (wave) {
+        // On the shared clock: wait for the circle to arrive, or catch up.
+        const late = Date.now() - wave.startsAt;
+        if (late >= 0) anim.currentTime = Math.min(late, duration);
+        else anim.effect.updateTiming({ delay: -late });
+        return;
+      }
+      // The other windows play their part of this circle, from where it is on
+      // the screen and from now.
+      const origin = viewportOrigin();
+      announce({
+        theme: value,
+        key: announceKey,
+        mode: 'ripple',
+        x: origin.x + cx * origin.zoom,
+        y: origin.y + cy * origin.zoom,
+        radius: radius * origin.zoom,
+        duration,
+        easing,
+        feather: feather * origin.zoom,
+        start: Date.now(),
+      });
     }).catch(() => { /* skipped: the theme is applied anyway */ });
     transition.updateCallbackDone.then(applied, applied);
     transition.finished.finally(() => {
@@ -977,7 +1197,19 @@
     _onStorage(e) {
       if (e.key !== this._storageKey() || !e.newValue) return;
       const theme = this._find(e.newValue);
-      if (theme) this._switchTo(theme, { animate: false, source: 'storage' });
+      if (!theme) return;
+      // With BroadcastChannel the change arrives as an announcement, with its
+      // ripple or fade. Only a change that wasn't announced (written some
+      // other way) is taken from storage, after a moment, without animation.
+      if (!channel) {
+        this._switchTo(theme, { animate: false, source: 'storage' });
+        return;
+      }
+      const seen = Date.now();
+      setTimeout(() => {
+        if (lastAnnounced.at >= seen - 50) return; // announced: the announcement decides
+        if (targetTheme() !== theme.value) this._switchTo(theme, { animate: false, source: 'storage' });
+      }, 1000);
     }
   }
 
@@ -1040,6 +1272,41 @@
     originPicker = el;
     KakaoThemeSwitch.setTheme(value, { fade: true, source: 'user' });
   }
+
+  /*
+   * Announcements from the other windows: follow the theme the way it changed
+   * there. Hidden windows (and reduced motion) change at once. Nothing is
+   * stored (the sender did), so nothing is announced back.
+   */
+  let lastAnnounced = { theme: null, at: 0 };
+  let waveTimer = 0;
+
+  function acceptsKey(key) {
+    if (key === DEFAULT_KEY) return true;
+    return [...document.querySelectorAll(TAG_NAME)].some((el) => typeof el._storageKey === 'function' && el._storageKey() === key);
+  }
+
+  function followAnnouncement(message) {
+    if (!message || typeof message.theme !== 'string' || !acceptsKey(message.key)) return;
+    lastAnnounced = { theme: message.theme, at: Date.now() };
+    clearTimeout(waveTimer);
+    const options = { source: 'storage', storageKey: '', remote: true };
+    if (message.mode === 'fade') {
+      KakaoThemeSwitch.setTheme(message.theme, { ...options, fade: true });
+      return;
+    }
+    const ripple = message.mode === 'ripple' && document.visibilityState !== 'hidden' && !reducedMotion()
+      && [message.x, message.y, message.radius, message.duration, message.start].every(Number.isFinite);
+    const wave = ripple ? planWave(message) : null;
+    if (!wave) {
+      KakaoThemeSwitch.setTheme(message.theme, { ...options, animate: false });
+      return;
+    }
+    waveTimer = setTimeout(() => KakaoThemeSwitch.setTheme(message.theme, { ...options, wave }),
+      Math.max(0, wave.startsAt - Date.now() - WAVE_LEAD));
+  }
+
+  if (channel) channel.addEventListener('message', (e) => followAnnouncement(e.data));
 
   function wireThemePickers() {
     // A step switch: every step the thumb crosses, dragged or flown over.

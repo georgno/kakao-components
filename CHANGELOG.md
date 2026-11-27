@@ -20,6 +20,11 @@ upgrade is safe; the entries below them give the detail.
 
 ### Added
 
+- Theme switch: other windows and tabs follow a theme change the way it happened
+  (BroadcastChannel). A ripple continues across the screen: a window beside the sender
+  plays its part of the same circle, from the side facing the click, when the circle gets
+  there (at most 600 ms later). A fade fades; hidden windows change at once. Before, only
+  pages with a switch element followed, without animation.
 - Site: an "Examples" menu in the page bar instead of the Kitchen sink link. It lists the
   example pages (the kitchen sink and a new BMI calculator); from the sixth on, it shows five
   and an "All examples" page.

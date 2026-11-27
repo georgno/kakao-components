@@ -13797,7 +13797,7 @@
           "events": [
             {
               "name": "theme-change",
-              "description": "{ theme, previous, scheme, source: \"user\" | \"api\" | \"storage\" | \"demo\", color } after the theme on <html> changed: on the switch, or on document for the page-level setTheme(). color is the new theme's primary colour (--kakao-color-primary), so other components can tint themselves with it.",
+              "description": "{ theme, previous, scheme, source: \"user\" | \"api\" | \"storage\" | \"demo\", color } (\"storage\": the theme was changed in another window) after the theme on <html> changed: on the switch, or on document for the page-level setTheme(). color is the new theme's primary colour (--kakao-color-primary), so other components can tint themselves with it.",
               "type": {
                 "text": "CustomEvent<{ theme, previous, scheme, source: \"user\" | \"api\" | \"storage\" | \"demo\", color }>"
               }
