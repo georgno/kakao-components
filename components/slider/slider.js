@@ -60,7 +60,8 @@
  * EVENTS (bubble, composed)
  * ----------------------------------------------------------------------------
  *  slider-change   { value, min, max, step, percent }   every committed change
- *  slider-input    { value, min, max, step, percent }   continuously while dragging
+ *  slider-input    { value, min, max, step, percent }   continuously while dragging, and
+ *                   while typing a number inside min…max into the field
  *  slider-focus    { value }   the thumb received focus
  *  slider-blur     { value }   the thumb lost focus
  *
@@ -721,9 +722,16 @@ class KakaoSlider extends HTMLElement {
     input.removeEventListener('keydown', this._onInputKeyDown);
   }
 
+  // While typing: move the thumb only for a number inside min…max, and leave
+  // the text alone (it may be the first digits of a valid value: "1" of
+  // "120" on a 20–300 slider). Clamping, snapping and rewriting the text
+  // happen on change (blur or Enter), in _onInputChange.
   _onNumberInput(e) {
-    const v = this._snap(parseFloat(e.target.value));
-    if (!isNaN(v) && v !== this._value) {
+    const raw = e.target.value.trim();
+    const n = raw === '' ? NaN : Number(raw);
+    if (!Number.isFinite(n) || n < this._min || n > this._max) return;
+    const v = this._snap(n);
+    if (v !== this._value) {
       this._setValue(v, true);
       this._dispatch('slider-input');
     }
@@ -755,7 +763,8 @@ class KakaoSlider extends HTMLElement {
     input.min   = this._min;
     input.max   = this._max;
     input.step  = this._step;
-    input.value = this._formatValue(this._value);
+    // Never rewrite the text under the caret: _onInputChange does it on commit.
+    if (this._shadow.activeElement !== input) input.value = this._formatValue(this._value);
     input.setAttribute('aria-label', `${this._label} input`);
 
     s.querySelector('.unit-badge').textContent = this._unit;
@@ -921,14 +930,14 @@ class KakaoSlider extends HTMLElement {
     }
   }
 
+  // Commit (blur or Enter): clamp, snap, rewrite the text, one slider-change.
   _onInputChange(e) {
-    const v = this._snap(parseFloat(e.target.value));
+    const v = parseFloat(e.target.value);
     if (!isNaN(v)) {
-      this._setValue(v);
+      this._setValue(v, true);
       this._dispatch('slider-change');
-    } else {
-      e.target.value = this._formatValue(this._value);
     }
+    e.target.value = this._formatValue(this._value);
   }
 
   _onInputKeyDown(e) {

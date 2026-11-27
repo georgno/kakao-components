@@ -10963,7 +10963,7 @@
             },
             {
               "name": "slider-input",
-              "description": "{ value, min, max, step, percent }   continuously while dragging",
+              "description": "{ value, min, max, step, percent }   continuously while dragging, and while typing a number inside min…max into the field",
               "type": {
                 "text": "CustomEvent<{ value, min, max, step, percent }>"
               }
