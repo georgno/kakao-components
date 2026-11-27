@@ -35,6 +35,11 @@ upgrade is safe; the entries below them give the detail.
   `-scale-font-size`, `-scale-color`. Without `list-data` nothing changes.
 - `tools/visual-check.js --state <name>=<selector>`: also checks the page after clicks (a view
   hidden at load), with its own screenshots and sideways-scroll check in all four variants.
+- kakao-ui skill: "Known gotchas" (alert auto-hide, the animated number's monospace default,
+  number-input's `change`, where the vendored checkers live) and what `VERSION` holds when
+  vendored from a commit that is not a tag. Animated number demo: the number in the page font.
+- CATALOG.md and `tools/vendor.js` say what the counts mean: 70 components define 73 tags
+  (kakao-tabs also defines kakao-tab, settings-group kakao-setting, avatar kakao-avatar-group).
 
 ### Fixed
 

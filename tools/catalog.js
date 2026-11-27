@@ -65,8 +65,11 @@ function componentLines(manifest) {
 
 function generated(manifest) {
   const n = manifest.modules.length;
+  const tags = manifest.modules.reduce((sum, m) => sum + m.declarations.filter((d) => d.tagName).length, 0);
   const v = manifest.kakao && manifest.kakao.version ? ` in v${manifest.kakao.version}` : '';
-  return `${n} components${v}. In brackets: light DOM and the CSS file to load, "after" the components to load first. Unmarked: shadow DOM, its script only.\n\n${componentLines(manifest).join('\n')}\n`;
+  // A component (folder) can define more than one tag (kakao-tabs and kakao-tab).
+  const count = tags === n ? `${n} components` : `${n} components (${tags} tags: some define a second one, like kakao-tab)`;
+  return `${count}${v}. In brackets: light DOM and the CSS file to load, "after" the components to load first. Unmarked: shadow DOM, its script only.\n\n${componentLines(manifest).join('\n')}\n`;
 }
 
 /** Every kakao-<name> in the text is a tag of the manifest. */

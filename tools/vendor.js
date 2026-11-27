@@ -151,7 +151,8 @@ function main(argv, root = ROOT, log = process.stdout, err = process.stderr) {
   const v = version(root);
   fs.writeFileSync(path.join(dest, 'VERSION'), `${v.tag}\n`);
   if (!v.exact) err.write(`vendor: HEAD is not a release tag (${v.tag}); check out a tag (git checkout vX.Y.Z) and vendor again to pin a release.\n`);
-  const what = args.length > 1 ? `${picked.tags.join(', ')} (with what they need)` : `all ${picked.tags.length} tags`;
+  const folders = new Set(picked.files.filter((f) => f.startsWith('components/')).map((f) => f.split('/')[1])).size;
+  const what = args.length > 1 ? `${picked.tags.join(', ')} (with what they need)` : `all ${picked.tags.length} tags (${folders} components; a component can define more than one tag)`;
   log.write(`Vendored ${v.tag} into ${dest}: ${what}.\n`);
   return 0;
 }

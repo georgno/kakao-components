@@ -89,7 +89,14 @@ node tools/vendor.js ../myproject/web/kakao            # everything
 node tools/vendor.js ../myproject/web/kakao toast tabs  # only these and what they need
 ```
 
-`kakao/VERSION` holds the tag. Copy `kakao/skills/kakao-ui/` to `.claude/skills/` (or `.pi/skills/`) so the skill matches the code. To upgrade, vendor a newer tag into the same folder and read that version's `**Upgrade:**` lines in the library's CHANGELOG.md. Never edit files under `kakao/`.
+`kakao/VERSION` holds the tag; vendored from a commit that is not a tag, it holds `git describe` instead (`v0.11.0-3-g1a2b3c4`: 3 commits past v0.11.0), or a bare commit hash when no tag is reachable. Vendor again from a tag before you ship. Copy `kakao/skills/kakao-ui/` to `.claude/skills/` (or `.pi/skills/`) so the skill matches the code. To upgrade, vendor a newer tag into the same folder and read that version's `**Upgrade:**` lines in the library's CHANGELOG.md. Never edit files under `kakao/`.
+
+## Known gotchas
+
+- `kakao-alert` with `tone="info"` or `"success"` hides itself after 8 s; a lasting note needs `duration="0"`.
+- `kakao-animated-number` is monospace by default (an odometer): in a heading or next to text, set `--kakao-animated-number-font-family: var(--kakao-font-family)`.
+- `kakao-number-input` sends `change` once a stepper press ends (like a native field); update live from `input`.
+- `kakao/tools/` holds the checkers (`api.js`, `style-check.js`, `visual-check.js`): run them from the project, as `node kakao/tools/…`. visual-check needs Playwright, which is not vendored.
 
 ## Before you finish
 
