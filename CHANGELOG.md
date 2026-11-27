@@ -21,8 +21,8 @@ upgrade is safe; the entries below them give the detail.
 ### Added
 
 - Site: an "Examples" menu in the page bar instead of the Kitchen sink link. It lists the
-  example pages (for now the kitchen sink); from the sixth on, it shows five and an "All
-  examples" page.
+  example pages (the kitchen sink and a new BMI calculator); from the sixth on, it shows five
+  and an "All examples" page.
 - Number input: `label`, `hint` and `error`, in the other fields' names and look. The label is a
   `<label for>` tied to the child input (which gets an id if it has none); hint and error go
   in its `aria-describedby`, the error sets `aria-invalid`, the custom validity and a red

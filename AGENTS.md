@@ -69,7 +69,7 @@ render into a shadow root (with slots where they take content).
   must follow a swap listens to them in its own file (kakao-tabs, the header bar), the
   script never reaches into components. Keep it generic: no app-specific code or docs.
 - The top-level pages (index, components, styleguide, tokens, changelog, examples and the
-  example page kitchen-sink) use it: loader head, the same header bar
+  example pages kitchen-sink and bmi-calculator) use it: loader head, the same header bar
   (site links, the Examples menu, theme menu, settings; its styles in `shared/site-shell.css`), regions `bar-start` (the header's start slot) and `content`
   (`<main tabindex="-1">`). A new top-level page that joins copies that shell; demo and
   construction pages stay ordinary navigations. The example pages are listed once, in

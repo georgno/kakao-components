@@ -18,6 +18,11 @@
       label: 'Kitchen sink',
       text: 'Every component on one settings page, in each theme.',
     },
+    {
+      href: 'bmi-calculator.html',
+      label: 'BMI calculator',
+      text: 'Height and weight in metric or imperial units, and the result on a meter with named bands.',
+    },
   ];
   const MENU_MAX = 5;
   const ALL = { href: 'examples.html', label: 'All examples' };

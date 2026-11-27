@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BMI calculator · Kakao Components</title>
+<link rel="stylesheet" href="shared/kakao.css" />
+<script src="shared/kakao.js"></script>
+<script src="shared/page-cloak.js"></script>
+<link rel="stylesheet" href="shared/demo.css" />
+<link rel="stylesheet" href="shared/vendor/fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="shared/site-shell.css" />
+<script src="shared/settings-dialog.js" defer></script>
+<script src="shared/page-transition.js"></script>
+<script src="shared/site-nav.js"></script>
+<style>
+  kakao-card > h2[slot="header"] { margin: 0; font-size: 1.05rem; }
+  .bmi-sub { margin: 6px 0 0; font-size: 0.78rem; color: var(--kakao-color-muted, #62626c); }
+  .bmi-value { margin: 0; line-height: 1; }
+  .bmi-value kakao-animated-number {
+    --kakao-animated-number-font-family: var(--kakao-font-family);
+    --kakao-animated-number-font-size: 3rem;
+    --kakao-animated-number-font-weight: 650;
+  }
+  .bmi-note { margin: 0; color: var(--kakao-color-text-soft, #3f3f46); font-size: 0.92rem; }
+  .bmi-small { margin: 0; color: var(--kakao-color-muted, #62626c); font-size: 0.82rem; max-width: 60ch; }
+</style>
+</head>
+<body>
+<kakao-header-bar nav-label="Pages" data-page-transition>
+  <!-- The site's shell: it stays while the pages swap their <main> (shared/page-transition.js).
+       The start slot is a region too: the kitchen sink puts its section menu there. -->
+  <span slot="start" data-page-transition-content="bar-start"></span>
+  <a slot="nav" href="index.html" data-text="Home">Home</a>
+  <a slot="nav" href="components.html" data-text="Components">Components</a>
+  <button slot="nav" type="button" id="site-examples" class="site-nav-menu" aria-current="true"><span data-text="Examples">Examples</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <kakao-menu slot="nav" for="site-examples" label="Examples" data-site-examples></kakao-menu>
+  <a slot="nav" href="styleguide.html" data-text="Style guide">Style guide</a>
+  <a slot="nav" href="tokens.html" data-text="Main variables">Main variables</a>
+  <a slot="nav" href="changelog.html" data-text="Changelog">Changelog</a>
+  <kakao-button slot="end" class="page-theme-menu" theme-picker label="Theme" variant="secondary" size="sm" show-selected
+    list-data='[{"value":"light","label":"Light"},{"value":"beige","label":"Beige"},{"value":"umber","label":"Umber"},{"value":"dark","label":"Dark"},{"value":"amoled","label":"AMOLED"},{"value":"catppuccin","label":"Catppuccin"},{"value":"forest","label":"Forest"}]'></kakao-button>
+  <button slot="end" type="button" class="page-icon-link" data-settings-open aria-haspopup="dialog" title="Settings" aria-label="Settings"><i class="fas fa-gear" aria-hidden="true"></i></button>
+</kakao-header-bar>
+<main data-page-transition-content="content" tabindex="-1">
+  <header>
+    <div class="demo-nav">
+      <kakao-breadcrumb start-text="Home" start-url="index.html" list-data='[["Examples", "examples.html"], ["BMI calculator"]]'></kakao-breadcrumb>
+    </div>
+    <h1>BMI calculator</h1>
+    <p>Body mass index from height and weight, in metric or imperial units. Built from the library alone: a radio group, a slider, a number input, an animated number and a meter with named bands.</p>
+  </header>
+
+  <kakao-flow gap="lg">
+    <kakao-grid min="md">
+      <kakao-card>
+        <h2 slot="header">Your measurements</h2>
+        <kakao-flow>
+          <kakao-radio-group id="bmi-units" label="Units" orientation="horizontal" value="metric" list-data='[
+            {"value": "metric", "label": "Metric", "hint": "cm and kg"},
+            {"value": "imperial", "label": "Imperial", "hint": "inches and pounds"}
+          ]'></kakao-radio-group>
+          <div>
+            <kakao-slider id="bmi-height" label="Height" min="120" max="220" step="1" value="175" unit="cm"></kakao-slider>
+            <p class="bmi-sub" id="bmi-height-feet" hidden></p>
+          </div>
+          <kakao-number-input id="bmi-weight-field" label="Weight" hint="In kilograms, 30 to 250">
+            <input id="bmi-weight" type="number" name="weight" min="30" max="250" step="0.5" value="70" />
+          </kakao-number-input>
+        </kakao-flow>
+      </kakao-card>
+
+      <kakao-card>
+        <h2 slot="header">Result</h2>
+        <kakao-flow>
+          <p class="bmi-value"><kakao-animated-number id="bmi-value" decimals="1" value="22.9"></kakao-animated-number></p>
+          <kakao-meter id="bmi-meter" label="Body mass index" min="12" max="40" value="22.9" show-value list-data='[
+            {"to": 18.5, "label": "Underweight", "tone": "warning"},
+            {"to": 25, "label": "Normal", "tone": "success"},
+            {"to": 30, "label": "Overweight", "tone": "warning"},
+            {"label": "Obese", "tone": "danger"}
+          ]'></kakao-meter>
+          <p class="bmi-note" id="bmi-note">A normal weight at 175 cm is 56.7 to 76.3 kg.</p>
+        </kakao-flow>
+      </kakao-card>
+    </kakao-grid>
+
+    <p class="bmi-small">BMI is a rough screening number for adults. It doesn't tell muscle from fat, and it doesn't apply to children or during pregnancy.</p>
+  </kakao-flow>
+</main>
+
+<script data-page-transition-script>
+  {
+    // Ranges per unit system; switching converts the current values.
+    const UNITS = {
+      metric: {
+        height: { min: 120, max: 220, step: 1, unit: 'cm' },
+        weight: { min: 30, max: 250, step: 0.5, name: 'kilograms', unit: 'kg' },
+        bmi: (h, w) => w / ((h / 100) ** 2),
+        weightAt: (bmi, h) => bmi * (h / 100) ** 2,
+      },
+      imperial: {
+        height: { min: 48, max: 87, step: 1, unit: 'in' },
+        weight: { min: 66, max: 550, step: 1, name: 'pounds', unit: 'lb' },
+        bmi: (h, w) => (703 * w) / (h ** 2),
+        weightAt: (bmi, h) => (bmi * h ** 2) / 703,
+      },
+    };
+    const CM_PER_IN = 2.54;
+    const LB_PER_KG = 2.20462;
+    const round = (n, step) => Math.round(n / step) * step;
+    const fmt = (n) => n.toFixed(1);
+
+    kakaoLoader.ready.then(() => {
+      const units = document.getElementById('bmi-units');
+      const height = document.getElementById('bmi-height');
+      const feet = document.getElementById('bmi-height-feet');
+      const weightField = document.getElementById('bmi-weight-field');
+      const weight = document.getElementById('bmi-weight');
+      const value = document.getElementById('bmi-value');
+      const meter = document.getElementById('bmi-meter');
+      const note = document.getElementById('bmi-note');
+      let system = 'metric';
+
+      function weightValue() {
+        const range = UNITS[system].weight;
+        const w = weight.valueAsNumber;
+        if (!Number.isFinite(w) || w < range.min || w > range.max) {
+          weightField.setAttribute('error', `Enter a weight between ${range.min} and ${range.max} ${range.unit}.`);
+          return null;
+        }
+        weightField.removeAttribute('error');
+        return w;
+      }
+
+      function update() {
+        const u = UNITS[system];
+        const h = height.getValue();
+        if (system === 'imperial') feet.textContent = `${Math.floor(h / 12)} ft ${h % 12} in`;
+        feet.hidden = system !== 'imperial';
+        const w = weightValue();
+        if (w === null) return; // keep the last result while the weight is wrong
+        const bmi = Math.round(u.bmi(h, w) * 10) / 10;
+        value.update(bmi);
+        meter.setAttribute('value', bmi);
+        // Normal runs from 18.5 up to, not including, 25.
+        note.textContent = `A normal weight at ${h} ${u.height.unit} is ${fmt(u.weightAt(18.5, h))} to ${fmt(u.weightAt(24.9, h))} ${u.weight.unit}.`;
+      }
+
+      units.addEventListener('radio-change', (event) => {
+        const next = event.detail.value;
+        if (next === system) return;
+        const toImperial = next === 'imperial';
+        const h = height.getValue() * (toImperial ? 1 / CM_PER_IN : CM_PER_IN);
+        const w = weight.valueAsNumber;
+        system = next;
+        const u = UNITS[system];
+        height.setData({ min: u.height.min, max: u.height.max, step: u.height.step, unit: u.height.unit,
+          value: Math.min(u.height.max, Math.max(u.height.min, Math.round(h))) });
+        weight.min = u.weight.min;
+        weight.max = u.weight.max;
+        weight.step = u.weight.step;
+        if (Number.isFinite(w)) {
+          const converted = round(w * (toImperial ? LB_PER_KG : 1 / LB_PER_KG), u.weight.step);
+          weight.value = Math.min(u.weight.max, Math.max(u.weight.min, converted));
+        }
+        weightField.setAttribute('hint', `In ${u.weight.name}, ${u.weight.min} to ${u.weight.max}`);
+        update();
+      });
+      height.addEventListener('slider-input', update);
+      height.addEventListener('slider-change', update);
+      weight.addEventListener('input', update);
+      weight.addEventListener('change', update);
+      update();
+    });
+  }
+</script>
+</body>
+</html>

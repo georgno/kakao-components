@@ -1,7 +1,7 @@
 /*
  * site-shell.css - the page bar shared by this project's top-level pages
  * (index, components, styleguide, tokens, changelog, examples and the example
- * pages, like kitchen-sink). Those pages swap their <main> through
+ * pages: kitchen-sink, bmi-calculator). Those pages swap their <main> through
  * shared/page-transition.js and keep this bar, so its styles live here once,
  * whatever page CSS (demo.css, construction.css) the page brings. Not part of
  * any component.
