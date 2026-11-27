@@ -58,7 +58,9 @@
  * ----------------------------------------------------------------------------
  *  Hold a button to repeat the step. The inner input keeps min, max, step,
  *  value, disabled, and class names (e.g. your form framework). Changes bubble
- *  as input / change on the input.
+ *  from the input as a native field's do: input on every step (each repeat of
+ *  a held button, each wheel notch), change once when the press ends or the
+ *  wheel rests, and only if the value moved. A step at min or max sends nothing.
  *
  * force: a boolean attribute read only by the style checker
  * (tools/style-check.js). It marks this placement as a deliberate exception
@@ -107,6 +109,7 @@ class KakaoNumberInput extends HTMLElement {
         e.preventDefault(); // keep focus in the input, no text selection
         const dir = Number(btn.dataset.step);
         this._stopRepeat();
+        this._pressFrom = this._input.value;
         this._adjust(dir);
         this._repeatDelay = setTimeout(() => {
           this._repeatTimer = setInterval(() => this._adjust(dir), 70);
@@ -116,13 +119,29 @@ class KakaoNumberInput extends HTMLElement {
         clearTimeout(this._repeatDelay);
         clearInterval(this._repeatTimer);
       };
+      // The press ends: one change, if the steps moved the value.
+      this._onPressEnd = () => {
+        this._stopRepeat();
+        if (this._pressFrom === undefined) return;
+        const from = this._pressFrom;
+        this._pressFrom = undefined;
+        this._commit(from);
+      };
+      // Wheel: input per notch, one change once the wheel rests.
       this._onWheel = (e) => {
         e.preventDefault();
+        if (this._wheelFrom === undefined) this._wheelFrom = this._input.value;
         this._adjust(e.deltaY < 0 ? +1 : -1);
+        clearTimeout(this._wheelTimer);
+        this._wheelTimer = setTimeout(() => {
+          const from = this._wheelFrom;
+          this._wheelFrom = undefined;
+          this._commit(from);
+        }, 400);
       };
 
       arrows.addEventListener('pointerdown', this._onPress);
-      ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => arrows.addEventListener(t, this._stopRepeat));
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => arrows.addEventListener(t, this._onPressEnd));
       arrows.addEventListener('wheel', this._onWheel, { passive: false });
     }
 
@@ -142,9 +161,12 @@ class KakaoNumberInput extends HTMLElement {
     }
     if (!arrows) return;
     arrows.removeEventListener('pointerdown', this._onPress);
-    ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => arrows.removeEventListener(t, this._stopRepeat));
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach((t) => arrows.removeEventListener(t, this._onPressEnd));
     arrows.removeEventListener('wheel', this._onWheel);
     this._stopRepeat();
+    clearTimeout(this._wheelTimer);
+    this._pressFrom = undefined;
+    this._wheelFrom = undefined;
     this._initialized = false;
   }
 
@@ -256,9 +278,17 @@ class KakaoNumberInput extends HTMLElement {
     const base = Number.isFinite(current) ? current : 0;
     const next = base + direction * this._getStep();
     const clamped = Math.min(this._getMax(), Math.max(this._getMin(), next));
-    input.value = parseFloat(clamped.toFixed(this._decimals()));
+    const value = String(parseFloat(clamped.toFixed(this._decimals())));
+    if (value === input.value) return; // at min or max: nothing moved
+    input.value = value;
     input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  /** change once a press or a wheel turn is over, like a native field on leave. */
+  _commit(from) {
+    if (this._input && this._input.value !== from) {
+      this._input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
   }
 }
 

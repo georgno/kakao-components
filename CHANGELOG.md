@@ -12,7 +12,11 @@ upgrade is safe; the entries below them give the detail.
 
 ## [Unreleased]
 
-**Upgrade:** none.
+**Upgrade:**
+
+- Number input: the −/+ (and ▲▼) buttons send `change` once when the press ends, and the
+  wheel once it rests, no longer on every step. A page that updates live from `change`
+  listens to `input` instead.
 
 ### Fixed
 
@@ -22,6 +26,8 @@ upgrade is safe; the entries below them give the detail.
   snaps and rewrites. A commit sends one `slider-change`, not two.
 - Animated number: setting the value it is already rolling to (a page that updates on two
   events in a row) no longer snaps the roll to its end.
+- Number input: a stepper press sends `input` per step and one `change` when it ends, like a
+  native field (it sent both on every step and every repeat). A step at min or max sends nothing.
 
 ## [0.11.0] - 2026-11-27
 
