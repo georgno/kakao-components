@@ -48,6 +48,14 @@
       <kakao-number-input touch-steppers grouped="false" plus="left"><input type="number" min="0" max="100" value="10" aria-label="Quantity (touch, split)" /></kakao-number-input>
     </figure>
     <figure>
+      <figcaption>Label, hint · label="…" hint="…"</figcaption>
+      <kakao-number-input label="Height" hint="In centimetres"><input type="number" min="100" max="250" value="170" /></kakao-number-input>
+    </figure>
+    <figure>
+      <figcaption>Error · error="…"</figcaption>
+      <kakao-number-input label="Weight" error="Enter a weight between 20 and 300 kg"><input type="number" min="20" max="300" value="12" /></kakao-number-input>
+    </figure>
+    <figure>
       <figcaption>Touch layout (touch screens)</figcaption>
       <kakao-number-input touch-steppers><input type="number" min="0" max="100" value="10" aria-label="Quantity (touch)" /></kakao-number-input>
     </figure>
@@ -85,7 +93,14 @@
     { "property": "--kakao-number-input-sm-arrow-size", "label": "Arrow size", "group": "Size sm", "type": "length" },
     { "property": "--kakao-number-input-touch-size", "label": "Touch button size", "group": "Size & spacing", "type": "length", "hint": "touch screens: | value | − | + |" },
     { "property": "--kakao-number-input-touch-glyph-size", "label": "Touch − / + size", "group": "Size & spacing", "type": "length" },
-    { "property": "--kakao-number-input-touch-radius", "label": "Touch radius", "group": "Shape", "type": "radius" }
+    { "property": "--kakao-number-input-touch-radius", "label": "Touch radius", "group": "Shape", "type": "radius" },
+
+    { "property": "--kakao-number-input-label-color", "label": "Label", "group": "Label & messages", "type": "color" },
+    { "property": "--kakao-number-input-label-weight", "label": "Label weight", "group": "Label & messages", "type": "number", "min": 100, "max": 900, "step": 50 },
+    { "property": "--kakao-number-input-label-gap", "label": "Label gap", "group": "Label & messages", "type": "length", "hint": "label to field" },
+    { "property": "--kakao-number-input-hint-color", "label": "Hint", "group": "Label & messages", "type": "color" },
+    { "property": "--kakao-number-input-danger", "label": "Error", "group": "Label & messages", "type": "color", "hint": "border and message" },
+    { "property": "--kakao-number-input-message-gap", "label": "Message gap", "group": "Label & messages", "type": "length", "hint": "field to hint or error" }
   ]
   </script>
 </main>

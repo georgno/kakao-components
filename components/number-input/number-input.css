@@ -35,6 +35,12 @@ kakao-number-input {
   --_touch-glyph-size: var(--kakao-number-input-touch-glyph-size, 20px);
   --_focus-width: var(--kakao-number-input-focus-width, 2px);
   --_focus-offset: var(--kakao-number-input-focus-offset, 2px);
+  --_label-color: var(--kakao-number-input-label-color, var(--kakao-color-text, #18181b));
+  --_label-weight: var(--kakao-number-input-label-weight, 600);
+  --_label-gap: var(--kakao-number-input-label-gap, 6px);
+  --_hint-color: var(--kakao-number-input-hint-color, var(--kakao-color-muted, #62626c));
+  --_danger: var(--kakao-number-input-danger, var(--kakao-color-danger, #dc2626));
+  --_message-gap: var(--kakao-number-input-message-gap, 5px);
   /* @kakao-settings:end */
   position: relative;
   display: block;
@@ -232,6 +238,35 @@ kakao-number-input[data-touch] .kakao-number-input-arrows span[data-side='right'
 
 @media (prefers-reduced-motion: reduce) {
   kakao-number-input input[type="number"] { transition: none; }
+}
+
+/* ---- Label, hint, error ----
+   Only with the label / hint / error attributes: the script then wraps the
+   input and steppers in .kakao-number-input-field (the steppers' positioning
+   parent) between the label and the messages. Sizes match kakao-text-input. */
+kakao-number-input .kakao-number-input-field { position: relative; }
+kakao-number-input .kakao-number-input-label {
+  display: block;
+  margin: 0 0 var(--_label-gap);
+  font-size: 0.82rem;
+  font-weight: var(--_label-weight);
+  color: var(--_label-color);
+  cursor: pointer;
+}
+kakao-number-input .kakao-number-input-hint,
+kakao-number-input .kakao-number-input-error {
+  margin: var(--_message-gap) 0 0;
+  font-size: 0.78rem;
+  color: var(--_hint-color);
+}
+kakao-number-input .kakao-number-input-error { color: var(--_danger); }
+kakao-number-input .kakao-number-input-label[hidden],
+kakao-number-input .kakao-number-input-hint[hidden],
+kakao-number-input .kakao-number-input-error[hidden] { display: none; }
+kakao-number-input[error] input[type="number"] { border-color: var(--_danger); }
+kakao-number-input[error] input[type="number"]:focus-visible {
+  border-color: var(--_danger);
+  outline-color: var(--_danger);
 }
 
 /* The hidden attribute wins over the display set above. */

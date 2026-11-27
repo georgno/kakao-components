@@ -18,6 +18,15 @@ upgrade is safe; the entries below them give the detail.
   wheel once it rests, no longer on every step. A page that updates live from `change`
   listens to `input` instead.
 
+### Added
+
+- Number input: `label`, `hint` and `error`, in the other fields' names and look. The label is a
+  `<label for>` tied to the child input (which gets an id if it has none); hint and error go
+  in its `aria-describedby`, the error sets `aria-invalid`, the custom validity and a red
+  border. New settings: `--kakao-number-input-label-color`, `-label-weight`, `-label-gap`,
+  `-hint-color`, `-danger`, `-message-gap`. Without these attributes the markup is the same as
+  before. CATALOG.md: number-input vs text-input `type="number"` vs slider.
+
 ### Fixed
 
 - Slider: the number field takes typing. The text is no longer rewritten while the field has

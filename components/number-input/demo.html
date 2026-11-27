@@ -51,6 +51,20 @@
       </kakao-number-input>
     </kakao-card>
     <kakao-card>
+      <h3 slot="header">Label and hint · <code>label</code> <code>hint</code></h3>
+      <kakao-number-input label="Height" hint="In centimetres, 100–250">
+        <input type="number" name="height" min="100" max="250" step="1" value="170" />
+      </kakao-number-input>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">The label is a <code>&lt;label for&gt;</code> tied to the input (it gets an id if it has none); the hint is in its <code>aria-describedby</code>.</p>
+    </kakao-card>
+    <kakao-card>
+      <h3 slot="header">Error · <code>error</code></h3>
+      <kakao-number-input label="Weight" hint="In kilograms" error="Enter a weight between 20 and 300 kg">
+        <input type="number" name="weight" min="20" max="300" step="0.1" value="12" />
+      </kakao-number-input>
+      <p style="margin:.75rem 0 0;color:var(--muted);font-size:.85rem">Red border and message; the input gets <code>aria-invalid</code> and the message in its <code>aria-describedby</code>. The hint hides while there is an error.</p>
+    </kakao-card>
+    <kakao-card>
       <h3 slot="header">Touch layout · <code>touch-steppers</code></h3>
       <kakao-number-input touch-steppers>
         <input type="number" min="0" max="100" step="1" value="10" aria-label="Quantity (touch)" />

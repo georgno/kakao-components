@@ -96,6 +96,7 @@ Or load single files (the loader skips what a page loads itself):
 | chip, badge | badge: read-only status. chip: a tag or filter that can link, act or be removed. |
 | dialog, aside-sheet | dialog: modal, centred, a short decision. aside-sheet: from an edge, longer content beside the page. |
 | select, combobox, multi-dropdown | select: only listed values, one or several. combobox: free text with suggestions. multi-dropdown: one value in parts (day, month, year). |
+| number-input, text-input `type="number"`, slider | number-input: a number people adjust by a step (age, quantity, height), with − / + at a 44px touch size. text-input `type="number"`: a number typed whole and never stepped (postcode-like ids, amounts to the cent). slider: a value on a bounded scale where the position matters more than the digits. |
 | tooltip, popover, menu | tooltip: a short label, also on focus. popover: richer anchored content. menu: actions. |
 
 ## Components
@@ -143,7 +144,7 @@ Or load single files (the loader skips what a page loads itself):
 - `kakao-menu`: A menu of actions from a trigger or a right-click. Not for picking a value: kakao-select; navigation: kakao-aside-menu.
 - `kakao-meter`: A measurement in a known range: "55 GB of 100 GB used". Not for the progress of a task: kakao-progress.
 - `kakao-multi-dropdown`: Several dropdowns that form one value (day | month | year). Not for one choice: kakao-select; a date with a picker: kakao-date-input.
-- `kakao-number-input`: Stepper arrows for a child `<input type="number">`. Not for a value on a scale: kakao-slider. (light DOM, number-input.css)
+- `kakao-number-input`: A number field with − / + steppers (44px on touch), label, hint and error. Not for a value on a scale: kakao-slider; a number typed, never stepped: kakao-text-input. (light DOM, number-input.css)
 - `kakao-page`: The page's content column: max-width, side padding, space below the header bar. Not for columns of cards: kakao-grid; space between sections: kakao-flow; a framed box: kakao-card. (light DOM, page.css)
 - `kakao-pagination`: Page links for a long list. Not for the steps of a flow: kakao-stepper.
 - `kakao-password-input`: A password field: show/hide, Caps Lock warning, strength bar. Not for one-time codes: kakao-code-input.

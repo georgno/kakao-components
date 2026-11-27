@@ -7854,8 +7854,8 @@
           "customElement": true,
           "name": "KakaoNumberInput",
           "tagName": "kakao-number-input",
-          "summary": "Stepper arrows for a child <input type=\"number\">.",
-          "description": "Wraps a child <input type=\"number\"> with custom stepper arrows and wheel on the arrow strip. Native browser spin buttons are hidden. Vanilla JS, light DOM: load number-input.css.",
+          "summary": "A number field with − / + steppers (44px on touch), label, hint and error.",
+          "description": "A number field: wraps a child <input type=\"number\"> with stepper buttons (stacked arrows with a mouse, 44px − / + on touch screens) and the wheel on them, plus an optional label, hint and error like the other fields. Native spin buttons are hidden. Vanilla JS, light DOM: load number-input.css.",
           "attributes": [
             {
               "name": "size",
@@ -7864,6 +7864,18 @@
                 "text": "'sm' | 'md'"
               },
               "default": "'md'"
+            },
+            {
+              "name": "label",
+              "description": "Visible label above the field: a <label for> tied to the child input (which gets an id if it has none)."
+            },
+            {
+              "name": "hint",
+              "description": "Helper text below the field (hidden while there is an error)."
+            },
+            {
+              "name": "error",
+              "description": "Error text: red border and message; the input gets aria-invalid, the message its aria-describedby, and the input's custom validity (an error summary lists it). Without label, hint and error the markup is the bare input and steppers, as before; name the input yourself (aria-label or a <label for>)."
             },
             {
               "name": "touch-steppers",
@@ -8000,6 +8012,30 @@
             {
               "name": "--kakao-number-input-focus-offset",
               "default": "2px"
+            },
+            {
+              "name": "--kakao-number-input-label-color",
+              "default": "var(--kakao-color-text, #18181b)"
+            },
+            {
+              "name": "--kakao-number-input-label-weight",
+              "default": "600"
+            },
+            {
+              "name": "--kakao-number-input-label-gap",
+              "default": "6px"
+            },
+            {
+              "name": "--kakao-number-input-hint-color",
+              "default": "var(--kakao-color-muted, #62626c)"
+            },
+            {
+              "name": "--kakao-number-input-danger",
+              "default": "var(--kakao-color-danger, #dc2626)"
+            },
+            {
+              "name": "--kakao-number-input-message-gap",
+              "default": "5px"
             }
           ],
           "kakao": {
@@ -8010,7 +8046,7 @@
             "lightDom": true,
             "requires": [],
             "enhancedBy": [],
-            "notFor": "A value on a scale: kakao-slider."
+            "notFor": "A value on a scale: kakao-slider; a number typed, never stepped: kakao-text-input."
           }
         }
       ],

@@ -1,15 +1,16 @@
 /**
  * <kakao-number-input>
  * ============================================================================
- * Wraps a child <input type="number"> with custom stepper arrows and wheel
- * on the arrow strip. Native browser spin buttons are hidden. Vanilla JS,
- * light DOM: load number-input.css.
+ * A number field: wraps a child <input type="number"> with stepper buttons
+ * (stacked arrows with a mouse, 44px − / + on touch screens) and the wheel on
+ * them, plus an optional label, hint and error like the other fields. Native
+ * spin buttons are hidden. Vanilla JS, light DOM: load number-input.css.
  *
  * ----------------------------------------------------------------------------
  * CATALOG
  * ----------------------------------------------------------------------------
- *  for        Stepper arrows for a child <input type="number">.
- *  not for    A value on a scale: kakao-slider.
+ *  for        A number field with − / + steppers (44px on touch), label, hint and error.
+ *  not for    A value on a scale: kakao-slider; a number typed, never stepped: kakao-text-input.
  *
  * ----------------------------------------------------------------------------
  * FILES
@@ -29,6 +30,10 @@
  *     <input type="number" min="0" max="100" step="1" value="10" />
  *   </kakao-number-input>
  *
+ *   <kakao-number-input label="Height" hint="In centimetres">
+ *     <input type="number" name="height" min="100" max="250" value="170" />
+ *   </kakao-number-input>
+ *
  *   <kakao-number-input touch-steppers group-position="left">…</kakao-number-input>
  *   <kakao-number-input touch-steppers grouped="false" plus="left">…</kakao-number-input>
  *   <kakao-number-input touch-steppers minus="false">…</kakao-number-input>
@@ -38,6 +43,15 @@
  * ----------------------------------------------------------------------------
  *  size            sm · md (default). sm is a compact control (styling hook
  *                  via number-input.css).
+ *  label           Visible label above the field: a <label for> tied to the
+ *                  child input (which gets an id if it has none).
+ *  hint            Helper text below the field (hidden while there is an error).
+ *  error           Error text: red border and message; the input gets
+ *                  aria-invalid, the message its aria-describedby, and the
+ *                  input's custom validity (an error summary lists it).
+ *                  Without label, hint and error the markup is the bare
+ *                  input and steppers, as before; name the input yourself
+ *                  (aria-label or a <label for>).
  *  touch-steppers  Always use the touch layout (it is used on touch screens
  *                  anyway): 44px − and + buttons instead of the stacked ▲▼.
  *  plus            left · right · false: where the + button sits in the touch
@@ -70,7 +84,7 @@
 
 class KakaoNumberInput extends HTMLElement {
   static get observedAttributes() {
-    return ['size', 'touch-steppers', 'plus', 'minus', 'grouped', 'group-position'];
+    return ['size', 'touch-steppers', 'plus', 'minus', 'grouped', 'group-position', 'label', 'hint', 'error'];
   }
 
   constructor() {
@@ -150,6 +164,7 @@ class KakaoNumberInput extends HTMLElement {
       else if (this._coarse.addListener) this._coarse.addListener(this._onPointerMode);
     }
     this._applyLayout();
+    this._syncField();
     this._initialized = true;
   }
 
@@ -172,7 +187,69 @@ class KakaoNumberInput extends HTMLElement {
 
   attributeChangedCallback(name) {
     if (name === 'size') this._applySize();
+    if (name === 'label' || name === 'hint' || name === 'error') { this._syncField(); return; }
     if (this._initialized) this._applyLayout();
+  }
+
+  /* ------------------------ Label, hint, error ------------------------ */
+
+  /**
+   * Builds the field's parts on first use, so a bare number input keeps its
+   * markup: | label | field box (input + steppers) | hint | error |. The box
+   * is the steppers' positioning parent, as the host is without it.
+   */
+  _syncField() {
+    const input = this._input;
+    if (!input) return;
+    const label = this.getAttribute('label') || '';
+    const hint = this.getAttribute('hint') || '';
+    const error = this.getAttribute('error') || '';
+    if (!this._field && !label && !hint && !error) return;
+
+    if (!this._field) {
+      if (!input.id) input.id = `kakao-number-input-${++KakaoNumberInput._ids}`;
+      const box = document.createElement('div');
+      box.className = 'kakao-number-input-field';
+      input.before(box);
+      box.append(input);
+      if (this._arrows) box.append(this._arrows);
+      const labelEl = document.createElement('label');
+      labelEl.className = 'kakao-number-input-label';
+      const hintEl = document.createElement('p');
+      hintEl.className = 'kakao-number-input-hint';
+      const errorEl = document.createElement('p');
+      errorEl.className = 'kakao-number-input-error';
+      errorEl.setAttribute('role', 'alert');
+      box.before(labelEl);
+      box.after(hintEl, errorEl);
+      this._field = { box, labelEl, hintEl, errorEl, ours: [] };
+    }
+
+    const { labelEl, hintEl, errorEl } = this._field;
+    labelEl.htmlFor = input.id;
+    hintEl.id = `${input.id}-hint`;
+    errorEl.id = `${input.id}-error`;
+    labelEl.textContent = label;
+    hintEl.textContent = hint;
+    errorEl.textContent = error;
+    labelEl.hidden = !label;
+    hintEl.hidden = !hint || !!error;
+    errorEl.hidden = !error;
+
+    // aria-describedby: the page's own ids stay, ours follow what is shown.
+    const own = (input.getAttribute('aria-describedby') || '').split(/\s+/)
+      .filter((id) => id && !this._field.ours.includes(id));
+    const ours = error ? [errorEl.id] : (hint ? [hintEl.id] : []);
+    this._field.ours = ours;
+    const ids = own.concat(ours);
+    if (ids.length) input.setAttribute('aria-describedby', ids.join(' '));
+    else input.removeAttribute('aria-describedby');
+
+    if (error) input.setAttribute('aria-invalid', 'true');
+    else if (this._field.invalid) input.removeAttribute('aria-invalid');
+    this._field.invalid = !!error;
+    if (error || this._field.validity) input.setCustomValidity(error);
+    this._field.validity = !!error;
   }
 
   _applySize() {
@@ -291,6 +368,8 @@ class KakaoNumberInput extends HTMLElement {
     }
   }
 }
+
+KakaoNumberInput._ids = 0;
 
 if (!customElements.get('kakao-number-input')) {
   customElements.define('kakao-number-input', KakaoNumberInput);
