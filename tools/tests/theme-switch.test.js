@@ -4,7 +4,8 @@
  * BroadcastChannel and the other windows follow it the way it changed. A
  * ripple continues across the screen: a window placed to the right of the
  * sender plays its part of the same circle, centred where the click was (left
- * of its own viewport), and later, when the circle gets there. A fade fades;
+ * of its own viewport), and later, when the circle gets there (its view
+ * transition starts at once, alongside the sender's). A fade fades;
  * a theme that is not remembered is not announced. Runs in Chromium when
  * Playwright is installed (not a dependency of this repo; skipped without it).
  */
@@ -34,7 +35,9 @@ const SPY = () => {
   const animate = Element.prototype.animate;
   Element.prototype.animate = function (frames, options) {
     if (options && options.pseudoElement === '::view-transition-new(root)') {
-      window.__reveals.push({ frames: JSON.parse(JSON.stringify(frames)), duration: options.duration, at: Date.now() });
+      const anim = animate.call(this, frames, options);
+      window.__reveals.push({ frames: JSON.parse(JSON.stringify(frames)), duration: options.duration, at: Date.now(), anim });
+      return anim;
     }
     return animate.call(this, frames, options);
   };
@@ -83,7 +86,12 @@ test('a ripple continues in the window beside the sender; a fade fades', { skip:
       return at;
     });
     await b.waitForFunction(() => window.__reveals.length > 0 && document.documentElement.getAttribute('data-kakao-theme') === 'dark', null, { timeout: 5000 });
-    const seen = await b.evaluate(() => ({ reveals: window.__reveals, changed: window.__changed }));
+    // When B's circle shows: its animation's start plus its wait for the circle.
+    const seen = await b.evaluate(() => ({
+      reveals: window.__reveals.map(({ frames, duration, at, anim }) => ({
+        frames, duration, at, shows: at + anim.effect.getTiming().delay - (anim.currentTime > 0 && anim.effect.getTiming().delay === 0 ? anim.currentTime : 0),
+      })),
+    }));
     const first = seen.reveals[0].frames[0];
     const last = seen.reveals[0].frames[seen.reveals[0].frames.length - 1];
     const centre = (f) => {
@@ -96,8 +104,8 @@ test('a ripple continues in the window beside the sender; a fade fades', { skip:
     assert.ok(Math.abs(c0.x - -400) <= 1 && Math.abs(c0.y - 300) <= 1, `circle centred left of B's viewport: ${JSON.stringify(c0)}`);
     assert.ok(Math.abs(c0.r - 400) <= 2, `B's part starts where the circle reaches its edge (r ≈ 400): ${c0.r}`);
     assert.ok(Math.abs(c1.r - Math.hypot(1200, 300)) <= 2, `and ends when it covers B's far corner: ${c1.r}`);
-    const delay = seen.changed[0].at - sent;
-    assert.ok(delay >= 150, `B changes later than A, when the circle gets there (${delay} ms)`);
+    const delay = seen.reveals[0].shows - sent;
+    assert.ok(delay >= 150, `B's circle shows later than A's, when it gets there (${delay} ms)`);
 
     // A fade is announced as a fade: no ripple in B.
     await b.evaluate(() => { window.__reveals = []; });

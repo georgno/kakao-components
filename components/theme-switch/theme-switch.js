@@ -171,6 +171,12 @@
  *  window far away waits at most 600 ms. A hidden window, or one with reduced
  *  motion, changes at once.
  *
+ *  The other windows take their snapshot (the view transition's start) when
+ *  the sender takes its own, so the two don't add up and no snapshot lands
+ *  in the middle of the sender's ripple (windows share the GPU). Each holds
+ *  its snapshot until the circle reaches it; without a start within 1.5 s,
+ *  or after a choice made in that window, it shows the theme at once.
+ *
  *  The viewport's place on the screen comes from window.screenX / screenY,
  *  corrected by the pointer (screen and viewport coordinates of the same
  *  event; also the browser zoom) once it has moved over the window, and
@@ -465,7 +471,7 @@
    */
   const CHANNEL_NAME = 'kakao-theme';
   const MAX_WAVE_DELAY = 600; // ms: a window far away waits at most this long
-  const WAVE_LEAD = 32;       // ms: start the view transition this early (snapshot time)
+  const WAVE_WAIT = 1500;     // ms: a prepared window gives up waiting for the start
   const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel(CHANNEL_NAME) : null;
 
   function announce(message) {
@@ -646,7 +652,7 @@
     // Remembered themes are announced to the other windows ("" remembers nothing).
     options = { ...options, announceKey: key };
     // A choice made here wins over another window's wave still on its way.
-    if (!options.remote) clearTimeout(waveTimer);
+    if (!options.remote) dropWaves();
     if (options.fade) return fadeTheme(value, options);
     queue.target = value;
     // Switches show the target at once (icon, label), even while a ripple runs.
@@ -715,23 +721,22 @@
 
     // Ripple: the new theme is revealed as a growing circle from (x, y). Whole
     // pixels, so the revealed text never sits on a half-pixel edge. Another
-    // window's ripple (wave) brings its own centre and keyframes.
-    const cx = wave ? wave.cx : Math.round(Number.isFinite(x) ? x : window.innerWidth / 2);
-    const cy = wave ? wave.cy : Math.round(Number.isFinite(y) ? y : window.innerHeight / 2);
+    // window's ripple (wave) starts its view transition right away, while the
+    // sender takes its own snapshot; its circle (centre, keyframes, start)
+    // arrives in wave.plan, once the sender's animation has begun.
+    const cx = Math.round(Number.isFinite(x) ? x : window.innerWidth / 2);
+    const cy = Math.round(Number.isFinite(y) ? y : window.innerHeight / 2);
     const radius = Math.ceil(Math.hypot(
       Math.max(cx, window.innerWidth - cx),
       Math.max(cy, window.innerHeight - cy),
     ));
-    const own = timing || rippleTiming(document.querySelector(TAG_NAME));
-    const duration = wave ? wave.duration : own.duration;
-    const easing = wave ? 'linear' : own.easing; // a wave's keyframes carry its curve
-    const feather = wave ? wave.feather : own.feather;
+    const { duration, easing, feather } = timing || rippleTiming(document.querySelector(TAG_NAME));
 
     // The mask image is a circle that fills its box, so a box of 2r × 2r shows
     // a circle of radius r; growing the box grows the reveal. Its top left sits
     // at the centre minus r, which keeps the circle centred on (x, y). The mask
     // image itself (and its soft edge) comes from the page styles.
-    const reveal = wave ? wave.frames : MASK_SUPPORTED
+    const reveal = MASK_SUPPORTED
       ? {
           maskSize: ['0px 0px', `${2 * radius}px ${2 * radius}px`],
           maskPosition: [`${cx}px ${cy}px`, `${cx - radius}px ${cy - radius}px`],
@@ -747,11 +752,16 @@
     rippling = true;
     reportTransition();
     ROOT.classList.add(RIPPLE_CLASS);
+    // The other windows start their snapshots now, alongside this one: one
+    // after the other they would add up, and a snapshot taken while this
+    // ripple plays makes it stutter (the windows share the GPU).
+    const id = wave ? '' : Math.random().toString(36).slice(2);
+    if (!wave) announce({ theme: value, key: announceKey, mode: 'prepare', id });
     let transition;
     try {
       transition = document.startViewTransition(update);
     } catch {
-      announce({ theme: value, key: announceKey, mode: 'instant' });
+      announce({ theme: value, key: announceKey, mode: 'instant', id });
       ROOT.classList.remove(RIPPLE_CLASS);
       ROOT.style.removeProperty('--kakao-ripple-x');
       ROOT.style.removeProperty('--kakao-ripple-y');
@@ -764,18 +774,12 @@
       return;
     }
     transition.ready.then(() => {
-      const anim = ROOT.animate(
+      if (wave) return wave.plan.then((plan) => playWave(transition, plan));
+      ROOT.animate(
         reveal,
         // forwards: stay fully revealed until the transition itself ends
         { duration, easing, fill: 'forwards', pseudoElement: '::view-transition-new(root)' },
       );
-      if (wave) {
-        // On the shared clock: wait for the circle to arrive, or catch up.
-        const late = Date.now() - wave.startsAt;
-        if (late >= 0) anim.currentTime = Math.min(late, duration);
-        else anim.effect.updateTiming({ delay: -late });
-        return;
-      }
       // The other windows play their part of this circle, from where it is on
       // the screen and from now.
       const origin = viewportOrigin();
@@ -783,6 +787,7 @@
         theme: value,
         key: announceKey,
         mode: 'ripple',
+        id,
         x: origin.x + cx * origin.zoom,
         y: origin.y + cy * origin.zoom,
         radius: radius * origin.zoom,
@@ -791,7 +796,10 @@
         feather: feather * origin.zoom,
         start: Date.now(),
       });
-    }).catch(() => { /* skipped: the theme is applied anyway */ });
+    }).catch(() => {
+      // Skipped: the theme is applied anyway, and the other windows change at once.
+      if (!wave) announce({ theme: value, key: announceKey, mode: 'instant', id });
+    });
     transition.updateCallbackDone.then(applied, applied);
     transition.finished.finally(() => {
       ROOT.classList.remove(RIPPLE_CLASS);
@@ -802,6 +810,29 @@
       finished(); // may start the queued ripple: then the transition goes on
       reportTransition();
     });
+  }
+
+  /**
+   * Another window's ripple, in this window's running view transition: wait
+   * for the circle to arrive, or catch up with it. Without a plan (the circle
+   * is past this window, or the sender's ripple never started) the new theme
+   * shows at once.
+   */
+  function playWave(transition, plan) {
+    if (!plan) {
+      if (typeof transition.skipTransition === 'function') transition.skipTransition();
+      return;
+    }
+    ROOT.style.setProperty('--kakao-ripple-feather', `${plan.feather}px`);
+    const anim = ROOT.animate(plan.frames, {
+      duration: plan.duration,
+      easing: 'linear', // the keyframes carry the curve
+      fill: 'forwards',
+      pseudoElement: '::view-transition-new(root)',
+    });
+    const late = Date.now() - plan.startsAt;
+    if (late >= 0) anim.currentTime = Math.min(late, plan.duration);
+    else anim.effect.updateTiming({ delay: -late });
   }
 
   /** Fade duration / easing from a switch's settings (defaults without one). */
@@ -1279,7 +1310,26 @@
    * stored (the sender did), so nothing is announced back.
    */
   let lastAnnounced = { theme: null, at: 0 };
-  let waveTimer = 0;
+  const waves = new Map(); // id → resolve(plan) of a prepared window waiting for its start
+
+  /** Stop waiting: the prepared windows show their theme at once. */
+  function dropWaves() {
+    waves.forEach((resolve) => resolve(null));
+    waves.clear();
+  }
+
+  /** Start this window's view transition now; its circle follows in the plan. */
+  function prepareWave(message, options) {
+    let resolve;
+    const plan = new Promise((r) => { resolve = r; });
+    waves.set(message.id, resolve);
+    setTimeout(() => {
+      if (waves.get(message.id) !== resolve) return;
+      waves.delete(message.id);
+      resolve(null);
+    }, WAVE_WAIT);
+    KakaoThemeSwitch.setTheme(message.theme, { ...options, wave: { plan } });
+  }
 
   function acceptsKey(key) {
     if (key === DEFAULT_KEY) return true;
@@ -1289,21 +1339,34 @@
   function followAnnouncement(message) {
     if (!message || typeof message.theme !== 'string' || !acceptsKey(message.key)) return;
     lastAnnounced = { theme: message.theme, at: Date.now() };
-    clearTimeout(waveTimer);
     const options = { source: 'storage', storageKey: '', remote: true };
-    if (message.mode === 'fade') {
-      KakaoThemeSwitch.setTheme(message.theme, { ...options, fade: true });
+    const animated = document.visibilityState !== 'hidden' && !reducedMotion();
+    const waiting = waves.get(message.id);
+
+    if (message.mode === 'prepare') {
+      dropWaves();
+      if (animated && typeof document.startViewTransition === 'function') prepareWave(message, options);
+      else KakaoThemeSwitch.setTheme(message.theme, { ...options, animate: false });
       return;
     }
-    const ripple = message.mode === 'ripple' && document.visibilityState !== 'hidden' && !reducedMotion()
-      && [message.x, message.y, message.radius, message.duration, message.start].every(Number.isFinite);
-    const wave = ripple ? planWave(message) : null;
-    if (!wave) {
-      KakaoThemeSwitch.setTheme(message.theme, { ...options, animate: false });
+    if (message.mode === 'ripple') {
+      const valid = [message.x, message.y, message.radius, message.duration, message.start].every(Number.isFinite);
+      const plan = animated && valid ? planWave(message) : null;
+      if (waiting) {
+        waves.delete(message.id);
+        waiting(plan);
+      } else if (plan) {
+        // Not prepared (it came in late): start now and catch up.
+        dropWaves();
+        KakaoThemeSwitch.setTheme(message.theme, { ...options, wave: { plan: Promise.resolve(plan) } });
+      } else {
+        KakaoThemeSwitch.setTheme(message.theme, { ...options, animate: false });
+      }
       return;
     }
-    waveTimer = setTimeout(() => KakaoThemeSwitch.setTheme(message.theme, { ...options, wave }),
-      Math.max(0, wave.startsAt - Date.now() - WAVE_LEAD));
+    dropWaves(); // a fade or an instant change ends any wait
+    if (message.mode === 'fade') KakaoThemeSwitch.setTheme(message.theme, { ...options, fade: true });
+    else KakaoThemeSwitch.setTheme(message.theme, { ...options, animate: false });
   }
 
   if (channel) channel.addEventListener('message', (e) => followAnnouncement(e.data));
